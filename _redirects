@@ -1,0 +1,12 @@
+# Clean URL Fallbacks
+/speedtest.html /speedtest 301
+/resizer.html /resizer 301
+/ip.html /ip 301
+/timezone.html /timezone 301
+/invoice.html /invoice 301
+/subscriptions.html /subscriptions 301
+/about.html /about 301
+/contact.html /contact 301
+/faq.html /faq 301
+/privacy.html /privacy 301
+/terms.html /terms 301

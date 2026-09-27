@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /speedtest
+Allow: /resizer
+Allow: /ip
+Allow: /timezone
+Allow: /invoice
+Allow: /subscriptions
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+Allow: /downloads/
+
+Sitemap: https://alumungandr.com/sitemap.xml

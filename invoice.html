@@ -1,80 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Canonical & Favicon -->
-  <link rel="canonical" href="https://alumungandr.com/invoice">
-  <link rel="icon" type="image/svg+xml" href="/logo.svg">
-  
-  <!-- OpenGraph Metadata -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://alumungandr.com/invoice">
-  <meta property="og:title" content="Free Instant Invoice & Receipt Maker | PDF Generator - Alumungandr™">
-  <meta property="og:description" content="Free, no-login split-screen invoice and receipt generator. Live-updates as you type, calculates taxes and discounts, and downloads professional PDFs instantly.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
-
-  <!-- Twitter Card Metadata -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free Instant Invoice & Receipt Maker | PDF Generator - Alumungandr™">
-  <meta name="twitter:description" content="Free, no-login split-screen invoice and receipt generator. Live-updates as you type, calculates taxes and discounts, and downloads professional PDFs instantly.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
-
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://alumungandr.com/#organization",
-      "name": "Alumungandr",
-      "legalName": "Alumungandr Enterprise & Technologies",
-      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
-      "slogan": "Beyond Logic is Truth",
-      "url": "https://alumungandr.com",
-      "logo": "https://alumungandr.com/logo.svg",
-      "email": "admin@alumungandr.com",
-      "founder": {
-        "@type": "Person",
-        "@id": "https://alumungandr.com/#founder",
-        "name": "David Anthony Jones",
-        "alternateName": "Alu"
-      },
-      "sameAs": [
-        "https://github.com/Alu6hel/ALUMUNGANDR",
-        "https://github.com/Alu6hel",
-        "https://www.linkedin.com/company/alumungandr"
-      ]
-    },
-    {
-      "@type": "WebApplication",
-      "@id": "https://alumungandr.com/invoice/#app",
-      "name": "Alumungandr Invoice & Receipt Generator",
-      "url": "https://alumungandr.com/invoice",
-      "applicationCategory": "FinancialApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "Free, zero-knowledge, no-login split-screen invoice and receipt generator with instant PDF download and zero tracking.",
-      "publisher": {
-        "@id": "https://alumungandr.com/#organization"
-      }
-    }
-  ]
-}
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Instant Invoice & Receipt Maker | PDF Generator - Alumungandr™</title>
-  <meta name="description" content="Free, no-login split-screen invoice and receipt generator. Live-updates as you type, calculates taxes and discounts, and downloads professional PDFs instantly.">
-  <meta name="keywords" content="invoice generator, receipt maker, free invoice template, pdf invoice, quick receipt, no login invoice maker, freelancer billing">
+  <title>No-BS Invoice & Estimate Maker - Free Instant PDF & WhatsApp Generator</title>
+  <meta name="description" content="Free, ad-free contractor invoice & quote generator. Built for plumbers, mobile mechanics, landscapers, caterers, and freelance contractors. WhatsApp instant estimate, Lynk/Card QR deposit lock, 20-client memory, and late payment fee auto-tagger.">
+  <meta name="keywords" content="invoice maker, contractor invoice, jamaica invoice, lynk payment qr, whatsapp estimate generator, free invoice generator, no quickbooks, mechanic quote, plumber invoice">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="/assets/qrcode.min.js"></script>
 
   <style>
     :root {
@@ -85,12 +21,16 @@
       --cyan-glow: rgba(0, 242, 254, 0.35);
       --electric-blue: #3b82f6;
       --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
       --rose: #f43f5e;
+      --rose-glow: rgba(244, 63, 94, 0.35);
       --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      --purple: #8b5cf6;
       
       --text-main: #ffffff;
       --text-muted: #e2e8f0;
-      --text-subtle: #cbd5e1;
+      --text-subtle: #94a3b8;
       
       --doc-accent: #00f2fe;
       
@@ -102,25 +42,27 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 10% 10%, rgba(0, 242, 254, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        radial-gradient(circle at 10% 10%, rgba(0, 242, 254, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
       color: var(--text-main);
       font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
-    /* Navigation */
+    /* Top Navigation */
     header.site-nav {
       border-bottom: 1px solid var(--bg-card-border);
-      background: rgba(9, 14, 24, 0.9);
+      background: rgba(9, 14, 24, 0.92);
       backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 0.85rem 2rem;
+      padding: 0.8rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -158,13 +100,13 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.3rem;
     }
 
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
       transition: color 0.2s;
     }
@@ -172,12 +114,13 @@
     .nav-links a:hover, .nav-links a.active { color: var(--cyan); }
 
     .nav-btn-action {
-      padding: 0.5rem 1.1rem;
+      padding: 0.45rem 1rem;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.18);
       color: #ffffff !important;
       font-weight: 700 !important;
+      font-size: 0.85rem !important;
       transition: all 0.2s;
     }
 
@@ -186,12 +129,140 @@
       border-color: var(--cyan);
     }
 
+    /* Problem-Solver Banner */
+    .hero-banner {
+      background: linear-gradient(180deg, rgba(14, 22, 40, 0.8) 0%, rgba(9, 14, 24, 0.4) 100%);
+      border-bottom: 1px solid var(--bg-card-border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-text {
+      max-width: 780px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--cyan);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-tag .dot-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulseGlow 1.8s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-text h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    .hero-text p {
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+      margin-top: 0.2rem;
+    }
+
+    .hero-features-strip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge-pill.highlight {
+      border-color: rgba(0, 242, 254, 0.3);
+      color: var(--cyan);
+      background: rgba(0, 242, 254, 0.08);
+    }
+
+    /* Mobile Tab Bar Switcher */
+    .mobile-tab-switch {
+      display: none;
+      background: #090e18;
+      border-bottom: 1px solid var(--bg-card-border);
+      padding: 0.5rem 1rem;
+      position: sticky;
+      top: 60px;
+      z-index: 95;
+    }
+
+    @media (max-width: 1100px) {
+      .mobile-tab-switch {
+        display: flex;
+        gap: 0.5rem;
+      }
+    }
+
+    .mobile-tab-btn {
+      flex: 1;
+      padding: 0.6rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .mobile-tab-btn.active {
+      background: var(--cyan);
+      color: #090e18;
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
     /* Main Split-Screen Workspace */
     .studio-container {
       flex: 1;
       display: grid;
-      grid-template-columns: 520px 1fr;
-      min-height: calc(100vh - 65px);
+      grid-template-columns: 530px 1fr;
+      min-height: calc(100vh - 120px);
     }
 
     @media (max-width: 1100px) {
@@ -202,49 +273,34 @@
 
     /* Left Controls / Form Panel */
     .editor-pane {
-      background: rgba(14, 21, 37, 0.95);
+      background: rgba(12, 18, 32, 0.96);
       border-right: 1px solid var(--bg-card-border);
-      padding: 1.75rem 2rem 5rem;
+      padding: 1.5rem 1.75rem 6rem;
       display: flex;
       flex-direction: column;
-      gap: 1.75rem;
+      gap: 1.35rem;
       overflow-y: auto;
-      max-height: calc(100vh - 65px);
+      max-height: calc(100vh - 120px);
     }
 
     @media (max-width: 1100px) {
       .editor-pane {
         max-height: none;
         border-right: none;
-        border-bottom: 1px solid var(--bg-card-border);
       }
-    }
-
-    .editor-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .editor-header h1 {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: #ffffff;
-    }
-
-    .editor-header p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
+      .editor-pane.hidden-mobile {
+        display: none !important;
+      }
     }
 
     /* Document Type Switcher */
     .type-switcher {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px;
-      border-radius: 10px;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
@@ -255,17 +311,21 @@
       font-family: inherit;
       font-size: 0.82rem;
       font-weight: 800;
-      padding: 8px 4px;
-      border-radius: 7px;
+      padding: 8px 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
     }
 
     .type-btn.active {
-      background: var(--cyan);
+      background: var(--doc-accent);
       color: #090e18;
-      box-shadow: 0 0 10px var(--cyan-glow);
+      box-shadow: 0 0 14px var(--cyan-glow);
     }
 
     /* Styling Toolbar (Colors & Currencies) */
@@ -274,25 +334,25 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.75rem;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 0.85rem 1rem;
+      padding: 0.75rem 1rem;
     }
 
     .color-picker-wrap {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      color: var(--text-muted);
+      color: var(--text-subtle);
     }
 
     .color-swatch {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid transparent;
@@ -305,21 +365,22 @@
     }
 
     .currency-select {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       color: #ffffff;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      padding: 5px 10px;
+      border-radius: 7px;
+      font-size: 0.84rem;
       font-family: inherit;
-      font-weight: 700;
+      font-weight: 800;
       outline: none;
+      cursor: pointer;
     }
 
-    /* Action Buttons (Load Sample, Save, Clear) */
+    /* Quick Actions Bar */
     .quick-actions-bar {
       display: flex;
-      gap: 0.6rem;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
@@ -327,25 +388,21 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.14);
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 0.35rem;
+      transition: all 0.2s;
     }
 
     .btn-quick:hover {
       background: rgba(255, 255, 255, 0.15);
       color: #ffffff;
       border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-quick:active, .type-btn:active, .btn-add-item:active, .btn-del-item:active, .btn-download-pdf:active, .btn-pill-term:active {
-      transform: scale(0.97);
     }
 
     .btn-quick.highlight-autofill {
@@ -360,84 +417,36 @@
       color: #ffffff;
     }
 
-    /* Quick Preset Terms Pills */
-    .terms-preset-bar {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin-top: 0.35rem;
+    .btn-quick.highlight-wa {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--emerald);
+      color: var(--emerald);
     }
 
-    .btn-pill-term {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 6px;
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-pill-term:hover {
-      background: rgba(0, 242, 254, 0.15);
-      border-color: var(--cyan);
+    .btn-quick.highlight-wa:hover {
+      background: rgba(16, 185, 129, 0.28);
       color: #ffffff;
     }
 
-    /* Plain-English Tooltip Helper */
-    .helper-hint {
-      display: inline-block;
-      cursor: help;
-      margin-left: 4px;
-      font-size: 0.75rem;
-      color: var(--cyan);
-      opacity: 0.85;
-      font-weight: bold;
-    }
-
-    .helper-hint:hover {
-      opacity: 1;
-    }
-
-    .toast-msg {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #090e18;
-      border: 1px solid var(--cyan);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 10000;
-    }
-
-    .toast-msg.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    /* Section Cards in Editor */
+    /* Form Section Cards */
     .form-section {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.28);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
-      padding: 1.25rem;
+      padding: 1.15rem;
       display: flex;
       flex-direction: column;
       gap: 0.85rem;
+      position: relative;
+    }
+
+    .form-section.highlight-glow {
+      border-color: rgba(0, 242, 254, 0.25);
+      box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.03);
     }
 
     .section-title {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: #ffffff;
       text-transform: uppercase;
@@ -447,16 +456,30 @@
       justify-content: space-between;
     }
 
+    .section-tag {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
     .input-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
+      gap: 0.65rem;
     }
 
     .input-grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.75rem;
+      gap: 0.65rem;
+    }
+
+    @media (max-width: 600px) {
+      .input-grid-2, .input-grid-3 {
+        grid-template-columns: 1fr;
+      }
     }
 
     .field-wrap {
@@ -466,27 +489,138 @@
     }
 
     .field-label {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: var(--text-subtle);
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .field-input {
-      background: rgba(10, 15, 28, 0.9);
+    .field-input, .field-select, .field-textarea {
+      background: rgba(8, 12, 22, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 8px;
-      padding: 0.65rem 0.85rem;
+      padding: 0.6rem 0.8rem;
       color: #ffffff;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       transition: all 0.2s;
     }
 
-    .field-input:focus {
-      border-color: var(--cyan);
+    .field-textarea {
+      resize: vertical;
+      min-height: 60px;
+      line-height: 1.4;
+    }
+
+    .field-input:focus, .field-select:focus, .field-textarea:focus {
+      border-color: var(--doc-accent);
       box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* Saved Clients Quick Picker */
+    .client-vault-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 242, 254, 0.05);
+      border: 1px dashed rgba(0, 242, 254, 0.25);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+    }
+
+    .client-vault-select {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .btn-vault-action {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 5px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .btn-vault-action:hover {
+      background: rgba(0, 242, 254, 0.2);
+    }
+
+    /* Trade Catalog Quick-Add Pills */
+    .trade-tabs-row {
+      display: flex;
+      gap: 0.35rem;
+      overflow-x: auto;
+      padding-bottom: 0.3rem;
+    }
+
+    .trade-tab-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-subtle);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .trade-tab-pill.active {
+      background: rgba(0, 242, 254, 0.18);
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    .trade-items-shelf {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.3rem;
+    }
+
+    .trade-item-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+
+    .trade-item-chip strong {
+      color: var(--cyan);
+      font-family: var(--font-mono);
+    }
+
+    .trade-item-chip:hover {
+      background: rgba(0, 242, 254, 0.18);
+      border-color: var(--cyan);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
     /* Line Items Dynamic Table */
@@ -494,7 +628,7 @@
       display: grid;
       grid-template-columns: 1fr 65px 95px 75px 28px;
       gap: 0.5rem;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: var(--text-subtle);
       text-transform: uppercase;
@@ -551,47 +685,161 @@
       border-color: var(--cyan);
     }
 
+    /* Date presets pills */
+    .terms-preset-bar {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+
+    .btn-pill-term {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-pill-term:hover {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--cyan);
+      color: #ffffff;
+    }
+
+    /* Toggle Switch Component */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.4rem 0;
+    }
+
+    .toggle-label-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toggle-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .toggle-sub {
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+    }
+
+    .switch-ui {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch-ui input { opacity: 0; width: 0; height: 0; }
+
+    .slider-ui {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.16);
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider-ui:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider-ui {
+      background-color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    input:checked + .slider-ui:before {
+      transform: translateX(20px);
+      background-color: #090e18;
+    }
+
     /* Right Preview / Document Pane */
     .preview-pane {
       background: #060911;
-      padding: 2.5rem;
+      padding: 2.2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
       overflow-y: auto;
-      max-height: calc(100vh - 65px);
+      max-height: calc(100vh - 120px);
+      position: relative;
     }
 
     @media (max-width: 1100px) {
       .preview-pane {
         max-height: none;
-        padding: 1.5rem;
+        padding: 1.25rem 0.75rem;
+      }
+      .preview-pane.hidden-mobile {
+        display: none !important;
       }
     }
 
     .preview-toolbar {
       width: 100%;
-      max-width: 780px;
+      max-width: 800px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.75rem;
+    }
+
+    .preview-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulseGlow 2s infinite;
     }
 
     .btn-download-pdf {
       background: linear-gradient(135deg, #00f2fe 0%, #3b82f6 100%);
       color: #070b14;
       font-weight: 900;
-      font-size: 1rem;
-      padding: 0.85rem 1.75rem;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.6rem;
       border: none;
-      border-radius: 12px;
+      border-radius: 11px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
       transition: all 0.2s;
     }
@@ -602,21 +850,83 @@
       filter: brightness(1.1);
     }
 
+    .btn-share-wa {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.35rem;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 25px var(--emerald-glow);
+      transition: all 0.2s;
+    }
+
+    .btn-share-wa:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
     /* The Live A4 Document Sheet */
     .invoice-sheet {
       width: 100%;
-      max-width: 780px;
-      min-height: 1050px;
+      max-width: 800px;
+      min-height: 1080px;
       background: #ffffff;
       color: #1e293b;
       border-radius: 12px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      padding: 3.5rem 3.5rem 4rem;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      padding: 3.25rem 3.5rem 3.5rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       font-family: var(--font-sans);
       position: relative;
+      overflow: hidden;
+    }
+
+    /* Dynamic Watermark Stamp */
+    .sheet-stamp-watermark {
+      position: absolute;
+      top: 140px;
+      right: 40px;
+      padding: 8px 22px;
+      border: 3px solid #10b981;
+      border-radius: 8px;
+      color: #10b981;
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transform: rotate(-12deg);
+      opacity: 0.85;
+      pointer-events: none;
+      display: none;
+      z-index: 10;
+    }
+
+    .sheet-stamp-watermark.stamp-paid {
+      display: block;
+      border-color: #10b981;
+      color: #10b981;
+    }
+
+    .sheet-stamp-watermark.stamp-overdue {
+      display: block;
+      border-color: #e11d48;
+      color: #e11d48;
+      background: rgba(225, 29, 72, 0.05);
+    }
+
+    .sheet-stamp-watermark.stamp-quote {
+      display: block;
+      border-color: #d97706;
+      color: #d97706;
     }
 
     /* Sheet Header */
@@ -624,34 +934,44 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
     .sheet-brand-area {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.25rem;
+      max-width: 460px;
     }
 
     .sheet-company-name {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       font-weight: 900;
       color: #0f172a;
-      line-height: 1.1;
+      line-height: 1.15;
+    }
+
+    .sheet-company-trade {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--doc-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .sheet-company-sub {
-      font-size: 0.9rem;
-      color: #64748b;
+      font-size: 0.86rem;
+      color: #475569;
       white-space: pre-line;
-      line-height: 1.4;
+      line-height: 1.45;
+      margin-top: 0.2rem;
     }
 
     .sheet-doc-meta {
       text-align: right;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.2rem;
     }
 
     .sheet-doc-title {
@@ -660,11 +980,11 @@
       color: var(--doc-accent);
       letter-spacing: -0.5px;
       line-height: 1;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
     }
 
     .sheet-meta-line {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #475569;
     }
 
@@ -673,35 +993,50 @@
       font-family: var(--font-mono);
     }
 
+    /* Appreciation Banner on Sheet */
+    .sheet-appreciation-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      color: #166534;
+      font-weight: 700;
+    }
+
     /* Sheet Billing Details */
     .sheet-billing-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 2rem;
-      padding: 1.5rem 0;
+      padding: 1.25rem 0;
       border-top: 2px solid #f1f5f9;
       border-bottom: 2px solid #f1f5f9;
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
     }
 
     .sheet-bill-label {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 800;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
     }
 
     .sheet-bill-name {
       font-size: 1.15rem;
-      font-weight: 800;
+      font-weight: 900;
       color: #0f172a;
       margin-bottom: 0.2rem;
     }
 
     .sheet-bill-text {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #475569;
       white-space: pre-line;
       line-height: 1.4;
@@ -711,13 +1046,13 @@
     .sheet-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
     }
 
     .sheet-table th {
       background: #f8fafc;
       color: #475569;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -731,9 +1066,9 @@
     }
 
     .sheet-table td {
-      padding: 0.85rem 0.85rem;
+      padding: 0.8rem 0.85rem;
       border-bottom: 1px solid #f1f5f9;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: #334155;
     }
 
@@ -747,24 +1082,98 @@
       font-weight: 600;
     }
 
-    /* Sheet Totals Summary */
-    .sheet-summary-wrap {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 2.5rem;
+    /* Sheet Bottom Grid: Payment Lock QR + Totals Box */
+    .sheet-bottom-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      align-items: flex-start;
     }
 
-    .sheet-summary-box {
-      width: 320px;
+    /* Scannable Payment QR Box */
+    .sheet-qr-box {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+      background: #fafafa;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .sheet-qr-canvas-wrap {
+      width: 110px;
+      height: 110px;
+      background: #fff;
+      padding: 5px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sheet-qr-canvas-wrap img, .sheet-qr-canvas-wrap canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
+    .sheet-qr-details {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.25rem;
+    }
+
+    .sheet-qr-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .sheet-deposit-badge {
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 7px;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 0.2rem 0;
+      font-family: var(--font-mono);
+    }
+
+    .sheet-qr-sub {
+      font-size: 0.74rem;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .sheet-qr-handle {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Sheet Totals Summary */
+    .sheet-summary-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
     }
 
     .sheet-summary-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: #64748b;
     }
 
@@ -773,52 +1182,201 @@
       font-family: var(--font-mono);
     }
 
+    .sheet-summary-row.discount-row {
+      color: #166534;
+    }
+
+    .sheet-summary-row.discount-row strong {
+      color: #166534;
+    }
+
+    .sheet-summary-row.latefee-row {
+      color: #be123c;
+      font-weight: 700;
+    }
+
+    .sheet-summary-row.latefee-row strong {
+      color: #be123c;
+    }
+
     .sheet-grand-total {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding-top: 0.75rem;
+      padding-top: 0.65rem;
       border-top: 2px solid #0f172a;
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
     }
 
     .sheet-grand-label {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 900;
       color: #0f172a;
       text-transform: uppercase;
     }
 
     .sheet-grand-val {
-      font-size: 1.7rem;
+      font-size: 1.65rem;
       font-weight: 900;
       font-family: var(--font-mono);
       color: var(--doc-accent);
       line-height: 1;
+      transition: all 0.3s;
     }
 
     /* Sheet Notes & Footer */
     .sheet-bottom-notes {
       border-top: 1px dashed #cbd5e1;
-      padding-top: 1.5rem;
+      padding-top: 1.25rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 2rem;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #64748b;
     }
 
     .sheet-note-title {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       font-weight: 800;
       color: #0f172a;
       text-transform: uppercase;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
     }
 
     .sheet-note-body {
       white-space: pre-line;
       line-height: 1.4;
+    }
+
+    /* Modals & Dialogs */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #0d1424;
+      border: 1px solid var(--bg-card-border);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--bg-card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-subtle);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .client-list-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .client-card-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .client-card-item:hover {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--cyan);
+    }
+
+    .client-card-info h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .client-card-info p {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      margin-top: 2px;
+    }
+
+    .btn-card-del {
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #f87171;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #090e18;
+      border: 1px solid var(--cyan);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10000;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
 
     /* PRINT STYLES - Crisp, Pixel-Perfect PDF Export */
@@ -827,7 +1385,7 @@
         background: #ffffff !important;
         color: #000000 !important;
       }
-      header.site-nav, .editor-pane, .preview-toolbar {
+      header.site-nav, .hero-banner, .mobile-tab-switch, .editor-pane, .preview-toolbar, .toast-msg, .modal-overlay {
         display: none !important;
       }
       .studio-container {
@@ -861,8 +1419,7 @@
       <div class="brand-text">ALUMUNGANDR™</div>
     </a>
     <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/store">Storefront</a>
+      <a href="/">Apps</a>
       <a href="/speedtest">Speed Test</a>
       <a href="/invoice" class="active">Invoice Maker</a>
       <a href="/resizer">Social Resizer</a>
@@ -875,142 +1432,287 @@
     </nav>
   </header>
 
+  <!-- Problem-Solver Hero Strip -->
+  <section class="hero-banner">
+    <div class="hero-text">
+      <div class="hero-tag">
+        <span class="dot-pulse"></span>
+        <span>The Zero-BS Contractor Invoicing Solution</span>
+      </div>
+      <h1>No-BS Invoice &amp; Quote Maker</h1>
+      <p>Zero QuickBooks bloat ($35/mo saved). Built for plumbers, mechanics, landscapers, caterers &amp; freelance contractors.</p>
+    </div>
+    <div class="hero-features-strip">
+      <span class="badge-pill highlight">⚡ WhatsApp Instant Estimate</span>
+      <span class="badge-pill highlight">💳 Lynk &amp; Card QR Deposit Lock</span>
+      <span class="badge-pill">💾 20-Client Memory</span>
+      <span class="badge-pill">⚖️ Late Fee Auto-Tagger</span>
+      <span class="badge-pill">⭐ Repeat Client Perks</span>
+    </div>
+  </section>
+
+  <!-- Mobile Screen Toggle Bar -->
+  <div class="mobile-tab-switch">
+    <button class="mobile-tab-btn active" id="tabBtnEdit" onclick="switchMobileTab('edit')">✏️ Edit Form</button>
+    <button class="mobile-tab-btn" id="tabBtnPreview" onclick="switchMobileTab('preview')">📄 Live Invoice</button>
+  </div>
+
   <!-- Workspace Container -->
   <main class="studio-container">
 
     <!-- Left Controls Panel -->
-    <aside class="editor-pane">
+    <aside class="editor-pane" id="editorPane">
       
-      <div class="editor-header">
-        <h1>No-BS Invoice Generator</h1>
-        <p>Type on the left &bull; Live document updates on the right &bull; 100% Free & No Sign-up.</p>
-      </div>
-
       <!-- Mode Selector -->
       <div class="type-switcher">
-        <button class="type-btn active" id="btnTypeInv" onclick="setDocType('INVOICE')">Invoice</button>
-        <button class="type-btn" id="btnTypeRec" onclick="setDocType('RECEIPT')">Receipt</button>
-        <button class="type-btn" id="btnTypeEst" onclick="setDocType('QUOTE')">Quote</button>
+        <button class="type-btn active" id="btnTypeInv" onclick="setDocType('INVOICE')">
+          <span>🧾 Invoice</span>
+        </button>
+        <button class="type-btn" id="btnTypeEst" onclick="setDocType('QUOTE')">
+          <span>💬 Quote / Est</span>
+        </button>
+        <button class="type-btn" id="btnTypeRec" onclick="setDocType('RECEIPT')">
+          <span>✅ Receipt</span>
+        </button>
       </div>
 
       <!-- Styling & Currency -->
       <div class="styling-bar">
         <div class="color-picker-wrap">
           <span>Accent:</span>
-          <div class="color-swatch active" style="background:#00f2fe;" onclick="setThemeColor('#00f2fe', this)"></div>
-          <div class="color-swatch" style="background:#3b82f6;" onclick="setThemeColor('#3b82f6', this)"></div>
-          <div class="color-swatch" style="background:#10b981;" onclick="setThemeColor('#10b981', this)"></div>
-          <div class="color-swatch" style="background:#8b5cf6;" onclick="setThemeColor('#8b5cf6', this)"></div>
-          <div class="color-swatch" style="background:#f59e0b;" onclick="setThemeColor('#f59e0b', this)"></div>
-          <div class="color-swatch" style="background:#0f172a;" onclick="setThemeColor('#0f172a', this)"></div>
+          <div class="color-swatch active" style="background:#00f2fe;" onclick="setThemeColor('#00f2fe', this)" title="Electric Cyan"></div>
+          <div class="color-swatch" style="background:#3b82f6;" onclick="setThemeColor('#3b82f6', this)" title="Electric Blue"></div>
+          <div class="color-swatch" style="background:#10b981;" onclick="setThemeColor('#10b981', this)" title="Emerald"></div>
+          <div class="color-swatch" style="background:#8b5cf6;" onclick="setThemeColor('#8b5cf6', this)" title="Royal Purple"></div>
+          <div class="color-swatch" style="background:#f59e0b;" onclick="setThemeColor('#f59e0b', this)" title="Amber Gold"></div>
+          <div class="color-swatch" style="background:#0f172a;" onclick="setThemeColor('#0f172a', this)" title="Minimal Slate"></div>
         </div>
         <div>
           <select id="currencySelect" class="currency-select" onchange="renderDoc()">
-            <option value="$">USD ($)</option>
+            <option value="JMD $">JMD ($)</option>
+            <option value="$" selected>USD ($)</option>
             <option value="€">EUR (€)</option>
             <option value="£">GBP (£)</option>
-            <option value="JMD $">JMD ($)</option>
             <option value="CAD $">CAD ($)</option>
             <option value="AUD $">AUD ($)</option>
-            <option value="¥">JPY (¥)</option>
+            <option value="TTD $">TTD ($)</option>
+            <option value="BSD $">BSD ($)</option>
+            <option value="KYD $">KYD ($)</option>
+            <option value="BBD $">BBD ($)</option>
           </select>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="quick-actions-bar">
-        <button class="btn-quick highlight-autofill" onclick="autoFillMyInfo()" title="1-Click Fill your business profile from memory">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>
-          ⚡ Auto-Fill With My Info
+        <button class="btn-quick highlight-autofill" onclick="autoFillMyInfo()" title="Auto-fill your saved business details">
+          ⚡ Auto-Fill My Info
         </button>
-        <button class="btn-quick" onclick="saveProfile()" title="Save this profile as default">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
-          Save My Info
+        <button class="btn-quick" onclick="saveProfile()" title="Save current business profile">
+          💾 Save Profile
         </button>
-        <button class="btn-quick" onclick="loadSampleData()" title="Load ready-to-use sample invoice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-          Load Sample
+        <button class="btn-quick" onclick="loadSampleContractorData()" title="Load ready sample contractor invoice">
+          📑 Load Sample Job
         </button>
-        <button class="btn-quick" onclick="clearAllData()">Clear All</button>
+        <button class="btn-quick highlight-wa" onclick="openWhatsAppModal()" title="Instant WhatsApp Quote text">
+          📱 WhatsApp Text
+        </button>
+        <button class="btn-quick" onclick="openRecentInvoicesModal()" title="View past saved invoices">
+          📜 History
+        </button>
+        <button class="btn-quick" onclick="clearAllData()">Clear</button>
       </div>
 
-      <!-- Your Business Information -->
+      <!-- 20-Client Memory Vault -->
+      <div class="form-section highlight-glow">
+        <div class="section-title">
+          <span>👥 Saved Client Memory</span>
+          <span class="section-tag" id="clientCountBadge">20 Slots Available</span>
+        </div>
+        <div class="client-vault-bar">
+          <select id="savedClientsSelect" class="client-vault-select" onchange="handleSelectSavedClient(this.value)">
+            <option value="">-- Quick Load Saved Client --</option>
+          </select>
+          <button class="btn-vault-action" onclick="saveCurrentClientToMemory()" title="Save current client details to memory">
+            + Save Client
+          </button>
+          <button class="btn-vault-action" onclick="openClientsModal()" title="Manage all saved clients">
+            Manage
+          </button>
+        </div>
+      </div>
+
+      <!-- Your Business Information (From) -->
       <div class="form-section">
         <div class="section-title">
-          <span>Your Business (From)</span>
-          <span style="font-size:0.7rem; color:var(--cyan); font-weight:600; text-transform:none;">Auto-saves to browser</span>
+          <span>Your Business / Contractor (From)</span>
+          <span class="section-tag">Auto-saves</span>
         </div>
         <div class="field-wrap">
-          <label class="field-label">Company / Your Name</label>
-          <input type="text" id="fromName" class="field-input" placeholder="e.g. Acme Creative Studio" autocomplete="organization" oninput="handleBusinessInput()">
+          <label class="field-label">Company / Contractor Name</label>
+          <input type="text" id="fromName" class="field-input" placeholder="e.g. Acme Plumbing &amp; Electrical Services" oninput="handleBusinessInput()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Trade / Specialty Subtitle</label>
+          <input type="text" id="fromTrade" class="field-input" placeholder="e.g. Master Licensed Plumber &bull; 24/7 Mobile Diagnostics" oninput="handleBusinessInput()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Email</label>
-            <input type="email" id="fromEmail" class="field-input" placeholder="billing@company.com" autocomplete="email" oninput="handleBusinessInput()">
+            <input type="email" id="fromEmail" class="field-input" placeholder="billing@contractor.com" oninput="handleBusinessInput()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Phone / Website</label>
-            <input type="text" id="fromPhone" class="field-input" placeholder="+1 (876) 555-0199" autocomplete="tel" oninput="handleBusinessInput()">
+            <label class="field-label">Phone / WhatsApp</label>
+            <input type="text" id="fromPhone" class="field-input" placeholder="+1 (876) 555-0199" oninput="handleBusinessInput()">
           </div>
         </div>
         <div class="field-wrap">
-          <label class="field-label">Business Address &amp; Tax/TRN ID</label>
-          <input type="text" id="fromAddress" class="field-input" placeholder="10 Innovation Blvd, Montego Bay | TRN: 123-456" autocomplete="street-address" oninput="handleBusinessInput()">
+          <label class="field-label">Business Address &amp; TRN / Tax ID</label>
+          <input type="text" id="fromAddress" class="field-input" placeholder="10 Innovation Blvd, Montego Bay, Jamaica | TRN: 987-654-321" oninput="handleBusinessInput()">
         </div>
       </div>
 
-      <!-- Client Information -->
+      <!-- Client Information (Billed To) -->
       <div class="form-section">
         <div class="section-title">Client Information (Billed To)</div>
         <div class="field-wrap">
           <label class="field-label">Client Name / Business</label>
-          <input type="text" id="toName" class="field-input" placeholder="e.g. Apex Global Solutions" autocomplete="name" oninput="renderDoc()">
+          <input type="text" id="toName" class="field-input" placeholder="e.g. Apex Global Solutions Ltd" oninput="renderDoc()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
-            <label class="field-label">Client Email</label>
-            <input type="email" id="toEmail" class="field-input" placeholder="accounts@client.com" autocomplete="email" oninput="renderDoc()">
+            <label class="field-label">Client Phone / WhatsApp</label>
+            <input type="text" id="toPhone" class="field-input" placeholder="+1 (876) 555-0199" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Address</label>
-            <input type="text" id="toAddress" class="field-input" placeholder="Kingston, Jamaica" autocomplete="street-address" oninput="renderDoc()">
+            <label class="field-label">Client Email</label>
+            <input type="email" id="toEmail" class="field-input" placeholder="accounts@apexglobal.io" oninput="renderDoc()">
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Job Site / Billing Address</label>
+          <input type="text" id="toAddress" class="field-input" placeholder="25 Knutsford Boulevard, Kingston, Jamaica" oninput="renderDoc()">
+        </div>
+
+        <!-- Repeat Customer Loyalty Toggle -->
+        <div class="toggle-row" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:0.6rem; margin-top:0.2rem;">
+          <div class="toggle-label-wrap">
+            <span class="toggle-title">⭐ Repeat Client Appreciation Perk</span>
+            <span class="toggle-sub">Apply preferred partner loyalty savings</span>
+          </div>
+          <label class="switch-ui">
+            <input type="checkbox" id="repeatCustomerCheck" onchange="renderDoc()">
+            <span class="slider-ui"></span>
+          </label>
+        </div>
+        <div id="repeatCustomerOptions" style="display:none;" class="input-grid-2">
+          <div class="field-wrap">
+            <label class="field-label">Perk Type</label>
+            <select id="repeatPerkType" class="field-select" onchange="renderDoc()">
+              <option value="5pct">5% Repeat Customer Courtesy</option>
+              <option value="10pct">10% Preferred Partner Discount</option>
+              <option value="waiver">Good Payer Late-Fee Waiver</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Appreciation Note</label>
+            <input type="text" id="repeatNote" class="field-input" value="Preferred Repeat Client Discount Applied" oninput="renderDoc()">
           </div>
         </div>
       </div>
 
-      <!-- Metadata (Dates & Numbers) -->
+      <!-- Document Details & Dates -->
       <div class="form-section">
         <div class="section-title">
           <span>Document Details</span>
-          <span style="font-size:0.7rem; color:var(--text-subtle); text-transform:none;">Quick Terms:</span>
+          <span class="section-tag">Terms:</span>
         </div>
         <div class="terms-preset-bar">
-          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(0)" title="Payment expected immediately upon receiving invoice">Due Immediately</button>
-          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(15)" title="Net 15: Payment due within 15 calendar days">Net 15</button>
-          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(30)" title="Net 30: Standard business term — payment due within 30 days">Net 30 (Standard)</button>
-          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(60)" title="Net 60: Extended terms — payment due within 60 days">Net 60</button>
+          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(0)">Due Immediately</button>
+          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(7)">Net 7</button>
+          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(14)">Net 14</button>
+          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(30)">Net 30 (Standard)</button>
+          <button type="button" class="btn-pill-term" onclick="setDueDateOffset(60)">Net 60</button>
         </div>
         <div class="input-grid-3" style="margin-top:0.35rem;">
           <div class="field-wrap">
-            <label class="field-label" id="docIdLabel">Invoice #</label>
-            <input type="text" id="docNumber" class="field-input" value="INV-2026-001" oninput="renderDoc()">
+            <label class="field-label" id="docIdLabel">Doc #</label>
+            <input type="text" id="docNumber" class="field-input" value="INV-2026-084" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
             <label class="field-label">Issue Date</label>
             <input type="date" id="docDate" class="field-input" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Due Date <span class="helper-hint" title="The deadline date for the customer to pay without incurring late fees">(?)</span></label>
+            <label class="field-label">Due Date</label>
             <input type="date" id="docDueDate" class="field-input" oninput="renderDoc()">
           </div>
         </div>
+
+        <!-- Late Payment Fee Auto-Tagger -->
+        <div class="toggle-row" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top:0.6rem; margin-top:0.2rem;">
+          <div class="toggle-label-wrap">
+            <span class="toggle-title">⚖️ "Late Payment Fee" Auto-Tagger</span>
+            <span class="toggle-sub">Auto-applies legal overdue fees past due date</span>
+          </div>
+          <label class="switch-ui">
+            <input type="checkbox" id="lateFeeCheck" checked onchange="renderDoc()">
+            <span class="slider-ui"></span>
+          </label>
+        </div>
+        <div id="lateFeeOptions" class="input-grid-2">
+          <div class="field-wrap">
+            <label class="field-label">Fee Policy</label>
+            <select id="lateFeePolicy" class="field-select" onchange="renderDoc()">
+              <option value="14days_5pct">5% after 14 days overdue</option>
+              <option value="30days_10pct">10% after 30 days overdue</option>
+              <option value="statutory_monthly">1.5% / month statutory rate</option>
+              <option value="flat_25">Flat $25 late administrative fee</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Live Status / Simulation</label>
+            <div id="lateFeeStatusBadge" style="font-size:0.78rem; font-weight:800; padding:6px; border-radius:6px; background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); text-align:center;">
+              ✓ Current (Not Overdue)
+            </div>
+          </div>
+        </div>
+
+        <!-- Overdue Simulator -->
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:0.6rem 0.8rem; border-radius:8px;">
+          <div style="font-size:0.72rem; color:var(--text-subtle); display:flex; justify-content:space-between; align-items:center;">
+            <span>Simulate Overdue Days (Preview):</span>
+            <span id="simOverdueLabel" style="font-family:var(--font-mono); color:var(--cyan); font-weight:bold;">0 Days</span>
+          </div>
+          <input type="range" id="simOverdueSlider" min="0" max="60" value="0" style="width:100%; margin-top:4px;" oninput="handleSimulateOverdue(this.value)">
+        </div>
+
       </div>
 
-      <!-- Line Items Section -->
+      <!-- Line Items Section + Trade Catalog Memory -->
       <div class="form-section">
-        <div class="section-title">Line Items</div>
-        <div class="line-items-header">
+        <div class="section-title">
+          <span>Line Items &amp; Parts Memory</span>
+          <span class="section-tag">Quick-Add Trade Catalog</span>
+        </div>
+
+        <!-- Trade Category Tabs -->
+        <div class="trade-tabs-row">
+          <button type="button" class="trade-tab-pill active" onclick="switchTradeCatalog('Plumbing', this)">🔧 Plumbing</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Mobile Mechanic', this)">🚗 Mechanic</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Landscaping & Yard', this)">🌿 Landscaping</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Catering & Events', this)">🍳 Catering</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('General Contractor', this)">⚡ General</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Custom', this)">💾 Custom</button>
+        </div>
+
+        <!-- Trade Items Shelf (1-Tap Add) -->
+        <div class="trade-items-shelf" id="tradeItemsShelf">
+          <!-- Dynamic Trade chips rendered here -->
+        </div>
+
+        <!-- Line items table -->
+        <div class="line-items-header" style="margin-top:0.6rem;">
           <span>Description</span>
           <span>Qty</span>
           <span>Price</span>
@@ -1022,85 +1724,145 @@
           <!-- Dynamic item rows injected here -->
         </div>
 
-        <button class="btn-add-item" onclick="addLineItem()">+ Add Line Item</button>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn-add-item" style="flex:1;" onclick="addLineItem()">+ Add Line Item</button>
+          <button class="btn-add-item" style="flex:1; border-color:rgba(16,185,129,0.4); color:var(--emerald);" onclick="promptSaveCustomItem()">+ Save Item to Catalog</button>
+        </div>
       </div>
 
-      <!-- Financial Modifiers (Discounts, Tax, Shipping) -->
+      <!-- Financial Adjustments -->
       <div class="form-section">
         <div class="section-title">Adjustments &amp; Taxes</div>
         <div class="input-grid-3">
           <div class="field-wrap">
-            <label class="field-label">Tax Rate (%) <span class="helper-hint" title="Sales tax, VAT, or GCT percentage added to taxable subtotal">(?)</span></label>
-            <input type="number" id="taxRate" class="field-input" value="0" min="0" step="0.5" oninput="renderDoc()">
+            <label class="field-label">Tax / GCT (%)</label>
+            <input type="number" id="taxRate" class="field-input" value="15" min="0" step="0.5" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Discount ($) <span class="helper-hint" title="Flat dollar discount subtracted before tax is calculated">(?)</span></label>
+            <label class="field-label">Flat Discount ($)</label>
             <input type="number" id="discountVal" class="field-input" value="0" min="0" step="1" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Shipping / Delivery ($)</label>
+            <label class="field-label">Travel / Callout ($)</label>
             <input type="number" id="shippingVal" class="field-input" value="0" min="0" step="1" oninput="renderDoc()">
           </div>
         </div>
       </div>
 
-      <!-- Payment Notes -->
-      <div class="form-section">
-        <div class="section-title">Payment Terms &amp; Notes</div>
-        <div class="field-wrap">
-          <label class="field-label">Payment Instructions (Wire, Account #, PayPal, Zelle)</label>
-          <input type="text" id="paymentDetails" class="field-input" placeholder="Bank: NCB | Acct: 123456789 | Wire routing..." oninput="handleBusinessInput()">
+      <!-- Payment QR & Deposit Lock Settings -->
+      <div class="form-section highlight-glow">
+        <div class="section-title">
+          <span>💳 Lynk &amp; Card QR Deposit Lock</span>
+          <span class="section-tag">Instant Payment QR</span>
         </div>
+        <div class="input-grid-2">
+          <div class="field-wrap">
+            <label class="field-label">Payment Method</label>
+            <select id="paymentMethod" class="field-select" onchange="handlePaymentMethodChange()">
+              <option value="lynk" selected>Lynk Jamaica (NCB Mobile Wallet)</option>
+              <option value="card">Credit / Debit Card (Stripe / Link)</option>
+              <option value="bank">Bank Transfer (NCB / BNS / Wire)</option>
+              <option value="paypal">PayPal / Zelle</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label" id="paymentHandleLabel">Lynk Handle or ID</label>
+            <input type="text" id="paymentHandle" class="field-input" value="@alumungandr" placeholder="@yourhandle" oninput="renderDoc()">
+          </div>
+        </div>
+
+        <div class="input-grid-2">
+          <div class="field-wrap">
+            <label class="field-label">Deposit Lock (% of Total)</label>
+            <select id="depositLockPct" class="field-select" onchange="renderDoc()">
+              <option value="100">100% Full Payment Required</option>
+              <option value="50" selected>50% Deposit to Lock Job / Dispatch</option>
+              <option value="33">33% Materials Upfront</option>
+              <option value="25">25% Booking Retainer</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Lock Deposit Amount</label>
+            <div id="depositLockDisplay" style="font-size:0.95rem; font-weight:900; font-family:var(--font-mono); color:var(--cyan); padding:0.5rem 0.8rem; background:rgba(0,0,0,0.6); border:1px solid rgba(0,242,254,0.25); border-radius:8px;">
+              $0.00
+            </div>
+          </div>
+        </div>
+
         <div class="field-wrap">
-          <label class="field-label">Terms / Thank You Note</label>
-          <input type="text" id="notesText" class="field-input" value="Payment due within 30 days. Thank you for your business!" oninput="renderDoc()">
+          <label class="field-label">Direct Bank Instructions (Optional)</label>
+          <input type="text" id="paymentDetails" class="field-input" placeholder="Bank: National Commercial Bank (NCB) | Acct: 847291038" oninput="handleBusinessInput()">
+        </div>
+
+        <div class="field-wrap">
+          <label class="field-label">Notes &amp; Thank You Message</label>
+          <input type="text" id="notesText" class="field-input" value="Payment due upon receipt. Formally verified deliverables deployed." oninput="renderDoc()">
         </div>
       </div>
 
     </aside>
 
     <!-- Right Document Preview Panel -->
-    <section class="preview-pane">
+    <section class="preview-pane" id="previewPane">
       
       <div class="preview-toolbar">
-        <span style="color:var(--text-muted); font-size:0.9rem; font-weight:700;">Live Preview (Print & PDF Ready)</span>
-        <button class="btn-download-pdf" onclick="downloadPdf()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-          <span>Download PDF / Print</span>
-        </button>
+        <div class="preview-status-indicator">
+          <span class="live-dot"></span>
+          <span style="color:var(--text-muted); font-size:0.88rem; font-weight:800;">Live Document (Print &amp; PDF Ready)</span>
+        </div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="btn-share-wa" onclick="openWhatsAppModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.18 8.18 0 012.41 5.82c0 4.54-3.7 8.24-8.24 8.24-1.44 0-2.85-.38-4.08-1.1l-.29-.17-3.03.8 1.01-3.04-.19-.32c-.82-1.31-1.26-2.83-1.26-4.41 0-4.54 3.7-8.24 8.24-8.24zm4.52 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.07-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+            <span>WhatsApp Estimate</span>
+          </button>
+          <button class="btn-download-pdf" onclick="downloadPdf()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            <span>Download PDF</span>
+          </button>
+        </div>
       </div>
 
       <!-- The Live Printable A4 Sheet -->
       <div class="invoice-sheet" id="invoiceSheet">
         
+        <!-- Live Watermark Stamp -->
+        <div class="sheet-stamp-watermark" id="sheetStamp">PAID IN FULL</div>
+
         <div>
           <!-- Header Area -->
           <div class="sheet-top">
             <div class="sheet-brand-area">
-              <div class="sheet-company-name" id="previewFromName">Acme Creative Studio</div>
+              <div class="sheet-company-name" id="previewFromName">Acme Plumbing &amp; Electrical Services</div>
+              <div class="sheet-company-trade" id="previewFromTrade">Master Licensed Plumber &bull; 24/7 Mobile Diagnostics</div>
               <div class="sheet-company-sub" id="previewFromDetails">10 Innovation Blvd, Montego Bay, Jamaica
-billing@acme.com &bull; +1 (876) 555-0199</div>
+billing@contractor.com &bull; +1 (876) 555-0199</div>
             </div>
             <div class="sheet-doc-meta">
               <div class="sheet-doc-title" id="previewDocTitle">INVOICE</div>
-              <div class="sheet-meta-line"><span id="previewMetaIdLabel">Invoice #</span>: <strong id="previewDocNum">INV-2026-001</strong></div>
-              <div class="sheet-meta-line">Date: <strong id="previewDocDate">2026-09-18</strong></div>
-              <div class="sheet-meta-line" id="previewDueDateWrap">Due Date: <strong id="previewDocDueDate">2026-10-18</strong></div>
+              <div class="sheet-meta-line"><span id="previewMetaIdLabel">Invoice #</span>: <strong id="previewDocNum">INV-2026-084</strong></div>
+              <div class="sheet-meta-line">Date: <strong id="previewDocDate">2026-09-30</strong></div>
+              <div class="sheet-meta-line" id="previewDueDateWrap">Due Date: <strong id="previewDocDueDate">2026-10-30</strong></div>
             </div>
+          </div>
+
+          <!-- Customer Appreciation Banner -->
+          <div class="sheet-appreciation-banner" id="previewAppreciationBanner" style="display:none;">
+            <span>⭐</span>
+            <span id="previewAppreciationText">Preferred Repeat Client Discount Applied — Thank you for your continued partnership!</span>
           </div>
 
           <!-- Billing Info Grid -->
           <div class="sheet-billing-grid">
             <div>
               <div class="sheet-bill-label">Billed To</div>
-              <div class="sheet-bill-name" id="previewToName">Apex Global Solutions</div>
-              <div class="sheet-bill-text" id="previewToDetails">Kingston, Jamaica
-accounts@apex.com</div>
+              <div class="sheet-bill-name" id="previewToName">Apex Global Solutions Ltd</div>
+              <div class="sheet-bill-text" id="previewToDetails">25 Knutsford Boulevard, Kingston, Jamaica
+accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
             </div>
             <div>
-              <div class="sheet-bill-label">Payment Method</div>
-              <div class="sheet-bill-text" id="previewPaymentTerms">Bank Wire / Electronic Transfer</div>
-              <div class="sheet-bill-text" id="previewPaymentInfo" style="font-family:var(--font-mono); font-size:0.82rem; margin-top:4px;">Acct: 123456789 &bull; Routing: 021000021</div>
+              <div class="sheet-bill-label">Payment &amp; Terms</div>
+              <div class="sheet-bill-text" id="previewPaymentMethodTitle">Lynk Digital Wallet / Card Payment</div>
+              <div class="sheet-bill-text" id="previewPaymentBankInfo" style="font-family:var(--font-mono); font-size:0.8rem; margin-top:3px;">Lynk Handle: @alumungandr</div>
             </div>
           </div>
 
@@ -1108,10 +1870,10 @@ accounts@apex.com</div>
           <table class="sheet-table">
             <thead>
               <tr>
-                <th style="width: 50%;">Item / Description</th>
-                <th style="width: 15%; text-align: center;">Qty</th>
-                <th style="width: 17%;">Price</th>
-                <th style="width: 18%;">Amount</th>
+                <th style="width: 52%;">Service / Part Description</th>
+                <th style="width: 14%; text-align: center;">Qty</th>
+                <th style="width: 17%;">Rate</th>
+                <th style="width: 17%;">Amount</th>
               </tr>
             </thead>
             <tbody id="previewItemsBody">
@@ -1120,42 +1882,69 @@ accounts@apex.com</div>
           </table>
         </div>
 
-        <!-- Totals & Notes -->
+        <!-- Bottom Section: QR Deposit Lock Box + Totals Box -->
         <div>
-          <div class="sheet-summary-wrap">
+          <div class="sheet-bottom-grid">
+            
+            <!-- Scannable Payment QR Box -->
+            <div class="sheet-qr-box" id="sheetQrBox">
+              <div class="sheet-qr-canvas-wrap" id="qrcodeCanvasWrap">
+                <div id="qrcode"></div>
+              </div>
+              <div class="sheet-qr-details">
+                <div class="sheet-qr-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                  <span id="qrBoxHeader">Scan to Pay / Lock Job</span>
+                </div>
+                <div class="sheet-deposit-badge" id="qrDepositBadge">🔒 50% Deposit to Lock: $776.25</div>
+                <div class="sheet-qr-handle" id="qrHandleText">Lynk: @alumungandr</div>
+                <div class="sheet-qr-sub" id="qrSubText">Scan with your phone camera or Lynk app to submit instant payment.</div>
+              </div>
+            </div>
+
+            <!-- Totals Box -->
             <div class="sheet-summary-box">
               <div class="sheet-summary-row">
                 <span>Subtotal:</span>
                 <strong id="previewSubtotal">$0.00</strong>
               </div>
-              <div class="sheet-summary-row" id="previewDiscountRow" style="display:none;">
-                <span>Discount:</span>
+              <div class="sheet-summary-row discount-row" id="previewDiscountRow" style="display:none;">
+                <span id="previewDiscountLabel">Discount:</span>
                 <strong id="previewDiscount">-$0.00</strong>
               </div>
+              <div class="sheet-summary-row discount-row" id="previewRepeatDiscountRow" style="display:none;">
+                <span>Repeat Client Perk:</span>
+                <strong id="previewRepeatDiscount">-$0.00</strong>
+              </div>
               <div class="sheet-summary-row" id="previewTaxRow" style="display:none;">
-                <span id="previewTaxLabel">Tax (0%):</span>
+                <span id="previewTaxLabel">Tax (15%):</span>
                 <strong id="previewTax">$0.00</strong>
               </div>
               <div class="sheet-summary-row" id="previewShippingRow" style="display:none;">
-                <span>Shipping:</span>
+                <span>Travel / Callout:</span>
                 <strong id="previewShipping">$0.00</strong>
               </div>
+              <div class="sheet-summary-row latefee-row" id="previewLateFeeRow" style="display:none;">
+                <span id="previewLateFeeLabel">Late Fee (Overdue):</span>
+                <strong id="previewLateFee">+$0.00</strong>
+              </div>
               <div class="sheet-grand-total">
-                <div class="sheet-grand-label">Total Due:</div>
+                <div class="sheet-grand-label" id="previewGrandLabel">Total Due:</div>
                 <div class="sheet-grand-val" id="previewGrandTotal">$0.00</div>
               </div>
             </div>
+
           </div>
 
           <!-- Bottom Terms & Notes -->
           <div class="sheet-bottom-notes">
             <div>
-              <div class="sheet-note-title">Terms & Conditions</div>
-              <div class="sheet-note-body" id="previewTermsNotes">Payment due within 30 days of issuance. Late payments subject to 1.5% interest per month.</div>
+              <div class="sheet-note-title">Payment Terms &amp; Policies</div>
+              <div class="sheet-note-body" id="previewTermsNotes">Payment due upon receipt. Overdue accounts subject to legal late fee assessment after 14 days.</div>
             </div>
             <div>
-              <div class="sheet-note-title">Thank You</div>
-              <div class="sheet-note-body">We appreciate your business! If you have any inquiries regarding this document, please contact us.</div>
+              <div class="sheet-note-title">Customer Appreciation</div>
+              <div class="sheet-note-body">We value your business! Prompt payments keep our contractor teams equipped to serve you at peak speed.</div>
             </div>
           </div>
         </div>
@@ -1166,18 +1955,97 @@ accounts@apex.com</div>
 
   </main>
 
+  <!-- WhatsApp & Share Modal -->
+  <div class="modal-overlay" id="whatsappModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📱 WhatsApp Instant Estimate</h3>
+        <button class="modal-close" onclick="closeModal('whatsappModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-subtle);">
+          No messy texts. Send this structured estimate with your Lynk/Card deposit link directly to the client's WhatsApp in 1 tap.
+        </p>
+        <textarea id="whatsappMessageText" class="field-textarea" style="height:220px; font-family:var(--font-mono); font-size:0.82rem;" readonly></textarea>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="btn-share-wa" style="flex:1;" onclick="sendDirectWhatsApp()">
+            🚀 Open WhatsApp &amp; Send
+          </button>
+          <button class="btn-quick highlight-autofill" style="padding:0.75rem 1.25rem;" onclick="copyWhatsAppText()">
+            📋 Copy Message
+          </button>
+          <button class="btn-quick" style="padding:0.75rem 1.25rem;" onclick="saveAndShareOnline()">
+            🔗 Share Web Link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Clients Modal -->
+  <div class="modal-overlay" id="clientsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>👥 Saved Client Memory (20 Slots)</h3>
+        <button class="modal-close" onclick="closeModal('clientsModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="clientSearchInput" class="field-input" placeholder="🔍 Search saved clients..." oninput="filterClientsModal(this.value)">
+        <div class="client-list-scroll" id="clientsModalList">
+          <!-- Dynamically populated -->
+        </div>
+        <button class="btn-quick highlight-autofill" style="padding:0.65rem;" onclick="saveCurrentClientToMemory(); closeModal('clientsModal');">
+          + Add Current Client in Form to Memory
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Invoices Modal -->
+  <div class="modal-overlay" id="recentInvoicesModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📜 Saved Invoices History</h3>
+        <button class="modal-close" onclick="closeModal('recentInvoicesModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="client-list-scroll" id="recentInvoicesList">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // State
+    // State Store
     const STATE = {
       docType: 'INVOICE',
       themeColor: '#00f2fe',
       currency: '$',
       items: [
-        { desc: 'High-Performance Web Architecture & Deployment', qty: 1, rate: 1200 },
-        { desc: 'Multi-Threaded Edge Engine Configuration', qty: 1, rate: 650 },
-        { desc: 'Formal SMT Security Verification Audit', qty: 1, rate: 450 }
-      ]
+        { desc: 'Emergency Diagnostic Scan & Leak Detection', qty: 1, rate: 180.0 },
+        { desc: 'Heavy-Duty Schedule 80 PVC Pipe & Compression Coupling', qty: 2, rate: 45.0 },
+        { desc: 'High-Pressure Hydro Jetting & Line Flush', qty: 1, rate: 140.0 }
+      ],
+      savedClients: [],
+      tradeCatalog: {},
+      customCatalog: [],
+      currentTrade: 'Plumbing',
+      simulatedOverdueDays: 0,
+      activeClient: null
     };
+
+    // Initialize
+    async function init() {
+      initDates();
+      setupAudio();
+      await fetchSavedClients();
+      await fetchTradeCatalog();
+      checkUrlInvoiceId();
+      renderTradeShelf();
+      renderLineItemInputs();
+      renderDoc();
+    }
 
     function initDates() {
       const today = new Date();
@@ -1185,25 +2053,257 @@ accounts@apex.com</div>
       const due = new Date();
       due.setDate(today.getDate() + 30);
       document.getElementById('docDueDate').value = due.toISOString().split('T')[0];
-      
-      // Check saved profile
+
+      // Local storage restore
       const saved = localStorage.getItem('alumungandr_invoice_profile');
       if (saved) {
         try {
           const prof = JSON.parse(saved);
           if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
+          if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
           if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
           if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
           if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+          if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
           if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
-        } catch(e){}
-      } else {
-        loadSampleData();
+          if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
+        } catch(e) {}
       }
-      renderLineItemInputs();
-      renderDoc();
     }
 
+    // Audio Micro-feedback
+    let audioCtx = null;
+    function setupAudio() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      } catch(e) {}
+    }
+
+    function playBeep(freq = 440, type = 'sine', duration = 0.08) {
+      if (!audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    // URL parameter loader
+    async function checkUrlInvoiceId() {
+      const params = new URLSearchParams(window.location.search);
+      const invId = params.get('id');
+      if (invId) {
+        try {
+          const res = await fetch(`/api/invoice/get?id=${encodeURIComponent(invId)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.invoice) {
+              loadInvoiceIntoForm(data.invoice);
+              showToast(`✓ Loaded saved invoice ${invId}`);
+            }
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Backend APIs: Clients
+    async function fetchSavedClients() {
+      try {
+        const res = await fetch('/api/invoice/clients');
+        if (res.ok) {
+          const data = await res.json();
+          STATE.savedClients = data.clients || [];
+        }
+      } catch(e) {
+        // Fallback to localStorage
+        const local = localStorage.getItem('alumungandr_invoice_clients');
+        if (local) STATE.savedClients = JSON.parse(local);
+      }
+      populateClientsDropdown();
+    }
+
+    function populateClientsDropdown() {
+      const select = document.getElementById('savedClientsSelect');
+      select.innerHTML = '<option value="">-- Quick Load Saved Client --</option>';
+      STATE.savedClients.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.name} (${c.phone || c.email || 'Saved'})`;
+        select.appendChild(opt);
+      });
+      document.getElementById('clientCountBadge').textContent = `${STATE.savedClients.length}/20 Saved Clients`;
+    }
+
+    function handleSelectSavedClient(cid) {
+      if (!cid) return;
+      const client = STATE.savedClients.find(c => c.id === cid);
+      if (!client) return;
+
+      document.getElementById('toName').value = client.name || '';
+      document.getElementById('toPhone').value = client.phone || '';
+      document.getElementById('toEmail').value = client.email || '';
+      document.getElementById('toAddress').value = client.address || '';
+      
+      if (client.isRepeat) {
+        document.getElementById('repeatCustomerCheck').checked = true;
+        document.getElementById('repeatCustomerOptions').style.display = 'grid';
+        if (client.discountPct === 10) {
+          document.getElementById('repeatPerkType').value = '10pct';
+        } else {
+          document.getElementById('repeatPerkType').value = '5pct';
+        }
+      }
+
+      playBeep(580);
+      renderDoc();
+      showToast(`⚡ Selected client: ${client.name}`);
+    }
+
+    async function saveCurrentClientToMemory() {
+      const name = document.getElementById('toName').value.trim();
+      if (!name) {
+        alert('Please enter a Client Name first.');
+        return;
+      }
+      const clientData = {
+        name: name,
+        phone: document.getElementById('toPhone').value.trim(),
+        email: document.getElementById('toEmail').value.trim(),
+        address: document.getElementById('toAddress').value.trim(),
+        isRepeat: document.getElementById('repeatCustomerCheck').checked,
+        discountPct: document.getElementById('repeatPerkType').value === '10pct' ? 10 : 5
+      };
+
+      try {
+        const res = await fetch('/api/invoice/clients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(clientData)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          await fetchSavedClients();
+          showToast(`✓ Client "${name}" saved to memory!`);
+          playBeep(640);
+          return;
+        }
+      } catch(e) {}
+
+      // Fallback local save
+      const existing = STATE.savedClients.filter(c => c.name.toLowerCase() !== name.toLowerCase());
+      clientData.id = 'cli_' + Date.now();
+      existing.unshift(clientData);
+      STATE.savedClients = existing.slice(0, 20);
+      localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      populateClientsDropdown();
+      showToast(`✓ Client "${name}" saved to browser memory!`);
+    }
+
+    async function deleteSavedClient(cid) {
+      if (!confirm('Remove this client from memory?')) return;
+      try {
+        await fetch(`/api/invoice/clients?id=${encodeURIComponent(cid)}`, { method: 'DELETE' });
+      } catch(e) {}
+      STATE.savedClients = STATE.savedClients.filter(c => c.id !== cid);
+      localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      populateClientsDropdown();
+      openClientsModal();
+      showToast('Client removed from memory.');
+    }
+
+    // Backend APIs: Trade Catalog
+    async function fetchTradeCatalog() {
+      try {
+        const res = await fetch('/api/invoice/catalog');
+        if (res.ok) {
+          const data = await res.json();
+          STATE.tradeCatalog = data.categories || {};
+          STATE.customCatalog = data.custom || [];
+        }
+      } catch(e) {
+        // Fallback trade defaults
+        STATE.tradeCatalog = {
+          "Plumbing": [
+            { desc: "Emergency Leak Detection & Repair", rate: 180 },
+            { desc: "Drain Machine Snaking & Clearing", rate: 140 },
+            { desc: "PVC Pipe & Compression Coupling", rate: 45 },
+            { desc: "Water Heater Flush / Installation", rate: 260 }
+          ],
+          "Mobile Mechanic": [
+            { desc: "OBD2 Computer Diagnostic Scan", rate: 95 },
+            { desc: "Brake Pad Replacement (Axle)", rate: 160 },
+            { desc: "Full Synthetic Oil & Filter Service", rate: 115 },
+            { desc: "Battery Test & Replacement Labor", rate: 65 }
+          ]
+        };
+      }
+    }
+
+    function switchTradeCatalog(trade, btn) {
+      STATE.currentTrade = trade;
+      document.querySelectorAll('.trade-tab-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTradeShelf();
+    }
+
+    function renderTradeShelf() {
+      const shelf = document.getElementById('tradeItemsShelf');
+      shelf.innerHTML = '';
+
+      let items = [];
+      if (STATE.currentTrade === 'Custom') {
+        items = STATE.customCatalog;
+      } else {
+        items = STATE.tradeCatalog[STATE.currentTrade] || [];
+      }
+
+      if (!items || items.length === 0) {
+        shelf.innerHTML = '<span style="font-size:0.75rem; color:var(--text-subtle);">No items in this category yet.</span>';
+        return;
+      }
+
+      items.forEach(itm => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'trade-item-chip';
+        chip.innerHTML = `+ ${escapeHtml(itm.desc)} &bull; <strong>${STATE.currency}${itm.rate}</strong>`;
+        chip.onclick = () => {
+          addLineItem(itm.desc, 1, itm.rate);
+          playBeep(520);
+        };
+        shelf.appendChild(chip);
+      });
+    }
+
+    async function promptSaveCustomItem() {
+      const desc = prompt('Enter custom item / service description:');
+      if (!desc) return;
+      const rateStr = prompt('Enter default rate / price ($):', '100');
+      const rate = parseFloat(rateStr) || 0;
+
+      try {
+        await fetch('/api/invoice/catalog', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ desc, rate, category: 'custom' })
+        });
+      } catch(e) {}
+
+      STATE.customCatalog.unshift({ desc, rate });
+      switchTradeCatalog('Custom', document.querySelector('.trade-tab-pill:last-child'));
+      showToast(`✓ Added "${desc}" to your custom catalog!`);
+    }
+
+    // Document Type & Theming
     function setDocType(t) {
       STATE.docType = t;
       document.getElementById('btnTypeInv').classList.toggle('active', t === 'INVOICE');
@@ -1212,8 +2312,9 @@ accounts@apex.com</div>
 
       document.getElementById('docIdLabel').textContent = t === 'RECEIPT' ? 'Receipt #' : (t === 'QUOTE' ? 'Quote #' : 'Invoice #');
       document.getElementById('previewMetaIdLabel').textContent = t === 'RECEIPT' ? 'Receipt #' : (t === 'QUOTE' ? 'Quote #' : 'Invoice #');
-      document.getElementById('previewDocTitle').textContent = t;
+      document.getElementById('previewDocTitle').textContent = t === 'QUOTE' ? 'ESTIMATE' : t;
 
+      playBeep(480);
       renderDoc();
     }
 
@@ -1221,9 +2322,32 @@ accounts@apex.com</div>
       STATE.themeColor = c;
       document.documentElement.style.setProperty('--doc-accent', c);
       document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-      el.classList.add('active');
+      if (el) el.classList.add('active');
+      playBeep(600);
+      renderDoc();
     }
 
+    function handlePaymentMethodChange() {
+      const pm = document.getElementById('paymentMethod').value;
+      const handleLbl = document.getElementById('paymentHandleLabel');
+      const handleInput = document.getElementById('paymentHandle');
+      if (pm === 'lynk') {
+        handleLbl.textContent = 'Lynk Jamaica Handle';
+        handleInput.placeholder = '@contractor';
+      } else if (pm === 'card') {
+        handleLbl.textContent = 'Card Payment Link (Stripe / WiPay)';
+        handleInput.placeholder = 'https://pay.stripe.com/...';
+      } else if (pm === 'bank') {
+        handleLbl.textContent = 'Bank Transfer Account Number';
+        handleInput.placeholder = 'NCB Acct: 123456789';
+      } else {
+        handleLbl.textContent = 'Payment ID / URL';
+        handleInput.placeholder = 'Handle or Link';
+      }
+      renderDoc();
+    }
+
+    // Line Items management
     function renderLineItemInputs() {
       const container = document.getElementById('lineItemsContainer');
       container.innerHTML = '';
@@ -1250,10 +2374,11 @@ accounts@apex.com</div>
       renderDoc();
     }
 
-    function addLineItem() {
-      STATE.items.push({ desc: 'New Service Item', qty: 1, rate: 100 });
+    function addLineItem(desc = 'Service / Labor Item', qty = 1, rate = 100) {
+      STATE.items.push({ desc, qty, rate });
       renderLineItemInputs();
       renderDoc();
+      playBeep(520);
     }
 
     function deleteLineItem(idx) {
@@ -1264,45 +2389,71 @@ accounts@apex.com</div>
       STATE.items.splice(idx, 1);
       renderLineItemInputs();
       renderDoc();
+      playBeep(320);
     }
 
+    // Overdue Simulation Slider
+    function handleSimulateOverdue(days) {
+      STATE.simulatedOverdueDays = parseInt(days) || 0;
+      document.getElementById('simOverdueLabel').textContent = `${STATE.simulatedOverdueDays} Days Past Due`;
+      renderDoc();
+    }
+
+    // Main Calculation & Document Renderer
+    let qrGeneratorInstance = null;
     function renderDoc() {
       STATE.currency = document.getElementById('currencySelect').value;
 
-      // From details
-      const fromName = document.getElementById('fromName').value.trim() || 'Your Business Name';
+      // Business info
+      const fromName = document.getElementById('fromName').value.trim() || 'Acme Plumbing & Electrical Services';
+      const fromTrade = document.getElementById('fromTrade').value.trim();
       const fromEmail = document.getElementById('fromEmail').value.trim();
       const fromPhone = document.getElementById('fromPhone').value.trim();
       const fromAddress = document.getElementById('fromAddress').value.trim();
-      
+
       document.getElementById('previewFromName').textContent = fromName;
+      document.getElementById('previewFromTrade').textContent = fromTrade || '';
+      document.getElementById('previewFromTrade').style.display = fromTrade ? 'block' : 'none';
+
       let fromSub = fromAddress;
       if (fromEmail || fromPhone) {
         fromSub += (fromSub ? '\n' : '') + [fromEmail, fromPhone].filter(Boolean).join(' • ');
       }
       document.getElementById('previewFromDetails').textContent = fromSub || 'Address & Contact Information';
 
-      // To details
-      const toName = document.getElementById('toName').value.trim() || 'Client Company Name';
+      // Client info
+      const toName = document.getElementById('toName').value.trim() || 'Client Business / Name';
       const toEmail = document.getElementById('toEmail').value.trim();
+      const toPhone = document.getElementById('toPhone').value.trim();
       const toAddress = document.getElementById('toAddress').value.trim();
+
       document.getElementById('previewToName').textContent = toName;
-      document.getElementById('previewToDetails').textContent = [toAddress, toEmail].filter(Boolean).join('\n') || 'Client Address';
+      let toDetails = [toAddress, [toEmail, toPhone].filter(Boolean).join(' • ')].filter(Boolean).join('\n');
+      document.getElementById('previewToDetails').textContent = toDetails || 'Client Contact Details';
 
       // Meta
-      document.getElementById('previewDocNum').textContent = document.getElementById('docNumber').value || '001';
-      document.getElementById('previewDocDate').textContent = document.getElementById('docDate').value || '-';
-      document.getElementById('previewDocDueDate').textContent = document.getElementById('docDueDate').value || '-';
+      const docNum = document.getElementById('docNumber').value || 'INV-2026-084';
+      const docDate = document.getElementById('docDate').value || '-';
+      const docDueDate = document.getElementById('docDueDate').value || '-';
 
-      // Payment
-      const payInfo = document.getElementById('paymentDetails').value.trim();
-      document.getElementById('previewPaymentInfo').textContent = payInfo || 'Contact for wire details';
+      document.getElementById('previewDocNum').textContent = docNum;
+      document.getElementById('previewDocDate').textContent = docDate;
+      document.getElementById('previewDocDueDate').textContent = docDueDate;
 
-      // Notes
-      const notes = document.getElementById('notesText').value.trim();
-      document.getElementById('previewTermsNotes').textContent = notes || 'Thank you for your business!';
+      // Repeat Client Perk
+      const isRepeat = document.getElementById('repeatCustomerCheck').checked;
+      const repeatOptions = document.getElementById('repeatCustomerOptions');
+      repeatOptions.style.display = isRepeat ? 'grid' : 'none';
 
-      // Table items
+      const appreciationBanner = document.getElementById('previewAppreciationBanner');
+      if (isRepeat) {
+        appreciationBanner.style.display = 'flex';
+        document.getElementById('previewAppreciationText').textContent = document.getElementById('repeatNote').value || 'Preferred Repeat Client Discount Applied';
+      } else {
+        appreciationBanner.style.display = 'none';
+      }
+
+      // Line items table
       const tbody = document.getElementById('previewItemsBody');
       tbody.innerHTML = '';
       let subtotal = 0;
@@ -1321,15 +2472,102 @@ accounts@apex.com</div>
         tbody.appendChild(tr);
       });
 
-      // Calculations
+      // Basic financial modifiers
       const discount = parseFloat(document.getElementById('discountVal').value) || 0;
       const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
       const shipping = parseFloat(document.getElementById('shippingVal').value) || 0;
 
-      const taxableAmount = Math.max(0, subtotal - discount);
-      const taxAmount = (taxableAmount * (taxRate / 100));
-      const grandTotal = Math.max(0, taxableAmount + taxAmount + shipping);
+      // Repeat Client Discount calculation
+      let repeatDiscountVal = 0;
+      if (isRepeat) {
+        const perkType = document.getElementById('repeatPerkType').value;
+        if (perkType === '5pct') repeatDiscountVal = subtotal * 0.05;
+        else if (perkType === '10pct') repeatDiscountVal = subtotal * 0.10;
+      }
 
+      const taxableBase = Math.max(0, subtotal - discount - repeatDiscountVal);
+      const taxAmount = taxableBase * (taxRate / 100);
+
+      // Overdue & Late Payment Fee Engine
+      let isOverdue = false;
+      let daysOverdue = 0;
+      if (docDueDate) {
+        const dueDateObj = new Date(docDueDate);
+        const todayObj = new Date();
+        const diffTime = todayObj.getTime() - dueDateObj.getTime();
+        daysOverdue = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+      }
+      daysOverdue += STATE.simulatedOverdueDays;
+      if (daysOverdue > 0 && STATE.docType !== 'RECEIPT') {
+        isOverdue = true;
+      }
+
+      const lateFeeActive = document.getElementById('lateFeeCheck').checked;
+      const lateFeePolicy = document.getElementById('lateFeePolicy').value;
+      let lateFeeAmount = 0;
+      let lateFeeDescription = 'Late Fee';
+
+      if (isOverdue && lateFeeActive) {
+        if (isRepeat && document.getElementById('repeatPerkType').value === 'waiver') {
+          lateFeeAmount = 0;
+          lateFeeDescription = 'Late Fee (Waived for Loyal Client)';
+        } else if (lateFeePolicy === '14days_5pct') {
+          if (daysOverdue >= 14) {
+            lateFeeAmount = taxableBase * 0.05;
+            lateFeeDescription = `Late Fee (5% past 14d overdue)`;
+          }
+        } else if (lateFeePolicy === '30days_10pct') {
+          if (daysOverdue >= 30) {
+            lateFeeAmount = taxableBase * 0.10;
+            lateFeeDescription = `Late Fee (10% past 30d overdue)`;
+          }
+        } else if (lateFeePolicy === 'statutory_monthly') {
+          lateFeeAmount = taxableBase * (0.015 * (daysOverdue / 30.0));
+          lateFeeDescription = `Statutory Interest (${daysOverdue}d @ 1.5%/mo)`;
+        } else if (lateFeePolicy === 'flat_25') {
+          lateFeeAmount = 25.0;
+          lateFeeDescription = 'Late Admin Fee ($25)';
+        }
+      }
+
+      // Update Overdue badge in Editor
+      const statusBadge = document.getElementById('lateFeeStatusBadge');
+      if (isOverdue) {
+        statusBadge.style.background = 'rgba(244,63,94,0.18)';
+        statusBadge.style.borderColor = 'rgba(244,63,94,0.4)';
+        statusBadge.style.color = '#f87171';
+        statusBadge.innerHTML = `⚠️ OVERDUE by ${daysOverdue} days (+${STATE.currency}${lateFeeAmount.toFixed(2)})`;
+      } else {
+        statusBadge.style.background = 'rgba(16,185,129,0.15)';
+        statusBadge.style.borderColor = 'rgba(16,185,129,0.3)';
+        statusBadge.style.color = '#10b981';
+        statusBadge.innerHTML = '✓ Current (Not Overdue)';
+      }
+
+      // Stamps on Document
+      const sheetStamp = document.getElementById('sheetStamp');
+      sheetStamp.className = 'sheet-stamp-watermark';
+      if (STATE.docType === 'RECEIPT') {
+        sheetStamp.classList.add('stamp-paid');
+        sheetStamp.textContent = 'PAID IN FULL';
+      } else if (isOverdue) {
+        sheetStamp.classList.add('stamp-overdue');
+        sheetStamp.textContent = 'OVERDUE - LATE FEE APPLIED';
+      } else if (STATE.docType === 'QUOTE') {
+        sheetStamp.classList.add('stamp-quote');
+        sheetStamp.textContent = 'FORMAL ESTIMATE';
+      }
+
+      // Grand Total
+      const grandTotal = Math.max(0, taxableBase + taxAmount + shipping + lateFeeAmount);
+
+      // Deposit Lock calculation
+      const depositLockPct = parseFloat(document.getElementById('depositLockPct').value) || 100;
+      const depositAmount = (grandTotal * (depositLockPct / 100));
+
+      document.getElementById('depositLockDisplay').textContent = `${STATE.currency}${depositAmount.toFixed(2)} (${depositLockPct}%)`;
+
+      // Render Totals Box
       document.getElementById('previewSubtotal').textContent = `${STATE.currency}${subtotal.toFixed(2)}`;
 
       const discRow = document.getElementById('previewDiscountRow');
@@ -1340,10 +2578,18 @@ accounts@apex.com</div>
         discRow.style.display = 'none';
       }
 
+      const repRow = document.getElementById('previewRepeatDiscountRow');
+      if (repeatDiscountVal > 0) {
+        repRow.style.display = 'flex';
+        document.getElementById('previewRepeatDiscount').textContent = `-${STATE.currency}${repeatDiscountVal.toFixed(2)}`;
+      } else {
+        repRow.style.display = 'none';
+      }
+
       const taxRow = document.getElementById('previewTaxRow');
       if (taxRate > 0) {
         taxRow.style.display = 'flex';
-        document.getElementById('previewTaxLabel').textContent = `Tax (${taxRate}%):`;
+        document.getElementById('previewTaxLabel').textContent = `Tax / GCT (${taxRate}%):`;
         document.getElementById('previewTax').textContent = `${STATE.currency}${taxAmount.toFixed(2)}`;
       } else {
         taxRow.style.display = 'none';
@@ -1357,34 +2603,472 @@ accounts@apex.com</div>
         shipRow.style.display = 'none';
       }
 
+      const lateRow = document.getElementById('previewLateFeeRow');
+      if (lateFeeAmount > 0) {
+        lateRow.style.display = 'flex';
+        document.getElementById('previewLateFeeLabel').textContent = lateFeeDescription + ':';
+        document.getElementById('previewLateFee').textContent = `+${STATE.currency}${lateFeeAmount.toFixed(2)}`;
+      } else {
+        lateRow.style.display = 'none';
+      }
+
+      document.getElementById('previewGrandLabel').textContent = STATE.docType === 'QUOTE' ? 'Estimated Total:' : (STATE.docType === 'RECEIPT' ? 'Total Paid:' : 'Total Due:');
       document.getElementById('previewGrandTotal').textContent = `${STATE.currency}${grandTotal.toFixed(2)}`;
+
+      // Payment Details & QR Code
+      const payMethod = document.getElementById('paymentMethod').value;
+      const payHandle = document.getElementById('paymentHandle').value.trim() || '@alumungandr';
+      const payDetails = document.getElementById('paymentDetails').value.trim();
+
+      let payTitle = 'Lynk Mobile Wallet';
+      let qrPayload = payHandle;
+      if (payMethod === 'lynk') {
+        payTitle = 'Lynk Jamaica (NCB Mobile Wallet)';
+        document.getElementById('qrHandleText').textContent = `Lynk Handle: ${payHandle}`;
+        document.getElementById('qrSubText').textContent = 'Scan with your Lynk app or phone camera to deposit.';
+        qrPayload = `lynk://pay/${payHandle.replace('@','')}?amount=${depositAmount.toFixed(2)}`;
+      } else if (payMethod === 'card') {
+        payTitle = 'Credit / Debit Card (Stripe / Link)';
+        document.getElementById('qrHandleText').textContent = `Payment Link: ${payHandle}`;
+        document.getElementById('qrSubText').textContent = 'Scan with your smartphone camera to open secure card checkout.';
+        qrPayload = payHandle.startsWith('http') ? payHandle : `https://${payHandle}`;
+      } else if (payMethod === 'bank') {
+        payTitle = 'Direct Bank Wire / NCB Transfer';
+        document.getElementById('qrHandleText').textContent = payDetails || 'NCB Transfer';
+        document.getElementById('qrSubText').textContent = 'Scan or transfer to bank account details listed above.';
+        qrPayload = `BANK TRANSFER: ${payDetails} | AMT: ${STATE.currency}${depositAmount.toFixed(2)}`;
+      }
+
+      document.getElementById('previewPaymentMethodTitle').textContent = payTitle;
+      document.getElementById('previewPaymentBankInfo').textContent = [payDetails, `Deposit Lock (${depositLockPct}%): ${STATE.currency}${depositAmount.toFixed(2)}`].filter(Boolean).join('\n');
+
+      if (depositLockPct < 100) {
+        document.getElementById('qrDepositBadge').textContent = `🔒 ${depositLockPct}% Deposit to Lock: ${STATE.currency}${depositAmount.toFixed(2)}`;
+      } else {
+        document.getElementById('qrDepositBadge').textContent = `🔒 Full Amount Due: ${STATE.currency}${grandTotal.toFixed(2)}`;
+      }
+
+      // Generate Scannable QR Code
+      renderQrCode(qrPayload);
+
+      // Notes
+      const notes = document.getElementById('notesText').value.trim();
+      let terms = 'Payment due upon receipt. Overdue accounts subject to legal late fee assessment after 14 days.';
+      if (lateFeeActive) {
+        terms += ` Registered late fee policy: ${lateFeePolicy.replace(/_/g, ' ')}.`;
+      }
+      document.getElementById('previewTermsNotes').textContent = [notes, terms].filter(Boolean).join('\n\n');
     }
 
-    function loadSampleData() {
-      document.getElementById('fromName').value = 'Alumungandr Engineering Lab';
-      document.getElementById('fromEmail').value = 'billing@alumungandr.com';
+    // High-Resolution QR Generator
+    function renderQrCode(text) {
+      const container = document.getElementById('qrcode');
+      container.innerHTML = '';
+
+      if (window.QRCode) {
+        try {
+          qrGeneratorInstance = new QRCode(container, {
+            text: text,
+            width: 100,
+            height: 100,
+            colorDark: "#090e18",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+          return;
+        } catch(e) {}
+      }
+
+      // Fallback SVG QR generator if script blocked
+      const encoded = encodeURIComponent(text);
+      container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encoded}&margin=2" alt="Payment QR" style="width:100%; height:100%; border-radius:4px;">`;
+    }
+
+    // WhatsApp Instant-Estimate generator
+    function generateWhatsAppString() {
+      const cur = STATE.currency;
+      const docType = STATE.docType;
+      const fromName = document.getElementById('fromName').value.trim() || 'Contractor Services';
+      const toName = document.getElementById('toName').value.trim() || 'Valued Client';
+      const docNum = document.getElementById('docNumber').value || '001';
+      const dueDate = document.getElementById('docDueDate').value || '-';
+      const grandTotal = document.getElementById('previewGrandTotal').textContent;
+      const depositLockPct = document.getElementById('depositLockPct').value;
+      const depositAmount = document.getElementById('depositLockDisplay').textContent;
+      const payHandle = document.getElementById('paymentHandle').value.trim();
+      const payMethod = document.getElementById('paymentMethod').value;
+      const payDetails = document.getElementById('paymentDetails').value.trim();
+
+      const lines = [
+        `🧾 *${docType} #${docNum}* from *${fromName}*`,
+        `━━━━━━━━━━━━━━━━━━━━━━`,
+        `👤 *Client:* ${toName}`,
+        `📅 *Due Date:* ${dueDate}`,
+        ``,
+        `*Itemized Breakdown:*`
+      ];
+
+      STATE.items.forEach(itm => {
+        const lineTot = (itm.qty * itm.rate).toFixed(2);
+        lines.append ? null : lines.push(`• ${itm.desc} (x${itm.qty}) — ${cur}${lineTot}`);
+      });
+
+      lines.push(``);
+      lines.push(`💰 *Total Amount:* ${grandTotal}`);
+
+      if (parseFloat(depositLockPct) < 100) {
+        lines.push(`🔒 *Deposit to Lock Job / Dispatch (${depositLockPct}%):* ${depositAmount}`);
+      }
+
+      if (payHandle) {
+        if (payMethod === 'lynk') {
+          lines.push(`💳 *Pay via Lynk App:* \`${payHandle}\``);
+        } else {
+          lines.push(`💳 *Pay Link:* ${payHandle}`);
+        }
+      }
+
+      if (payDetails) {
+        lines.push(`🏦 *Direct Bank:* ${payDetails}`);
+      }
+
+      lines.push(``);
+      lines.push(`🔗 *View / Download Document Live:* https://alumungandr.com/invoice?id=${docNum}`);
+      lines.push(`🙏 Thank you for your business!`);
+
+      return lines.join('\n');
+    }
+
+    function openWhatsAppModal() {
+      const text = generateWhatsAppString();
+      document.getElementById('whatsappMessageText').value = text;
+      document.getElementById('whatsappModal').classList.add('active');
+      playBeep(520);
+    }
+
+    function sendDirectWhatsApp() {
+      const text = document.getElementById('whatsappMessageText').value;
+      const phoneRaw = document.getElementById('toPhone').value.trim();
+      const cleanPhone = phoneRaw.replace(/[^\d]/g, '');
+      const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      showToast('🚀 Opening WhatsApp with formatted estimate!');
+    }
+
+    function copyWhatsAppText() {
+      const textarea = document.getElementById('whatsappMessageText');
+      textarea.select();
+      navigator.clipboard.writeText(textarea.value);
+      showToast('✓ WhatsApp estimate copied to clipboard!');
+      playBeep(640);
+    }
+
+    async function saveAndShareOnline() {
+      const invId = document.getElementById('docNumber').value || ('INV-' + Date.now());
+      const payload = {
+        id: invId,
+        docType: STATE.docType,
+        from: {
+          name: document.getElementById('fromName').value,
+          trade: document.getElementById('fromTrade').value,
+          email: document.getElementById('fromEmail').value,
+          phone: document.getElementById('fromPhone').value,
+          address: document.getElementById('fromAddress').value
+        },
+        to: {
+          name: document.getElementById('toName').value,
+          phone: document.getElementById('toPhone').value,
+          email: document.getElementById('toEmail').value,
+          address: document.getElementById('toAddress').value
+        },
+        items: STATE.items,
+        currency: STATE.currency,
+        grandTotal: parseFloat(document.getElementById('previewGrandTotal').textContent.replace(/[^\d.]/g, '')) || 0,
+        depositPct: parseFloat(document.getElementById('depositLockPct').value) || 50,
+        paymentMethod: document.getElementById('paymentMethod').value,
+        paymentHandle: document.getElementById('paymentHandle').value,
+        paymentDetails: document.getElementById('paymentDetails').value,
+        dueDate: document.getElementById('docDueDate').value
+      };
+
+      try {
+        const res = await fetch('/api/invoice/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const shareUrl = `${window.location.origin}/invoice?id=${encodeURIComponent(invId)}`;
+          navigator.clipboard.writeText(shareUrl);
+          showToast(`✓ Invoice saved! Shareable link copied: ${shareUrl}`);
+          playBeep(700);
+          return;
+        }
+      } catch(e) {}
+
+      // Fallback local save
+      const shareUrl = `${window.location.origin}/invoice?id=${encodeURIComponent(invId)}`;
+      showToast(`✓ Document saved. Link: ${shareUrl}`);
+    }
+
+    // Modal Helpers
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    function openClientsModal() {
+      const modalList = document.getElementById('clientsModalList');
+      modalList.innerHTML = '';
+      if (!STATE.savedClients || STATE.savedClients.length === 0) {
+        modalList.innerHTML = '<p style="color:var(--text-subtle); font-size:0.85rem;">No saved clients found. Use "+ Save Client" to store repeat customers.</p>';
+      } else {
+        STATE.savedClients.forEach(c => {
+          const card = document.createElement('div');
+          card.className = 'client-card-item';
+          card.innerHTML = `
+            <div class="client-card-info" onclick="handleSelectSavedClient('${c.id}'); closeModal('clientsModal');">
+              <h4>${escapeHtml(c.name)}</h4>
+              <p>${escapeHtml(c.phone || c.email || 'No phone')} &bull; ${escapeHtml(c.address || 'No address')}</p>
+            </div>
+            <button class="btn-card-del" onclick="event.stopPropagation(); deleteSavedClient('${c.id}')" title="Delete client">&times;</button>
+          `;
+          modalList.appendChild(card);
+        });
+      }
+      document.getElementById('clientsModal').classList.add('active');
+    }
+
+    function filterClientsModal(q) {
+      const lower = q.toLowerCase();
+      document.querySelectorAll('.client-card-item').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(lower) ? 'flex' : 'none';
+      });
+    }
+
+    async function openRecentInvoicesModal() {
+      const list = document.getElementById('recentInvoicesList');
+      list.innerHTML = '<p style="color:var(--text-subtle);">Loading invoices...</p>';
+      document.getElementById('recentInvoicesModal').classList.add('active');
+
+      try {
+        const res = await fetch('/api/invoice/list');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.invoices && data.invoices.length > 0) {
+            list.innerHTML = '';
+            data.invoices.forEach(inv => {
+              const card = document.createElement('div');
+              card.className = 'client-card-item';
+              card.innerHTML = `
+                <div class="client-card-info" onclick="loadSavedInvoiceById('${inv.id}'); closeModal('recentInvoicesModal');">
+                  <h4>${inv.id} &bull; ${escapeHtml(inv.clientName)}</h4>
+                  <p>${inv.docType} &bull; Due: ${inv.dueDate || '-'} &bull; <strong>${inv.currency}${inv.grandTotal.toFixed(2)}</strong></p>
+                </div>
+                <button class="btn-card-del" onclick="event.stopPropagation(); deleteSavedInvoice('${inv.id}')" title="Delete invoice">&times;</button>
+              `;
+              list.appendChild(card);
+            });
+            return;
+          }
+        }
+      } catch(e) {}
+      list.innerHTML = '<p style="color:var(--text-subtle); font-size:0.85rem;">No saved invoices on record yet. Save an invoice to see history here.</p>';
+    }
+
+    async function loadSavedInvoiceById(id) {
+      try {
+        const res = await fetch(`/api/invoice/get?id=${encodeURIComponent(id)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.invoice) {
+            loadInvoiceIntoForm(data.invoice);
+            showToast(`✓ Loaded invoice ${id}`);
+          }
+        }
+      } catch(e) {}
+    }
+
+    function loadInvoiceIntoForm(inv) {
+      if (inv.docType) setDocType(inv.docType);
+      if (inv.id) document.getElementById('docNumber').value = inv.id;
+      if (inv.from) {
+        document.getElementById('fromName').value = inv.from.name || '';
+        document.getElementById('fromTrade').value = inv.from.trade || '';
+        document.getElementById('fromEmail').value = inv.from.email || '';
+        document.getElementById('fromPhone').value = inv.from.phone || '';
+        document.getElementById('fromAddress').value = inv.from.address || '';
+      }
+      if (inv.to) {
+        document.getElementById('toName').value = inv.to.name || '';
+        document.getElementById('toPhone').value = inv.to.phone || '';
+        document.getElementById('toEmail').value = inv.to.email || '';
+        document.getElementById('toAddress').value = inv.to.address || '';
+      }
+      if (inv.items && inv.items.length) {
+        STATE.items = inv.items;
+        renderLineItemInputs();
+      }
+      if (inv.currency) document.getElementById('currencySelect').value = inv.currency;
+      if (inv.dueDate) document.getElementById('docDueDate').value = inv.dueDate;
+      if (inv.paymentMethod) document.getElementById('paymentMethod').value = inv.paymentMethod;
+      if (inv.paymentHandle) document.getElementById('paymentHandle').value = inv.paymentHandle;
+      if (inv.paymentDetails) document.getElementById('paymentDetails').value = inv.paymentDetails;
+      renderDoc();
+    }
+
+    async function deleteSavedInvoice(id) {
+      if (!confirm(`Delete saved invoice ${id}?`)) return;
+      try {
+        await fetch(`/api/invoice/delete?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      } catch(e) {}
+      openRecentInvoicesModal();
+      showToast(`Invoice ${id} deleted.`);
+    }
+
+    // Sample contractor data
+    function loadSampleContractorData() {
+      document.getElementById('fromName').value = 'Apex Master Plumbing & Emergency Repairs';
+      document.getElementById('fromTrade').value = 'Licensed Master Plumber &bull; Commercial &bull; 24/7 Mobile Dispatch';
+      document.getElementById('fromEmail').value = 'dispatch@apexplumbing.com';
       document.getElementById('fromPhone').value = '+1 (876) 555-0199';
       document.getElementById('fromAddress').value = '10 Innovation Blvd, Montego Bay, Jamaica | TRN: 987-654-321';
 
       document.getElementById('toName').value = 'Apex Global Technologies Ltd.';
-      document.getElementById('toEmail').value = 'accounts@apexglobal.io';
+      document.getElementById('toPhone').value = '+1 (876) 555-0842';
+      document.getElementById('toEmail').value = 'facilities@apexglobal.io';
       document.getElementById('toAddress').value = '25 Knutsford Boulevard, Kingston, Jamaica';
 
       document.getElementById('docNumber').value = 'INV-2026-084';
+      document.getElementById('paymentMethod').value = 'lynk';
+      document.getElementById('paymentHandle').value = '@alumungandr';
       document.getElementById('paymentDetails').value = 'Bank: National Commercial Bank (NCB) | Acct: 847291038 | SWIFT: JNCBJM';
-      document.getElementById('notesText').value = 'Payment due upon receipt. Formally verified deliverables deployed to production.';
+      document.getElementById('notesText').value = 'Work completed according to certified safety code. 100% parts & labor warranty for 90 days.';
       document.getElementById('taxRate').value = '15';
-      document.getElementById('discountVal').value = '100';
-      document.getElementById('shippingVal').value = '0';
+      document.getElementById('discountVal').value = '0';
+      document.getElementById('shippingVal').value = '50';
+      document.getElementById('depositLockPct').value = '50';
+
+      document.getElementById('repeatCustomerCheck').checked = true;
+      document.getElementById('repeatCustomerOptions').style.display = 'grid';
+      document.getElementById('repeatPerkType').value = '5pct';
+      document.getElementById('repeatNote').value = 'Preferred Repeat Client Courtesy Discount Applied';
 
       STATE.items = [
-        { desc: 'High-Throughput Edge Server Infrastructure Architecture', qty: 1, rate: 1450.00 },
-        { desc: 'Z3 SMT Formal Mathematical Verification & Memory Safety Audit', qty: 1, rate: 850.00 },
-        { desc: 'Galaxsee Media Processing & Low-Latency Pipeline Integration', qty: 2, rate: 400.00 }
+        { desc: 'Emergency High-Pressure Main Line Hydro-Jetting', qty: 1, rate: 350.00 },
+        { desc: 'Commercial Brass Backflow Preventer Replacement', qty: 1, rate: 420.00 },
+        { desc: 'Electronic Ultrasonic Pipe Leak Detection & Acoustic Scan', qty: 1, rate: 180.00 },
+        { desc: 'Heavy-Duty Compression Pipe Couplings & Gasket Seals', qty: 4, rate: 25.00 }
       ];
 
       renderLineItemInputs();
       renderDoc();
+      playBeep(660);
+      showToast('📑 Loaded complete professional contractor sample job!');
+    }
+
+    // Auto-fill & Profile save
+    function autoFillMyInfo() {
+      const saved = localStorage.getItem('alumungandr_invoice_profile');
+      if (saved) {
+        try {
+          const prof = JSON.parse(saved);
+          if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
+          if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
+          if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
+          if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
+          if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+          if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
+          if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
+          renderDoc();
+          showToast('⚡ Business profile auto-filled from memory!');
+          playBeep(580);
+          return;
+        } catch(e) {}
+      }
+      loadSampleContractorData();
+    }
+
+    let saveTimer = null;
+    function handleBusinessInput() {
+      renderDoc();
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        saveProfile(false);
+      }, 900);
+    }
+
+    function saveProfile(alertUser = true) {
+      const prof = {
+        fromName: document.getElementById('fromName').value,
+        fromTrade: document.getElementById('fromTrade').value,
+        fromEmail: document.getElementById('fromEmail').value,
+        fromPhone: document.getElementById('fromPhone').value,
+        fromAddress: document.getElementById('fromAddress').value,
+        paymentMethod: document.getElementById('paymentMethod').value,
+        paymentHandle: document.getElementById('paymentHandle').value,
+        paymentDetails: document.getElementById('paymentDetails').value
+      };
+      localStorage.setItem('alumungandr_invoice_profile', JSON.stringify(prof));
+      if (alertUser) {
+        showToast('✓ Business profile saved! Will auto-load on future visits.');
+        playBeep(640);
+      }
+    }
+
+    function setDueDateOffset(days) {
+      const issueDateVal = document.getElementById('docDate').value;
+      const baseDate = issueDateVal ? new Date(issueDateVal) : new Date();
+      baseDate.setDate(baseDate.getDate() + days);
+      document.getElementById('docDueDate').value = baseDate.toISOString().split('T')[0];
+      renderDoc();
+      playBeep(490);
+      showToast(days === 0 ? '✓ Due Date set to Immediately (COD)' : `✓ Due Date set to Net ${days} (${baseDate.toISOString().split('T')[0]})`);
+    }
+
+    function clearAllData() {
+      if (!confirm('Clear all invoice data?')) return;
+      document.getElementById('toName').value = '';
+      document.getElementById('toPhone').value = '';
+      document.getElementById('toEmail').value = '';
+      document.getElementById('toAddress').value = '';
+      document.getElementById('taxRate').value = '0';
+      document.getElementById('discountVal').value = '0';
+      document.getElementById('shippingVal').value = '0';
+      document.getElementById('repeatCustomerCheck').checked = false;
+      document.getElementById('repeatCustomerOptions').style.display = 'none';
+      STATE.items = [{ desc: 'Service / Parts Description', qty: 1, rate: 0 }];
+      STATE.simulatedOverdueDays = 0;
+      document.getElementById('simOverdueSlider').value = 0;
+      document.getElementById('simOverdueLabel').textContent = '0 Days';
+      renderLineItemInputs();
+      renderDoc();
+      showToast('Invoice cleared.');
+      playBeep(300);
+    }
+
+    function downloadPdf() {
+      playBeep(750);
+      window.print();
+    }
+
+    function switchMobileTab(tab) {
+      const editBtn = document.getElementById('tabBtnEdit');
+      const prevBtn = document.getElementById('tabBtnPreview');
+      const editorPane = document.getElementById('editorPane');
+      const previewPane = document.getElementById('previewPane');
+
+      if (tab === 'edit') {
+        editBtn.classList.add('active');
+        prevBtn.classList.remove('active');
+        editorPane.classList.remove('hidden-mobile');
+        previewPane.classList.add('hidden-mobile');
+      } else {
+        prevBtn.classList.add('active');
+        editBtn.classList.remove('active');
+        previewPane.classList.remove('hidden-mobile');
+        editorPane.classList.add('hidden-mobile');
+      }
     }
 
     function showToast(msg) {
@@ -1397,110 +3081,14 @@ accounts@apex.com</div>
       }
       toast.textContent = msg;
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2600);
-    }
-
-    function autoFillMyInfo() {
-      const saved = localStorage.getItem('alumungandr_invoice_profile');
-      if (saved) {
-        try {
-          const prof = JSON.parse(saved);
-          if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
-          if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
-          if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
-          if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
-          if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
-          renderDoc();
-          showToast('⚡ Profile auto-filled from your saved details!');
-          return;
-        } catch(e) {}
-      }
-      const userProfile = localStorage.getItem('alumungandr_user_contact');
-      if (userProfile) {
-        try {
-          const up = JSON.parse(userProfile);
-          if (up.name) document.getElementById('fromName').value = up.name;
-          if (up.email) document.getElementById('fromEmail').value = up.email;
-          renderDoc();
-          showToast('⚡ Auto-filled with your saved contact info!');
-          return;
-        } catch(e) {}
-      }
-      document.getElementById('fromName').value = 'My Creative Studio';
-      document.getElementById('fromEmail').value = 'billing@mystudio.com';
-      document.getElementById('fromPhone').value = '+1 (800) 555-0199';
-      document.getElementById('fromAddress').value = '100 Studio Way, Suite 4B | Tax ID: 00-000000';
-      document.getElementById('paymentDetails').value = 'Bank: Primary Commercial | Acct: 987654321';
-      renderDoc();
-      showToast('⚡ Template auto-filled! Any edits save automatically.');
-    }
-
-    let saveTimer = null;
-    function handleBusinessInput() {
-      renderDoc();
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        const prof = {
-          fromName: document.getElementById('fromName').value,
-          fromEmail: document.getElementById('fromEmail').value,
-          fromPhone: document.getElementById('fromPhone').value,
-          fromAddress: document.getElementById('fromAddress').value,
-          paymentDetails: document.getElementById('paymentDetails').value
-        };
-        localStorage.setItem('alumungandr_invoice_profile', JSON.stringify(prof));
-      }, 800);
-    }
-
-    function setDueDateOffset(days) {
-      const issueDateVal = document.getElementById('docDate').value;
-      const baseDate = issueDateVal ? new Date(issueDateVal) : new Date();
-      baseDate.setDate(baseDate.getDate() + days);
-      document.getElementById('docDueDate').value = baseDate.toISOString().split('T')[0];
-      renderDoc();
-      showToast(days === 0 ? '✓ Due Date set to Immediately' : `✓ Due Date set to Net ${days} (${baseDate.toISOString().split('T')[0]})`);
-    }
-
-    function saveProfile() {
-      const prof = {
-        fromName: document.getElementById('fromName').value,
-        fromEmail: document.getElementById('fromEmail').value,
-        fromPhone: document.getElementById('fromPhone').value,
-        fromAddress: document.getElementById('fromAddress').value,
-        paymentDetails: document.getElementById('paymentDetails').value
-      };
-      localStorage.setItem('alumungandr_invoice_profile', JSON.stringify(prof));
-      showToast('✓ Business profile saved! Will auto-load on future visits.');
-    }
-
-    function clearAllData() {
-      if (!confirm('Clear all invoice data?')) return;
-      document.getElementById('fromName').value = '';
-      document.getElementById('fromEmail').value = '';
-      document.getElementById('fromPhone').value = '';
-      document.getElementById('fromAddress').value = '';
-      document.getElementById('toName').value = '';
-      document.getElementById('toEmail').value = '';
-      document.getElementById('toAddress').value = '';
-      document.getElementById('taxRate').value = '0';
-      document.getElementById('discountVal').value = '0';
-      document.getElementById('shippingVal').value = '0';
-      STATE.items = [{ desc: 'Service / Product Description', qty: 1, rate: 0 }];
-      renderLineItemInputs();
-      renderDoc();
-      showToast('Invoice cleared.');
-    }
-
-    function downloadPdf() {
-      window.print();
+      setTimeout(() => toast.classList.remove('show'), 2800);
     }
 
     function escapeHtml(str) {
       return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initDates();
-    });
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>

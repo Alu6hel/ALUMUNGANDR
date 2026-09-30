@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniSpeed vs. Ookla (Speedtest.net) – The Telecom Throttling Expose & SLA Dispute Guide</title>
+  <meta name="description" content="Discover why Ookla Speedtest.net shows full speed while your internet buffers. Learn how ISPs use QoS fast-lane whitelisting, and use OmniSpeed's regulatory dispute dossier to claim monthly ISP bill rebates.">
+  <meta name="keywords" content="omnispeed vs ookla, speedtest.net alternative, isp throttling, qos fast-lane, flow jamaica throttling, digicel speed test, isp rebate letter, broadband sla dispute, bufferbloat audit">
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:title" content="OmniSpeed vs. Ookla (Speedtest.net) – Exposing Telecom QoS Whitelists">
+  <meta property="og:description" content="Why your speed test says 100 Mbps while Netflix buffers. Hold ISPs accountable with timestamped SLA audit dossiers and legal rebate demand letters.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://alumungandr.com/speedtest-vs-ookla">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #080c15;
+      --bg-card: rgba(18, 25, 43, 0.88);
+      --bg-card-border: rgba(255, 255, 255, 0.12);
+      --bg-card-hover: rgba(26, 36, 62, 0.96);
+      
+      --cyan: #00f2fe;
+      --cyan-glow: rgba(0, 242, 254, 0.4);
+      --electric-blue: #3b82f6;
+      --purple-accent: #8b5cf6;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      
+      --text-main: #ffffff;
+      --text-bright: #f8fafc;
+      --text-muted: #cbd5e1;
+      --text-subtle: #94a3b8;
+      
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Live Interactive Telemetry Canvas */
+    #telemetryCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Top Navigation Bar */
+    header.speed-nav {
+      border-bottom: 1px solid var(--bg-card-border);
+      background: rgba(8, 12, 21, 0.85);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo svg {
+      color: var(--cyan);
+      filter: drop-shadow(0 0 8px var(--cyan-glow));
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .nav-btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--bg-card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      color: #ffffff !important;
+      font-size: 0.82rem !important;
+      transition: all 0.2s;
+    }
+
+    .nav-btn-home:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Page Content Wrap */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--cyan) 85%, var(--purple-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .btn-hero-primary {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--electric-blue) 100%);
+      color: #080c15;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0.85rem 1.85rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.55);
+    }
+
+    .btn-hero-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--bg-card-border);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-hero-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Live Telemetry Legend Bar */
+    .telemetry-status-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 14px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .sim-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-cyan { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .dot-rose { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+    .dot-emerald { background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
+
+    /* Comparison Cards Section (How ISPs Game Speed Tests) */
+    .section-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 680px;
+      margin-bottom: 2rem;
+    }
+
+    .expose-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .expose-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .expose-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .expose-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 242, 254, 0.4);
+      box-shadow: 0 12px 35px rgba(0, 242, 254, 0.12);
+    }
+
+    .card-badge-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--cyan);
+      font-weight: 800;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .expose-card h3 {
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.35;
+    }
+
+    .expose-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .tech-pill {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      color: var(--cyan);
+      display: inline-block;
+      align-self: flex-start;
+    }
+
+    /* Head-to-Head Comparison Matrix */
+    .matrix-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: middle;
+    }
+
+    .matrix-table th {
+      background: rgba(10, 16, 28, 0.9);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--text-subtle);
+    }
+
+    .matrix-table th.col-omnispeed {
+      color: var(--cyan);
+      background: rgba(0, 242, 254, 0.06);
+      border-top: 3px solid var(--cyan);
+    }
+
+    .matrix-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .feature-name {
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 0.96rem;
+    }
+
+    .feature-sub {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      margin-top: 0.2rem;
+    }
+
+    .badge-win {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #10b981;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .badge-lose {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #ef4444;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    .badge-neutral {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--amber);
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 768px) {
+      .matrix-wrap {
+        overflow-x: auto;
+      }
+      .matrix-table th, .matrix-table td {
+        padding: 1rem 0.85rem;
+        font-size: 0.82rem;
+      }
+    }
+
+    /* Interactive SLA Rebate Calculator Widget */
+    .calculator-section {
+      background: linear-gradient(135deg, rgba(18, 25, 43, 0.95) 0%, rgba(13, 20, 36, 0.98) 100%);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 50px rgba(0, 242, 254, 0.1);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .calculator-section {
+        grid-template-columns: 1fr;
+        padding: 1.75rem;
+      }
+    }
+
+    .calc-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .calc-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .calc-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .calc-input-row {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .calc-input-row:focus-within {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    }
+
+    .calc-input-row input,
+    .calc-input-row select {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      width: 100%;
+    }
+
+    .calc-input-row select option {
+      background: #0d1424;
+      color: #ffffff;
+    }
+
+    .calc-unit {
+      color: var(--text-subtle);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    /* Calculator Results Card */
+    .calc-results-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .calc-results-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    }
+
+    .rebate-metric-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--text-subtle);
+    }
+
+    .rebate-metric-huge {
+      font-size: 3rem;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      color: #10b981;
+      text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+      line-height: 1;
+    }
+
+    .rebate-breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem 0;
+    }
+
+    .breakdown-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #ffffff;
+    }
+
+    .breakdown-lbl {
+      font-size: 0.74rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .btn-calc-cta {
+      background: var(--cyan);
+      color: #080c15;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-calc-cta:hover {
+      background: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+    }
+
+    /* 4-Step Dispute Workflow */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 540px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .step-num-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--cyan);
+      background: rgba(0, 242, 254, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    .step-card h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .step-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Regulatory Agencies Logos & Trust Badges */
+    .trust-strip {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .trust-badge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.25rem;
+    }
+
+    .trust-badge-abbr {
+      font-size: 1.2rem;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+
+    .trust-badge-name {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      font-weight: 500;
+    }
+
+    /* FAQ Section */
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-block {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 1.35rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .faq-block:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .faq-question {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-answer {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Final CTA Banner */
+    .final-cta-banner {
+      background: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.2) 0%, rgba(18, 25, 43, 0.95) 75%);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      border-radius: 24px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 20px 60px rgba(0, 242, 254, 0.15);
+    }
+
+    .final-cta-banner h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .final-cta-banner p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 650px;
+    }
+
+    /* Footer */
+    footer.speed-footer {
+      border-top: 1px solid var(--bg-card-border);
+      background: rgba(8, 12, 21, 0.95);
+      padding: 2.5rem 2rem;
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer.speed-footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer.speed-footer a:hover {
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Live Background Simulation Canvas -->
+  <canvas id="telemetryCanvas"></canvas>
+
+  <!-- Top Navigation Bar -->
+  <header class="speed-nav">
+    <a href="/speedtest" class="brand-logo">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12c0 3.69 2.47 6.86 6 8.25V17.5c-2.03-1.07-3.5-3.13-3.5-5.5 0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5c0 2.37-1.47 4.43-3.5 5.5v2.75c3.53-1.39 6-4.56 6-8.25 0-5.52-4.48-10-10-10zm1 6h-2v6l5.25 3.15.75-1.23-4-2.42V8z"/>
+      </svg>
+      <span>OmniSpeed &bull; Benchmark</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Apps</a>
+      <a href="/speedtest">Speed Test</a>
+      <a href="/speedtest-vs-ookla" style="color:var(--cyan); font-weight:700;">OmniSpeed vs Ookla</a>
+      <a href="/invoice">Invoice Maker</a>
+      <a href="/resizer">Social Resizer</a>
+      <a href="/subscriptions">Reality Check</a>
+      <a href="/ip">What Is My IP</a>
+      <a href="/about">About</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contact">Contact</a>
+      <a href="/speedtest" class="nav-btn-home">&larr; Return to Speed Test</a>
+    </div>
+  </header>
+
+  <!-- Page Main Content Wrap -->
+  <div class="page-wrapper">
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="eyebrow-pill">
+        <span class="legend-dot dot-cyan"></span>
+        <span>Independent Forensic Broadband Benchmark</span>
+      </div>
+      <h1 class="hero-title">Why Ookla Shows 100 Mbps While Your 4K Stream Buffers</h1>
+      <p class="hero-subtitle">
+        Ookla's Speedtest.net licenses server software to ISPs and runs telecom carrier ads. ISPs configure router QoS to whitelist Speedtest.net packets while throttling your real work, gaming, and streaming. OmniSpeed gives you the unthrottled truth and the legal evidence to claim monthly bill credits.
+      </p>
+      <div class="hero-actions">
+        <a href="/speedtest" class="btn-hero-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.69 2.47 6.86 6 8.25V17.5c-2.03-1.07-3.5-3.13-3.5-5.5 0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5c0 2.37-1.47 4.43-3.5 5.5v2.75c3.53-1.39 6-4.56 6-8.25 0-5.52-4.48-10-10-10zm1 6h-2v6l5.25 3.15.75-1.23-4-2.42V8z"/></svg>
+          <span>Run Real Unthrottled Speed Test</span>
+        </a>
+        <a href="#rebateCalculator" class="btn-hero-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>
+          <span>Calculate Your ISP Bill Rebate</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Live Interactive Telemetry Legend Bar -->
+    <div class="telemetry-status-bar">
+      <div class="sim-legend-item">
+        <span class="legend-dot dot-cyan"></span>
+        <span><strong>Live Background Mesh:</strong> Simulating real packet flow &amp; carrier transit nodes in real time</span>
+      </div>
+      <div class="sim-legend-item">
+        <span class="legend-dot dot-rose"></span>
+        <span><strong>Red Nodes:</strong> Detected ISP artificial throttle choke points</span>
+      </div>
+      <div class="sim-legend-item">
+        <span class="legend-dot dot-emerald"></span>
+        <span><strong>Green Nodes:</strong> OmniSpeed verified unconstrained HTTP/2 sockets</span>
+      </div>
+    </div>
+
+    <!-- The 3 Telecom Cheats Section -->
+    <section>
+      <h2 class="section-title">The Three Dirty Tricks ISPs Use on Speed Tests</h2>
+      <p class="section-desc">
+        How Internet Service Providers (FLOW, Digicel, Comcast, Spectrum) manipulate consumer speed tests to claim "the problem is on your end."
+      </p>
+
+      <div class="expose-grid">
+        
+        <!-- Trick 1 -->
+        <div class="expose-card">
+          <div class="card-badge-num">01</div>
+          <span class="tech-pill">DSCP 46 / EF Fast-Lanes</span>
+          <h3>QoS Packet Whitelisting</h3>
+          <p>
+            When you visit Speedtest.net, your ISP's edge routers detect TCP port 8080 traffic directed to known Ookla IP blocks. The router instantly upgrades those packets into the Expedited Forwarding (EF) queue—bypassing the congested traffic pools where your actual video streams and downloads suffer.
+          </p>
+        </div>
+
+        <!-- Trick 2 -->
+        <div class="expose-card">
+          <div class="card-badge-num">02</div>
+          <span class="tech-pill">Zero-Hop On-Net Routing</span>
+          <h3>The Local Server Mirage</h3>
+          <p>
+            Speedtest.net automatically connects you to an on-net server hosted inside your own ISP's neighborhood exchange. This only measures the short copper/fiber line down your street—completely hiding the saturated transit links, subsea cables, and tier-1 backbones where your real connection crawls.
+          </p>
+        </div>
+
+        <!-- Trick 3 -->
+        <div class="expose-card">
+          <div class="card-badge-num">03</div>
+          <span class="tech-pill">B2B Carrier Licensing</span>
+          <h3>The Advertising Conflict of Interest</h3>
+          <p>
+            Ookla's parent company derives multimillion-dollar enterprise licensing revenue by selling Speedtest Intelligence&reg; data and NetGauge licenses back to the telecoms. They have no incentive to build automated legal dispute dossiers that force ISPs to refund subscribers.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Head-to-Head Comparison Matrix -->
+    <section>
+      <h2 class="section-title">Head-to-Head: OmniSpeed vs. Ookla vs. Fast.com</h2>
+      <p class="section-desc">
+        Compare core architecture, corporate independence, and consumer advocacy capabilities.
+      </p>
+
+      <div class="matrix-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:34%;">Feature / Capability</th>
+              <th class="col-omnispeed" style="width:26%;">OmniSpeed (alumungandr.com)</th>
+              <th style="width:20%;">Ookla (Speedtest.net)</th>
+              <th style="width:20%;">Fast.com (Netflix)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="feature-name">Continuous 24/7 Hourly Background Probe</div>
+                <div class="feature-sub">Proves intermittent line drops and prime-time throttling</div>
+              </td>
+              <td><span class="badge-win">&check; Built-in Tab Timer + Python CLI</span></td>
+              <td><span class="badge-lose">&cross; None (Manual Click Only)</span></td>
+              <td><span class="badge-lose">&cross; None (Manual Click Only)</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="feature-name">Official Regulatory Dispute Dossier</div>
+                <div class="feature-sub">PDF &amp; CSV evidence formatted for OUR, FTC, FCC, Ofcom</div>
+              </td>
+              <td><span class="badge-win">&check; Certified Forensic Dossier</span></td>
+              <td><span class="badge-lose">&cross; None</span></td>
+              <td><span class="badge-lose">&cross; None</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="feature-name">Legal Statutory Rebate Demand Letter</div>
+                <div class="feature-sub">Pre-formatted legal notice calculating bill credit owed</div>
+              </td>
+              <td><span class="badge-win">&check; Pre-Formatted Demand Letter</span></td>
+              <td><span class="badge-lose">&cross; None</span></td>
+              <td><span class="badge-lose">&cross; None</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="feature-name">Telecom Advertising &amp; Carrier Licensing</div>
+                <div class="feature-sub">Zero corporate conflicts with telecom monopolies</div>
+              </td>
+              <td><span class="badge-win">&check; 100% Conflict-Free</span></td>
+              <td><span class="badge-lose">&cross; Funded by Telecom B2B Contracts</span></td>
+              <td><span class="badge-neutral">&sim; Netflix CDN Promo</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="feature-name">Loaded Latency &amp; Bufferbloat Scoring</div>
+                <div class="feature-sub">Measures gaming lag spikes under simultaneous load</div>
+              </td>
+              <td><span class="badge-win">&check; Idle + Download + Upload Delta</span></td>
+              <td><span class="badge-win">&check; Download/Upload Latency</span></td>
+              <td><span class="badge-neutral">&sim; Basic Loaded Ping</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="feature-name">Financial ROI for Consumer</div>
+                <div class="feature-sub">Turns broadband frustration into statutory monthly cash rebates</div>
+              </td>
+              <td><span class="badge-win">&check; $20&ndash;$60/mo in Bill Credits</span></td>
+              <td><span class="badge-lose">&cross; $0.00 Financial Return</span></td>
+              <td><span class="badge-lose">&cross; $0.00 Financial Return</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Interactive ISP Rebate Calculator Widget -->
+    <section id="rebateCalculator">
+      <div class="calculator-section">
+        
+        <div class="calc-inputs">
+          <div class="eyebrow-pill" style="align-self:flex-start;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 2c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V17z"/></svg>
+            <span>Interactive Estimator</span>
+          </div>
+          <h2 style="font-size:1.85rem; font-weight:800; color:#fff; line-height:1.2;">
+            Calculate Your Eligible Monthly ISP Bill Credit
+          </h2>
+          <p style="font-size:0.92rem; color:var(--text-muted);">
+            Under consumer protection and telecom standards, paying for broadband you do not receive entitles you to statutory pro-rata bill rebates. Enter your contract details below:
+          </p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="calc-input-group">
+              <label class="calc-label">Advertised Speed</label>
+              <div class="calc-input-row">
+                <input type="number" id="calcAdvertised" value="100" min="1" step="1" oninput="calculateRebate()">
+                <span class="calc-unit">Mbps</span>
+              </div>
+            </div>
+            <div class="calc-input-group">
+              <label class="calc-label">Actual Real Speed</label>
+              <div class="calc-input-row">
+                <input type="number" id="calcActual" value="15" min="1" step="1" oninput="calculateRebate()">
+                <span class="calc-unit">Mbps</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="calc-input-group">
+              <label class="calc-label">Monthly Bill Amount</label>
+              <div class="calc-input-row">
+                <input type="number" id="calcBill" value="75" min="1" step="1" oninput="calculateRebate()">
+                <select id="calcCurrency" onchange="calculateRebate()" style="width:75px; margin-left:8px;">
+                  <option value="$" selected>USD ($)</option>
+                  <option value="J$">JMD (J$)</option>
+                  <option value="£">GBP (£)</option>
+                  <option value="€">EUR (€)</option>
+                  <option value="C$">CAD (C$)</option>
+                </select>
+              </div>
+            </div>
+            <div class="calc-input-group">
+              <label class="calc-label">Jurisdiction / Regulator</label>
+              <div class="calc-input-row">
+                <select id="calcRegulator" onchange="calculateRebate()">
+                  <option value="OUR">Jamaica (OUR / FTC)</option>
+                  <option value="FCC" selected>United States (FCC / FTC)</option>
+                  <option value="Ofcom">United Kingdom (Ofcom)</option>
+                  <option value="CRTC">Canada (CRTC / CCTS)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Card -->
+        <div class="calc-results-card">
+          <div class="rebate-metric-title">Eligible Monthly Bill Refund</div>
+          <div class="rebate-metric-huge" id="rebateMonthly">$63.75</div>
+          <div style="font-size:0.85rem; color:var(--text-subtle); margin-top:-0.5rem;" id="rebatePctLabel">
+            Based on an 85% Contractual Bandwidth Deficit
+          </div>
+
+          <div class="rebate-breakdown">
+            <div>
+              <div class="breakdown-val" id="rebateAnnual">$765.00</div>
+              <div class="breakdown-lbl">Annual Recoverable</div>
+            </div>
+            <div>
+              <div class="breakdown-val" id="deliveryRatioVal">15.0%</div>
+              <div class="breakdown-lbl">Delivered Ratio</div>
+            </div>
+          </div>
+
+          <a href="/speedtest#slaAuditSection" class="btn-calc-cta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            <span>Log Audit &amp; Claim Rebate</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4-Step Claim Process -->
+    <section>
+      <h2 class="section-title">How to Force Your ISP to Issue Monthly Bill Credits</h2>
+      <p class="section-desc">
+        Follow the battle-tested 4-step blueprint used to legally dispute broadband charges and compel refunds.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num-pill">STEP 01</span>
+          <h4>Run Background Probes</h4>
+          <p>
+            Activate OmniSpeed's hourly tab probe or download the 24/7 Python CLI script to continuously benchmark line throughput during peak hours (6 PM &ndash; 11 PM).
+          </p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num-pill">STEP 02</span>
+          <h4>Compile Forensic Dossier</h4>
+          <p>
+            OmniSpeed's engine timestamps every line drop, ping spike, and throughput deficit, generating a tamper-proof PDF and CSV audit ledger.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num-pill">STEP 03</span>
+          <h4>Serve Legal Demand Letter</h4>
+          <p>
+            Click one button to generate the pre-formatted formal notice citing Telecommunications statutory clauses, demanding immediate account credits.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num-pill">STEP 04</span>
+          <h4>Escalate to Ombudsman</h4>
+          <p>
+            If the ISP stalls, submit the dossier directly to the Office of Utilities Regulation (OUR), FTC, or FCC. Regulators routinely penalize repeat offenders.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust & Regulatory Strip -->
+    <div class="trust-strip">
+      <div class="trust-badge-item">
+        <div class="trust-badge-abbr">OUR</div>
+        <div class="trust-badge-name">Office of Utilities Regulation &bull; Jamaica</div>
+      </div>
+      <div class="trust-badge-item">
+        <div class="trust-badge-abbr">FTC</div>
+        <div class="trust-badge-name">Fair Trading Commission &bull; Consumer Protection</div>
+      </div>
+      <div class="trust-badge-item">
+        <div class="trust-badge-abbr">FCC</div>
+        <div class="trust-badge-name">Federal Communications Commission &bull; USA</div>
+      </div>
+      <div class="trust-badge-item">
+        <div class="trust-badge-abbr">OFCOM</div>
+        <div class="trust-badge-name">Broadband Standards &bull; United Kingdom</div>
+      </div>
+      <div class="trust-badge-item">
+        <div class="trust-badge-abbr">CRTC / CCTS</div>
+        <div class="trust-badge-name">Telecom Complaints &bull; Canada</div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions -->
+    <section>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-accordion">
+        <div class="faq-block">
+          <div class="faq-question">Why does Speedtest.net tell me I have 50 Mbps when a 500 MB file takes 15 minutes to download?</div>
+          <div class="faq-answer">
+            Speedtest.net uses multi-socket bursts to an on-net server prioritized by your ISP's QoS routing. In contrast, real downloads from GitHub, Steam, Google Drive, or Work VPNs traverse public peering nodes where your ISP actively shapes and chokes bandwidth. OmniSpeed measures real sustained HTTP/2 throughput across public transit paths.
+          </div>
+        </div>
+        <div class="faq-block">
+          <div class="faq-question">Can my ISP refuse to give me a bill credit?</div>
+          <div class="faq-answer">
+            Customer service front-line reps are trained to say "speeds are up to and not guaranteed." However, under statutory consumer laws and utility licenses, persistent deficits (e.g. delivering 15 Mbps on a contracted 100 Mbps fiber line) constitute a material breach of contract. Presenting an official timestamped audit ledger and threatening regulatory complaint triggers escalation to retention managers authorized to credit accounts.
+          </div>
+        </div>
+        <div class="faq-block">
+          <div class="faq-question">Is the OmniSpeed Background CLI Probe free?</div>
+          <div class="faq-answer">
+            Yes. You can run the hourly background probe directly in your browser tab for free, or download our open-source Python CLI daemon (<code style="color:var(--cyan);">omnispeed_probe.py</code>) to run headlessly on a home server, Raspberry Pi, or laptop 24/7.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final High-Converting CTA Banner -->
+    <section class="final-cta-banner">
+      <h2>Stop Paying Full Price for Quarter-Speed Broadband</h2>
+      <p>
+        Benchmarking is free. Dispute dossiers take 10 seconds to generate. Hold your telecom accountable today.
+      </p>
+      <a href="/speedtest" class="btn-hero-primary" style="font-size:1.08rem; padding:1rem 2.25rem;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.69 2.47 6.86 6 8.25V17.5c-2.03-1.07-3.5-3.13-3.5-5.5 0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5c0 2.37-1.47 4.43-3.5 5.5v2.75c3.53-1.39 6-4.56 6-8.25 0-5.52-4.48-10-10-10zm1 6h-2v6l5.25 3.15.75-1.23-4-2.42V8z"/></svg>
+        <span>Launch OmniSpeed Benchmark Now</span>
+      </a>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="speed-footer">
+    <div style="max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div>&copy; 2026 Alumungandr Enterprise &bull; David Anthony Jones ("Alu") &bull; All Rights Strictly Reserved</div>
+      <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
+        <a href="/">Apps</a>
+        <a href="/speedtest">Speed Test</a>
+        <a href="/speedtest-vs-ookla">OmniSpeed vs Ookla</a>
+        <a href="/invoice">Invoice Maker</a>
+        <a href="/resizer">Social Resizer</a>
+        <a href="/subscriptions">Reality Check</a>
+        <a href="/ip">What Is My IP</a>
+        <a href="/about">About</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript: Live Telemetry Canvas & Calculator -->
+  <script>
+    // --- 1. Interactive Live Telemetry Canvas Background ---
+    const canvas = document.getElementById('telemetryCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    let nodes = [];
+    const NODE_COUNT = 24;
+    const PACKET_COUNT = 38;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initTopology();
+    }
+
+    class TelemetryNode {
+      constructor(x, y, type) {
+        this.x = x;
+        this.y = y;
+        this.type = type; // 'normal', 'throttle', 'omnispeed'
+        this.baseRadius = type === 'throttle' ? 4.5 : (type === 'omnispeed' ? 5.5 : 3.5);
+        this.pulse = Math.random() * Math.PI * 2;
+        this.pulseSpeed = 0.03 + Math.random() * 0.02;
+      }
+      update() {
+        this.pulse += this.pulseSpeed;
+      }
+      draw() {
+        const radius = this.baseRadius + Math.sin(this.pulse) * 1.5;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
+        if (this.type === 'throttle') {
+          ctx.fillStyle = '#f43f5e';
+          ctx.shadowColor = '#f43f5e';
+          ctx.shadowBlur = 10;
+        } else if (this.type === 'omnispeed') {
+          ctx.fillStyle = '#00f2fe';
+          ctx.shadowColor = '#00f2fe';
+          ctx.shadowBlur = 14;
+        } else {
+          ctx.fillStyle = 'rgba(59, 130, 246, 0.65)';
+          ctx.shadowColor = '#3b82f6';
+          ctx.shadowBlur = 6;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset
+      }
+    }
+
+    class DataPacket {
+      constructor(source, target) {
+        this.source = source;
+        this.target = target;
+        this.progress = Math.random();
+        this.speed = (0.003 + Math.random() * 0.006);
+        this.isThrottled = source.type === 'throttle' || target.type === 'throttle';
+      }
+      update() {
+        this.progress += this.speed;
+        if (this.progress >= 1) {
+          this.progress = 0;
+          this.source = nodes[Math.floor(Math.random() * nodes.length)];
+          this.target = nodes[Math.floor(Math.random() * nodes.length)];
+          this.isThrottled = this.source.type === 'throttle' || this.target.type === 'throttle';
+        }
+      }
+      draw() {
+        const x = this.source.x + (this.target.x - this.source.x) * this.progress;
+        const y = this.source.y + (this.target.y - this.source.y) * this.progress;
+        ctx.beginPath();
+        ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = this.isThrottled ? '#f43f5e' : '#00f2fe';
+        ctx.shadowColor = this.isThrottled ? '#f43f5e' : '#00f2fe';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    function initTopology() {
+      nodes = [];
+      particles = [];
+      const types = ['normal', 'normal', 'throttle', 'omnispeed'];
+      for (let i = 0; i < NODE_COUNT; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const type = types[Math.floor(Math.random() * types.length)];
+        nodes.push(new TelemetryNode(x, y, type));
+      }
+      for (let i = 0; i < PACKET_COUNT; i++) {
+        const n1 = nodes[Math.floor(Math.random() * nodes.length)];
+        const n2 = nodes[Math.floor(Math.random() * nodes.length)];
+        particles.push(new DataPacket(n1, n2));
+      }
+    }
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw subtle fiber connection lines between nearby nodes
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 220) {
+            const alpha = (1 - dist / 220) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            if (nodes[i].type === 'throttle' || nodes[j].type === 'throttle') {
+              ctx.strokeStyle = `rgba(244, 63, 94, ${alpha * 1.2})`;
+            } else {
+              ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+            }
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Update & draw nodes
+      nodes.forEach(node => {
+        node.update();
+        node.draw();
+      });
+
+      // Update & draw telemetry packets
+      particles.forEach(packet => {
+        packet.update();
+        packet.draw();
+      });
+
+      requestAnimationFrame(renderCanvas);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    renderCanvas();
+
+    // Mouse interactivity: deflect closest node slightly
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      nodes.forEach(node => {
+        const dx = node.x - mouseX;
+        const dy = node.y - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 80) {
+          node.x += (dx / dist) * 1.5;
+          node.y += (dy / dist) * 1.5;
+        }
+      });
+    });
+
+    // --- 2. Interactive SLA Rebate Calculator Logic ---
+    function calculateRebate() {
+      const advertised = parseFloat(document.getElementById('calcAdvertised').value) || 100;
+      const actual = parseFloat(document.getElementById('calcActual').value) || 15;
+      const bill = parseFloat(document.getElementById('calcBill').value) || 75;
+      const currency = document.getElementById('calcCurrency').value;
+
+      // Delivery ratio & deficit
+      const deliveryRatio = Math.min(1, Math.max(0, actual / advertised));
+      const deficit = Math.max(0, 1 - deliveryRatio);
+
+      // Monthly pro-rata rebate
+      const monthlyRebate = bill * deficit;
+      const annualRebate = monthlyRebate * 12;
+
+      // Update DOM
+      document.getElementById('rebateMonthly').textContent = `${currency}${monthlyRebate.toFixed(2)}`;
+      document.getElementById('rebateAnnual').textContent = `${currency}${annualRebate.toFixed(2)}`;
+      document.getElementById('deliveryRatioVal').textContent = `${(deliveryRatio * 100).toFixed(1)}%`;
+      document.getElementById('rebatePctLabel').textContent = `Based on a ${(deficit * 100).toFixed(0)}% Contractual Bandwidth Deficit`;
+    }
+
+    // Run initial calculation
+    calculateRebate();
+  </script>
+</body>
+</html>

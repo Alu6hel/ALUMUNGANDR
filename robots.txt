@@ -1,6 +1,7 @@
 # Alumungandr Robots.txt — Sovereign & AI-Ready
 User-agent: *
 Allow: /
+Allow: /store
 Allow: /speedtest
 Allow: /resizer
 Allow: /ip

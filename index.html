@@ -1110,12 +1110,12 @@
       </div>
 
       <div class="header-right-action">
-        <div class="header-tagline">SUITE // WEB (6) &bull; APKS (4)</div>
+        <div class="header-tagline">SUITE // WEB (6) &bull; STORE (11)</div>
         <a href="#web-apps" class="btn-ticket-action">
           WEB UTILITIES <span style="color: var(--accent-coral);">&darr;</span>
         </a>
-        <a href="#apps" class="btn-ticket-action">
-          APK BUILDS <span style="color: var(--accent-coral);">&darr;</span>
+        <a href="/store" class="btn-ticket-action" style="background: rgba(222, 88, 73, 0.15); border-color: var(--accent-coral);">
+          STOREFRONT <span style="color: var(--accent-coral);">&rarr;</span>
         </a>
         <button class="btn-ticket-action" onclick="toggleDrawerMenu()" style="cursor: pointer; background: #000000; color: #ffffff;">
           DIRECTORY <span style="color: var(--accent-coral);">&rarr;</span>
@@ -1136,18 +1136,13 @@
     <a href="/ip" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #70d6ff;">❄️</span> What Is My IP?</a>
     <a href="/timezone" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #06d6a0;">🌐</span> Timezone Matcher</a>
 
-    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
-      // ANDROID APKS &bull; /004
-    </div>
-    <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>01</span> Galaxsee (Physics)</a>
-    <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>02</span> Galaxsee Pro (Astrodynamics)</a>
-    <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>03</span> SueChef (Culinary Engine)</a>
-    <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>04</span> OmniHost (Edge Server)</a>
-
     <div style="font-family: var(--font-mono); font-size: 11px; color: #10b981; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
-      // COMMERCIAL LICENSES &bull; STORE
+      // SOVEREIGN STOREFRONT &bull; APKS &amp; E-BOOKS
     </div>
-    <a href="#store" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">💳</span> Commercial Store &amp; Pricing</a>
+    <a href="/store" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">🛒</span> Digital Storefront (All Products)</a>
+    <a href="/store#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #de5849;">📦</span> Android APK Binaries (4)</a>
+    <a href="/store#ebooks" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #00f0ff;">📚</span> Technical E-Books &amp; Manuals (5)</a>
+    <a href="/store#licenses" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffd166;">💳</span> Commercial Licenses &amp; Patron</a>
 
     <div style="border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 10px;">
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 6px;">// PLATFORM &amp; GOVERNANCE</div>
@@ -1561,455 +1556,45 @@
       </div>
     </section>
 
-    <!-- 5. APKS SECTION HEADER -->
-    <section id="apps">
-      <div class="section-header-modern reveal-on-scroll">
-        <div>
-          <div class="section-tag">// APKS &bull; /004</div>
-          <h2 class="section-heading-huge">Direct Binaries for an Uncompromised Mobile Web:</h2>
-        </div>
-        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-          ALL FOUR BUILDS CRYPTOGRAPHICALLY VERIFIED
-        </div>
-      </div>
-
-      <!-- 4 APPLICATION CARDS WITH 3D TILT & MORPHING GLYPHS -->
-      <div class="apps-stack">
+    <!-- 5. SOVEREIGN STOREFRONT GATEWAY PORTAL -->
+    <section id="storefront-portal" class="reveal-on-scroll" style="margin: 64px 0 80px;">
+      <div style="background: linear-gradient(135deg, rgba(222, 88, 73, 0.08) 0%, rgba(13, 22, 38, 0.95) 100%); border: 1px solid rgba(222, 88, 73, 0.35); border-radius: 24px; padding: 48px 36px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <div style="position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(222, 88, 73, 0.22) 0%, transparent 70%); pointer-events: none;"></div>
+        <div style="position: absolute; bottom: -60px; left: 20%; width: 300px; height: 180px; background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
         
-        <!-- 01 Galaxsee -->
-        <article class="app-card-3d reveal-on-scroll" data-tilt>
-          <div class="app-card-glare"></div>
-          <div class="app-card-layout">
-            <div>
-              <div class="app-card-meta">
-                <span class="app-index-tag">[ // 001 PHYSICS ENGINE ]</span>
-                <span class="app-category-badge">Astrophysics Simulator</span>
-                <span class="app-badge-free">100% Free Beta</span>
-              </div>
-              <h3 class="app-title-huge">Galaxsee</h3>
-              <p class="app-description-text">
-                Real-time N-Body gravitational simulator for Android. Models celestial mechanics, 
-                planetary orbits, and chaotic galactic interactions using high-order numerical physics solvers directly on your mobile GPU.
-              </p>
-              <ul class="app-features-list">
-                <li>Real-time multi-particle gravitational force calculation (Barnes-Hut algorithm)</li>
-                <li>Interactive mass insertion, orbital vector dragging, and dynamic collision physics</li>
-                <li>100% local execution with zero network requirements or battery drain telemetry</li>
-              </ul>
-              <div class="app-actions-row">
-                <a href="/downloads/galaxsee.apk" download class="btn-action-primary">
-                  DOWNLOAD APK (5.3 MB) <span class="btn-arrow">&rarr;</span>
-                </a>
-                <button class="btn-action-checksum" onclick="toggleChecksumDrawer('galaxsee')">
-                  SHA-256 INTEGRITY &#128269;
-                </button>
-              </div>
-            </div>
-
-            <!-- Morphing Geometric Glyph: Orbiting Celestial Rings -->
-            <div class="glyph-display-box">
-              <svg class="glyph-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="#de5849" stroke-width="1.5" stroke-dasharray="4 4">
-                  <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"/>
-                </circle>
-                <ellipse cx="50" cy="50" rx="35" ry="18" fill="none" stroke="#f4f5f8" stroke-width="1.2">
-                  <animateTransform attributeName="transform" type="rotate" from="45 50 50" to="405 50 50" dur="8s" repeatCount="indefinite"/>
-                </ellipse>
-                <ellipse cx="50" cy="50" rx="35" ry="18" fill="none" stroke="#de5849" stroke-width="1.2">
-                  <animateTransform attributeName="transform" type="rotate" from="135 50 50" to="495 50 50" dur="8s" repeatCount="indefinite"/>
-                </ellipse>
-                <circle cx="50" cy="50" r="8" fill="#de5849">
-                  <animate attributeName="r" values="7;10;7" dur="2s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="85" cy="50" r="4" fill="#ffffff">
-                  <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="4s" repeatCount="indefinite"/>
-                </circle>
-              </svg>
-            </div>
+        <div style="max-width: 860px; position: relative; z-index: 2;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+            <span style="font-family: var(--font-mono); font-size: 11px; background: rgba(222, 88, 73, 0.18); border: 1px solid var(--accent-coral); color: var(--accent-coral); padding: 4px 10px; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em;">
+              // COMMERCIAL CATALOG &bull; DIGITAL STOREFRONT
+            </span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em;">
+              SOVEREIGN BINARIES, TECHNICAL E-BOOKS &amp; LICENSES
+            </span>
           </div>
 
-          <div class="card-spec-strip">
-            <span>PACKAGE: galaxsee.apk</span>
-            <span>SIZE: 5.3 MB</span>
-            <span>TARGET: Android 8.0+</span>
-            <span>STATUS: Verified Clean</span>
-          </div>
+          <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 800; color: #ffffff; line-height: 1.18; margin-bottom: 16px; letter-spacing: -0.03em;">
+            Enter the Alumungandr Digital Storefront
+          </h2>
 
-          <div id="drawer-galaxsee" class="checksum-drawer">
-            <div class="checksum-drawer-top">
-              <span>SHA-256 HASH VERIFICATION</span>
-              <button class="copy-hash-btn" onclick="copyChecksum('02ac88bce098aa0c14cc4433c4968488baecec01d4cc670b9044bdc749aa0c9a', this)">[ COPY HASH ]</button>
-            </div>
-            <code>02ac88bce098aa0c14cc4433c4968488baecec01d4cc670b9044bdc749aa0c9a</code>
-          </div>
-        </article>
-
-        <!-- 02 Galaxsee Pro -->
-        <article class="app-card-3d reveal-on-scroll" data-tilt>
-          <div class="app-card-glare"></div>
-          <div class="app-card-layout">
-            <div>
-              <div class="app-card-meta">
-                <span class="app-index-tag">[ // 002 ASTRODYNAMICS PRO ]</span>
-                <span class="app-category-badge">Astrophysics Laboratory</span>
-                <span class="app-badge-free">100% Free Beta</span>
-              </div>
-              <h3 class="app-title-huge">Galaxsee Pro</h3>
-              <p class="app-description-text">
-                Advanced astrophysical research suite with high-precision orbital integrators, relativistic mechanics parameters, 
-                extended celestial trajectory tracers, and complete state-vector export.
-              </p>
-              <ul class="app-features-list">
-                <li>Higher-order Runge-Kutta 4th Order numerical integration for orbital stability</li>
-                <li>Relativistic precession simulations and multi-galaxy collision benchmarking</li>
-                <li>Customizable initial condition matrices with full astronomical unit scaling</li>
-              </ul>
-              <div class="app-actions-row">
-                <a href="/downloads/galaxsee_pro.apk" download class="btn-action-primary">
-                  DOWNLOAD APK (5.3 MB) <span class="btn-arrow">&rarr;</span>
-                </a>
-                <button type="button" class="btn-action-primary" style="background: transparent; border: 1px solid var(--accent-coral);" data-checkout-product="Galaxsee Pro (Research License)" data-checkout-tier="Academic &amp; Commercial Research License" data-price-usd="15.00" data-price-jmd="2350">
-                  PRO LICENSE ($15) &rarr;
-                </button>
-                <button class="btn-action-checksum" onclick="toggleChecksumDrawer('galaxsee-pro')">
-                  SHA-256 INTEGRITY &#128269;
-                </button>
-              </div>
-            </div>
-
-            <!-- Morphing Geometric Glyph: Complex Multi-Body Tensor -->
-            <div class="glyph-display-box">
-              <svg class="glyph-svg" viewBox="0 0 100 100">
-                <polygon points="50,10 90,80 10,80" fill="none" stroke="#de5849" stroke-width="1.5">
-                  <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="14s" repeatCount="indefinite"/>
-                </polygon>
-                <polygon points="50,90 90,20 10,20" fill="none" stroke="#f4f5f8" stroke-width="1.2">
-                  <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="14s" repeatCount="indefinite"/>
-                </polygon>
-                <circle cx="50" cy="50" r="16" fill="none" stroke="#de5849" stroke-width="1.2" stroke-dasharray="3 3"/>
-                <circle cx="50" cy="50" r="6" fill="#ff4838"/>
-              </svg>
-            </div>
-          </div>
-
-          <div class="card-spec-strip">
-            <span>PACKAGE: galaxsee_pro.apk</span>
-            <span>SIZE: 5.3 MB</span>
-            <span>TARGET: Android 8.0+</span>
-            <span>STATUS: Verified Clean</span>
-          </div>
-
-          <div id="drawer-galaxsee-pro" class="checksum-drawer">
-            <div class="checksum-drawer-top">
-              <span>SHA-256 HASH VERIFICATION</span>
-              <button class="copy-hash-btn" onclick="copyChecksum('dda821313103838793f449495a53c86322b0718bf45cbd110e92b017ff0fd4f7', this)">[ COPY HASH ]</button>
-            </div>
-            <code>dda821313103838793f449495a53c86322b0718bf45cbd110e92b017ff0fd4f7</code>
-          </div>
-        </article>
-
-        <!-- 03 SueChef -->
-        <article class="app-card-3d reveal-on-scroll" data-tilt>
-          <div class="app-card-glare"></div>
-          <div class="app-card-layout">
-            <div>
-              <div class="app-card-meta">
-                <span class="app-index-tag">[ // 003 CULINARY ENGINE ]</span>
-                <span class="app-category-badge">Culinary Workflow Suite</span>
-                <span class="app-badge-free">100% Free Beta</span>
-              </div>
-              <h3 class="app-title-huge">SueChef</h3>
-              <p class="app-description-text">
-                Ultra-lightweight culinary companion and recipe management system. Built for distraction-free kitchen execution, 
-                dynamic ingredient mathematical scaling, multi-dish timing, and 100% offline recipe preservation.
-              </p>
-              <ul class="app-features-list">
-                <li>Dynamic portion and ingredient ratio scaling with metric / imperial instant conversions</li>
-                <li>Concurrent step-by-step multi-timers with background notifications</li>
-                <li>Featherweight footprint under 1 MB with zero account creation or cloud tethering</li>
-              </ul>
-              <div class="app-actions-row">
-                <a href="/downloads/suechef.apk" download class="btn-action-primary">
-                  DOWNLOAD APK (967 KB) <span class="btn-arrow">&rarr;</span>
-                </a>
-                <button class="btn-action-checksum" onclick="toggleChecksumDrawer('suechef')">
-                  SHA-256 INTEGRITY &#128269;
-                </button>
-              </div>
-            </div>
-
-            <!-- Morphing Geometric Glyph: Webisoft 4-Petaled Dynamic Clover (Screenshot 3 Reference) -->
-            <div class="glyph-display-box">
-              <svg class="glyph-svg" viewBox="0 0 100 100">
-                <g>
-                  <circle cx="36" cy="36" r="18" fill="#f4f5f8" fill-opacity="0.9"/>
-                  <circle cx="64" cy="36" r="18" fill="#de5849" fill-opacity="0.9"/>
-                  <circle cx="36" cy="64" r="18" fill="#de5849" fill-opacity="0.9"/>
-                  <circle cx="64" cy="64" r="18" fill="#f4f5f8" fill-opacity="0.9"/>
-                  <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="10s" repeatCount="indefinite"/>
-                </g>
-              </svg>
-            </div>
-          </div>
-
-          <div class="card-spec-strip">
-            <span>PACKAGE: suechef.apk</span>
-            <span>SIZE: 967 KB</span>
-            <span>TARGET: Android 7.0+</span>
-            <span>STATUS: Verified Clean</span>
-          </div>
-
-          <div id="drawer-suechef" class="checksum-drawer">
-            <div class="checksum-drawer-top">
-              <span>SHA-256 HASH VERIFICATION</span>
-              <button class="copy-hash-btn" onclick="copyChecksum('d94fd96259a268fd9ae4939ea4572efbc5dee66f473282b4cb01449ca5accb4f', this)">[ COPY HASH ]</button>
-            </div>
-            <code>d94fd96259a268fd9ae4939ea4572efbc5dee66f473282b4cb01449ca5accb4f</code>
-          </div>
-        </article>
-
-        <!-- 04 OmniHost -->
-        <article class="app-card-3d reveal-on-scroll" data-tilt>
-          <div class="app-card-glare"></div>
-          <div class="app-card-layout">
-            <div>
-              <div class="app-card-meta">
-                <span class="app-index-tag">[ // 004 EDGE HOSTING ]</span>
-                <span class="app-category-badge">Distributed Web Engine</span>
-                <span class="app-badge-free">100% Free Beta</span>
-              </div>
-              <h3 class="app-title-huge">OmniHost</h3>
-              <p class="app-description-text">
-                Sovereign edge hosting micro-server for Android. Transforms mobile devices into independent HTTP application servers, 
-                enabling local file sharing, live documentation hosting, and zero-cloud distributed edge web services.
-              </p>
-              <ul class="app-features-list">
-                <li>Embedded multi-threaded HTTP server daemon with full static asset and API dispatch</li>
-                <li>Zero cloud dependency, zero external licensing, and ultra-compact binary size (522 KB)</li>
-                <li>The foundational engine powering this very beta distribution portal</li>
-              </ul>
-              <div class="app-actions-row">
-                <a href="/downloads/omnihost.apk" download class="btn-action-primary">
-                  DOWNLOAD APK (522 KB) <span class="btn-arrow">&rarr;</span>
-                </a>
-                <button type="button" class="btn-action-primary" style="background: transparent; border: 1px solid var(--accent-coral);" data-checkout-product="OmniHost Pro (Commercial Edition)" data-checkout-tier="Commercial Edge License" data-price-usd="49.00" data-price-jmd="7700">
-                  PRO LICENSE ($49) &rarr;
-                </button>
-                <button class="btn-action-checksum" onclick="toggleChecksumDrawer('omnihost')">
-                  SHA-256 INTEGRITY &#128269;
-                </button>
-              </div>
-            </div>
-
-            <!-- Morphing Geometric Glyph: Distributed Node Mesh -->
-            <div class="glyph-display-box">
-              <svg class="glyph-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="10" fill="#de5849">
-                  <animate attributeName="r" values="8;12;8" dur="2.5s" repeatCount="indefinite"/>
-                </circle>
-                <!-- Outer orbital nodes -->
-                <circle cx="50" cy="18" r="5" fill="#f4f5f8"/>
-                <circle cx="78" cy="34" r="5" fill="#f4f5f8"/>
-                <circle cx="78" cy="66" r="5" fill="#f4f5f8"/>
-                <circle cx="50" cy="82" r="5" fill="#f4f5f8"/>
-                <circle cx="22" cy="66" r="5" fill="#f4f5f8"/>
-                <circle cx="22" cy="34" r="5" fill="#f4f5f8"/>
-                <!-- Pulse rings -->
-                <circle cx="50" cy="50" r="32" fill="none" stroke="#de5849" stroke-width="1" stroke-dasharray="4 4">
-                  <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="18s" repeatCount="indefinite"/>
-                </circle>
-              </svg>
-            </div>
-          </div>
-
-          <div class="card-spec-strip">
-            <span>PACKAGE: omnihost.apk</span>
-            <span>SIZE: 522 KB</span>
-            <span>TARGET: Android 7.0+</span>
-            <span>STATUS: Verified Clean</span>
-          </div>
-
-          <div id="drawer-omnihost" class="checksum-drawer">
-            <div class="checksum-drawer-top">
-              <span>SHA-256 HASH VERIFICATION</span>
-              <button class="copy-hash-btn" onclick="copyChecksum('24673a7c21339cb8f1146990b68b51232c83a28d6b5c777307107385e4389c38', this)">[ COPY HASH ]</button>
-            </div>
-            <code>24673a7c21339cb8f1146990b68b51232c83a28d6b5c777307107385e4389c38</code>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- 4B. COMMERCIAL STORE & MULTI-GATEWAY LICENSES -->
-    <section id="store" class="commercial-store-section reveal-on-scroll">
-      <div class="section-tag" style="color: #10b981;">// COMMERCIAL LICENSING &amp; MULTI-GATEWAY STORE</div>
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;">
-        <div>
-          <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 900; letter-spacing: -0.03em;">Commercial Edge Licenses</h2>
-          <p style="color: var(--text-secondary); font-size: 15px; max-width: 680px; margin-top: 6px;">
-            Sovereign software builds engineered for creators, agencies, and laboratories. 
-            Multi-rail settlement supporting <strong>Cards / Apple Pay (Lemon Squeezy)</strong>, <strong>PayPal</strong>, and <strong>Lynk / Domestic JMD</strong>.
+          <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.65; margin-bottom: 28px; max-width: 740px;">
+            Explore our standalone catalog of verified Android APK binaries (OmniHost, Galaxsee Pro, SueChef, UnderWraps), authoritative engineering manuals and e-books, and commercial licenses. Featuring zero-friction multi-currency checkout via Cards &amp; Apple Pay (Lemon Squeezy), PayPal, and Jamaican Dollars (Lynk).
           </p>
-        </div>
-        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 6px 14px; border-radius: 20px;">
-          ● ZERO RECURRING LOCK-IN &bull; 100% OWNERSHIP
-        </div>
-      </div>
 
-      <div class="store-pricing-grid">
-        <!-- Tier 1: Personal Edition -->
-        <div class="store-card">
-          <div>
-            <div class="store-card-tier">Single-Seat License</div>
-            <h3 class="store-card-title">OmniHost Personal</h3>
-            <p class="store-card-desc">Ideal for students, developers, and creators desiring high-speed wireless phone-to-PC file transfer and local portfolio hosting.</p>
-            <div class="store-card-price-row">
-              <span class="store-card-price">$19</span>
-              <span class="store-card-period">USD / ~JA$ 2,999 one-time</span>
-            </div>
-            <ul class="store-card-features">
-              <li><span class="check">&#10003;</span> Standalone Windows Executable (<code>OmniHostServer.exe</code>)</li>
-              <li><span class="check">&#10003;</span> Android APK package (<code>omnihost.apk</code>)</li>
-              <li><span class="check">&#10003;</span> RFC 959 High-Speed WiFi FTP Server (Local LAN)</li>
-              <li><span class="check">&#10003;</span> Cloudflare Quick Tunnel support (<code>trycloudflare.com</code>)</li>
-              <li><span class="check">&#10003;</span> 1 Year of Free Software Updates</li>
-            </ul>
+          <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center;">
+            <a href="/store" class="btn-action-primary" style="padding: 13px 26px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+              BROWSE STOREFRONT (11 PRODUCTS) <span class="btn-arrow">&rarr;</span>
+            </a>
+            <a href="/terms" class="btn-action-checksum" style="padding: 13px 22px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+              MASTER IP CHARTER &amp; LICENSING ⚖️
+            </a>
           </div>
-          <button 
-            type="button"
-            class="alu-btn-checkout" 
-            data-checkout-product="OmniHost Personal Edition" 
-            data-checkout-tier="Personal License"
-            data-price-usd="19.00" 
-            data-price-jmd="2999">
-            CHECKOUT WITH MULTI-GATEWAY &rarr;
-          </button>
-        </div>
 
-        <!-- Tier 2: Professional Edition (Featured) -->
-        <div class="store-card featured">
-          <div class="store-card-badge">MOST POPULAR</div>
-          <div>
-            <div class="store-card-tier">Commercial Production</div>
-            <h3 class="store-card-title">OmniHost Pro</h3>
-            <p class="store-card-desc">Designed for freelance web designers, digital consultants, and small businesses hosting client portals and edge web assets.</p>
-            <div class="store-card-price-row">
-              <span class="store-card-price">$49</span>
-              <span class="store-card-period">USD / ~JA$ 7,700 one-time</span>
-            </div>
-            <ul class="store-card-features">
-              <li><span class="check">&#10003;</span> <strong>Everything in Personal Edition, plus:</strong></li>
-              <li><span class="check">&#10003;</span> Unlimited Custom Domain Integrations (Cloudflare DNS)</li>
-              <li><span class="check">&#10003;</span> Persistent Cloudflare Tunnel Token Support</li>
-              <li><span class="check">&#10003;</span> Real-time Traffic Telemetry &amp; Visitor QPS Analyzer</li>
-              <li><span class="check">&#10003;</span> Remote PWA Mobile Control Dashboard</li>
-              <li><span class="check">&#10003;</span> <strong>Commercial Client Hosting Rights</strong></li>
-              <li><span class="check">&#10003;</span> 3 Years Priority Feature Updates</li>
-            </ul>
+          <!-- Micro Spec Strip -->
+          <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+            <span>CATALOG: 4 Apps &bull; 5 E-Books &bull; 2 Patron Tiers</span>
+            <span>SETTLEMENT: USD ($) &bull; JMD (JA$)</span>
+            <span>DELIVERY: Instant Download &amp; License Key</span>
           </div>
-          <button 
-            type="button"
-            class="alu-btn-checkout" 
-            data-checkout-product="OmniHost Professional Edition" 
-            data-checkout-tier="Professional Commercial License"
-            data-price-usd="49.00" 
-            data-price-jmd="7700">
-            CHECKOUT WITH MULTI-GATEWAY &rarr;
-          </button>
-        </div>
-
-        <!-- Tier 3: Lifetime Studio License -->
-        <div class="store-card">
-          <div>
-            <div class="store-card-tier">Enterprise &amp; Agency</div>
-            <h3 class="store-card-title">Lifetime Studio License</h3>
-            <p class="store-card-desc">For development agencies, software houses, and power users demanding complete source access and white-label rights.</p>
-            <div class="store-card-price-row">
-              <span class="store-card-price">$99</span>
-              <span class="store-card-period">USD / ~JA$ 15,500 one-time</span>
-            </div>
-            <ul class="store-card-features">
-              <li><span class="check">&#10003;</span> <strong>Everything in Professional Edition, plus:</strong></li>
-              <li><span class="check">&#10003;</span> Complete Python &amp; Alu Compiler Source Code Access</li>
-              <li><span class="check">&#10003;</span> White-Label Rebranding License (Replace OmniHost branding)</li>
-              <li><span class="check">&#10003;</span> Unlimited Lifetime Updates &amp; Early Access Builds</li>
-              <li><span class="check">&#10003;</span> Direct Architecture Consultation with David Anthony Jones</li>
-            </ul>
-          </div>
-          <button 
-            type="button"
-            class="alu-btn-checkout" 
-            data-checkout-product="OmniHost Lifetime Studio License" 
-            data-checkout-tier="Enterprise Source License"
-            data-price-usd="99.00" 
-            data-price-jmd="15500">
-            CHECKOUT WITH MULTI-GATEWAY &rarr;
-          </button>
-        </div>
-      </div>
-
-      <!-- Secondary Row: Galaxsee Pro & Supporter Pass -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px;">
-        <div class="store-card" style="padding: 20px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
-          <div>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">// ASTRODYNAMICS RESEARCH</div>
-            <div style="font-weight: 800; font-size: 16px; color: #fff;">Galaxsee Pro License</div>
-            <div style="font-size: 12px; color: var(--text-muted);">Runge-Kutta 4th Order solvers &bull; Relativistic state vectors &bull; $15 USD (~JA$ 2,350)</div>
-          </div>
-          <button 
-            type="button"
-            class="alu-btn-checkout" 
-            style="width: auto; padding: 10px 18px; font-size: 12px;"
-            data-checkout-product="Galaxsee Pro (Research License)" 
-            data-checkout-tier="Academic &amp; Commercial Research License"
-            data-price-usd="15.00" 
-            data-price-jmd="2350">
-            GET LICENSE &rarr;
-          </button>
-        </div>
-
-        <div class="store-card" style="padding: 20px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
-          <div>
-            <div style="font-family: var(--font-mono); font-size: 11px; color: #d4af37;">// SOVEREIGN TECH PATRON</div>
-            <div style="font-weight: 800; font-size: 16px; color: #fff;">Founder Supporter Pass</div>
-            <div style="font-size: 12px; color: var(--text-muted);">Directly support sovereign R&amp;D in Jamaica &bull; Lifetime Patron Role &bull; $25 USD (~JA$ 3,900)</div>
-          </div>
-          <button 
-            type="button"
-            class="alu-btn-checkout" 
-            style="width: auto; padding: 10px 18px; font-size: 12px; background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);"
-            data-checkout-product="Alumungandr Founder Supporter Pass" 
-            data-checkout-tier="Sovereign Patron Pass"
-            data-price-usd="25.00" 
-            data-price-jmd="3900">
-            BECOME PATRON &rarr;
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. HOW TO SIDELOAD RUNBOOK -->
-    <section id="guide" class="runbook-section reveal-on-scroll">
-      <div class="section-tag">// OPERATIONAL RUNBOOK</div>
-      <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">How to Sideload Beta Binaries</h3>
-      <p style="color: var(--text-secondary); font-size: 14px;">Android requires a one-time permission to allow installing applications directly from browser downloads.</p>
-      
-      <div class="runbook-grid">
-        <div class="runbook-card">
-          <div class="runbook-step-idx">STEP 01</div>
-          <div class="runbook-step-title">Download APK</div>
-          <div class="runbook-step-desc">Tap the download button on any application above to download the verified package directly to your device.</div>
-        </div>
-        <div class="runbook-card">
-          <div class="runbook-step-idx">STEP 02</div>
-          <div class="runbook-step-title">Allow Unknown Apps</div>
-          <div class="runbook-step-desc">When prompted, select <strong>Settings</strong> and enable <em>"Allow from this source"</em> for your browser or file manager.</div>
-        </div>
-        <div class="runbook-card">
-          <div class="runbook-step-idx">STEP 03</div>
-          <div class="runbook-step-title">Install & Stress Test</div>
-          <div class="runbook-step-desc">Tap <strong>Install</strong>. Launch the app and test core features. Return here to transmit feedback observations.</div>
         </div>
       </div>
     </section>
@@ -2075,7 +1660,7 @@
         SOVEREIGN BETA REPOSITORY.
       </div>
       <nav class="footer-nav" style="display: flex; gap: 14px; flex-wrap: wrap;">
-        <a href="#apps">Apps</a>
+        <a href="/store">Storefront</a>
         <a href="/speedtest" style="color: #00f0ff;">⚡ Speed Test</a>
         <a href="/invoice" style="color: #00f0ff;">📄 Invoice Maker</a>
         <a href="/resizer" style="color: #00f0ff;">🖼️ Social Resizer</a>

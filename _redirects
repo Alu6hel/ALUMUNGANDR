@@ -1,4 +1,4 @@
-# Clean URL Fallbacks
+/store.html /store 301
 /speedtest.html /speedtest 301
 /resizer.html /resizer 301
 /ip.html /ip 301
@@ -10,3 +10,4 @@
 /faq.html /faq 301
 /privacy.html /privacy 301
 /terms.html /terms 301
+

@@ -8,14 +8,14 @@
   <!-- OpenGraph Metadata -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alumungandr.com/speedtest">
-  <meta property="og:title" content="OmniSpeed Test | Real-Time Broadband Speed & Latency Benchmark">
-  <meta property="og:description" content="Accurate real-time internet speed test. Measure line-rate Download, Upload, Ping latency, Jitter, and Bufferbloat across high-capacity fiber and broadband networks.">
+  <meta property="og:title" content="Internet Speed Test | Free Broadband Speed &amp; Latency Benchmark">
+  <meta property="og:description" content="Free internet speed test. Test your broadband download speed, upload bandwidth, ping latency, and jitter across global edge nodes with zero flash and zero ads.">
   <meta property="og:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="OmniSpeed Test | Real-Time Broadband Speed & Latency Benchmark">
-  <meta name="twitter:description" content="Accurate real-time internet speed test. Measure line-rate Download, Upload, Ping latency, Jitter, and Bufferbloat across high-capacity fiber and broadband networks.">
+  <meta name="twitter:title" content="Internet Speed Test | Free Broadband Speed &amp; Latency Benchmark">
+  <meta name="twitter:description" content="Free internet speed test. Test your broadband download speed, upload bandwidth, ping latency, and jitter across global edge nodes with zero flash and zero ads.">
   <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Structured Data (JSON-LD) -->
@@ -49,6 +49,7 @@
       "@type": "WebApplication",
       "@id": "https://alumungandr.com/speedtest/#app",
       "name": "OmniSpeed Internet Speed Test",
+      "alternateName": ["Internet Speed Test", "Broadband Speed Test", "Wifi Speed Test", "Check My Speed"],
       "url": "https://alumungandr.com/speedtest",
       "applicationCategory": "NetworkingApplication",
       "operatingSystem": "Any",
@@ -57,10 +58,48 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "Accurate sovereign broadband speed test benchmark. Measure real-time Download, Upload, Ping latency, Jitter, and loaded Bufferbloat directly in browser.",
+      "description": "Accurate sovereign broadband internet speed test benchmark. Measure real-time Download, Upload, Ping latency, Jitter, and loaded Bufferbloat directly in browser.",
       "publisher": {
         "@id": "https://alumungandr.com/#organization"
       }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://alumungandr.com/speedtest/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does this internet speed test measure bandwidth?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The test streams raw binary chunks over high-concurrency HTTP/2 web sockets to Cloudflare global edge nodes. It calculates exact byte counts over precise high-resolution millisecond intervals, avoiding artificial ISP burst smoothing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a good internet speed for streaming and gaming?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For 4K UHD video streaming, a download speed of 25 Mbps per stream is recommended. For online gaming, ping latency under 30ms and jitter under 5ms are critical to eliminate stutter and rubber-banding."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Bufferbloat and loaded latency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bufferbloat occurs when network hardware queues excessive packets during active downloads or uploads, causing latency to spike drastically. Our benchmark tests both unloaded ping and loaded latency to assess real-world performance under heavy traffic."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my speed test result lower than my ISP subscription plan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wi-Fi interference, router hardware bottlenecks, background device updates, and network contention during peak evening hours can reduce measured line speed compared to your advertised ISP wired plan."
+          }
+        }
+      ]
     }
   ]
 }
@@ -68,9 +107,9 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniSpeed Test | Real-Time Broadband Speed & Latency Benchmark</title>
-  <meta name="description" content="Accurate real-time internet speed test. Measure line-rate Download, Upload, Ping latency, Jitter, and Bufferbloat across high-capacity fiber and broadband networks.">
-  <meta name="keywords" content="speed test, internet speed, broadband benchmark, download speed, upload speed, ping, jitter, bufferbloat, flow jamaica, latency">
+  <title>Internet Speed Test | Free Broadband Speed &amp; Latency Benchmark - Alumungandr™</title>
+  <meta name="description" content="Free internet speed test. Test your broadband download speed, upload bandwidth, ping latency, and jitter across global edge nodes with zero flash and zero ads.">
+  <meta name="keywords" content="internet speed test, speed test, broadband speed test, wifi speed test, check my speed, download speed test, upload speed test, ping test, bufferbloat test, flow jamaica speed test">
   
   <!-- OpenGraph / Meta -->
   
@@ -1078,23 +1117,32 @@
       <div class="brand-text">OMNISPEED</div>
     </a>
     <div class="nav-links">
-      <a href="/">Apps</a>
+      <a href="/">Home</a>
+      <a href="/store">Storefront</a>
       <a href="/speedtest" style="color:var(--cyan);">Speed Test</a>
       <a href="/invoice">Invoice Maker</a>
       <a href="/resizer">Social Resizer</a>
-        <a href="/subscriptions">Reality Check</a>
-      <a href="/ip">What Is My IP</a>
       <a href="/subscriptions">Reality Check</a>
       <a href="/ip">What Is My IP</a>
       <a href="/about">About</a>
       <a href="/faq">FAQ</a>
       <a href="/contact">Contact</a>
-      <a href="/" class="nav-btn-home">&larr; Apps Hub</a>
+      <a href="/store" class="nav-btn-home" style="border-color: var(--cyan); color: #fff;">🛒 Storefront</a>
     </div>
   </header>
 
   <!-- Main Speedtest Workspace -->
   <main class="speed-container">
+
+    <!-- Primary Semantic SEO Heading -->
+    <div style="margin-bottom: 24px; text-align: center;">
+      <h1 style="font-size: clamp(24px, 3.8vw, 36px); font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin-bottom: 8px;">
+        Internet Speed Test — Real-Time Broadband &amp; Latency Benchmark
+      </h1>
+      <p style="color: var(--text-muted); font-size: 14px; max-width: 680px; margin: 0 auto; line-height: 1.5;">
+        Accurate, real-time internet speed test. Measure line-rate download speed, upload bandwidth, ping latency, and loaded jitter directly against Cloudflare global edge servers.
+      </p>
+    </div>
 
     <!-- Top Config Bar -->
     <div class="test-config-bar">
@@ -1316,21 +1364,29 @@
       </div>
     </div>
 
-    <!-- Educational & Technical FAQ for Legal Organic SEO -->
+    <!-- Educational & Technical FAQ for High-Intent Organic SEO -->
     <div class="seo-info-block">
-      <h2>Understanding Your Real Broadband Metrics</h2>
+      <h2>Frequently Asked Questions — Internet Speed Testing &amp; Broadband Metrics</h2>
       <p>
-        The illusion of simplicity: your internet either works or it does not. But the exact second a video call lags or a web page takes an extra second to load, millions of people hit Google to diagnose their connection. OmniSpeed serves as the definitive diagnostic benchmark to hold internet service providers accountable, troubleshoot sluggish Wi-Fi routers, or decide whether your connection can handle remote production files.
+        The illusion of simplicity: your internet either works or it does not. But the exact second a video call lags or a web page takes an extra second to load, millions of people hit Google to diagnose their connection. OmniSpeed serves as the definitive diagnostic benchmark to hold internet service providers accountable, troubleshoot sluggish Wi-Fi routers, and diagnose real throughput without ISP burst smoothing.
       </p>
 
       <div class="faq-grid">
         <div class="faq-item">
-          <div class="faq-q">What is Bufferbloat?</div>
-          <div class="faq-a">Bufferbloat occurs when network equipment queues excessive packets instead of transmitting them immediately. It causes latency spikes during heavy downloads or uploads, leading to sudden gaming disconnects and stuttering voice calls.</div>
+          <div class="faq-q">How does this internet speed test measure bandwidth?</div>
+          <div class="faq-a">Our benchmark streams raw binary chunks over high-concurrency HTTP/2 connections directly to Cloudflare global edge servers. It calculates exact byte counts transferred over high-resolution millisecond intervals, avoiding artificial burst smoothing often used by commercial ISP speed tests.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">Why Multi vs. Single Stream?</div>
-          <div class="faq-a">Multi-connection testing utilizes multiple concurrent TCP sockets to maximize pipeline saturation across high-bandwidth lines, reflecting real-world downloads. Single-connection testing isolates individual socket constraints and single-server transfer speeds.</div>
+          <div class="faq-q">What is a good internet speed for streaming and gaming?</div>
+          <div class="faq-a">For 4K UHD video streaming, a steady download speed of 25 Mbps per stream is recommended. For online gaming, raw bandwidth matters less than ping latency: unloaded ping under 30ms and loaded jitter under 5ms are critical to eliminate stutter, lag, and rubber-banding.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is Bufferbloat and loaded latency?</div>
+          <div class="faq-a">Bufferbloat occurs when network hardware queues excessive packets instead of transmitting them immediately. It causes latency spikes during heavy downloads or uploads, leading to sudden gaming disconnects, sluggish browsing, and stuttering voice/video calls.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Why is my speed test lower than my ISP subscription plan?</div>
+          <div class="faq-a">Wi-Fi interference, router hardware bottlenecks, background device updates, and local node contention during peak evening hours can reduce measured line speed compared to your advertised ISP wired plan. Connect via wired Ethernet to test full line rate.</div>
         </div>
       </div>
     </div>

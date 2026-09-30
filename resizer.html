@@ -22,17 +22,47 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Alumungandr Batch Image Resizer",
-  "url": "https://alumungandr.com/resizer",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "Instant single drag-and-drop batch social media image resizer. Perfectly crop avatars, banners, reels, and posts."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://alumungandr.com/resizer/#app",
+      "name": "Alumungandr Batch Image Resizer",
+      "url": "https://alumungandr.com/resizer",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Instant single drag-and-drop batch social media image resizer and optimizer. Perfectly crop avatars, banners, reels, and posts with zero cloud upload.",
+      "publisher": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

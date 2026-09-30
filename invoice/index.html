@@ -22,17 +22,47 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Alumungandr Invoice & Receipt Generator",
-  "url": "https://alumungandr.com/invoice",
-  "applicationCategory": "FinancialApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "Free, no-login split-screen invoice and receipt generator with instant PDF download."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://alumungandr.com/invoice/#app",
+      "name": "Alumungandr Invoice & Receipt Generator",
+      "url": "https://alumungandr.com/invoice",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free, zero-knowledge, no-login split-screen invoice and receipt generator with instant PDF download and zero tracking.",
+      "publisher": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

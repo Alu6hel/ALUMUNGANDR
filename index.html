@@ -27,12 +27,38 @@
       "@type": "Organization",
       "@id": "https://alumungandr.com/#organization",
       "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
       "url": "https://alumungandr.com",
       "logo": "https://alumungandr.com/logo.svg",
+      "image": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "description": "Sovereign high-performance technology laboratory, compiler architecture, offline Android systems, and privacy-first web utilities.",
       "founder": {
         "@type": "Person",
-        "name": "David Anthony Jones"
-      }
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu",
+        "jobTitle": "Sole Founder & Chief Architect",
+        "nationality": "JM"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "JM"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ],
+      "knowsAbout": [
+        "Sovereign Edge Servers",
+        "Astrophysics Simulation",
+        "RFC 959 FTP Protocols",
+        "In-Browser Zero-Knowledge Web Tools",
+        "Formal Mathematical Verification"
+      ]
     },
     {
       "@type": "WebSite",
@@ -40,6 +66,42 @@
       "url": "https://alumungandr.com",
       "name": "Alumungandr",
       "description": "High-Performance Web Utilities & Verified Android Binaries",
+      "publisher": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://alumungandr.com/#omnihost-pro",
+      "name": "OmniHost Pro",
+      "operatingSystem": "Android, Windows 10, Windows 11",
+      "applicationCategory": "DeveloperApplication",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Personal Edition",
+          "price": "19.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://alumungandr.com/#store"
+        },
+        {
+          "@type": "Offer",
+          "name": "Professional Edition",
+          "price": "49.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://alumungandr.com/#store"
+        },
+        {
+          "@type": "Offer",
+          "name": "Lifetime Studio License",
+          "price": "99.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://alumungandr.com/#store"
+        }
+      ],
       "publisher": {
         "@id": "https://alumungandr.com/#organization"
       }
@@ -56,6 +118,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Multi-Gateway Checkout Engine Styles -->
+  <link rel="stylesheet" href="/assets/checkout.css" />
 
   <!-- Local Three.js with CDN fallback for 3D Glass Sovereign Core -->
   <script src="/assets/three.min.js"></script>
@@ -1079,6 +1144,11 @@
     <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>03</span> SueChef (Culinary Engine)</a>
     <a href="#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span>04</span> OmniHost (Edge Server)</a>
 
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #10b981; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      // COMMERCIAL LICENSES &bull; STORE
+    </div>
+    <a href="#store" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">💳</span> Commercial Store &amp; Pricing</a>
+
     <div style="border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 10px;">
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 6px;">// PLATFORM &amp; GOVERNANCE</div>
       <a href="/about" class="drawer-link" onclick="toggleDrawerMenu()"><span>ℹ️</span> About Alumungandr</a>
@@ -1598,6 +1668,9 @@
                 <a href="/downloads/galaxsee_pro.apk" download class="btn-action-primary">
                   DOWNLOAD APK (5.3 MB) <span class="btn-arrow">&rarr;</span>
                 </a>
+                <button type="button" class="btn-action-primary" style="background: transparent; border: 1px solid var(--accent-coral);" data-checkout-product="Galaxsee Pro (Research License)" data-checkout-tier="Academic &amp; Commercial Research License" data-price-usd="15.00" data-price-jmd="2350">
+                  PRO LICENSE ($15) &rarr;
+                </button>
                 <button class="btn-action-checksum" onclick="toggleChecksumDrawer('galaxsee-pro')">
                   SHA-256 INTEGRITY &#128269;
                 </button>
@@ -1719,6 +1792,9 @@
                 <a href="/downloads/omnihost.apk" download class="btn-action-primary">
                   DOWNLOAD APK (522 KB) <span class="btn-arrow">&rarr;</span>
                 </a>
+                <button type="button" class="btn-action-primary" style="background: transparent; border: 1px solid var(--accent-coral);" data-checkout-product="OmniHost Pro (Commercial Edition)" data-checkout-tier="Commercial Edge License" data-price-usd="49.00" data-price-jmd="7700">
+                  PRO LICENSE ($49) &rarr;
+                </button>
                 <button class="btn-action-checksum" onclick="toggleChecksumDrawer('omnihost')">
                   SHA-256 INTEGRITY &#128269;
                 </button>
@@ -1762,6 +1838,154 @@
           </div>
         </article>
 
+      </div>
+    </section>
+
+    <!-- 4B. COMMERCIAL STORE & MULTI-GATEWAY LICENSES -->
+    <section id="store" class="commercial-store-section reveal-on-scroll">
+      <div class="section-tag" style="color: #10b981;">// COMMERCIAL LICENSING &amp; MULTI-GATEWAY STORE</div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 8px;">
+        <div>
+          <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 900; letter-spacing: -0.03em;">Commercial Edge Licenses</h2>
+          <p style="color: var(--text-secondary); font-size: 15px; max-width: 680px; margin-top: 6px;">
+            Sovereign software builds engineered for creators, agencies, and laboratories. 
+            Multi-rail settlement supporting <strong>Cards / Apple Pay (Lemon Squeezy)</strong>, <strong>PayPal</strong>, and <strong>Lynk / Domestic JMD</strong>.
+          </p>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-green); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); padding: 6px 14px; border-radius: 20px;">
+          ● ZERO RECURRING LOCK-IN &bull; 100% OWNERSHIP
+        </div>
+      </div>
+
+      <div class="store-pricing-grid">
+        <!-- Tier 1: Personal Edition -->
+        <div class="store-card">
+          <div>
+            <div class="store-card-tier">Single-Seat License</div>
+            <h3 class="store-card-title">OmniHost Personal</h3>
+            <p class="store-card-desc">Ideal for students, developers, and creators desiring high-speed wireless phone-to-PC file transfer and local portfolio hosting.</p>
+            <div class="store-card-price-row">
+              <span class="store-card-price">$19</span>
+              <span class="store-card-period">USD / ~JA$ 2,999 one-time</span>
+            </div>
+            <ul class="store-card-features">
+              <li><span class="check">&#10003;</span> Standalone Windows Executable (<code>OmniHostServer.exe</code>)</li>
+              <li><span class="check">&#10003;</span> Android APK package (<code>omnihost.apk</code>)</li>
+              <li><span class="check">&#10003;</span> RFC 959 High-Speed WiFi FTP Server (Local LAN)</li>
+              <li><span class="check">&#10003;</span> Cloudflare Quick Tunnel support (<code>trycloudflare.com</code>)</li>
+              <li><span class="check">&#10003;</span> 1 Year of Free Software Updates</li>
+            </ul>
+          </div>
+          <button 
+            type="button"
+            class="alu-btn-checkout" 
+            data-checkout-product="OmniHost Personal Edition" 
+            data-checkout-tier="Personal License"
+            data-price-usd="19.00" 
+            data-price-jmd="2999">
+            CHECKOUT WITH MULTI-GATEWAY &rarr;
+          </button>
+        </div>
+
+        <!-- Tier 2: Professional Edition (Featured) -->
+        <div class="store-card featured">
+          <div class="store-card-badge">MOST POPULAR</div>
+          <div>
+            <div class="store-card-tier">Commercial Production</div>
+            <h3 class="store-card-title">OmniHost Pro</h3>
+            <p class="store-card-desc">Designed for freelance web designers, digital consultants, and small businesses hosting client portals and edge web assets.</p>
+            <div class="store-card-price-row">
+              <span class="store-card-price">$49</span>
+              <span class="store-card-period">USD / ~JA$ 7,700 one-time</span>
+            </div>
+            <ul class="store-card-features">
+              <li><span class="check">&#10003;</span> <strong>Everything in Personal Edition, plus:</strong></li>
+              <li><span class="check">&#10003;</span> Unlimited Custom Domain Integrations (Cloudflare DNS)</li>
+              <li><span class="check">&#10003;</span> Persistent Cloudflare Tunnel Token Support</li>
+              <li><span class="check">&#10003;</span> Real-time Traffic Telemetry &amp; Visitor QPS Analyzer</li>
+              <li><span class="check">&#10003;</span> Remote PWA Mobile Control Dashboard</li>
+              <li><span class="check">&#10003;</span> <strong>Commercial Client Hosting Rights</strong></li>
+              <li><span class="check">&#10003;</span> 3 Years Priority Feature Updates</li>
+            </ul>
+          </div>
+          <button 
+            type="button"
+            class="alu-btn-checkout" 
+            data-checkout-product="OmniHost Professional Edition" 
+            data-checkout-tier="Professional Commercial License"
+            data-price-usd="49.00" 
+            data-price-jmd="7700">
+            CHECKOUT WITH MULTI-GATEWAY &rarr;
+          </button>
+        </div>
+
+        <!-- Tier 3: Lifetime Studio License -->
+        <div class="store-card">
+          <div>
+            <div class="store-card-tier">Enterprise &amp; Agency</div>
+            <h3 class="store-card-title">Lifetime Studio License</h3>
+            <p class="store-card-desc">For development agencies, software houses, and power users demanding complete source access and white-label rights.</p>
+            <div class="store-card-price-row">
+              <span class="store-card-price">$99</span>
+              <span class="store-card-period">USD / ~JA$ 15,500 one-time</span>
+            </div>
+            <ul class="store-card-features">
+              <li><span class="check">&#10003;</span> <strong>Everything in Professional Edition, plus:</strong></li>
+              <li><span class="check">&#10003;</span> Complete Python &amp; Alu Compiler Source Code Access</li>
+              <li><span class="check">&#10003;</span> White-Label Rebranding License (Replace OmniHost branding)</li>
+              <li><span class="check">&#10003;</span> Unlimited Lifetime Updates &amp; Early Access Builds</li>
+              <li><span class="check">&#10003;</span> Direct Architecture Consultation with David Anthony Jones</li>
+            </ul>
+          </div>
+          <button 
+            type="button"
+            class="alu-btn-checkout" 
+            data-checkout-product="OmniHost Lifetime Studio License" 
+            data-checkout-tier="Enterprise Source License"
+            data-price-usd="99.00" 
+            data-price-jmd="15500">
+            CHECKOUT WITH MULTI-GATEWAY &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Secondary Row: Galaxsee Pro & Supporter Pass -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 24px;">
+        <div class="store-card" style="padding: 20px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">// ASTRODYNAMICS RESEARCH</div>
+            <div style="font-weight: 800; font-size: 16px; color: #fff;">Galaxsee Pro License</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Runge-Kutta 4th Order solvers &bull; Relativistic state vectors &bull; $15 USD (~JA$ 2,350)</div>
+          </div>
+          <button 
+            type="button"
+            class="alu-btn-checkout" 
+            style="width: auto; padding: 10px 18px; font-size: 12px;"
+            data-checkout-product="Galaxsee Pro (Research License)" 
+            data-checkout-tier="Academic &amp; Commercial Research License"
+            data-price-usd="15.00" 
+            data-price-jmd="2350">
+            GET LICENSE &rarr;
+          </button>
+        </div>
+
+        <div class="store-card" style="padding: 20px; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #d4af37;">// SOVEREIGN TECH PATRON</div>
+            <div style="font-weight: 800; font-size: 16px; color: #fff;">Founder Supporter Pass</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Directly support sovereign R&amp;D in Jamaica &bull; Lifetime Patron Role &bull; $25 USD (~JA$ 3,900)</div>
+          </div>
+          <button 
+            type="button"
+            class="alu-btn-checkout" 
+            style="width: auto; padding: 10px 18px; font-size: 12px; background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);"
+            data-checkout-product="Alumungandr Founder Supporter Pass" 
+            data-checkout-tier="Sovereign Patron Pass"
+            data-price-usd="25.00" 
+            data-price-jmd="3900">
+            BECOME PATRON &rarr;
+          </button>
+        </div>
       </div>
     </section>
 
@@ -2222,5 +2446,8 @@
       return div.innerHTML;
     }
   </script>
+
+  <!-- Multi-Gateway Checkout Engine Scripts -->
+  <script src="/assets/checkout.js"></script>
 </body>
 </html>

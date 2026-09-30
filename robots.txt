@@ -1,3 +1,4 @@
+# Alumungandr Robots.txt — Sovereign & AI-Ready
 User-agent: *
 Allow: /
 Allow: /speedtest
@@ -12,5 +13,33 @@ Allow: /faq
 Allow: /privacy
 Allow: /terms
 Allow: /downloads/
+
+# Explicitly Allow Major AI Crawlers & Assistants for Citations
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: CCBot
+Allow: /
 
 Sitemap: https://alumungandr.com/sitemap.xml

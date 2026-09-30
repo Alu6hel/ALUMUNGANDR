@@ -22,17 +22,47 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Subscription Reality Check Calculator",
-  "url": "https://alumungandr.com/subscriptions",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "Calculate your true 10-year subscription bleed and S&P 500 opportunity cost."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://alumungandr.com/subscriptions/#app",
+      "name": "Subscription Reality Check Calculator",
+      "url": "https://alumungandr.com/subscriptions",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Calculate your true 10-year subscription bleed and S&P 500 opportunity cost. Fully responsive, editable, and shareable reality receipt of your recurring expenses.",
+      "publisher": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

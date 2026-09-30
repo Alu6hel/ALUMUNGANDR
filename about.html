@@ -22,10 +22,42 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "AboutPage",
-  "url": "https://alumungandr.com/about",
-  "name": "About Alumungandr",
-  "description": "Engineering philosophy, local-first performance, and zero-telemetry architecture."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu",
+        "jobTitle": "Sole Founder & Chief Architect",
+        "nationality": "JM"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "AboutPage",
+      "@id": "https://alumungandr.com/about/#aboutpage",
+      "url": "https://alumungandr.com/about",
+      "name": "About Alumungandr",
+      "description": "Learn about Alumungandr's engineering philosophy: local-first performance, zero tracking, verified binaries, and high-speed web utilities by David Anthony Jones.",
+      "mainEntity": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

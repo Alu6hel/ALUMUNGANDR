@@ -22,9 +22,40 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebPage",
-  "url": "https://alumungandr.com/privacy",
-  "name": "Privacy Policy"
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://alumungandr.com/privacy/#webpage",
+      "url": "https://alumungandr.com/privacy",
+      "name": "Privacy Policy & Zero-Knowledge Architecture",
+      "description": "Official zero-knowledge privacy policy and local-first data architecture for Alumungandr web tools and applications.",
+      "publisher": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

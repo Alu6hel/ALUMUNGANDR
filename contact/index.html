@@ -22,10 +22,46 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ContactPage",
-  "url": "https://alumungandr.com/contact",
-  "name": "Contact Alumungandr",
-  "description": "Get in touch with the Alumungandr engineering team for verification and inquiries."
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "alternateName": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alumungandr Technologies", "Alu Labs"],
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "admin@alumungandr.com",
+        "contactType": "Customer Support & Commercial Licensing",
+        "availableLanguage": ["English"]
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    {
+      "@type": "ContactPage",
+      "@id": "https://alumungandr.com/contact/#contactpage",
+      "url": "https://alumungandr.com/contact",
+      "name": "Contact Alumungandr",
+      "description": "Direct communication uplink with David Anthony Jones and Alumungandr engineering desk.",
+      "mainEntity": {
+        "@id": "https://alumungandr.com/#organization"
+      }
+    }
+  ]
 }
   </script>
 

@@ -1,0 +1,6 @@
+_worker.js
+functions/
+.git/
+.wrangler/
+node_modules/
+*.py

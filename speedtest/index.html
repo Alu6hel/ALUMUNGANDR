@@ -1766,7 +1766,7 @@
 <body>
 
   <!-- Top Navigation Bar -->
-            <header class="site-header">
+              <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1993,7 +1993,7 @@
 
       <!-- NPS Survey (How likely to recommend ISP) -->
       <div class="isp-rating-section">
-        <div class="rating-prompt">How likely are you to recommend <span id="surveyIspName">Flow</span> to a friend or colleague?</div>
+        <div class="rating-prompt">How likely are you to recommend <span id="surveyIspName">your Internet Provider</span> to a friend or colleague?</div>
         <div class="nps-buttons">
           <button class="nps-btn" onclick="voteNps(0)">0</button>
           <button class="nps-btn" onclick="voteNps(1)">1</button>
@@ -2159,8 +2159,11 @@
             <span style="font-weight:700; color:var(--text-subtle); font-size:0.85rem;" id="currSymbolLabel">$</span>
             <input type="number" id="inputMonthlyBill" class="sla-input-field" value="85" min="1" max="100000" onchange="updateSlaSettings()">
             <select id="selectCurrency" class="sla-input-field" style="width:75px; padding:0.5rem 0.35rem;" onchange="updateCurrency()">
-              <option value="USD" selected>USD</option>
-              <option value="JMD">JMD</option>
+              <option value="USD" selected>USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="CAD">CAD (C$)</option>
+              <option value="JMD">JMD (J$)</option>
             </select>
           </div>
         </div>
@@ -2391,7 +2394,7 @@
   </div>
 
   <!-- Footer -->
-            <footer class="site-footer">
+              <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -2461,10 +2464,11 @@
         baseUp: 85.20
       },
       availableServers: [
-        { id: 'alu-edge-us', name: 'Cloudflare / Edge CDN', location: 'Ashburn / Dallas (US)', basePing: 12, baseDown: 240.50, baseUp: 85.20 },
-        { id: 'alu-edge-eu', name: 'Alu Global Edge', location: 'London / Frankfurt (EU)', basePing: 28, baseDown: 195.40, baseUp: 65.10 },
-        { id: 'flow-mobay', name: 'FLOW Jamaica', location: 'Montego Bay (JM)', basePing: 34, baseDown: 51.01, baseUp: 20.43 },
-        { id: 'flow-kingston', name: 'FLOW Jamaica', location: 'Kingston (JM)', basePing: 38, baseDown: 48.50, baseUp: 19.80 }
+        { id: 'alu-edge-us', name: 'Cloudflare / Edge CDN (US East)', location: 'Ashburn, VA (US)', basePing: 12, baseDown: 240.50, baseUp: 85.20 },
+        { id: 'alu-edge-usw', name: 'Cloudflare / Edge CDN (US West)', location: 'San Jose, CA (US)', basePing: 16, baseDown: 225.10, baseUp: 78.40 },
+        { id: 'alu-edge-eu', name: 'Global Edge Transit', location: 'London / Frankfurt (EU)', basePing: 28, baseDown: 195.40, baseUp: 65.10 },
+        { id: 'flow-mobay', name: 'FLOW / Cable & Wireless', location: 'Montego Bay (JM)', basePing: 34, baseDown: 51.01, baseUp: 20.43 },
+        { id: 'flow-kingston', name: 'FLOW / Cable & Wireless', location: 'Kingston (JM)', basePing: 38, baseDown: 48.50, baseUp: 19.80 }
       ]
     };
 
@@ -2499,11 +2503,23 @@
     // Dual-Engine Backend Mode ('local' or 'cloudflare')
     let BACKEND_TYPE = 'detecting';
 
+    // Currency Symbol Helper
+    function getCurrencySymbol(c) {
+      switch (c) {
+        case 'EUR': return '€';
+        case 'GBP': return '£';
+        case 'CAD': return 'C$';
+        case 'JMD': return 'J$';
+        case 'USD':
+        default: return '$';
+      }
+    }
+
     // Update Direct Financial ROI Estimator
     function updateRoiCalculator() {
       const adv = parseFloat(document.getElementById('inputAdvertisedMbps')?.value || AUDIT_STATE.advertisedMbps) || 100.0;
       const bill = parseFloat(document.getElementById('inputMonthlyBill')?.value || AUDIT_STATE.monthlyBill) || 85.0;
-      const curr = AUDIT_STATE.currency === 'USD' ? '$' : 'JMD $';
+      const curr = getCurrencySymbol(AUDIT_STATE.currency);
       
       const latestDown = parseFloat(el.downMbpsVal.textContent) || 15.0;
       const deliveryRatio = Math.min(1, Math.max(0, latestDown / adv));
@@ -3103,7 +3119,7 @@
     function updateCurrency() {
       const curr = document.getElementById('selectCurrency').value;
       AUDIT_STATE.currency = curr;
-      document.getElementById('currSymbolLabel').textContent = curr === 'USD' ? '$' : 'JMD $';
+      document.getElementById('currSymbolLabel').textContent = getCurrencySymbol(curr);
       loadAuditLedger();
       updateRoiCalculator();
     }
@@ -3166,7 +3182,7 @@
 
     function renderAuditSummary(summary) {
       if (!summary) return;
-      const currSym = AUDIT_STATE.currency === 'USD' ? '$' : 'JMD $';
+      const currSym = getCurrencySymbol(AUDIT_STATE.currency);
       
       const elBreach = document.getElementById('statBreachRate');
       const elBreachDesc = document.getElementById('statBreachDesc');
@@ -3212,7 +3228,7 @@
         return;
       }
 
-      const currSym = AUDIT_STATE.currency === 'USD' ? '$' : 'JMD $';
+      const currSym = getCurrencySymbol(AUDIT_STATE.currency);
       tbody.innerHTML = ledger.slice(0, 50).map(r => {
         let badgeClass = 'badge-compliant';
         let statusText = 'COMPLIANT';
@@ -3758,7 +3774,7 @@ if __name__ == "__main__":
               account_number: AUDIT_STATE.accountNumber || 'ACC-876-2091',
               customer_name: AUDIT_STATE.customerName || 'Authorized Account Holder',
               customer_address: AUDIT_STATE.customerAddress || 'Service Address on File',
-              regulator: AUDIT_STATE.regulator || 'OUR'
+              regulator: AUDIT_STATE.regulator || 'FCC'
             })
           });
 
@@ -3775,7 +3791,7 @@ if __name__ == "__main__":
       try { localLedger = JSON.parse(localStorage.getItem('omnispeed_audit_ledger') || '[]'); } catch (e) {}
       const summary = calculateLocalSummary(localLedger);
       
-      const currSym = AUDIT_STATE.currency === 'USD' ? '$' : 'JMD $';
+      const currSym = getCurrencySymbol(AUDIT_STATE.currency);
       const latestDown = parseFloat(el.downMbpsVal.textContent) || (summary.avg_download_mbps || 15.0);
       const deficit = Math.max(0, (1 - (latestDown / AUDIT_STATE.advertisedMbps)) * 100);
       const monthlyRebate = Math.min(AUDIT_STATE.monthlyBill, AUDIT_STATE.monthlyBill * (deficit / 100));
@@ -3867,7 +3883,7 @@ Telemetry Evidence Docket ID: OM-${Date.now().toString().slice(-8)}`;
       let localLedger = [];
       try { localLedger = JSON.parse(localStorage.getItem('omnispeed_audit_ledger') || '[]'); } catch (e) {}
       const s = calculateLocalSummary(localLedger);
-      const currSym = AUDIT_STATE.currency === 'USD' ? '$' : 'JMD $';
+      const currSym = getCurrencySymbol(AUDIT_STATE.currency);
       const regName = {
         'OUR': "Jamaica Office of Utilities Regulation (OUR) & Fair Trading Commission",
         'FCC': "United States Federal Communications Commission (FCC) Enforcement Bureau",

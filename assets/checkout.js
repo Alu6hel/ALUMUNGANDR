@@ -79,8 +79,8 @@
             <span>PayPal</span>
           </button>
           <button class="alu-tab-btn" id="tabBtnLynk" onclick="window.switchAluTab('lynk')">
-            <span class="alu-tab-icon">🇯🇲</span>
-            <span>Jamaica (JMD / Lynk)</span>
+            <span class="alu-tab-icon">🌐</span>
+            <span>Regional (JMD / Lynk)</span>
           </button>
         </div>
 
@@ -134,14 +134,14 @@
           </div>
         </div>
 
-        <!-- Tab 3: Jamaican Local Payment (Lynk / Local Bank) -->
+        <!-- Tab 3: Regional Local Payment (Lynk / Domestic Wire) -->
         <div class="alu-tab-panel" id="panelLynk">
           <div class="alu-callout-box" style="border-color: rgba(16, 185, 129, 0.35);">
             <div class="alu-callout-header">
-              <span style="color: #10b981;">🇯🇲</span> Jamaican Dollar (JMD) Settlement
+              <span style="color: #10b981;">🌐</span> Regional &amp; Multi-Currency Settlement
             </div>
             <p class="alu-callout-desc">
-              Based in Jamaica? Pay locally in JMD with zero US conversion penalties via <strong>Lynk</strong> or direct local bank transfer (NCB / Scotiabank).
+              Purchasing from the Caribbean or Latin America? Pay in JMD via <strong>Lynk</strong> or direct domestic transfer with zero foreign conversion markups.
             </p>
 
             <div class="alu-copy-row">
@@ -175,7 +175,7 @@
         <!-- Security Footer -->
         <div class="alu-security-footer">
           <span>🔒 SECURE DISPATCH &bull; NO TRACKING COOKIES</span>
-          <span>CURRENCY: USD &amp; JMD</span>
+          <span>CURRENCY: USD &amp; MULTI-CURRENCY</span>
         </div>
       </div>
     `;

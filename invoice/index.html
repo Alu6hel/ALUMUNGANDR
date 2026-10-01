@@ -1492,7 +1492,7 @@
 <body>
 
   <!-- Top Navigation -->
-            <header class="site-header">
+              <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1608,12 +1608,12 @@
         </div>
         <div>
           <select id="currencySelect" class="currency-select" onchange="renderDoc()">
-            <option value="JMD $">JMD ($)</option>
             <option value="$" selected>USD ($)</option>
             <option value="€">EUR (€)</option>
             <option value="£">GBP (£)</option>
             <option value="CAD $">CAD ($)</option>
             <option value="AUD $">AUD ($)</option>
+            <option value="JMD $">JMD ($)</option>
             <option value="TTD $">TTD ($)</option>
             <option value="BSD $">BSD ($)</option>
             <option value="KYD $">KYD ($)</option>
@@ -1889,7 +1889,7 @@
               <option value="venmo">Venmo / Cash App</option>
               <option value="ach">ACH Direct Deposit / US Wire Transfer</option>
               <option value="paypal">PayPal</option>
-              <option value="lynk">Lynk Jamaica (NCB Mobile Wallet)</option>
+              <option value="lynk">Lynk / Regional Mobile Wallet (Caribbean &amp; Jamaica)</option>
               <option value="other">Custom Payment Link / QR</option>
             </select>
           </div>
@@ -2477,7 +2477,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
         handleLbl.textContent = 'PayPal.me Link or Email';
         handleInput.placeholder = 'https://paypal.me/yourcompany';
       } else if (pm === 'lynk') {
-        handleLbl.textContent = 'Lynk Jamaica Handle';
+        handleLbl.textContent = 'Lynk / Mobile Wallet Handle';
         handleInput.placeholder = '@yourhandle';
       } else {
         handleLbl.textContent = 'Payment ID / URL';
@@ -2788,7 +2788,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
         document.getElementById('qrSubText').textContent = 'Scan to pay via PayPal balance or card.';
         qrPayload = payHandle.startsWith('http') ? payHandle : `https://paypal.me/${payHandle.replace('@','')}/${depositAmount.toFixed(2)}`;
       } else if (payMethod === 'lynk') {
-        payTitle = 'Lynk Jamaica (NCB Mobile Wallet)';
+        payTitle = 'Lynk / Regional Wallet (Caribbean & Jamaica)';
         document.getElementById('qrHandleText').textContent = `Lynk Handle: ${payHandle}`;
         document.getElementById('qrSubText').textContent = 'Scan with your Lynk app or phone camera to deposit.';
         qrPayload = `lynk://pay/${payHandle.replace('@','')}?amount=${depositAmount.toFixed(2)}`;
@@ -3260,7 +3260,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-          <footer class="site-footer">
+            <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">

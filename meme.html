@@ -345,18 +345,30 @@
     }
     footer a { color: var(--accent-amber); text-decoration: none; }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
-        <header class="site-header">
+          <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
       <span class="brand-badge">MEME // STUDIO</span>
     </a>
     <nav class="site-nav">
+      <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
+          <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-checked="false">
+          <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
+          <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+        </button>
+        <div class="theme-slider-thumb"></div>
+      </div>
       <div class="nav-dropdown">
         <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
         <div class="dropdown-panel">
@@ -486,7 +498,7 @@
     </div>
   </main>
 
-        <footer class="site-footer">
+          <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -538,7 +550,7 @@
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js" defer></script>
+  <script src="/assets/nav.js?v=20261001c" defer></script>
 
   <script>
     const canvas = document.getElementById('meme-canvas');

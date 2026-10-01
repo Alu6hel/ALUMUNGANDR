@@ -116,50 +116,54 @@
 
     // 4. Initialize 3-Stage Global Theme Toggle (Dark | Paper | Amber)
     function initThemeToggle() {
+      // Find all theme toggle containers on the page
+      let toggleWraps = Array.from(document.querySelectorAll('.theme-toggle-wrap'));
+
+      // Fallback: If header exists and has no toggle, inject it
       const siteNav = document.querySelector('header.site-header nav.site-nav');
-      if (!siteNav || siteNav.querySelector('.theme-toggle-wrap')) return;
-
-      const toggleWrap = document.createElement('div');
-      toggleWrap.className = 'theme-toggle-wrap';
-      toggleWrap.setAttribute('role', 'radiogroup');
-      toggleWrap.setAttribute('aria-label', 'Display Theme');
-      toggleWrap.innerHTML = `
-        <button type="button" class="theme-toggle-btn" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
-          <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
-        </button>
-        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome & Negative" aria-checked="false">
-          <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
-        </button>
-        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
-          <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
-        </button>
-        <div class="theme-slider-thumb"></div>
-      `;
-
-      const dropdown = siteNav.querySelector('.nav-dropdown');
-      if (dropdown) {
-        siteNav.insertBefore(toggleWrap, dropdown);
-      } else {
-        siteNav.prepend(toggleWrap);
+      if (siteNav && !siteNav.querySelector('.theme-toggle-wrap')) {
+        const toggleWrap = document.createElement('div');
+        toggleWrap.className = 'theme-toggle-wrap';
+        toggleWrap.setAttribute('role', 'radiogroup');
+        toggleWrap.setAttribute('aria-label', 'Display Theme');
+        toggleWrap.innerHTML = `
+          <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
+            <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+          </button>
+          <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome & Negative" aria-checked="false">
+            <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+          </button>
+          <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
+            <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+          </button>
+          <div class="theme-slider-thumb"></div>
+        `;
+        const dropdown = siteNav.querySelector('.nav-dropdown');
+        if (dropdown) {
+          siteNav.insertBefore(toggleWrap, dropdown);
+        } else {
+          siteNav.prepend(toggleWrap);
+        }
+        toggleWraps.push(toggleWrap);
       }
 
-      const thumb = toggleWrap.querySelector('.theme-slider-thumb');
-      const buttons = toggleWrap.querySelectorAll('.theme-toggle-btn');
-
       function updateActiveThumb(theme) {
-        let activeBtn = toggleWrap.querySelector(`.theme-toggle-btn[data-theme="${theme}"]`);
-        if (!activeBtn) activeBtn = toggleWrap.querySelector('.theme-toggle-btn[data-theme="dark"]');
+        toggleWraps.forEach(function(wrap) {
+          let activeBtn = wrap.querySelector(`.theme-toggle-btn[data-theme="${theme}"]`);
+          if (!activeBtn) activeBtn = wrap.querySelector('.theme-toggle-btn[data-theme="dark"]');
 
-        buttons.forEach(function(btn) {
-          const isActive = btn === activeBtn;
-          btn.classList.toggle('active', isActive);
-          btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+          wrap.querySelectorAll('.theme-toggle-btn').forEach(function(btn) {
+            const isActive = btn === activeBtn;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+          });
+
+          const thumb = wrap.querySelector('.theme-slider-thumb');
+          if (thumb && activeBtn && activeBtn.offsetWidth > 0) {
+            thumb.style.width = activeBtn.offsetWidth + 'px';
+            thumb.style.transform = `translateX(${activeBtn.offsetLeft}px)`;
+          }
         });
-
-        if (thumb && activeBtn) {
-          thumb.style.width = activeBtn.offsetWidth + 'px';
-          thumb.style.transform = `translateX(${activeBtn.offsetLeft}px)`;
-        }
       }
 
       function applyTheme(theme, save) {
@@ -182,50 +186,66 @@
         window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: theme } }));
       }
 
-      buttons.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          const selected = this.getAttribute('data-theme');
-          applyTheme(selected, true);
+      toggleWraps.forEach(function(wrap) {
+        wrap.querySelectorAll('.theme-toggle-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const selected = this.getAttribute('data-theme');
+            applyTheme(selected, true);
+          });
         });
-      });
 
-      // Keyboard navigation support for accessibility
-      toggleWrap.addEventListener('keydown', function(e) {
-        const themeOrder = ['dark', 'paper', 'amber'];
-        const current = document.documentElement.getAttribute('data-theme') || 'dark';
-        let idx = themeOrder.indexOf(current);
-        if (idx === -1) idx = 0;
+        // Keyboard navigation support for accessibility
+        wrap.addEventListener('keydown', function(e) {
+          const themeOrder = ['dark', 'paper', 'amber'];
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          let idx = themeOrder.indexOf(current);
+          if (idx === -1) idx = 0;
 
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          const next = themeOrder[(idx + 1) % themeOrder.length];
-          applyTheme(next, true);
-          const btn = toggleWrap.querySelector(`.theme-toggle-btn[data-theme="${next}"]`);
-          if (btn) btn.focus();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = themeOrder[(idx - 1 + themeOrder.length) % themeOrder.length];
-          applyTheme(prev, true);
-          const btn = toggleWrap.querySelector(`.theme-toggle-btn[data-theme="${prev}"]`);
-          if (btn) btn.focus();
-        }
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = themeOrder[(idx + 1) % themeOrder.length];
+            applyTheme(next, true);
+            const btn = wrap.querySelector(`.theme-toggle-btn[data-theme="${next}"]`);
+            if (btn) btn.focus();
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = themeOrder[(idx - 1 + themeOrder.length) % themeOrder.length];
+            applyTheme(prev, true);
+            const btn = wrap.querySelector(`.theme-toggle-btn[data-theme="${prev}"]`);
+            if (btn) btn.focus();
+          }
+        });
       });
 
       // Read initial theme and set active position
       const initialTheme = localStorage.getItem('alu_theme') || document.documentElement.getAttribute('data-theme') || 'dark';
       applyTheme(initialTheme, false);
 
-      // Re-align slider on window resize / orientation change
+      // Re-align slider on window resize / orientation change / fonts ready
       window.addEventListener('resize', function() {
         const cur = document.documentElement.getAttribute('data-theme') || 'dark';
         updateActiveThumb(cur);
       });
+      window.addEventListener('load', function() {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateActiveThumb(cur);
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function() {
+          const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+          updateActiveThumb(cur);
+        });
+      }
       setTimeout(function() {
         const cur = document.documentElement.getAttribute('data-theme') || 'dark';
         updateActiveThumb(cur);
       }, 50);
+      setTimeout(function() {
+        const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateActiveThumb(cur);
+      }, 300);
     }
 
     initThemeToggle();

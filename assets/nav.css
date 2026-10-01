@@ -523,6 +523,62 @@ html[data-theme="paper"] {
   --nav-coral: #dc2626;
   --nav-emerald: #059669;
   --nav-dropdown-bg: rgba(255, 255, 255, 0.98);
+
+  /* Global tokens matching Stage 2: Paper Monochrome & Negative */
+  --bg-dark: #f8f9fa !important;
+  --bg-surface: #ffffff !important;
+  --bg-surface-elevated: #f1f5f9 !important;
+  --bg-studio: #ffffff !important;
+  --border-dashed: 1px dashed rgba(15, 23, 42, 0.18) !important;
+  --border-solid: 1px solid rgba(15, 23, 42, 0.12) !important;
+  --text-primary: #0b0f19 !important;
+  --text-secondary: #374151 !important;
+  --text-muted: #6b7280 !important;
+  --accent-coral: #dc2626 !important;
+  --accent-coral-bright: #ef4444 !important;
+  --accent-coral-glow: rgba(220, 38, 38, 0.2) !important;
+
+  /* Speed test & Tool tokens */
+  --bg-card: #ffffff !important;
+  --bg-card-border: rgba(15, 23, 42, 0.14) !important;
+  --bg-card-hover: #f8fafc !important;
+  --text-main: #0b0f19 !important;
+  --text-bright: #000000 !important;
+  --text-subtle: #4b5563 !important;
+}
+
+.drawer-menu .theme-toggle-wrap {
+  margin: 0 !important;
+}
+
+html[data-theme="paper"] .header-nav-wrap {
+  background: rgba(248, 249, 250, 0.94) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-theme="paper"] .header-tagline {
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: #0b0f19 !important;
+  border-color: #d1d5db !important;
+}
+
+html[data-theme="paper"] .btn-ticket-action {
+  background: #ffffff !important;
+  color: #0b0f19 !important;
+  border-color: #d1d5db !important;
+}
+
+html[data-theme="paper"] .btn-ticket-action:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px) !important;
 }
 
 html[data-theme="paper"] .theme-toggle-wrap {
@@ -837,6 +893,62 @@ html[data-theme="amber"] {
   --nav-coral: #ea580c;
   --nav-emerald: #10b981;
   --nav-dropdown-bg: rgba(16, 14, 10, 0.98);
+
+  /* Global tokens matching Stage 3: Telemetry Amber / Phosphor Gold */
+  --bg-dark: #090806 !important;
+  --bg-surface: #120f0a !important;
+  --bg-surface-elevated: #1a150e !important;
+  --bg-studio: #100d08 !important;
+  --border-dashed: 1px dashed rgba(245, 158, 11, 0.25) !important;
+  --border-solid: 1px solid rgba(245, 158, 11, 0.2) !important;
+  --text-primary: #fef3c7 !important;
+  --text-secondary: #fde68a !important;
+  --text-muted: #b48c58 !important;
+  --accent-coral: #f59e0b !important;
+  --accent-coral-bright: #fbbf24 !important;
+  --accent-coral-glow: rgba(245, 158, 11, 0.3) !important;
+
+  /* Speed test & Tool tokens */
+  --bg-card: rgba(18, 15, 10, 0.92) !important;
+  --bg-card-border: rgba(245, 158, 11, 0.25) !important;
+  --bg-card-hover: rgba(26, 21, 14, 0.98) !important;
+  --text-main: #fef3c7 !important;
+  --text-bright: #ffffff !important;
+  --text-subtle: #d97706 !important;
+}
+
+html[data-theme="amber"] .header-nav-wrap {
+  background: rgba(9, 8, 6, 0.94) !important;
+  border-bottom: 1px dashed rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .header-tagline {
+  background: rgba(20, 16, 10, 0.8) !important;
+  color: #fef3c7 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .ticket-badge {
+  background: #f59e0b !important;
+  color: #090806 !important;
+}
+
+html[data-theme="amber"] .btn-ticket-action {
+  background: #14110b !important;
+  color: #fef3c7 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .btn-ticket-action:hover {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fbbf24 !important;
+  border-color: #f59e0b !important;
+}
+
+html[data-theme="amber"] .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(245, 158, 11, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 158, 11, 0.05) 1px, transparent 1px) !important;
 }
 
 html[data-theme="amber"] .theme-toggle-wrap {

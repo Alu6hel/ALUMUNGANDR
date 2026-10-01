@@ -40,6 +40,18 @@ def get_header_html(badge="TOOL // SUITE"):
       <span class="brand-badge">{badge}</span>
     </a>
     <nav class="site-nav">
+      <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
+          <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-checked="false">
+          <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
+          <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+        </button>
+        <div class="theme-slider-thumb"></div>
+      </div>
       <div class="nav-dropdown">
         <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
         <div class="dropdown-panel">
@@ -133,7 +145,7 @@ def get_footer_html():
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js" defer></script>'''
+  <script src="/assets/nav.js?v=20261001c" defer></script>'''
 
 def update_page(filename, badge):
     if not os.path.exists(filename):
@@ -143,14 +155,16 @@ def update_page(filename, badge):
     with open(filename, 'r', encoding='utf-8') as f:
         html = f.read()
 
-    # 1. Ensure nav.css is included in <head>
+    # 1. Ensure nav.css is included in <head> with cache-buster
     if '/assets/nav.css' not in html:
-        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css">\n</head>')
+        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">\n</head>')
+    else:
+        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261001c', html)
 
+    # 2. Update Header / Nav
     header_html = get_header_html(badge)
     footer_html = get_footer_html()
 
-    # 2. Update Header / Nav
     if '<header class="site-header">' in html:
         html = re.sub(r'<header class="site-header">.*?</header>', header_html, html, count=1, flags=re.DOTALL)
     elif '<header class="speed-nav">' in html:
@@ -166,27 +180,31 @@ def update_page(filename, badge):
     elif '<header' in html and filename not in ['index.html']:
         html = re.sub(r'<header[^>]*>.*?</header>', header_html, html, count=1, flags=re.DOTALL)
 
-    # 3. Update Footer
+    # 3. Update Footer & Nav.js script
     if filename not in ['draw.html', 'write.html']:
         if '<footer class="site-footer">' in html:
-            html = re.sub(r'<footer class="site-footer">.*?</footer>\s*(<script src="/assets/nav\.js" defer></script>)?', footer_html, html, count=1, flags=re.DOTALL)
+            html = re.sub(r'<footer class="site-footer">.*?</footer>\s*(<script src="/assets/nav\.js[^>]*>\s*</script>)?', footer_html, html, count=1, flags=re.DOTALL)
         elif '<footer class="speed-footer">' in html:
-            html = re.sub(r'<footer class="speed-footer">.*?</footer>', footer_html, html, count=1, flags=re.DOTALL)
+            html = re.sub(r'<footer class="speed-footer">.*?</footer>\s*(<script src="/assets/nav\.js[^>]*>\s*</script>)?', footer_html, html, count=1, flags=re.DOTALL)
         elif '<footer' in html:
-            html = re.sub(r'<footer[^>]*>.*?</footer>', footer_html, html, count=1, flags=re.DOTALL)
+            html = re.sub(r'<footer[^>]*>.*?</footer>\s*(<script src="/assets/nav\.js[^>]*>\s*</script>)?', footer_html, html, count=1, flags=re.DOTALL)
         else:
             html = html.replace('</body>', footer_html + '\n</body>')
     else:
         if '/assets/nav.js' not in html:
-            html = html.replace('</body>', '  <script src="/assets/nav.js" defer></script>\n</body>')
+            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261001c" defer></script>\n</body>')
+        else:
+            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001c', html)
+
+    # Also clean up any lingering old nav.js tags
+    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001c', html)
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html)
 
     # Mirror to subdirectory if tool directory exists
     tool_key = filename.replace('.html', '')
-    if tool_key in ['stats', 'call', 'clip', 'uuid', 'json', 'regex', 'hash', 'diff', 'jwt', 'colors', 'meme', 'draw', 'write', 'timecapsule']:
-        os.makedirs(tool_key, exist_ok=True)
+    if os.path.isdir(tool_key):
         shutil.copyfile(filename, os.path.join(tool_key, 'index.html'))
         print(f"Updated {filename} and {tool_key}/index.html")
     else:

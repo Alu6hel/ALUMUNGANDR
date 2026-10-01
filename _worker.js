@@ -87,12 +87,26 @@ export default {
     if (res.status === 200 && contentType.includes('text/html')) {
       const html = await res.text();
       const themeScript = `<script>try{var t=localStorage.getItem('alu_theme');if(t==='paper'||t==='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
+      const headers = new Headers(res.headers);
+      headers.set('Cache-Control', 'no-cache, must-revalidate');
       return new Response(html.replace('<head>', '<head>' + themeScript), {
         status: res.status,
         statusText: res.statusText,
-        headers: res.headers
+        headers: headers
       });
     }
+
+    // Force browsers and edge proxies to revalidate nav assets immediately
+    if (url.pathname.startsWith('/assets/')) {
+      const headers = new Headers(res.headers);
+      headers.set('Cache-Control', 'no-cache, must-revalidate');
+      return new Response(res.body, {
+        status: res.status,
+        statusText: res.statusText,
+        headers: headers
+      });
+    }
+
     return res;
   },
 

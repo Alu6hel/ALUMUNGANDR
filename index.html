@@ -1899,7 +1899,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="/assets/nav.css">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">
 </head>
 <body>
   <div class="bg-grid"></div>
@@ -1925,7 +1925,19 @@
 
       <div class="header-right-action">
         <div class="header-tagline"><span style="color: var(--accent-coral); font-weight: 700; letter-spacing: 0.12em;">&ldquo;BEYOND LOGIC IS TRUTH&rdquo;</span> &bull; 20 TOOLS &bull; STORE (11)</div>
-                        <a href="#ai-realities" class="btn-ticket-action">
+        <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+          <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
+            <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+          </button>
+          <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-checked="false">
+            <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+          </button>
+          <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
+            <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+          </button>
+          <div class="theme-slider-thumb"></div>
+        </div>
+        <a href="#ai-realities" class="btn-ticket-action">
           AI DEVELOPMENT OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
         </a>
         <a href="#qa-section" class="btn-ticket-action">
@@ -1943,6 +1955,21 @@
 
     <!-- DRAWER QUICK NAVIGATION -->
   <div id="drawerMenu" class="drawer-menu" style="max-height: 85vh; overflow-y: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.15);">
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); font-weight: 700;">THEME</span>
+      <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
+          <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-checked="false">
+          <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
+          <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+        </button>
+        <div class="theme-slider-thumb"></div>
+      </div>
+    </div>
     <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); letter-spacing: 0.1em; padding-bottom: 4px; border-bottom: 1px dashed rgba(255,255,255,0.15);">
       // BROADBAND &amp; TELEMETRY
     </div>
@@ -3004,7 +3031,7 @@
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js" defer></script>
+  <script src="/assets/nav.js?v=20261001c" defer></script>
 
   <!-- ==========================================================================
        10. SCRIPTS & ANIMATION CONTROLLERS

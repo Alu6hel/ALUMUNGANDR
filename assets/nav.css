@@ -286,8 +286,53 @@ footer.site-footer {
     border-radius: 16px 16px 0 0 !important;
     grid-template-columns: 1fr !important;
     padding: 1.25rem !important;
+    -webkit-overflow-scrolling: touch !important;
   }
   .footer-container {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================================================================
+   UNIVERSAL TOUCH & MOBILE INTERACTION ENGINE (APPLIED GLOBALLY)
+   ========================================================================== */
+a, button, input, select, textarea, [role="button"], .clickable, 
+.ticket-badge, .drawer-link, .nav-item, .dropdown-trigger, .matrix-card-flip-wrap {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+button, .dropdown-trigger, .btn-ticket-action, .drawer-link {
+  min-height: 44px;
+}
+
+/* Universal Outside-Tap Backdrop Overlay for Menus */
+.drawer-backdrop, .global-menu-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  z-index: 1000 !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
+.drawer-backdrop.active, .global-menu-backdrop.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Touch Device Optimization: prevent sticky hover states */
+@media (hover: none) {
+  .btn-ticket-action:hover, .drawer-link:hover, .nav-item:hover {
+    transform: none !important;
+  }
+}
+

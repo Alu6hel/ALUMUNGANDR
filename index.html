@@ -737,16 +737,27 @@
     }
 
     .matrix-card-flip-wrap {
-      perspective: 1200px;
+      perspective: 1400px;
       width: 100%;
-      min-height: 520px;
+      min-height: 610px;
       display: flex;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
+      user-select: none;
+      -webkit-user-select: none;
+      border-radius: 14px;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+
+    .matrix-card-flip-wrap:hover {
+      transform: translateY(-4px);
     }
 
     .matrix-flip-card {
       position: relative;
       width: 100%;
-      min-height: 520px;
+      min-height: 610px;
       transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
       border-radius: 14px;
@@ -764,58 +775,60 @@
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       border-radius: 14px;
-      padding: 22px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
+      box-sizing: border-box;
     }
 
     /* FRONT FACE: Technical Telemetry & Benchmarks */
     .card-front {
-      background: rgba(14, 16, 22, 0.95);
+      background: rgba(14, 16, 22, 0.96);
       border: var(--border-dashed);
       transform: rotateY(0deg);
     }
 
-    .matrix-flip-card:hover .card-front {
-      border-color: rgba(255, 255, 255, 0.28);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+    .matrix-card-flip-wrap:hover .card-front {
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.15);
     }
 
     /* BACK FACE: Layman & Everyday Explanation */
     .card-back {
-      background: linear-gradient(145deg, rgba(16, 20, 30, 0.98), rgba(22, 28, 44, 0.98));
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.12);
+      background: linear-gradient(145deg, rgba(14, 18, 28, 0.98), rgba(20, 26, 40, 0.98));
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.18);
       transform: rotateY(180deg);
     }
 
-    .matrix-flip-card:hover .card-back {
-      border-color: rgba(56, 189, 248, 0.6);
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.2);
+    .matrix-card-flip-wrap:hover .card-back {
+      border-color: rgba(56, 189, 248, 0.75);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 35px rgba(56, 189, 248, 0.3);
     }
 
-    /* Visual Diagram Container */
+    /* Visual Diagram Container - High Contrast & Crisp Visibility */
     .card-visual-banner {
       width: 100%;
-      height: 80px;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      height: 125px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(8, 12, 20, 0.98), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.28);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 6px 12px;
+      padding: 8px 12px;
       position: relative;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 4px 15px rgba(0, 0, 0, 0.35);
     }
 
     .card-visual-banner svg {
       width: 100%;
       height: 100%;
-      max-height: 68px;
+      max-height: 110px;
       object-fit: contain;
     }
 
@@ -829,103 +842,112 @@
 
     .matrix-tag {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.05em;
-      padding: 2px 8px;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
       border-radius: 4px;
       text-transform: uppercase;
     }
 
     .tag-benchmark {
-      background: rgba(56, 189, 248, 0.12);
+      background: rgba(56, 189, 248, 0.16);
       color: var(--accent-cyan);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.35);
     }
 
     .tag-limit {
-      background: rgba(222, 88, 73, 0.12);
+      background: rgba(222, 88, 73, 0.16);
       color: var(--accent-coral);
-      border: 1px solid rgba(222, 88, 73, 0.3);
+      border: 1px solid rgba(222, 88, 73, 0.35);
     }
 
     .tag-local {
-      background: rgba(16, 185, 129, 0.12);
+      background: rgba(16, 185, 129, 0.16);
       color: var(--accent-green);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      border: 1px solid rgba(16, 185, 129, 0.35);
     }
 
     .matrix-metric-pill {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 4px;
       border: 1px solid;
     }
 
     .matrix-title {
-      font-size: 16px;
+      font-size: 18.5px;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
       line-height: 1.35;
+      letter-spacing: -0.01em;
       margin: 0;
     }
 
     .matrix-body {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.55;
+      font-size: 14.5px;
+      color: #f1f5f9; /* High contrast bright text */
+      line-height: 1.62;
       margin: 0;
     }
 
     .matrix-citation {
       font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      color: #cbd5e1;
+      border-top: 1px dashed rgba(255, 255, 255, 0.14);
       padding-top: 8px;
-      line-height: 1.4;
+      line-height: 1.45;
+      pointer-events: auto;
     }
 
     .matrix-citation a {
       color: var(--accent-cyan);
       text-decoration: none;
       border-bottom: 1px dotted var(--accent-cyan);
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(56, 189, 248, 0.08);
+      transition: all 0.2s ease;
+      display: inline-block;
     }
 
     .matrix-citation a:hover {
-      color: #fff;
+      color: #ffffff;
+      background: rgba(56, 189, 248, 0.25);
       border-bottom-style: solid;
     }
 
     .matrix-recommendation {
-      font-size: 12px;
-      color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.03);
-      border-left: 2px solid var(--accent-green);
-      padding: 8px 12px;
+      font-size: 13.5px;
+      color: #f8fafc;
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--accent-green);
+      padding: 10px 14px;
       border-radius: 0 6px 6px 0;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
-    /* Flip buttons */
+    /* Flip buttons & Tap Anywhere Indicators */
     .flip-toggle-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 6px;
       color: var(--text-primary);
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.06em;
-      padding: 4px 10px;
+      padding: 5px 12px;
       cursor: pointer;
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       gap: 5px;
       text-transform: uppercase;
+      touch-action: manipulation;
     }
 
     .flip-toggle-btn:hover {
@@ -936,7 +958,7 @@
     }
 
     .flip-back-btn {
-      background: rgba(56, 189, 248, 0.12);
+      background: rgba(56, 189, 248, 0.15);
       border-color: var(--accent-cyan);
       color: var(--accent-cyan);
     }
@@ -946,38 +968,39 @@
       color: #07080a;
     }
 
-    .btn-flip-action {
+    /* Tap anywhere flip hint indicator */
+    .flip-hint-strip {
       width: 100%;
       background: rgba(255, 255, 255, 0.04);
       border: 1px dashed rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      color: var(--text-secondary);
+      border-radius: 8px;
+      color: var(--accent-cyan);
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 8px 12px;
-      cursor: pointer;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      letter-spacing: 0.03em;
       transition: all 0.2s ease;
-      margin-top: 4px;
+      pointer-events: none; /* Let parent handle card tap */
     }
 
-    .btn-flip-action:hover {
-      background: rgba(56, 189, 248, 0.15);
+    .matrix-card-flip-wrap:hover .flip-hint-strip {
+      background: rgba(56, 189, 248, 0.18);
       border-color: var(--accent-cyan);
-      color: #fff;
       border-style: solid;
+      color: #ffffff;
     }
 
-    .btn-flip-action.back-action {
+    .flip-hint-strip.back-hint {
       background: rgba(56, 189, 248, 0.1);
       border: 1px solid var(--accent-cyan);
       color: var(--accent-cyan);
     }
 
-    .btn-flip-action.back-action:hover {
+    .matrix-card-flip-wrap:hover .flip-hint-strip.back-hint {
       background: var(--accent-cyan);
       color: #07080a;
     }
@@ -991,45 +1014,45 @@
     }
 
     .layman-analogy-box {
-      background: rgba(56, 189, 248, 0.08);
+      background: rgba(56, 189, 248, 0.1);
       border-left: 3px solid var(--accent-cyan);
-      padding: 8px 12px;
-      border-radius: 0 6px 6px 0;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .layman-analogy-title {
-      font-size: 14px;
+      font-size: 16.5px;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
     }
 
     .layman-explanation-text {
-      font-size: 13px;
-      color: #d1d5db;
-      line-height: 1.6;
+      font-size: 14.5px;
+      color: #f1f5f9;
+      line-height: 1.65;
       margin: 0;
     }
 
     .layman-takeaway-box {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(16, 185, 129, 0.4);
       border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #e5e7eb;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #f8fafc;
     }
 
     .layman-takeaway-box strong {
       color: var(--accent-green);
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.05em;
+      font-size: 12px;
+      letter-spacing: 0.06em;
     }
 
     /* Standard Card (for Q&A) */
@@ -1681,6 +1704,9 @@
 <body>
   <div class="bg-grid"></div>
 
+  <!-- Full-Screen Touch Backdrop for Instant Outside-Tap Dismissal -->
+  <div id="drawerBackdrop" class="drawer-backdrop" onclick="closeDrawerMenu()"></div>
+
   <!-- FLOATING TICKET BADGE HEADER (Screenshot 1) -->
   <header class="header-nav-wrap">
     <div class="header-nav-inner">
@@ -1937,29 +1963,32 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-benchmark">EMPIRICAL BENCHMARK</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">65.2% Verified Cap</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.4);">65.2% Verified Cap</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-01')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: Git branch AST tree -->
+              <!-- High-Contrast SVG Visual Diagram: Git Branching & Multi-File Barrier -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1"/>
-                  <line x1="24" y1="34" x2="256" y2="34" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2"/>
-                  <circle cx="36" cy="34" r="5" fill="#38bdf8" stroke="#080c14" stroke-width="2"/>
-                  <circle cx="86" cy="34" r="5" fill="#38bdf8" stroke="#080c14" stroke-width="2"/>
-                  <path d="M86 34 C100 34, 106 18, 126 18 L196 18" stroke="#38bdf8" stroke-width="2" stroke-dasharray="3 3"/>
-                  <circle cx="140" cy="18" r="4" fill="#38bdf8"/>
-                  <circle cx="180" cy="18" r="4" fill="#38bdf8"/>
-                  <path d="M196 18 C210 18, 216 34, 230 34" stroke="#de5849" stroke-width="2"/>
-                  <circle cx="230" cy="34" r="6" fill="#de5849"/>
-                  <path d="M227 31 L233 37 M233 31 L227 37" stroke="#fff" stroke-width="1.5"/>
-                  <rect x="110" y="44" width="76" height="18" rx="4" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-                  <text x="148" y="56" fill="#10b981" font-family="monospace" font-size="9" text-anchor="middle" font-weight="bold">TEST: 65.2%</text>
-                  <text x="50" y="24" fill="#9aa0b0" font-family="monospace" font-size="8">main</text>
-                  <text x="148" y="13" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="middle">refactor/v2</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 25 H340 M0 50 H340 M0 75 H340" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <path d="M85 0 V100 M170 0 V100 M255 0 V100" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <line x1="20" y1="65" x2="320" y2="65" stroke="rgba(255, 255, 255, 0.25)" stroke-width="2.5"/>
+                  <circle cx="36" cy="65" r="7" fill="#38bdf8" stroke="#07080a" stroke-width="2.5"/>
+                  <circle cx="100" cy="65" r="7" fill="#38bdf8" stroke="#07080a" stroke-width="2.5"/>
+                  <path d="M100 65 C120 65, 130 35, 155 35 L260 35" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4 3"/>
+                  <circle cx="170" cy="35" r="6" fill="#10b981" stroke="#07080a" stroke-width="2"/>
+                  <circle cx="225" cy="35" r="6" fill="#10b981" stroke="#07080a" stroke-width="2"/>
+                  <path d="M260 35 C280 35, 290 65, 305 65" stroke="#de5849" stroke-width="2.5"/>
+                  <circle cx="305" cy="65" r="8" fill="#de5849" stroke="#07080a" stroke-width="2.5"/>
+                  <path d="M301 61 L309 69 M309 61 L301 69" stroke="#ffffff" stroke-width="2"/>
+                  <rect x="135" y="6" width="138" height="20" rx="4" fill="rgba(16, 185, 129, 0.22)" stroke="#10b981" stroke-width="1.2"/>
+                  <text x="204" y="20" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="700">SINGLE-FILE: 92% PASS</text>
+                  <rect x="155" y="74" width="160" height="20" rx="4" fill="rgba(222, 88, 73, 0.22)" stroke="#de5849" stroke-width="1.2"/>
+                  <text x="235" y="88" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="700">MULTI-FILE CAP: 65.2%</text>
+                  <text x="36" y="85" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">main</text>
+                  <text x="145" y="49" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9.5">refactor/v2</text>
                 </svg>
               </div>
 
@@ -1974,16 +2003,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Always pair agentic coding loops with automated unit tests and static AST verifiers before merging diffs.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-01')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
+                <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.18); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-01')" title="Return to technical data">
@@ -1992,7 +2021,7 @@
               </div>
 
               <div class="layman-analogy-box">
-                <span>🔧</span>
+                <span style="font-size: 20px;">🔧</span>
                 <span class="layman-analogy-title">The Auto Mechanic Analogy</span>
               </div>
 
@@ -2006,10 +2035,10 @@
                 Give AI small, clear, single-file tasks with automated unit tests. Never tell an AI to &ldquo;rewrite the whole codebase&rdquo; in one prompt and assume it works without testing each part.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-01')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2023,24 +2052,27 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">ATTENTION REALITY</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">-15% to -35% Mid-Depth Accuracy</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.4);">-15% to -35% Mid-Depth Accuracy</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-02')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: U-shaped attention curve -->
+              <!-- High-Contrast SVG Visual Diagram: U-Shaped Attention Dip -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(222, 88, 73, 0.2)" stroke-width="1"/>
-                  <line x1="24" y1="56" x2="256" y2="56" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1"/>
-                  <path d="M28 18 C60 18, 80 48, 140 48 C200 48, 220 18, 252 18" stroke="#de5849" stroke-width="2.5" fill="none"/>
-                  <path d="M28 18 C60 18, 80 48, 140 48 C200 48, 220 18, 252 18 L252 56 L28 56 Z" fill="rgba(222, 88, 73, 0.08)"/>
-                  <rect x="105" y="32" width="70" height="15" rx="3" fill="#161014" stroke="#de5849" stroke-width="1"/>
-                  <text x="140" y="43" fill="#de5849" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">DIP -35%</text>
-                  <text x="32" y="14" fill="#38bdf8" font-family="monospace" font-size="8">HEAD (98%)</text>
-                  <text x="248" y="14" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="end">TAIL (94%)</text>
-                  <text x="140" y="64" fill="#5f6575" font-family="monospace" font-size="7" text-anchor="middle">CONTEXT DEPTH 40% - 70%</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 25 H340 M0 50 H340 M0 75 H340" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <path d="M30 25 C75 25, 110 75, 170 75 C230 75, 265 25, 310 25 L310 85 L30 85 Z" fill="rgba(222, 88, 73, 0.14)"/>
+                  <line x1="20" y1="85" x2="320" y2="85" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1.5"/>
+                  <path d="M30 25 C75 25, 110 75, 170 75 C230 75, 265 25, 310 25" stroke="#de5849" stroke-width="3" stroke-linecap="round"/>
+                  <circle cx="30" cy="25" r="5.5" fill="#38bdf8" stroke="#07080a" stroke-width="2"/>
+                  <circle cx="170" cy="75" r="6.5" fill="#de5849" stroke="#07080a" stroke-width="2"/>
+                  <circle cx="310" cy="25" r="5.5" fill="#38bdf8" stroke="#07080a" stroke-width="2"/>
+                  <rect x="110" y="48" width="120" height="20" rx="4" fill="#140b0e" stroke="#de5849" stroke-width="1.5"/>
+                  <text x="170" y="62" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="700">DIP: -15% TO -35%</text>
+                  <text x="30" y="16" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700">0% PROMPT (98%)</text>
+                  <text x="310" y="16" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" text-anchor="end">100% TAIL (94%)</text>
+                  <text x="170" y="96" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">MID-CONTEXT WINDOW DEPTH (40% - 70%)</text>
                 </svg>
               </div>
 
@@ -2055,16 +2087,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Keep critical architectural constraints and operational rules pinned to the start or tail of context buffers; prefer targeted AST chunking over raw million-token dumps.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-02')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.15); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
+                <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.18); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-02')" title="Return to technical data">
@@ -2073,7 +2105,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-coral);">
-                <span>📖</span>
+                <span style="font-size: 20px;">📖</span>
                 <span class="layman-analogy-title">The 1,000-Page Novel Problem</span>
               </div>
 
@@ -2087,10 +2119,10 @@
                 Put your most important rules, passwords, or critical instructions at the very top or very bottom of your message, never buried in the middle.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-02')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2104,28 +2136,43 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">AGENTIC TOOLING</span>
-                <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">&gt;40% Compound Error on &gt;8 Steps</span>
+                <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">&gt;40% Compound Error on &gt;8 Steps</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-03')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: Sequential tool cascade -->
+              <!-- High-Contrast SVG Visual Diagram: Sequential Tool Cascade -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(245, 158, 11, 0.2)" stroke-width="1"/>
-                  <rect x="16" y="24" width="46" height="22" rx="4" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-                  <text x="39" y="38" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">STEP 1</text>
-                  <path d="M62 35 L76 35" stroke="#10b981" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <rect x="76" y="24" width="46" height="22" rx="4" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-                  <text x="99" y="38" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">STEP 2</text>
-                  <path d="M122 35 L136 35" stroke="#f59e0b" stroke-width="1.5"/>
-                  <rect x="136" y="24" width="46" height="22" rx="4" fill="rgba(245, 158, 11, 0.2)" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="159" y="38" fill="#f59e0b" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">STEP 3 ⚠</text>
-                  <path d="M182 35 L196 35" stroke="#de5849" stroke-width="1.5"/>
-                  <rect x="196" y="24" width="68" height="22" rx="4" fill="rgba(222, 88, 73, 0.2)" stroke="#de5849" stroke-width="1.5"/>
-                  <text x="230" y="38" fill="#de5849" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">CASCADE FAIL</text>
-                  <text x="140" y="15" fill="#f59e0b" font-family="monospace" font-size="8" text-anchor="middle">COMPOUND ERROR &gt;40% ON 8+ STEPS</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Step 1 -->
+                  <rect x="15" y="32" width="65" height="34" rx="6" fill="rgba(16, 185, 129, 0.18)" stroke="#10b981" stroke-width="1.5"/>
+                  <text x="47" y="47" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" font-weight="700">STEP 1</text>
+                  <text x="47" y="59" fill="#6ee7b7" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">95% ACC</text>
+                  
+                  <path d="M80 49 L98 49" stroke="#10b981" stroke-width="2" stroke-dasharray="3 2"/>
+                  
+                  <!-- Step 2 -->
+                  <rect x="98" y="32" width="65" height="34" rx="6" fill="rgba(16, 185, 129, 0.18)" stroke="#10b981" stroke-width="1.5"/>
+                  <text x="130" y="47" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" font-weight="700">STEP 2</text>
+                  <text x="130" y="59" fill="#6ee7b7" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">91% ACC</text>
+                  
+                  <path d="M163 49 L181 49" stroke="#f59e0b" stroke-width="2"/>
+                  
+                  <!-- Step 3 -->
+                  <rect x="181" y="32" width="65" height="34" rx="6" fill="rgba(245, 158, 11, 0.22)" stroke="#f59e0b" stroke-width="1.8"/>
+                  <text x="213" y="47" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" font-weight="700">STEP 3 ⚠</text>
+                  <text x="213" y="59" fill="#fde68a" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">82% DRIFT</text>
+                  
+                  <path d="M246 49 L264 49" stroke="#de5849" stroke-width="2"/>
+                  
+                  <!-- Step 8 Cascade Fail -->
+                  <rect x="264" y="32" width="62" height="34" rx="6" fill="rgba(222, 88, 73, 0.28)" stroke="#de5849" stroke-width="2"/>
+                  <text x="295" y="46" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" font-weight="800">STEP 8+</text>
+                  <text x="295" y="59" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="8" text-anchor="middle" font-weight="700">CASCADE</text>
+                  
+                  <text x="170" y="18" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="700">COMPOUND UNCERTAINTY &gt;40% ON 8+ STEPS</text>
+                  <text x="170" y="86" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">REQUIRES DETERMINISTIC SCHEMAS &amp; VALIDATION</text>
                 </svg>
               </div>
 
@@ -2140,16 +2187,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Build idempotent recovery loops and reject autonomous agent tool chains that lack intermediate unit validation.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-03')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b;">
+                <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid #f59e0b;">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-03')" title="Return to technical data">
@@ -2158,7 +2205,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: #f59e0b;">
-                <span>📞</span>
+                <span style="font-size: 20px;">📞</span>
                 <span class="layman-analogy-title">The Broken Telephone Game</span>
               </div>
 
@@ -2172,10 +2219,10 @@
                 Never let an autonomous AI agent execute long multi-step sequences without human checkpoints or programmatic verification at each step.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-03')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2189,27 +2236,36 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-local">LOCAL COMPUTE</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">22–38 Tok/sec Workstation</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.4);">22–38 Tok/sec Workstation</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-04')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: Workstation GPU silicon die -->
+              <!-- High-Contrast SVG Visual Diagram: Local Silicon Die & Zero Egress -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(16, 185, 129, 0.2)" stroke-width="1"/>
-                  <rect x="22" y="16" width="70" height="36" rx="4" fill="#0c1612" stroke="#10b981" stroke-width="1.5"/>
-                  <text x="57" y="32" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">GPU DIE</text>
-                  <text x="57" y="44" fill="#34d399" font-family="monospace" font-size="7" text-anchor="middle">RTX 4090 / M3</text>
-                  <line x1="92" y1="28" x2="114" y2="28" stroke="#10b981" stroke-width="1.5"/>
-                  <line x1="92" y1="40" x2="114" y2="40" stroke="#10b981" stroke-width="1.5"/>
-                  <rect x="114" y="16" width="60" height="36" rx="4" fill="#0b1a14" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1"/>
-                  <text x="144" y="32" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">4-BIT GGUF</text>
-                  <text x="144" y="44" fill="#9aa0b0" font-family="monospace" font-size="7" text-anchor="middle">AWQ KERNEL</text>
-                  <rect x="184" y="16" width="76" height="36" rx="4" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-                  <text x="222" y="30" fill="#10b981" font-family="monospace" font-size="9" text-anchor="middle" font-weight="bold">28 TOK/S</text>
-                  <text x="222" y="44" fill="#34d399" font-family="monospace" font-size="7" text-anchor="middle">ZERO CLOUD EGRESS</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- GPU Silicon Die -->
+                  <rect x="20" y="16" width="90" height="52" rx="6" fill="#081812" stroke="#10b981" stroke-width="2"/>
+                  <text x="65" y="38" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="11" text-anchor="middle" font-weight="800">RTX 4090</text>
+                  <text x="65" y="54" fill="#6ee7b7" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">M3 MAX 24GB+</text>
+                  
+                  <line x1="110" y1="34" x2="135" y2="34" stroke="#10b981" stroke-width="2"/>
+                  <line x1="110" y1="50" x2="135" y2="50" stroke="#10b981" stroke-width="2"/>
+                  
+                  <!-- 4-bit Engine -->
+                  <rect x="135" y="16" width="85" height="52" rx="6" fill="#0b1b22" stroke="#38bdf8" stroke-width="2"/>
+                  <text x="177" y="38" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="11" text-anchor="middle" font-weight="800">4-BIT GGUF</text>
+                  <text x="177" y="54" fill="#bae6fd" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">AWQ KERNEL</text>
+                  
+                  <path d="M220 42 L245 42" stroke="#10b981" stroke-width="2"/>
+                  
+                  <!-- Zero egress shield -->
+                  <rect x="245" y="16" width="80" height="52" rx="6" fill="rgba(16, 185, 129, 0.22)" stroke="#10b981" stroke-width="2"/>
+                  <text x="285" y="38" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="11.5" text-anchor="middle" font-weight="800">28 TOK/S</text>
+                  <text x="285" y="54" fill="#a7f3d0" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle" font-weight="700">0 CLOUD EGRESS</text>
+                  
+                  <text x="170" y="88" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" font-weight="700">🔒 100% PRIVATE HARDWARE // ZERO SUBSCRIPTION LOCK-IN</text>
                 </svg>
               </div>
 
@@ -2224,16 +2280,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Execute sensitive code exploration and data analysis on local GGUF instances; reserve cloud frontier models exclusively for deep architectural planning.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-04')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green);">
+                <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-04')" title="Return to technical data">
@@ -2242,7 +2298,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-green);">
-                <span>⚡</span>
+                <span style="font-size: 20px;">⚡</span>
                 <span class="layman-analogy-title">Owning a Generator vs Renting the Grid</span>
               </div>
 
@@ -2256,10 +2312,10 @@
                 For personal privacy, private medical/legal notes, and offline work, running local AI on your own computer costs $0/month and sends zero data to cloud servers.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-04')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2273,25 +2329,30 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-benchmark">ECONOMIC TELEMETRY</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">82% Price Compression</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.4);">82% Price Compression</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-05')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: Cost comparison bars -->
+              <!-- High-Contrast SVG Visual Diagram: Token Pricing & Prefix Cache Lock -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1"/>
-                  <text x="20" y="24" fill="#9aa0b0" font-family="monospace" font-size="8">UNCACHED:</text>
-                  <rect x="80" y="16" width="170" height="11" rx="3" fill="rgba(222, 88, 73, 0.25)" stroke="#de5849" stroke-width="1"/>
-                  <text x="210" y="25" fill="#de5849" font-family="monospace" font-size="7" font-weight="bold">$5.00 / 1M</text>
-                  <text x="20" y="46" fill="#9aa0b0" font-family="monospace" font-size="8">PREFIX HIT:</text>
-                  <rect x="80" y="38" width="34" height="11" rx="3" fill="rgba(56, 189, 248, 0.3)" stroke="#38bdf8" stroke-width="1"/>
-                  <text x="122" y="47" fill="#38bdf8" font-family="monospace" font-size="7" font-weight="bold">$0.90 (-82%)</text>
-                  <rect x="180" y="36" width="70" height="16" rx="3" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-                  <text x="215" y="47" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">CACHE LOCK 🔒</text>
-                  <text x="140" y="62" fill="#5f6575" font-family="monospace" font-size="7" text-anchor="middle">TIERED COMPUTE TRIAGE</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Uncached row -->
+                  <text x="20" y="30" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">UNCACHED:</text>
+                  <rect x="95" y="18" width="225" height="18" rx="4" fill="rgba(222, 88, 73, 0.25)" stroke="#de5849" stroke-width="1.5"/>
+                  <text x="207" y="31" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" text-anchor="middle">$5.00 / 1M TOKENS (100%)</text>
+                  
+                  <!-- Cached hit row -->
+                  <text x="20" y="62" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700">PREFIX HIT:</text>
+                  <rect x="95" y="50" width="50" height="18" rx="4" fill="rgba(56, 189, 248, 0.3)" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="120" y="63" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="800" text-anchor="middle">$0.90</text>
+                  
+                  <!-- Lock Badge -->
+                  <rect x="155" y="48" width="165" height="22" rx="4" fill="rgba(16, 185, 129, 0.22)" stroke="#10b981" stroke-width="1.5"/>
+                  <text x="237" y="63" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="800" text-anchor="middle">🔒 CACHE HIT: -82% SAVINGS</text>
+                  
+                  <text x="170" y="90" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9.5" text-anchor="middle" font-weight="700">TIERED COMPUTE TRIAGE &amp; PROMPT RE-USE ARCHITECTURE</text>
                 </svg>
               </div>
 
@@ -2306,16 +2367,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Never send raw repetitive repository dumps; enable prompt caching and use lightweight deterministic parsers for AST extraction.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-05')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
+                <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.18); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-05')" title="Return to technical data">
@@ -2324,7 +2385,7 @@
               </div>
 
               <div class="layman-analogy-box">
-                <span>📄</span>
+                <span style="font-size: 20px;">📄</span>
                 <span class="layman-analogy-title">The Photocopier Discount</span>
               </div>
 
@@ -2338,10 +2399,10 @@
                 Keep system instructions and long reference documents static so prompt caching takes effect, saving huge amounts on API costs.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-05')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2355,23 +2416,30 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">MATHEMATICAL LOGIC</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">Non-Zero Arithmetic Error Rate</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.4);">Non-Zero Arithmetic Error Rate</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-06')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: LLM guess vs Z3 SMT solver -->
+              <!-- High-Contrast SVG Visual Diagram: LLM Probability vs Formal SMT Solver -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(222, 88, 73, 0.2)" stroke-width="1"/>
-                  <rect x="16" y="16" width="105" height="36" rx="4" fill="#161014" stroke="#de5849" stroke-width="1"/>
-                  <text x="68" y="29" fill="#de5849" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">LLM PREDICTION</text>
-                  <text x="68" y="43" fill="#fca5a5" font-family="monospace" font-size="7" text-anchor="middle">P(token | ctx) ≈ Guess</text>
-                  <text x="135" y="38" fill="#5f6575" font-family="monospace" font-size="9" text-anchor="middle">≠</text>
-                  <rect x="150" y="16" width="114" height="36" rx="4" fill="#0c1815" stroke="#10b981" stroke-width="1"/>
-                  <text x="207" y="29" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">Z3 SMT / PYTHON</text>
-                  <text x="207" y="43" fill="#34d399" font-family="monospace" font-size="7" text-anchor="middle">∀x P(x) ≡ 0% ERROR</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Left: Probabilistic LLM -->
+                  <rect x="18" y="18" width="125" height="52" rx="6" fill="#180e12" stroke="#de5849" stroke-width="1.8"/>
+                  <text x="80" y="38" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="800">LLM PREDICTION</text>
+                  <text x="80" y="54" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">P(w|ctx) ≈ Statistical Guess</text>
+                  
+                  <!-- Middle: Unequal Symbol -->
+                  <rect x="152" y="32" width="36" height="24" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                  <text x="170" y="49" fill="#ffffff" font-family="'JetBrains Mono', monospace" font-size="16" text-anchor="middle" font-weight="900">≠</text>
+                  
+                  <!-- Right: Z3 Solver -->
+                  <rect x="196" y="18" width="126" height="52" rx="6" fill="#091b15" stroke="#10b981" stroke-width="1.8"/>
+                  <text x="259" y="38" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10.5" text-anchor="middle" font-weight="800">Z3 SMT / PYTHON</text>
+                  <text x="259" y="54" fill="#86efac" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">∀x P(x) ≡ 0.00% ERROR</text>
+                  
+                  <text x="170" y="88" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="9.5" text-anchor="middle">DELEGATE LEDGERS &amp; CRYPTO TO DETERMINISTIC ENGINES</text>
                 </svg>
               </div>
 
@@ -2386,16 +2454,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Delegate financial calculations, cryptographic hashing, and bounds verification exclusively to compiled code engines like Web Crypto and native binaries.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-06')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.15); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
+                <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.18); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-06')" title="Return to technical data">
@@ -2404,7 +2472,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-coral);">
-                <span>🧮</span>
+                <span style="font-size: 20px;">🧮</span>
                 <span class="layman-analogy-title">The Storyteller vs The Pocket Calculator</span>
               </div>
 
@@ -2418,10 +2486,10 @@
                 Never trust AI to do taxes, financial balancing, or cryptography in its head. Always make it run actual code or use an external calculator.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-06')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2435,28 +2503,37 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">HALLUCINATION CASCADE</span>
-                <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">Context Poisoning Risk</span>
+                <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">Context Poisoning Risk</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-07')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: Recursive error loop -->
+              <!-- High-Contrast SVG Visual Diagram: Error Feedback Loop & False Anchors -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(245, 158, 11, 0.2)" stroke-width="1"/>
-                  <rect x="18" y="20" width="60" height="28" rx="4" fill="rgba(56, 189, 248, 0.1)" stroke="#38bdf8" stroke-width="1"/>
-                  <text x="48" y="32" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="middle">TURN 1-2</text>
-                  <text x="48" y="42" fill="#9aa0b0" font-family="monospace" font-size="7" text-anchor="middle">Accurate</text>
-                  <path d="M78 34 L102 34" stroke="#f59e0b" stroke-width="1.5"/>
-                  <rect x="102" y="20" width="70" height="28" rx="4" fill="rgba(245, 158, 11, 0.2)" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="137" y="32" fill="#f59e0b" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">TURN 3: FLAW ⚠</text>
-                  <text x="137" y="42" fill="#fcd34d" font-family="monospace" font-size="7" text-anchor="middle">Hallucination</text>
-                  <path d="M172 34 L196 34" stroke="#de5849" stroke-width="1.5"/>
-                  <rect x="196" y="20" width="68" height="28" rx="4" fill="rgba(222, 88, 73, 0.2)" stroke="#de5849" stroke-width="1.5"/>
-                  <text x="230" y="32" fill="#de5849" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">TURN 20+</text>
-                  <text x="230" y="42" fill="#fca5a5" font-family="monospace" font-size="7" text-anchor="middle">POISONED CONTEXT</text>
-                  <path d="M230 48 C230 62, 137 62, 137 48" stroke="#de5849" stroke-width="1" stroke-dasharray="2 2"/>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Turn 1 -->
+                  <rect x="15" y="24" width="70" height="38" rx="6" fill="rgba(56, 189, 248, 0.16)" stroke="#38bdf8" stroke-width="1.5"/>
+                  <text x="50" y="40" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9.5" text-anchor="middle" font-weight="700">TURN 1-2</text>
+                  <text x="50" y="53" fill="#bae6fd" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">Accurate Context</text>
+                  
+                  <path d="M85 43 L105 43" stroke="#f59e0b" stroke-width="2"/>
+                  
+                  <!-- Turn 3 Bug -->
+                  <rect x="105" y="24" width="95" height="38" rx="6" fill="rgba(245, 158, 11, 0.22)" stroke="#f59e0b" stroke-width="1.8"/>
+                  <text x="152" y="40" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="9.5" text-anchor="middle" font-weight="800">TURN 3: FLAW ⚠</text>
+                  <text x="152" y="53" fill="#fde68a" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">Unchecked Premise</text>
+                  
+                  <path d="M200 43 L220 43" stroke="#de5849" stroke-width="2"/>
+                  
+                  <!-- Turn 20+ Poisoned -->
+                  <rect x="220" y="24" width="105" height="38" rx="6" fill="rgba(222, 88, 73, 0.25)" stroke="#de5849" stroke-width="2"/>
+                  <text x="272" y="40" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="9.5" text-anchor="middle" font-weight="800">TURN 20+</text>
+                  <text x="272" y="53" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle" font-weight="700">POISONED CONTEXT</text>
+                  
+                  <!-- Loopback arrow -->
+                  <path d="M272 62 C272 82, 152 82, 152 64" stroke="#de5849" stroke-width="1.5" stroke-dasharray="3 3"/>
+                  <text x="170" y="92" fill="#de5849" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" font-weight="700">ERROR ACCUMULATES IN ATTENTION STREAM</text>
                 </svg>
               </div>
 
@@ -2471,16 +2548,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Maintain append-only structured state checkpoints; prune rejected reasoning steps from active conversation history before next turn.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-07')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b;">
+                <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid #f59e0b;">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-07')" title="Return to technical data">
@@ -2489,7 +2566,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: #f59e0b;">
-                <span>🗣️</span>
+                <span style="font-size: 20px;">🗣️</span>
                 <span class="layman-analogy-title">The Meeting Room Rumor</span>
               </div>
 
@@ -2503,10 +2580,10 @@
                 If an AI gives an inaccurate answer early on, don't keep arguing in the same chat. Start a fresh conversation to avoid poisoned context.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-07')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -2520,30 +2597,37 @@
             <article class="card-face card-front">
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-local">MULTIMODAL LIMIT</span>
-                <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">Patch Downsampling</span>
+                <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.4);">Patch Downsampling</span>
                 <button class="flip-toggle-btn" onclick="toggleCardFlip('air-08')" title="Flip for everyday explanation">
                   💡 Layman View ↺
                 </button>
               </div>
 
-              <!-- Non-copyright SVG visual diagram: 1:1 image grid vs ViT downsampled patches -->
+              <!-- High-Contrast SVG Visual Diagram: 1:1 Pixel Grid vs ViT Patching -->
               <div class="card-visual-banner">
-                <svg viewBox="0 0 280 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="280" height="68" rx="6" fill="#080c14" stroke="rgba(16, 185, 129, 0.2)" stroke-width="1"/>
-                  <rect x="20" y="16" width="36" height="36" fill="#0b1612" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
-                  <path d="M20 28 L56 28 M20 40 L56 40 M32 16 L32 52 M44 16 L44 52" stroke="rgba(255, 255, 255, 0.15)" stroke-width="0.5"/>
-                  <circle cx="38" cy="34" r="3" fill="#10b981"/>
-                  <text x="38" y="60" fill="#9aa0b0" font-family="monospace" font-size="7" text-anchor="middle">1:1 Native</text>
-                  <path d="M64 34 L88 34" stroke="#10b981" stroke-width="1.5"/>
-                  <text x="76" y="28" fill="#10b981" font-family="monospace" font-size="7" text-anchor="middle">ViT Patch</text>
-                  <rect x="96" y="16" width="36" height="36" fill="#141c24" stroke="#38bdf8" stroke-width="1"/>
-                  <line x1="96" y1="34" x2="132" y2="34" stroke="#38bdf8" stroke-width="0.8"/>
-                  <line x1="114" y1="16" x2="114" y2="52" stroke="#38bdf8" stroke-width="0.8"/>
-                  <rect x="100" y="20" width="10" height="10" fill="rgba(56, 189, 248, 0.3)"/>
-                  <text x="114" y="60" fill="#9aa0b0" font-family="monospace" font-size="7" text-anchor="middle">14x14 Tiles</text>
-                  <rect x="146" y="16" width="118" height="36" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1"/>
-                  <text x="205" y="30" fill="#10b981" font-family="monospace" font-size="8" text-anchor="middle" font-weight="bold">SUB-PIXEL BLUR</text>
-                  <text x="205" y="44" fill="#38bdf8" font-family="monospace" font-size="7" text-anchor="middle">Pre-crop 1:1 for OCR/Traces</text>
+                <svg viewBox="0 0 340 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Native Grid -->
+                  <rect x="20" y="16" width="60" height="52" rx="4" fill="#081812" stroke="#10b981" stroke-width="1.5"/>
+                  <path d="M20 29 H80 M20 42 H80 M20 55 H80 M35 16 V68 M50 16 V68 M65 16 V68" stroke="rgba(16, 185, 129, 0.35)" stroke-width="1"/>
+                  <circle cx="50" cy="42" r="4.5" fill="#10b981"/>
+                  <text x="50" y="82" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" font-weight="700">1:1 NATIVE</text>
+                  
+                  <path d="M86 42 L115 42" stroke="#38bdf8" stroke-width="2"/>
+                  <text x="100" y="32" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">ViT</text>
+                  
+                  <!-- 14x14 Downsampled Tile -->
+                  <rect x="120" y="16" width="60" height="52" rx="4" fill="#141c26" stroke="#38bdf8" stroke-width="1.5"/>
+                  <line x1="120" y1="42" x2="180" y2="42" stroke="#38bdf8" stroke-width="1.2"/>
+                  <line x1="150" y1="16" x2="150" y2="68" stroke="#38bdf8" stroke-width="1.2"/>
+                  <rect x="126" y="22" width="18" height="15" fill="rgba(56, 189, 248, 0.4)"/>
+                  <text x="150" y="82" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle" font-weight="700">14x14 PATCH</text>
+                  
+                  <!-- Alert Callout -->
+                  <rect x="195" y="20" width="130" height="44" rx="6" fill="rgba(16, 185, 129, 0.18)" stroke="#10b981" stroke-width="1.5"/>
+                  <text x="260" y="38" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" text-anchor="middle" font-weight="800">PRE-CROP 1:1</text>
+                  <text x="260" y="52" fill="#a7f3d0" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">Avoid Sub-Pixel Blur</text>
+                  
+                  <text x="260" y="82" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="8.5" text-anchor="middle">FOR OCR &amp; TRACES</text>
                 </svg>
               </div>
 
@@ -2558,16 +2642,16 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Pre-crop regions of interest at native 1:1 pixel resolution before submitting to multimodal visual inspect APIs.
               </div>
 
-              <button class="btn-flip-action" onclick="toggleCardFlip('air-08')">
-                <span>💡 In Simple Terms (Layman Explanation)</span>
+              <div class="flip-hint-strip">
+                <span>💡 Tap card anywhere for layman explanation</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
             <!-- Back Face: Simple Layman / Everyday Explanation -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
-                <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green);">
+                <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green);">
                   💡 EVERYDAY EXPLANATION
                 </span>
                 <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-08')" title="Return to technical data">
@@ -2576,7 +2660,7 @@
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-green);">
-                <span>🔍</span>
+                <span style="font-size: 20px;">🔍</span>
                 <span class="layman-analogy-title">Looking Through a Screen Door</span>
               </div>
 
@@ -2590,10 +2674,10 @@
                 If you need an AI to examine fine details or tiny text, crop the image tightly around that exact spot before submitting it.
               </div>
 
-              <button class="btn-flip-action back-action" onclick="toggleCardFlip('air-08')">
-                <span>← Back to Technical Benchmark</span>
+              <div class="flip-hint-strip back-hint">
+                <span>← Tap card anywhere to return to technical data</span>
                 <span>↺</span>
-              </button>
+              </div>
             </article>
 
           </div>
@@ -3051,7 +3135,22 @@
        ========================================================================== */
     function toggleDrawerMenu() {
       const drawer = document.getElementById('drawerMenu');
-      if (drawer) drawer.classList.toggle('active');
+      const backdrop = document.getElementById('drawerBackdrop');
+      if (!drawer) return;
+      const willOpen = !drawer.classList.contains('active');
+      if (willOpen) {
+        drawer.classList.add('active');
+        if (backdrop) backdrop.classList.add('active');
+      } else {
+        closeDrawerMenu();
+      }
+    }
+
+    function closeDrawerMenu() {
+      const drawer = document.getElementById('drawerMenu');
+      const backdrop = document.getElementById('drawerBackdrop');
+      if (drawer) drawer.classList.remove('active');
+      if (backdrop) backdrop.classList.remove('active');
     }
 
     function toggleChecksumDrawer(id) {
@@ -3172,11 +3271,34 @@
       filterAIRealities();
     }
 
-    function toggleCardFlip(cardId) {
+    function toggleCardFlip(cardId, e) {
+      if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
       const card = document.getElementById('card-inner-' + cardId);
       if (card) {
         card.classList.toggle('is-flipped');
       }
+    }
+
+    // Tap anywhere on card to flip (preserves citation and external link clicks)
+    function initCardTapToFlip() {
+      document.querySelectorAll('.matrix-card-flip-wrap').forEach(wrap => {
+        wrap.addEventListener('click', function(e) {
+          // Allow citation links to open without flipping card
+          if (e.target.closest('a')) return;
+          if (e.target.closest('button')) return;
+
+          const inner = wrap.querySelector('.matrix-flip-card');
+          if (inner) {
+            inner.classList.toggle('is-flipped');
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCardTapToFlip);
+    } else {
+      initCardTapToFlip();
     }
 
     function filterAIRealities() {

@@ -4,8 +4,6 @@ import os
 
 TOOL_BADGES = {
     'stats': 'TELEMETRY // INDEX',
-    'uses': 'ENGINEERING // ARSENAL',
-    'ama': 'FOUNDER // ARCHIVE',
     'call': 'P2P // CALLING',
     'clip': 'QUANTUM // CLIPBOARD',
     'uuid': 'UUID // ENGINE',
@@ -19,7 +17,7 @@ TOOL_BADGES = {
     'draw': 'DRAW // CANVAS',
     'write': 'MARKDOWN // VAULT',
     'timecapsule': 'TIME // CAPSULE',
-    'about': 'SOVEREIGN // MISSION',
+    'about': 'MISSION // CHARTER',
     'faq': 'SYSTEM // FAQ',
     'contact': 'CONTACT // VERIFY',
     'privacy': 'ZERO-LOG // CHARTER',
@@ -34,7 +32,7 @@ TOOL_BADGES = {
     'store': 'COMMERCE // VAULT',
 }
 
-def get_header_html(badge):
+def get_header_html(badge="TOOL // SUITE"):
     return f'''  <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
@@ -76,8 +74,6 @@ def get_header_html(badge):
           </div>
         </div>
       </div>
-      <a href="/uses" class="nav-item">/uses</a>
-      <a href="/ama" class="nav-item">/ama</a>
       <a href="/store" class="nav-item">Store</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
@@ -93,7 +89,7 @@ def get_footer_html():
           <span>ALUMUNGANDR</span>
         </div>
         <p class="footer-desc">
-          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+          Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
         </p>
         <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
       </div>
@@ -128,8 +124,6 @@ def get_footer_html():
       </div>
       <div class="footer-col">
         <div class="footer-heading">Platform &amp; Legal</div>
-        <a href="/uses">Developer Tech Stack (/uses)</a>
-        <a href="/ama">Ask Me Anything (/ama)</a>
         <a href="/store">Digital Storefront</a>
         <a href="/about">About Alumungandr</a>
         <a href="/faq">FAQ &amp; Knowledge Base</a>
@@ -157,7 +151,6 @@ def update_page(filename, badge):
     footer_html = get_footer_html()
 
     # 2. Update Header / Nav
-    # Look for existing site-header first
     if '<header class="site-header">' in html:
         html = re.sub(r'<header class="site-header">.*?</header>', header_html, html, count=1, flags=re.DOTALL)
     elif '<header class="speed-nav">' in html:
@@ -165,16 +158,11 @@ def update_page(filename, badge):
     elif '<header class="site-nav">' in html:
         html = re.sub(r'<header class="site-nav">.*?</header>', header_html, html, count=1, flags=re.DOTALL)
     elif filename in ['contact.html', 'resizer.html', 'timezone.html', 'subscriptions.html', 'terms.html', 'privacy.html']:
-        # Match <nav>...</nav> before <main>
         html = re.sub(r'<nav>.*?</nav>', header_html, html, count=1, flags=re.DOTALL)
     elif filename == 'ip.html':
-        # Match <header>...</header> before <main>
         html = re.sub(r'<header>.*?</header>', header_html, html, count=1, flags=re.DOTALL)
     elif filename == 'store.html':
-        # Replace <header>...</header>
         html = re.sub(r'<header>.*?</header>', header_html, html, count=1, flags=re.DOTALL)
-        # Also remove redundant #drawerMenu in store.html since dropdown handles it
-        html = re.sub(r'<div id="drawerMenu".*?</div>\s*</div>', '', html, count=1, flags=re.DOTALL)
     elif '<header' in html and filename not in ['index.html']:
         html = re.sub(r'<header[^>]*>.*?</header>', header_html, html, count=1, flags=re.DOTALL)
 
@@ -187,19 +175,17 @@ def update_page(filename, badge):
         elif '<footer' in html:
             html = re.sub(r'<footer[^>]*>.*?</footer>', footer_html, html, count=1, flags=re.DOTALL)
         else:
-            # Insert before </body>
             html = html.replace('</body>', footer_html + '\n</body>')
     else:
-        # Full-screen tools (draw, write)
         if '/assets/nav.js' not in html:
             html = html.replace('</body>', '  <script src="/assets/nav.js" defer></script>\n</body>')
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html)
 
-    # Mirror to subdirectory if it is one of the 16 tools
+    # Mirror to subdirectory if tool directory exists
     tool_key = filename.replace('.html', '')
-    if tool_key in ['stats', 'uses', 'ama', 'call', 'clip', 'uuid', 'json', 'regex', 'hash', 'diff', 'jwt', 'colors', 'meme', 'draw', 'write', 'timecapsule']:
+    if tool_key in ['stats', 'call', 'clip', 'uuid', 'json', 'regex', 'hash', 'diff', 'jwt', 'colors', 'meme', 'draw', 'write', 'timecapsule']:
         os.makedirs(tool_key, exist_ok=True)
         shutil.copyfile(filename, os.path.join(tool_key, 'index.html'))
         print(f"Updated {filename} and {tool_key}/index.html")

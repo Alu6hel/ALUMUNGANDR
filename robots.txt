@@ -1,4 +1,4 @@
-# Alumungandr Robots.txt — Sovereign & AI-Ready
+# Alumungandr Robots.txt — privacy-first & AI-Ready
 User-agent: *
 Allow: /
 Allow: /store

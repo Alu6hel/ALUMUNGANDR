@@ -97,18 +97,6 @@
     <priority>0.91</priority>
   </url>
   <url>
-    <loc>https://alumungandr.com/uses</loc>
-    <lastmod>2026-09-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://alumungandr.com/ama</loc>
-    <lastmod>2026-09-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
     <loc>https://alumungandr.com/store</loc>
     <lastmod>2026-09-29</lastmod>
     <changefreq>daily</changefreq>

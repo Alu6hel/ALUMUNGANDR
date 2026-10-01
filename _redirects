@@ -12,8 +12,6 @@
 /terms.html /terms 301
 /speedtest-vs-ookla.html /speedtest-vs-ookla 301
 /stats.html /stats 301
-/uses.html /uses 301
-/ama.html /ama 301
 /call.html /call 301
 /clip.html /clip 301
 /uuid.html /uuid 301
@@ -27,3 +25,7 @@
 /draw.html /draw 301
 /write.html /write 301
 /timecapsule.html /timecapsule 301
+/uses / 301
+/uses.html / 301
+/ama / 301
+/ama.html / 301

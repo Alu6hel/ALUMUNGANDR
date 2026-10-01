@@ -174,7 +174,7 @@
 
         <!-- Security Footer -->
         <div class="alu-security-footer">
-          <span>🔒 SOVEREIGN DISPATCH &bull; NO TRACKING COOKIES</span>
+          <span>🔒 SECURE DISPATCH &bull; NO TRACKING COOKIES</span>
           <span>CURRENCY: USD &amp; JMD</span>
         </div>
       </div>

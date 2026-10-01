@@ -1,4 +1,4 @@
-# ⚡ ALUMUNGANDR™ — High-Performance Sovereign Web Platform
+# ⚡ ALUMUNGANDR™ — High-Performance autonomous Web Platform
 
 > **Production Domain:** [https://alumungandr.com](https://alumungandr.com)  
 > **Platform Engine:** Cloudflare Pages (Global Anycast Edge Network)  
@@ -23,7 +23,7 @@ In accordance with institutional technical SEO standards, each tool runs on its 
 
 ## 📜 Legal, Company & Verification Pages
 
-* **`/about`** — Sovereign architecture, zero-telemetry philosophy, and engineering manifesto.
+* **`/about`** — autonomous architecture, zero-telemetry philosophy, and engineering manifesto.
 * **`/contact`** — Engineering team contact, bug reporting, and PGP/checksum verification.
 * **`/faq`** — Frequently asked questions regarding security, privacy, and verified downloads.
 * **`/privacy`** — Zero-knowledge privacy policy and local-first data guarantees.

@@ -1174,6 +1174,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="/assets/nav.css">
 </head>
 <body>
 
@@ -1225,44 +1226,53 @@
   </div>
 
   <!-- Global Brand Navigation -->
-  <nav>
+      <header class="site-header">
     <a href="/" class="brand">
-      <div class="brand-logo">A</div>
-      <span class="brand-name">ALUMUNGANDR</span>
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">IMAGE // RESIZER</span>
     </a>
-    <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/store">Storefront</a></li>
-      <li><a href="/speedtest">Speed Test</a></li>
-      <li><a href="/invoice">Invoice Studio</a></li>
-      <li><a href="/resizer" class="active">Social Resizer</a></li>
-      <li><a href="/subscriptions">Reality Check</a></li>
-      <li><a href="/ip">What Is My IP</a></li>
-      <li><a href="/timezone">Meeting Matcher</a></li>
-      <li><a href="/about">About & Journey</a></li>
-      <li><a href="/faq">FAQ Matrix</a></li>
-      <li><a href="/contact">Contact Uplink</a></li>
-      <li><a href="/privacy">Privacy</a></li>
-      <li><a href="/terms">Terms</a></li>
-    </ul>
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-  </nav>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
 
-  <!-- Mobile Drawer Menu -->
-  <div class="mobile-drawer" id="mobileDrawer">
-    <a href="/">Home</a>
-    <a href="/store">🛒 Storefront</a>
-    <a href="/speedtest">Internet Speed Test</a>
-    <a href="/invoice">No-BS Invoice Studio</a>
-    <a href="/resizer" class="active">Social Media Resizer</a>
-    <a href="/about">About Alumungandr & Alu</a>
-    <a href="/faq">FAQ & Knowledge Base</a>
-    <a href="/contact">Contact Uplink</a>
-    <a href="/privacy">Privacy Policy</a>
-    <a href="/terms">Terms & Master Charter</a>
-  </div>
 
   <main>
     <!-- Hero Header -->
@@ -1429,24 +1439,59 @@
   </div>
 
   <!-- Global Footer -->
-  <footer>
-    <div class="footer-links">
-        <a href="/">Home</a>
-    <a href="/store">🛒 Storefront</a>
-        <a href="/speedtest">Speed Test</a>
-        <a href="/invoice">Invoice Studio</a>
-        <a href="/resizer" class="active">Social Resizer</a>
-        <a href="/subscriptions">Reality Check</a>
-        <a href="/ip">What Is My IP</a>
-        <a href="/timezone">Meeting Matcher</a>
-        <a href="/about">About & Journey</a>
-        <a href="/faq">FAQ Matrix</a>
-        <a href="/contact">Contact Uplink</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
       </div>
-    <p>© 2026 Alumungandr™. Founded and architected by David Anthony Jones ("Alu"). All Rights Reserved.</p>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
   </footer>
+  <script src="/assets/nav.js" defer></script>
 
   <!-- Interactive Resizer Core Engine -->
   <script>

@@ -8,13 +8,13 @@
   <!-- OpenGraph Metadata -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alumungandr.com/about">
-  <meta property="og:title" content="About Alumungandr™ | Sovereign Architecture & Zero-Telemetry Philosophy">
+  <meta property="og:title" content="About Alumungandr™ | Independent Architecture & Zero-Telemetry Philosophy">
   <meta property="og:description" content="Learn about Alumungandr's engineering philosophy: local-first performance, zero tracking, verified binaries, and high-speed web utilities by David Anthony Jones.">
   <meta property="og:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About Alumungandr™ | Sovereign Architecture & Zero-Telemetry Philosophy">
+  <meta name="twitter:title" content="About Alumungandr™ | Independent Architecture & Zero-Telemetry Philosophy">
   <meta name="twitter:description" content="Learn about Alumungandr's engineering philosophy: local-first performance, zero tracking, verified binaries, and high-speed web utilities by David Anthony Jones.">
   <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
 
@@ -63,7 +63,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Alumungandr™ | Sovereign Architecture & Zero-Telemetry Philosophy</title>
+  <title>About Alumungandr™ | Independent Architecture & Zero-Telemetry Philosophy</title>
   <meta name="description" content="Learn about Alumungandr's engineering philosophy: local-first performance, zero tracking, verified binaries, and high-speed web utilities by David Anthony Jones.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -616,6 +616,7 @@
     .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
     .footer-links a:hover { color: var(--cyan); }
   </style>
+  <link rel="stylesheet" href="/assets/nav.css">
 </head>
 <body>
 
@@ -643,26 +644,50 @@
   </div>
 
   <!-- Top Navigation -->
-  <header class="site-nav">
-    <a href="/" class="brand-wrap">
-      <div class="brand-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-      </div>
-      <div class="brand-text">ALUMUNGANDR™</div>
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">MISSION // CHARTER</span>
     </a>
-    <nav class="nav-links">
-      <a href="/">Apps</a>
-      <a href="/speedtest">Speed Test</a>
-      <a href="/invoice">Invoice Maker</a>
-      <a href="/resizer">Social Resizer</a>
-        <a href="/subscriptions">Reality Check</a>
-      <a href="/ip">What Is My IP</a>
-      <a href="/subscriptions">Reality Check</a>
-      <a href="/ip">What Is My IP</a>
-      <a href="/about" class="active">About</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contact">Contact</a>
-      <a href="/" class="nav-btn-action">&larr; Download Hub</a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
     </nav>
   </header>
 
@@ -675,7 +700,7 @@
       </div>
       <h1>Engineering Beyond the Horizon</h1>
       <p>
-        Alumungandr™ is an independent software architecture lab. We eliminate predatory telemetry, memory vulnerabilities, and bloatware through formal mathematical proofs and sovereign engineering.
+        Alumungandr™ is an independent software architecture lab. We eliminate predatory telemetry, memory vulnerabilities, and bloatware through formal mathematical proofs and rigorous independent engineering.
       </p>
     </div>
 
@@ -698,7 +723,7 @@
       <div class="stage-body">
         <h2>⚡ The Rejection of Digital Bloatware</h2>
         <p>
-          In an era where modern applications consume gigabytes of memory just to display a photo or save a recipe, Alumungandr was founded on a singular principle: <strong>software must be blazingly fast, mathematically sound, and unconditionally sovereign.</strong>
+          In an era where modern applications consume gigabytes of memory just to display a photo or save a recipe, Alumungandr was founded on a singular principle: <strong>software must be blazingly fast, mathematically sound, and completely client-controlled.</strong>
         </p>
         <p>
           Established in August 2026 by sole originator and chief architect <strong>David Anthony Jones ("Alu")</strong>, the enterprise sets a new benchmark for what independent engineering can accomplish without external venture debt or investor compromise.
@@ -739,7 +764,7 @@
       <div class="stage-meta">
         <div class="stage-tag">STAGE 03 // ORBIT</div>
         <div class="stage-alt-mark">350,000 M</div>
-        <div class="stage-alt-desc">The Sovereign Application Ecosystem</div>
+        <div class="stage-alt-desc">The Independent Application Ecosystem</div>
       </div>
       <div class="stage-body">
         <h2>🚀 The Core Application Vessels &amp; Utilities</h2>
@@ -778,31 +803,59 @@
   </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div>
-        <strong style="color:#fff; font-size:1.1rem;">Alumungandr Enterprise &copy; 2026</strong>
-        <p style="color:var(--text-subtle); font-size:0.85rem;">David Anthony Jones ("Alu") &bull; All Rights Strictly Reserved</p>
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
       </div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-    <a href="/store">🛒 Storefront</a>
-        <a href="/speedtest">Speed Test</a>
-        <a href="/invoice">Invoice Studio</a>
-        <a href="/resizer">Social Resizer</a>
-        <a href="/subscriptions">Reality Check</a>
-        <a href="/ip">What Is My IP</a>
-        <a href="/timezone">Meeting Matcher</a>
-        <a href="/about" class="active">About & Journey</a>
-        <a href="/faq">FAQ Matrix</a>
-        <a href="/contact">Contact Uplink</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
       </div>
     </div>
   </footer>
-
-  <!-- Scripts: Interactive 3D WebGL Core & Altitude Scroll Tracker -->
+  <script src="/assets/nav.js" defer></script><!-- Scripts: Interactive 3D WebGL Core & Altitude Scroll Tracker -->
   <script>
     // 1. Altitude & Velocity HUD Scroll Tracker (Virgin Galactic Inspired)
     const hudAlt = document.getElementById('hudAltitude');

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Color Palette Generator, WCAG Contrast & Image Extractor — Alumungandr</title>
+  <meta name="description" content="Design palettes, generate harmonic color schemes, check WCAG 2.1 accessibility contrast ratios, and extract dominant palettes from uploaded images. 100% in-browser.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(222, 88, 73, 0.15);
+      color: var(--accent-coral);
+      border: 1px solid rgba(222, 88, 73, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1350px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #f59e0b 0%, #de5849 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Primary Swatch Hero Banner */
+    .hero-swatch {
+      height: 140px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      transition: background 0.3s;
+    }
+    .swatch-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .swatch-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .swatch-rgb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .swatch-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .color-picker-input {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: transparent;
+      outline: none;
+    }
+
+    /* Grid Layout */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 950px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    /* Harmonies Rows */
+    .harmony-row {
+      margin-bottom: 1.25rem;
+    }
+    .harmony-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .harmony-swatches {
+      display: flex;
+      height: 48px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .swatch-segment {
+      flex: 1;
+      height: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      opacity: 0.9;
+      transition: flex 0.2s, opacity 0.2s;
+    }
+    .swatch-segment:hover {
+      flex: 1.4;
+      opacity: 1;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+
+    /* WCAG Contrast Box */
+    .wcag-preview {
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .wcag-score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .wcag-ratio {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+    .wcag-badges {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .wcag-badge {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+    }
+    .badge-pass { color: var(--accent-emerald); font-weight: 700; }
+    .badge-fail { color: var(--accent-coral); font-weight: 700; }
+
+    /* Image Extractor Box */
+    .image-dropzone {
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      background: rgba(20, 23, 34, 0.4);
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .image-dropzone:hover { border-color: var(--accent-cyan); }
+    .extracted-palette {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .extracted-chip {
+      flex: 1;
+      height: 60px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      transition: transform 0.15s;
+    }
+    .extracted-chip:hover { transform: translateY(-3px); }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-coral); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">COLOR // STUDIO</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+        ACCESSIBLE HARMONIC SYNTHESIZER // ZERO ADS
+      </div>
+      <h1>Color Studio &amp; <span>Palette Lab</span></h1>
+      <p>Generate complementary harmonies, audit WCAG 2.1 accessibility contrast, convert color spaces, and extract dominant palettes from images.</p>
+    </div>
+
+    <!-- Active Swatch Hero -->
+    <div class="hero-swatch" id="hero-swatch">
+      <div class="swatch-info">
+        <div class="swatch-hex" id="active-hex">#DE5849</div>
+        <div class="swatch-rgb" id="active-rgb">rgb(222, 88, 73) • hsl(6, 71%, 58%)</div>
+      </div>
+      <div class="swatch-actions">
+        <input type="color" id="native-picker" class="color-picker-input" value="#de5849" oninput="setColor(this.value)">
+        <button class="btn-action" onclick="randomColor()">🎲 Randomize</button>
+        <button class="btn-action" onclick="copyHex()">Copy HEX</button>
+      </div>
+    </div>
+
+    <!-- Studio Grid -->
+    <div class="studio-grid">
+      <!-- Left Column: Harmonic Palettes -->
+      <div class="card">
+        <div class="card-header">
+          <label class="card-title">Algorithmic Color Harmonies</label>
+          <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted);">Click any chip to select</span>
+        </div>
+
+        <!-- Complementary -->
+        <div class="harmony-row">
+          <div class="harmony-label"><span>Complementary</span><span>180°</span></div>
+          <div class="harmony-swatches" id="harm-comp"></div>
+        </div>
+
+        <!-- Analogous -->
+        <div class="harmony-row">
+          <div class="harmony-label"><span>Analogous</span><span>±30°</span></div>
+          <div class="harmony-swatches" id="harm-ana"></div>
+        </div>
+
+        <!-- Triadic -->
+        <div class="harmony-row">
+          <div class="harmony-label"><span>Triadic</span><span>120° / 240°</span></div>
+          <div class="harmony-swatches" id="harm-tri"></div>
+        </div>
+
+        <!-- Monochromatic -->
+        <div class="harmony-row">
+          <div class="harmony-label"><span>Shades &amp; Tints</span><span>Lightness Spectrum</span></div>
+          <div class="harmony-swatches" id="harm-mono"></div>
+        </div>
+      </div>
+
+      <!-- Right Column: WCAG & Image Extraction -->
+      <div>
+        <!-- WCAG Contrast Audit Card -->
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">WCAG 2.1 Contrast Checker</label>
+            <button class="btn-action" onclick="swapContrastColors()">⇄ Swap FG/BG</button>
+          </div>
+
+          <div class="wcag-preview" id="wcag-preview">
+            <h3 style="margin-bottom:0.35rem; font-size:1.15rem;">Human Telemetry Typography</h3>
+            <p style="font-size:0.85rem; line-height:1.4;">Testing readability of this font against current background in real time.</p>
+          </div>
+
+          <div class="wcag-score-row">
+            <div>
+              <span style="font-size:0.75rem; color:var(--text-muted); font-family:'JetBrains Mono';">CONTRAST RATIO</span>
+              <div class="wcag-ratio" id="wcag-ratio">7.42 : 1</div>
+            </div>
+            <div class="wcag-badges">
+              <div class="wcag-badge"><span>AA Normal</span><span id="badge-aa-norm" class="badge-pass">PASS</span></div>
+              <div class="wcag-badge"><span>AA Large</span><span id="badge-aa-large" class="badge-pass">PASS</span></div>
+              <div class="wcag-badge"><span>AAA Normal</span><span id="badge-aaa-norm" class="badge-pass">PASS</span></div>
+              <div class="wcag-badge"><span>AAA Large</span><span id="badge-aaa-large" class="badge-pass">PASS</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Extractor Card -->
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">Extract Palette From Image</label>
+            <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-cyan);">Zero Uploads</span>
+          </div>
+
+          <div class="image-dropzone" onclick="document.getElementById('img-input').click()">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:0.5rem; color:var(--accent-cyan);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <p style="font-size:0.85rem; color:#fff;">Drop image here to sample dominant colors</p>
+            <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="extractImageColors(event)">
+          </div>
+
+          <div class="extracted-palette" id="extracted-palette">
+            <!-- Injected after image drop -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    let currentColor = '#de5849';
+    let contrastBg = '#07080a';
+
+    function hexToRgb(hex) {
+      const bigint = parseInt(hex.replace('#', ''), 16);
+      return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + [r, g, b].map(x => {
+        const h = Math.round(x).toString(16);
+        return h.length === 1 ? '0' + h : h;
+      }).join('');
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    function hslToRgb(h, s, l) {
+      h /= 360; s /= 100; l /= 100;
+      let r, g, b;
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+      return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+    }
+
+    function getLuminance(r, g, b) {
+      const a = [r, g, b].map(v => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    }
+
+    function getContrastRatio(hex1, hex2) {
+      const rgb1 = hexToRgb(hex1);
+      const rgb2 = hexToRgb(hex2);
+      const lum1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
+      const lum2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+      const brightest = Math.max(lum1, lum2);
+      const darkest = Math.min(lum1, lum2);
+      return (brightest + 0.05) / (darkest + 0.05);
+    }
+
+    function setColor(hex) {
+      currentColor = hex;
+      document.getElementById('native-picker').value = hex;
+      document.getElementById('active-hex').textContent = hex.toUpperCase();
+
+      const rgb = hexToRgb(hex);
+      const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+      document.getElementById('active-rgb').textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b}) • hsl(${hsl.h}°, ${hsl.s}%, ${hsl.l}%)`;
+
+      const hero = document.getElementById('hero-swatch');
+      hero.style.backgroundColor = hex;
+      const isLight = (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 150;
+      hero.style.color = isLight ? '#07080a' : '#ffffff';
+
+      generateHarmonies(hsl);
+      updateWcag();
+    }
+
+    function randomColor() {
+      const randomHex = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+      setColor(randomHex);
+    }
+
+    function generateHarmonies(hsl) {
+      // Complementary (0, 180)
+      renderHarmonyBar('harm-comp', [
+        currentColor,
+        rgbToHex(...Object.values(hslToRgb((hsl.h + 180) % 360, hsl.s, hsl.l)))
+      ]);
+
+      // Analogous (-30, 0, +30)
+      renderHarmonyBar('harm-ana', [
+        rgbToHex(...Object.values(hslToRgb((hsl.h + 330) % 360, hsl.s, hsl.l))),
+        currentColor,
+        rgbToHex(...Object.values(hslToRgb((hsl.h + 30) % 360, hsl.s, hsl.l)))
+      ]);
+
+      // Triadic (0, +120, +240)
+      renderHarmonyBar('harm-tri', [
+        currentColor,
+        rgbToHex(...Object.values(hslToRgb((hsl.h + 120) % 360, hsl.s, hsl.l))),
+        rgbToHex(...Object.values(hslToRgb((hsl.h + 240) % 360, hsl.s, hsl.l)))
+      ]);
+
+      // Monochromatic (Shades 20% to 85%)
+      renderHarmonyBar('harm-mono', [
+        rgbToHex(...Object.values(hslToRgb(hsl.h, hsl.s, 20))),
+        rgbToHex(...Object.values(hslToRgb(hsl.h, hsl.s, 35))),
+        currentColor,
+        rgbToHex(...Object.values(hslToRgb(hsl.h, hsl.s, 70))),
+        rgbToHex(...Object.values(hslToRgb(hsl.h, hsl.s, 85)))
+      ]);
+    }
+
+    function renderHarmonyBar(id, colors) {
+      const container = document.getElementById(id);
+      container.innerHTML = '';
+      colors.forEach(hex => {
+        const seg = document.createElement('div');
+        seg.className = 'swatch-segment';
+        seg.style.backgroundColor = hex;
+        const rgb = hexToRgb(hex);
+        const isLight = (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 150;
+        seg.style.color = isLight ? '#07080a' : '#ffffff';
+        seg.textContent = hex.toUpperCase();
+        seg.onclick = () => setColor(hex);
+        container.appendChild(seg);
+      });
+    }
+
+    function updateWcag() {
+      const ratio = getContrastRatio(currentColor, contrastBg);
+      document.getElementById('wcag-ratio').textContent = `${ratio.toFixed(2)} : 1`;
+
+      const prev = document.getElementById('wcag-preview');
+      prev.style.backgroundColor = contrastBg;
+      prev.style.color = currentColor;
+
+      function setBadge(id, pass) {
+        const el = document.getElementById(id);
+        el.className = pass ? 'badge-pass' : 'badge-fail';
+        el.textContent = pass ? 'PASS' : 'FAIL';
+      }
+
+      setBadge('badge-aa-norm', ratio >= 4.5);
+      setBadge('badge-aa-large', ratio >= 3.0);
+      setBadge('badge-aaa-norm', ratio >= 7.0);
+      setBadge('badge-aaa-large', ratio >= 4.5);
+    }
+
+    function swapContrastColors() {
+      const temp = currentColor;
+      currentColor = contrastBg;
+      contrastBg = temp;
+      setColor(currentColor);
+    }
+
+    function copyHex() {
+      navigator.clipboard.writeText(currentColor);
+      alert('Copied color: ' + currentColor);
+    }
+
+    // Extract dominant palette from dropped image
+    function extractImageColors(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const offCanvas = document.createElement('canvas');
+          const offCtx = offCanvas.getContext('2d');
+          offCanvas.width = 60;
+          offCanvas.height = 60;
+          offCtx.drawImage(img, 0, 0, 60, 60);
+
+          const imgData = offCtx.getImageData(0, 0, 60, 60).data;
+          const colorBins = {};
+
+          for (let i = 0; i < imgData.length; i += 16) {
+            const r = Math.round(imgData[i] / 32) * 32;
+            const g = Math.round(imgData[i + 1] / 32) * 32;
+            const b = Math.round(imgData[i + 2] / 32) * 32;
+            const hex = rgbToHex(Math.min(255, r), Math.min(255, g), Math.min(255, b));
+            colorBins[hex] = (colorBins[hex] || 0) + 1;
+          }
+
+          const sorted = Object.entries(colorBins)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 6)
+            .map(x => x[0]);
+
+          const palEl = document.getElementById('extracted-palette');
+          palEl.innerHTML = '';
+          sorted.forEach(hex => {
+            const chip = document.createElement('div');
+            chip.className = 'extracted-chip';
+            chip.style.backgroundColor = hex;
+            const rgb = hexToRgb(hex);
+            const isLight = (rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 150;
+            chip.style.color = isLight ? '#07080a' : '#ffffff';
+            chip.textContent = hex.toUpperCase();
+            chip.onclick = () => setColor(hex);
+            palEl.appendChild(chip);
+          });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Initial default
+    setColor('#de5849');
+
+    // --- Interactive Live Background: Chromatic Aurora Borealis ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let waveStep = 0;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function renderBg() {
+      ctx.clearRect(0, 0, width, height);
+      waveStep += 0.015;
+
+      const auroras = [
+        { color: 'rgba(222, 88, 73, 0.15)', freq: 0.003, speed: 1.0, yOffset: 0.3 },
+        { color: 'rgba(56, 189, 248, 0.12)', freq: 0.004, speed: -1.2, yOffset: 0.5 },
+        { color: 'rgba(168, 85, 247, 0.12)', freq: 0.002, speed: 0.8, yOffset: 0.7 }
+      ];
+
+      auroras.forEach(a => {
+        ctx.fillStyle = a.color;
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+
+        for (let x = 0; x <= width; x += 15) {
+          const y = height * a.yOffset + Math.sin(x * a.freq + waveStep * a.speed) * 80 + Math.cos(x * 0.005 + waveStep) * 40;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.lineTo(width, height);
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+  </script>
+</body>
+</html>

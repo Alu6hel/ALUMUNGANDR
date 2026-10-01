@@ -1110,7 +1110,7 @@
       </div>
 
       <div class="header-right-action">
-        <div class="header-tagline">SUITE // WEB (6) &bull; STORE (11)</div>
+        <div class="header-tagline">SUITE // 22 TOOLS &bull; STORE (11)</div>
         <a href="#web-apps" class="btn-ticket-action">
           WEB UTILITIES <span style="color: var(--accent-coral);">&darr;</span>
         </a>
@@ -1125,24 +1125,49 @@
   </header>
 
   <!-- DRAWER QUICK NAVIGATION -->
-  <div id="drawerMenu" class="drawer-menu">
+  <div id="drawerMenu" class="drawer-menu" style="max-height: 85vh; overflow-y: auto;">
     <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); letter-spacing: 0.1em; padding-bottom: 4px; border-bottom: 1px dashed rgba(255,255,255,0.15);">
-      // WEB UTILITIES &bull; /006
+      // BROADBAND &amp; TELEMETRY
     </div>
     <a href="/speedtest" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #00f0ff;">⚡</span> Internet Speed Test</a>
-    <a href="/invoice" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffffff;">📄</span> No-BS Invoice Maker</a>
-    <a href="/resizer" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ff3860;">🖼️</span> Batch Image Resizer</a>
-    <a href="/subscriptions" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffff00;">☢️</span> Reality Check Calculator</a>
+    <a href="/stats" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">🌐</span> Speed Leaderboard &amp; Stats</a>
+
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #38bdf8; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      // NETWORKING &amp; P2P
+    </div>
+    <a href="/call" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">📹</span> P2P WebRTC Video Call</a>
+    <a href="/clip" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">📋</span> Cross-Device Clipboard</a>
     <a href="/ip" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #70d6ff;">❄️</span> What Is My IP?</a>
     <a href="/timezone" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #06d6a0;">🌐</span> Timezone Matcher</a>
 
-    <div style="font-family: var(--font-mono); font-size: 11px; color: #10b981; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
-      // SOVEREIGN STOREFRONT &bull; APKS &amp; E-BOOKS
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #a855f7; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      // DEVELOPER SUITE
     </div>
-    <a href="/store" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">🛒</span> Digital Storefront (All Products)</a>
-    <a href="/store#apps" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #de5849;">📦</span> Android APK Binaries (4)</a>
-    <a href="/store#ebooks" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #00f0ff;">📚</span> Technical E-Books &amp; Manuals (5)</a>
-    <a href="/store#licenses" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffd166;">💳</span> Commercial Licenses &amp; Patron</a>
+    <a href="/json" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #a855f7;">{ }</span> JSON Formatter &amp; Tree</a>
+    <a href="/uuid" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">🆔</span> UUID / GUID Generator</a>
+    <a href="/regex" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #f59e0b;">.*</span> Regex Tester &amp; Lab</a>
+    <a href="/hash" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">#</span> Cryptographic Hash Lab</a>
+    <a href="/diff" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #de5849;">⇄</span> Code &amp; Text Diff Checker</a>
+    <a href="/jwt" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">🔑</span> JWT Debugger &amp; Builder</a>
+
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #f59e0b; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      // CREATIVE &amp; UTILITIES
+    </div>
+    <a href="/colors" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ec4899;">🎨</span> Color Palette Studio</a>
+    <a href="/meme" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #f59e0b;">🎭</span> Meme Generator Canvas</a>
+    <a href="/draw" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">✏️</span> Infinite Whiteboard</a>
+    <a href="/write" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #a855f7;">📝</span> Markdown Editor &amp; Vault</a>
+    <a href="/timecapsule" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">⏳</span> Encrypted Time Capsule</a>
+    <a href="/invoice" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffffff;">📄</span> No-BS Invoice Maker</a>
+    <a href="/resizer" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ff3860;">🖼️</span> Batch Image Resizer</a>
+    <a href="/subscriptions" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #ffff00;">☢️</span> Reality Check Calculator</a>
+
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #10b981; letter-spacing: 0.1em; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.15);">
+      // TRANSPARENCY &amp; STORE
+    </div>
+    <a href="/uses" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">⚙️</span> Developer Tech Stack (/uses)</a>
+    <a href="/ama" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #a855f7;">💬</span> Ask Me Anything (/ama)</a>
+    <a href="/store" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #10b981;">🛒</span> Digital Storefront (APKs &amp; Books)</a>
 
     <div style="border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 10px;">
       <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 6px;">// PLATFORM &amp; GOVERNANCE</div>
@@ -1556,6 +1581,373 @@
       </div>
     </section>
 
+    <!-- 4B. DEVELOPER & CREATOR SUITE (16 SOVEREIGN TOOLS) -->
+    <section id="developer-suite" style="margin-bottom: 72px;">
+      <div class="section-header-modern reveal-on-scroll">
+        <div>
+          <div class="section-tag">// DEVELOPER &amp; CREATOR SUITE &bull; /016 SOVEREIGN TOOLS</div>
+          <h2 class="section-heading-huge">Autonomous In-Browser Engineering Arsenal:</h2>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+          100% PRIVATE &bull; NO LOGINS &bull; ZERO SERVER EGRESS &bull; LIVE HTML5 CANVASES
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;">
+        <!-- Card 1: /stats -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // TELEMETRY 001 ]</span>
+              <span class="app-badge-free">100% Free</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Speed Leaderboard &amp; Stats</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Aggregated broadband intelligence dashboard showing download, upload, latency, and consistency rankings across global ISPs and network mediums.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /stats &bull; LIVE TELEMETRY MESH
+            </div>
+            <a href="/stats" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              VIEW LEADERBOARD &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2: /call -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // P2P NET 002 ]</span>
+              <span class="app-badge-free">Zero Server Data</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">WebRTC Encrypted Calling</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Peer-to-peer encrypted HD video and voice calling with screen sharing and in-call DataChannel chat. Zero accounts, zero plugins, zero server tracking.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /call &bull; SOUNDWAVE VISUALIZER
+            </div>
+            <a href="/call" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              START CALL ROOM &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3: /clip -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // SOVEREIGN 003 ]</span>
+              <span class="app-badge-free">AES-GCM 256</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Cross-Device Clipboard</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Instant universal text &amp; token bridge across phone, tablet, laptop, and desktop with QR pairing, client-side encryption, and burn-after-reading.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /clip &bull; QUANTUM MATRIX CANVAS
+            </div>
+            <a href="/clip" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              OPEN CLIPBOARD &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 4: /json -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DEV TOOL 004 ]</span>
+              <span class="app-badge-free">Ad-Free</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">JSON Formatter &amp; Tree Inspector</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Validate messy payloads with exact line/column syntax errors, interactive collapsible tree with JSONPath copying, TypeScript interface generator, and YAML export.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /json &bull; DATA LATTICE CANVAS
+            </div>
+            <a href="/json" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              FORMAT JSON &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 5: /uuid -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DEV TOOL 005 ]</span>
+              <span class="app-badge-free">Bulk 500+</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">UUID &amp; GUID Generator</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Generate bulk unique identifiers (v1 timestamp, v4 crypto-random, sortable v7 Unix epoch) with quotes/uppercase formatting, CSV/SQL export, and decoder.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /uuid &bull; HEX MATRIX RAIN
+            </div>
+            <a href="/uuid" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              GENERATE UUIDS &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 6: /regex -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DEV TOOL 006 ]</span>
+              <span class="app-badge-free">Zero Latency</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Regex Tester &amp; Debugger</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Real-time regular expression analyzer with dynamic flag toggles, visual syntax highlights, named/indexed capture group tables, substitution, and cheat sheet.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /regex &bull; LASER SCANNER RETICLE
+            </div>
+            <a href="/regex" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              TEST REGEX &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 7: /hash -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // CRYPTO 007 ]</span>
+              <span class="app-badge-free">Client Streaming</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Hash Lab &amp; File Checksum</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Compute MD5, SHA-1, SHA-256, SHA-512, CRC-32 and HMAC digests. Drag and drop any large ISO/ZIP file for instant local checksum verification without uploading.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /hash &bull; 3D BLOCKCHAIN CUBES
+            </div>
+            <a href="/hash" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              OPEN HASH LAB &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 8: /diff -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DEV TOOL 008 ]</span>
+              <span class="app-badge-free">Myers Algorithm</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Side-by-Side Diff Checker</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Compare code and text with side-by-side or unified streams, character-level and word-level inline change highlights, line metrics, and standard git `.patch` export.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /diff &bull; DUAL-POLARITY STREAM
+            </div>
+            <a href="/diff" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              COMPARE DIFFS &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 9: /jwt -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // SECURITY 009 ]</span>
+              <span class="app-badge-free">100% In-Browser</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">JWT Debugger &amp; Builder</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Inspect color-coded Header, Payload, and Signature components with humanized expiration countdowns (`exp`, `iat`), HMAC-SHA256 verification, and signed token builder.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /jwt &bull; TRIPLE-ORBITAL GYROSCOPE
+            </div>
+            <a href="/jwt" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              DEBUG JWT &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 10: /colors -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DESIGN 010 ]</span>
+              <span class="app-badge-free">WCAG 2.1 Audit</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Color Studio &amp; Palette Lab</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Synthesize harmonic palettes (Complementary, Analogous, Triadic, Shades), audit accessibility contrast ratios (AA/AAA pass/fail), and extract dominant palettes from images.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /colors &bull; CHROMATIC AURORA
+            </div>
+            <a href="/colors" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              EXPLORE PALETTES &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 11: /meme -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // CREATIVE 011 ]</span>
+              <span class="app-badge-free">Zero Watermark</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Meme Generator Studio</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Generate memes with classic Impact styling over built-in viral templates or custom photo uploads. Instant PNG download and direct clipboard copying with zero ads.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /meme &bull; POP-ART HALFTONE MESH
+            </div>
+            <a href="/meme" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              CREATE MEME &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 12: /draw -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // VECTOR 012 ]</span>
+              <span class="app-badge-free">Local Auto-Save</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Infinite Whiteboard Canvas</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Freehand sketching and architectural diagramming canvas with vector geometric shapes, draggable sticky notes, full undo/redo stack, and PNG export.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /draw &bull; BLUEPRINT DRAFTING GRID
+            </div>
+            <a href="/draw" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              OPEN WHITEBOARD &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 13: /write -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // WRITING 013 ]</span>
+              <span class="app-badge-free">Document Vault</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Markdown Editor &amp; Vault</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Distraction-free dual-pane Markdown editor with real-time preview, word &amp; reading time metrics, multi-document local storage vault, and styled HTML/PDF export.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /write &bull; TYPEWRITER STARDUST
+            </div>
+            <a href="/write" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              START WRITING &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 14: /timecapsule -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // CRYPTO 014 ]</span>
+              <span class="app-badge-free">Relativistic Lock</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Encrypted Digital Time Capsule</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Seal messages, keys, or predictions behind AES-256 GCM encryption locked to a future spacetime timestamp. Interactive countdown chronometer with client-side decryption.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /timecapsule &bull; SPACETIME CHRONOMETER
+            </div>
+            <a href="/timecapsule" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              SEAL TIME CAPSULE &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 15: /uses -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // ARSENAL 015 ]</span>
+              <span class="app-badge-free">Verified Stack</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Developer Arsenal (/uses)</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Authentic breakdown of the complete hardware, trading robot engines (ScientificMultiTFEA v4.2), Antigravity IDE, compilation toolchains, and edge hosting infrastructure.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /uses &bull; CIRCUIT BLUEPRINT
+            </div>
+            <a href="/uses" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              VIEW TECH STACK &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 16: /ama -->
+        <article class="app-card-3d reveal-on-scroll" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="app-card-meta" style="margin-bottom: 8px;">
+              <span class="app-index-tag">[ // DIALOGUE 016 ]</span>
+              <span class="app-badge-free">Founder Direct</span>
+            </div>
+            <h3 style="font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px;">Ask Me Anything (/ama)</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+              Permanent, searchable technical archive of founder answers on trading automation, latency optimization, Android system internals, and sovereign software development.
+            </p>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+              ROUTE: /ama &bull; SYNAPTIC CONSTELLATION
+            </div>
+            <a href="/ama" class="btn-action-primary" style="padding: 8px 16px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+              EXPLORE Q&amp;A ARCHIVE &rarr;
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- 5. SOVEREIGN STOREFRONT GATEWAY PORTAL -->
     <section id="storefront-portal" class="reveal-on-scroll" style="margin: 64px 0 80px;">
       <div style="background: linear-gradient(135deg, rgba(222, 88, 73, 0.08) 0%, rgba(13, 22, 38, 0.95) 100%); border: 1px solid rgba(222, 88, 73, 0.35); border-radius: 24px; padding: 48px 36px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
@@ -1660,15 +2052,26 @@
         SOVEREIGN BETA REPOSITORY.
       </div>
       <nav class="footer-nav" style="display: flex; gap: 14px; flex-wrap: wrap;">
-        <a href="/store">Storefront</a>
         <a href="/speedtest" style="color: #00f0ff;">⚡ Speed Test</a>
-        <a href="/invoice" style="color: #00f0ff;">📄 Invoice Maker</a>
-        <a href="/resizer" style="color: #00f0ff;">🖼️ Social Resizer</a>
-        <a href="/subscriptions" style="color: #ffff00;">☢️ Reality Check</a>
-        <a href="/ip" style="color: #70d6ff;">❄️ What Is My IP</a>
+        <a href="/stats" style="color: #38bdf8;">🌐 Stats</a>
+        <a href="/call" style="color: #38bdf8;">📹 Call</a>
+        <a href="/clip" style="color: #10b981;">📋 Clip</a>
+        <a href="/json" style="color: #a855f7;">{ } JSON</a>
+        <a href="/uuid" style="color: #38bdf8;">🆔 UUID</a>
+        <a href="/regex" style="color: #f59e0b;">.* Regex</a>
+        <a href="/hash" style="color: #10b981;"># Hash</a>
+        <a href="/diff" style="color: #de5849;">⇄ Diff</a>
+        <a href="/jwt" style="color: #38bdf8;">🔑 JWT</a>
+        <a href="/colors" style="color: #ec4899;">🎨 Colors</a>
+        <a href="/meme" style="color: #f59e0b;">🎭 Meme</a>
+        <a href="/draw" style="color: #38bdf8;">✏️ Draw</a>
+        <a href="/write" style="color: #a855f7;">📝 Write</a>
+        <a href="/timecapsule" style="color: #10b981;">⏳ Capsule</a>
+        <a href="/uses">/uses</a>
+        <a href="/ama">/ama</a>
+        <a href="/store">Store</a>
         <a href="/about">About</a>
         <a href="/faq">FAQ</a>
-        <a href="/contact">Contact</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="javascript:void(0)" onclick="openDevModal()" style="color: var(--text-muted);">Terminal</a>

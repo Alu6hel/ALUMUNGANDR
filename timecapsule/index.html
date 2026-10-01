@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Encrypted Digital Time Capsule — Alumungandr</title>
+  <meta name="description" content="Seal messages, keys, predictions, and documents into an AES-256 encrypted digital time capsule with a future countdown unlock date. Zero server knowledge.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Mode Tabs */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+    .tab-btn.active {
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.75rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Countdown Chronometer Display */
+    .chronometer-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .time-slot {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      min-width: 90px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .time-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent-emerald);
+    }
+    .time-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .form-input, .form-textarea {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--accent-emerald);
+    }
+    .form-textarea {
+      height: 140px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      color: #07080a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.85rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Seal status alert */
+    .seal-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-emerald); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">TIME // CAPSULE</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        AES-256 GCM CRYPTOGRAPHY // TIMELOCKED PAYLOAD
+      </div>
+      <h1>Encrypted Digital <span>Time Capsule</span></h1>
+      <p>Lock predictions, personal letters, passwords, or milestones behind an unbreakable cryptographic countdown timer. Zero servers can read your data.</p>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-seal-btn" onclick="setMode('seal')">🔒 Seal New Capsule</button>
+      <button class="tab-btn" id="tab-open-btn" onclick="setMode('open')">⏳ Unlock / Inspect Capsule</button>
+    </div>
+
+    <!-- Mode: Seal New Capsule -->
+    <div id="mode-seal">
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">Message or Secret Payload</label>
+          <textarea id="capsule-payload" class="form-textarea" placeholder="Dear future self, or future recipient: Here is the cryptographic key / vision for 2030..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Unlock Date &amp; Time (Spacetime Boundary)</label>
+          <input type="datetime-local" id="capsule-date" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Decryption Passphrase (Must remember or share with future recipient)</label>
+          <input type="password" id="capsule-pass" class="form-input" placeholder="Secret passphrase for AES-256 GCM encryption...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Optional Hint for Passphrase</label>
+          <input type="text" id="capsule-hint" class="form-input" placeholder="e.g. The first project we built together">
+        </div>
+
+        <button class="btn-action" onclick="sealCapsule()">⚡ Cryptographically Seal Capsule</button>
+      </div>
+
+      <!-- Sealed Output Modal/Card -->
+      <div class="card" id="sealed-card" style="display:none;">
+        <div class="seal-banner">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <div>
+            <strong>Capsule Sealed into Spacetime!</strong>
+            <div style="font-size:0.75rem; color:#a7f3d0; margin-top:2px;">Saved locally and ready to distribute.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Capsule Shareable Link</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="capsule-link" class="form-input" readonly>
+            <button class="btn-action" style="width:120px;" onclick="copyCapsuleLink()">Copy Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode: Unlock / Chronometer -->
+    <div id="mode-open" style="display:none;">
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">Capsule ID or Paste Encrypted Token</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="open-id" class="form-input" placeholder="Enter Capsule ID (e.g. cap_171348...)">
+            <button class="btn-action" style="width:120px;" onclick="fetchAndInspectCapsule()">Inspect</button>
+          </div>
+        </div>
+
+        <!-- Chronometer display -->
+        <div id="countdown-section" style="display:none;">
+          <div style="text-align:center; font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">
+            Temporal Lock Countdown
+          </div>
+          <div class="chronometer-wrap">
+            <div class="time-slot"><span class="time-val" id="cnt-days">00</span><span class="time-unit">Days</span></div>
+            <div class="time-slot"><span class="time-val" id="cnt-hours">00</span><span class="time-unit">Hours</span></div>
+            <div class="time-slot"><span class="time-val" id="cnt-mins">00</span><span class="time-unit">Mins</span></div>
+            <div class="time-slot"><span class="time-val" id="cnt-secs">00</span><span class="time-unit">Secs</span></div>
+          </div>
+
+          <div id="lock-status-badge" style="text-align:center; font-family:'JetBrains Mono'; font-size:0.85rem; padding:0.6rem; border-radius:6px; background:rgba(222,88,73,0.15); color:#fca5a5; border:1px solid rgba(222,88,73,0.3); margin-bottom:1.25rem;">
+            🔒 TEMPORAL LOCK ENGAGED: Cannot be unlocked until time threshold expires.
+          </div>
+
+          <div id="unlock-form" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">Passphrase to Decrypt</label>
+              <input type="password" id="unlock-pass" class="form-input" placeholder="Enter passphrase used during sealing...">
+              <div id="hint-display" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-cyan); margin-top:4px;"></div>
+            </div>
+            <button class="btn-action" onclick="decryptCapsulePayload()">🔓 Decrypt &amp; Reveal Capsule</button>
+          </div>
+
+          <div id="revealed-payload-card" style="display:none; margin-top:1.5rem; background:rgba(0,0,0,0.4); border:1px solid var(--accent-emerald); border-radius:8px; padding:1.25rem;">
+            <div style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-emerald); font-weight:700; margin-bottom:0.5rem;">
+              REVEALED TIME CAPSULE MESSAGE:
+            </div>
+            <pre id="revealed-text" style="color:#fff; font-family:'JetBrains Mono'; white-space:pre-wrap; line-height:1.6;"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    // Set default unlock date to 30 days in the future
+    const now = new Date();
+    now.setDate(now.getDate() + 30);
+    document.getElementById('capsule-date').value = now.toISOString().slice(0, 16);
+
+    let activeCapsule = null;
+    let timerInterval = null;
+
+    function setMode(mode) {
+      document.getElementById('mode-seal').style.display = mode === 'seal' ? 'block' : 'none';
+      document.getElementById('mode-open').style.display = mode === 'open' ? 'block' : 'none';
+      document.getElementById('tab-seal-btn').classList.toggle('active', mode === 'seal');
+      document.getElementById('tab-open-btn').classList.toggle('active', mode === 'open');
+    }
+
+    // Web Crypto AES-GCM Subroutines
+    async function deriveKey(passphrase, salt) {
+      const encoder = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey(
+        'raw', encoder.encode(passphrase), 'PBKDF2', false, ['deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: salt,
+          iterations: 100000,
+          hash: 'SHA-256'
+        },
+        baseKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    async function encryptMessage(text, passphrase) {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(passphrase, salt);
+
+      const encoder = new TextEncoder();
+      const encrypted = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        encoder.encode(text)
+      );
+
+      const payload = {
+        salt: Array.from(salt),
+        iv: Array.from(iv),
+        data: Array.from(new Uint8Array(encrypted))
+      };
+      return btoa(JSON.stringify(payload));
+    }
+
+    async function decryptMessage(encryptedB64, passphrase) {
+      const payload = JSON.parse(atob(encryptedB64));
+      const salt = new Uint8Array(payload.salt);
+      const iv = new Uint8Array(payload.iv);
+      const data = new Uint8Array(payload.data);
+
+      const key = await deriveKey(passphrase, salt);
+      const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        data
+      );
+      return new TextDecoder().decode(decrypted);
+    }
+
+    async function sealCapsule() {
+      const text = document.getElementById('capsule-payload').value.trim();
+      const unlockDate = new Date(document.getElementById('capsule-date').value).getTime();
+      const pass = document.getElementById('capsule-pass').value;
+      const hint = document.getElementById('capsule-hint').value.trim();
+
+      if (!text || !pass) {
+        alert('Please provide message payload and passphrase.');
+        return;
+      }
+      if (isNaN(unlockDate) || unlockDate <= Date.now()) {
+        alert('Unlock date must be in the future.');
+        return;
+      }
+
+      const encryptedPayload = await encryptMessage(text, pass);
+      const capsuleId = 'cap_' + Math.random().toString(36).substring(2, 10);
+
+      const capsuleRecord = {
+        id: capsuleId,
+        encryptedPayload: encryptedPayload,
+        unlockDate: unlockDate,
+        createdAt: Date.now(),
+        hint: hint
+      };
+
+      // Save locally
+      localStorage.setItem('capsule_' + capsuleId, JSON.stringify(capsuleRecord));
+
+      // Attempt edge API post
+      try {
+        await fetch('/api/timecapsule', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(capsuleRecord)
+        });
+      } catch (e) {}
+
+      const link = `${window.location.origin}/timecapsule#${capsuleId}`;
+      document.getElementById('capsule-link').value = link;
+      document.getElementById('sealed-card').style.display = 'block';
+    }
+
+    function copyCapsuleLink() {
+      navigator.clipboard.writeText(document.getElementById('capsule-link').value);
+      alert('Copied Time Capsule link to clipboard!');
+    }
+
+    // Inspect & Unlock
+    function fetchAndInspectCapsule(providedId) {
+      const id = providedId || document.getElementById('open-id').value.trim();
+      if (!id) return;
+
+      // Try local storage first
+      let data = localStorage.getItem('capsule_' + id);
+      if (data) {
+        activeCapsule = JSON.parse(data);
+        displayChronometer(activeCapsule);
+      } else {
+        // Fetch from Edge API
+        fetch('/api/timecapsule?id=' + encodeURIComponent(id))
+          .then(r => r.json())
+          .then(res => {
+            if (res.error) {
+              alert('Capsule not found in timeline: ' + res.error);
+            } else {
+              activeCapsule = res;
+              displayChronometer(activeCapsule);
+            }
+          })
+          .catch(err => alert('Network error: ' + err.message));
+      }
+    }
+
+    function displayChronometer(capsule) {
+      document.getElementById('countdown-section').style.display = 'block';
+      if (timerInterval) clearInterval(timerInterval);
+
+      if (capsule.hint) {
+        document.getElementById('hint-display').textContent = 'Hint: ' + capsule.hint;
+      }
+
+      function tick() {
+        const now = Date.now();
+        const diff = capsule.unlockDate - now;
+
+        if (diff <= 0) {
+          // Unlocked!
+          document.getElementById('cnt-days').textContent = '00';
+          document.getElementById('cnt-hours').textContent = '00';
+          document.getElementById('cnt-mins').textContent = '00';
+          document.getElementById('cnt-secs').textContent = '00';
+
+          const badge = document.getElementById('lock-status-badge');
+          badge.style.background = 'rgba(16, 185, 129, 0.15)';
+          badge.style.color = '#34d399';
+          badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+          badge.textContent = '🔓 TEMPORAL LOCK EXPIRED: You may now enter passphrase to decrypt.';
+
+          document.getElementById('unlock-form').style.display = 'block';
+          clearInterval(timerInterval);
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById('cnt-days').textContent = String(days).padStart(2, '0');
+          document.getElementById('cnt-hours').textContent = String(hours).padStart(2, '0');
+          document.getElementById('cnt-mins').textContent = String(mins).padStart(2, '0');
+          document.getElementById('cnt-secs').textContent = String(secs).padStart(2, '0');
+          document.getElementById('unlock-form').style.display = 'none';
+        }
+      }
+
+      tick();
+      timerInterval = setInterval(tick, 1000);
+    }
+
+    async function decryptCapsulePayload() {
+      const pass = document.getElementById('unlock-pass').value;
+      if (!pass) {
+        alert('Please enter passphrase.');
+        return;
+      }
+      try {
+        const decrypted = await decryptMessage(activeCapsule.encryptedPayload, pass);
+        document.getElementById('revealed-text').textContent = decrypted;
+        document.getElementById('revealed-payload-card').style.display = 'block';
+      } catch (err) {
+        alert('Decryption failed! Incorrect passphrase.');
+      }
+    }
+
+    // Check hash for direct link
+    if (window.location.hash) {
+      const capId = window.location.hash.replace('#', '');
+      setMode('open');
+      document.getElementById('open-id').value = capId;
+      fetchAndInspectCapsule(capId);
+    }
+
+    // --- Interactive Live Background: Relativistic Spacetime Chronometer ---
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let width, height;
+    let angle = 0;
+
+    function resizeBg() {
+      width = bgCanvas.width = window.innerWidth;
+      height = bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+
+    function renderSpacetime() {
+      bgCtx.clearRect(0, 0, width, height);
+
+      const cx = width / 2;
+      const cy = height / 2;
+      angle += 0.005;
+
+      const radii = [80, 150, 240, 340, 460];
+      radii.forEach((r, idx) => {
+        bgCtx.strokeStyle = `rgba(16, 185, 129, ${0.12 - idx * 0.02})`;
+        bgCtx.lineWidth = 1;
+        bgCtx.beginPath();
+        bgCtx.arc(cx, cy, r, 0, Math.PI * 2);
+        bgCtx.stroke();
+
+        // Ticks on ring
+        const tickCount = 12 * (idx + 1);
+        for (let i = 0; i < tickCount; i++) {
+          const a = (i * Math.PI * 2 / tickCount) + (angle * (idx % 2 === 0 ? 1 : -1));
+          const x1 = cx + Math.cos(a) * (r - 4);
+          const y1 = cy + Math.sin(a) * (r - 4);
+          const x2 = cx + Math.cos(a) * (r + 4);
+          const y2 = cy + Math.sin(a) * (r + 4);
+
+          bgCtx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+          bgCtx.beginPath();
+          bgCtx.moveTo(x1, y1);
+          bgCtx.lineTo(x2, y2);
+          bgCtx.stroke();
+        }
+      });
+
+      requestAnimationFrame(renderSpacetime);
+    }
+    renderSpacetime();
+  </script>
+</body>
+</html>

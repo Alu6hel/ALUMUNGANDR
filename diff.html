@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Text Diff Checker — Side-by-Side & Unified Code Comparison — Alumungandr</title>
+  <meta name="description" content="Compare text, code, JSON, and documents with instant character-level and word-level diff highlights. Side-by-side and unified views with zero server uploads.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --del-bg: rgba(222, 88, 73, 0.16);
+      --del-text: #fca5a5;
+      --del-inline: rgba(222, 88, 73, 0.4);
+      --ins-bg: rgba(16, 185, 129, 0.16);
+      --ins-text: #6ee7b7;
+      --ins-inline: rgba(16, 185, 129, 0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(222, 88, 73, 0.15);
+      color: var(--accent-coral);
+      border: 1px solid rgba(222, 88, 73, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #de5849 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Toolbar */
+    .diff-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(16px);
+    }
+    .view-toggle {
+      display: flex;
+      background: var(--bg-surface);
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid var(--border-color);
+    }
+    .view-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .view-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .tool-options {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .tool-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    .tool-checkbox input { accent-color: var(--accent-cyan); }
+
+    .action-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      background: rgba(20, 23, 34, 0.6);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .stat-add { color: var(--accent-emerald); font-weight: 700; }
+    .stat-del { color: var(--accent-coral); font-weight: 700; }
+    .stat-sim { color: var(--accent-cyan); margin-left: auto; }
+
+    /* Input Editors (Collapsible) */
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .inputs-grid { grid-template-columns: 1fr; }
+    }
+
+    .editor-pane {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pane-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pane-textarea {
+      width: 100%;
+      height: 180px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: #e5e7eb;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+    }
+    .pane-textarea:focus { border-color: var(--accent-cyan); }
+
+    /* Diff Output Viewer */
+    .diff-container {
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* Side-by-side view */
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      divide-x: 1px solid var(--border-color);
+    }
+    .diff-col {
+      overflow-x: auto;
+    }
+    .diff-col-header {
+      background: var(--bg-surface);
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .diff-line {
+      display: flex;
+      align-items: flex-start;
+      min-height: 24px;
+      padding: 0.1rem 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .diff-line:hover { background: rgba(255, 255, 255, 0.02); }
+    .line-num {
+      width: 44px;
+      padding: 0 0.5rem;
+      color: #525a6b;
+      text-align: right;
+      user-select: none;
+      font-size: 0.75rem;
+    }
+    .line-content {
+      flex: 1;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .diff-line.deletion {
+      background: var(--del-bg);
+      color: var(--del-text);
+    }
+    .diff-line.addition {
+      background: var(--ins-bg);
+      color: var(--ins-text);
+    }
+    .diff-line.empty {
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .char-del {
+      background: var(--del-inline);
+      border-radius: 2px;
+      text-decoration: line-through;
+    }
+    .char-ins {
+      background: var(--ins-inline);
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    /* Unified view */
+    .unified-line {
+      display: flex;
+      min-height: 24px;
+      padding: 0.1rem 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .unified-line:hover { background: rgba(255, 255, 255, 0.02); }
+    .unified-line.del { background: var(--del-bg); color: var(--del-text); }
+    .unified-line.ins { background: var(--ins-bg); color: var(--ins-text); }
+    .unified-symbol {
+      width: 24px;
+      text-align: center;
+      user-select: none;
+      font-weight: 700;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-cyan); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">DIFF // LAB</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 3h5v5"></path><path d="M4 20L21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l6 6"></path><path d="M4 4l5 5"></path></svg>
+        CLIENT-SIDE MYERS ALGORITHM // ZERO LEAKS
+      </div>
+      <h1>Text &amp; Code <span>Diff Checker</span></h1>
+      <p>Compare raw strings, code snippets, or config files with deep word &amp; character highlight resolution. Export standard git patches with zero server latency.</p>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="diff-toolbar">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-side" onclick="setView('side')">Side-by-Side</button>
+        <button class="view-btn" id="btn-unified" onclick="setView('unified')">Unified</button>
+      </div>
+
+      <div class="tool-options">
+        <label class="tool-checkbox">
+          <input type="checkbox" id="opt-whitespace" onchange="computeDiff()"> Ignore Whitespace
+        </label>
+        <label class="tool-checkbox">
+          <input type="checkbox" id="opt-case" onchange="computeDiff()"> Ignore Case
+        </label>
+      </div>
+
+      <div class="action-group">
+        <button class="btn-action" onclick="swapInputs()">⇄ Swap</button>
+        <button class="btn-action" onclick="loadSampleDiff()">⚡ Sample Diff</button>
+        <button class="btn-action" onclick="clearBoth()">Clear</button>
+        <button class="btn-action" onclick="exportPatch()">Export .patch</button>
+      </div>
+    </div>
+
+    <!-- Text Inputs -->
+    <div class="inputs-grid">
+      <div class="editor-pane">
+        <div class="pane-header">
+          <span class="pane-title" style="color:var(--accent-coral);">Original Text (Before)</span>
+          <span id="orig-lines-count" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted);">0 lines</span>
+        </div>
+        <textarea id="text-original" class="pane-textarea" spellcheck="false" placeholder="Paste original text here..."></textarea>
+      </div>
+
+      <div class="editor-pane">
+        <div class="pane-header">
+          <span class="pane-title" style="color:var(--accent-emerald);">Modified Text (After)</span>
+          <span id="mod-lines-count" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted);">0 lines</span>
+        </div>
+        <textarea id="text-modified" class="pane-textarea" spellcheck="false" placeholder="Paste modified text here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Metrics Bar -->
+    <div class="stats-bar">
+      <span class="stat-add" id="stat-add">+0 additions</span>
+      <span class="stat-del" id="stat-del">-0 deletions</span>
+      <span style="color:var(--text-muted);" id="stat-unchanged">0 unchanged</span>
+      <span class="stat-sim" id="stat-sim">Similarity: 100%</span>
+    </div>
+
+    <!-- Visual Diff Container -->
+    <div class="diff-container" id="diff-container">
+      <!-- Injected via JavaScript -->
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    let currentView = 'side';
+
+    const textOriginal = document.getElementById('text-original');
+    const textModified = document.getElementById('text-modified');
+    const diffContainer = document.getElementById('diff-container');
+
+    const sampleOriginal = `function calculateBandwidth(packets, latencyMs) {
+  // Legacy packet aggregator
+  let totalBytes = 0;
+  for (let i = 0; i < packets.length; i++) {
+    totalBytes += packets[i].size;
+  }
+  const throughputMbps = (totalBytes * 8) / (latencyMs / 1000) / 1000000;
+  console.log("Calculated throughput: " + throughputMbps);
+  return throughputMbps;
+}`;
+
+    const sampleModified = `function calculateBandwidth(packets, latencyMs) {
+  // Optimized SIMD packet accumulator v2.4
+  const totalBytes = packets.reduce((acc, p) => acc + p.size, 0);
+  const durationSec = Math.max(0.001, latencyMs / 1000);
+  const throughputMbps = (totalBytes * 8) / durationSec / 1000000;
+  
+  // Emit telemetry event directly
+  telemetry.emit('throughput_ready', { mbps: throughputMbps });
+  return Math.round(throughputMbps * 100) / 100;
+}`;
+
+    // Longest Common Subsequence (LCS) Line Diff
+    function computeLCS(linesA, linesB, ignoreWs, ignoreCase) {
+      function normalize(str) {
+        let s = str;
+        if (ignoreWs) s = s.trim().replace(/\s+/g, ' ');
+        if (ignoreCase) s = s.toLowerCase();
+        return s;
+      }
+
+      const m = linesA.length;
+      const n = linesB.length;
+      const dp = Array.from({ length: m + 1 }, () => new Int32Array(n + 1));
+
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          if (normalize(linesA[i - 1]) === normalize(linesB[j - 1])) {
+            dp[i][j] = dp[i - 1][j - 1] + 1;
+          } else {
+            dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+          }
+        }
+      }
+
+      // Backtrack to find diff edit script
+      const edits = [];
+      let i = m, j = n;
+      while (i > 0 || j > 0) {
+        if (i > 0 && j > 0 && normalize(linesA[i - 1]) === normalize(linesB[j - 1])) {
+          edits.unshift({ type: 'unchanged', valA: linesA[i - 1], valB: linesB[j - 1] });
+          i--; j--;
+        } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+          edits.unshift({ type: 'addition', valB: linesB[j - 1] });
+          j--;
+        } else if (i > 0 && (j === 0 || dp[i][j - 1] < dp[i - 1][j])) {
+          edits.unshift({ type: 'deletion', valA: linesA[i - 1] });
+          i--;
+        }
+      }
+      return edits;
+    }
+
+    // Character-level inline diff for changed lines
+    function diffCharacters(strA, strB) {
+      if (!strA || !strB) return { htmlA: escapeHtml(strA || ''), htmlB: escapeHtml(strB || '') };
+
+      // Find common prefix
+      let start = 0;
+      while (start < strA.length && start < strB.length && strA[start] === strB[start]) {
+        start++;
+      }
+
+      // Find common suffix
+      let endA = strA.length - 1;
+      let endB = strB.length - 1;
+      while (endA >= start && endB >= start && strA[endA] === strB[endB]) {
+        endA--;
+        endB--;
+      }
+
+      const prefix = escapeHtml(strA.substring(0, start));
+      const midA = escapeHtml(strA.substring(start, endA + 1));
+      const midB = escapeHtml(strB.substring(start, endB + 1));
+      const suffix = escapeHtml(strA.substring(endA + 1));
+
+      return {
+        htmlA: prefix + (midA ? `<span class="char-del">${midA}</span>` : '') + suffix,
+        htmlB: prefix + (midB ? `<span class="char-ins">${midB}</span>` : '') + suffix
+      };
+    }
+
+    function escapeHtml(str) {
+      return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function computeDiff() {
+      const origText = textOriginal.value;
+      const modText = textModified.value;
+
+      const linesA = origText.split('\n');
+      const linesB = modText.split('\n');
+
+      document.getElementById('orig-lines-count').textContent = `${linesA.length} lines`;
+      document.getElementById('mod-lines-count').textContent = `${linesB.length} lines`;
+
+      if (!origText && !modText) {
+        diffContainer.innerHTML = '<div style="padding:2.5rem; text-align:center; color:var(--text-muted); font-style:italic;">Enter text above or click "Sample Diff" to inspect comparisons.</div>';
+        updateStats(0, 0, 0, 100);
+        return;
+      }
+
+      const ignoreWs = document.getElementById('opt-whitespace').checked;
+      const ignoreCase = document.getElementById('opt-case').checked;
+
+      const edits = computeLCS(linesA, linesB, ignoreWs, ignoreCase);
+
+      let additions = 0;
+      let deletions = 0;
+      let unchanged = 0;
+
+      edits.forEach(e => {
+        if (e.type === 'addition') additions++;
+        else if (e.type === 'deletion') deletions++;
+        else unchanged++;
+      });
+
+      const totalLines = additions + deletions + unchanged;
+      const similarity = totalLines > 0 ? Math.round((unchanged / totalLines) * 100) : 100;
+      updateStats(additions, deletions, unchanged, similarity);
+
+      if (currentView === 'side') {
+        renderSideBySide(edits);
+      } else {
+        renderUnified(edits);
+      }
+    }
+
+    function updateStats(add, del, unch, sim) {
+      document.getElementById('stat-add').textContent = `+${add} additions`;
+      document.getElementById('stat-del').textContent = `-${del} deletions`;
+      document.getElementById('stat-unchanged').textContent = `${unch} unchanged`;
+      document.getElementById('stat-sim').textContent = `Similarity: ${sim}%`;
+    }
+
+    function renderSideBySide(edits) {
+      let leftHtml = '<div class="diff-col-header">ORIGINAL (BEFORE)</div>';
+      let rightHtml = '<div class="diff-col-header">MODIFIED (AFTER)</div>';
+
+      let lineNumA = 1;
+      let lineNumB = 1;
+
+      for (let i = 0; i < edits.length; i++) {
+        const e = edits[i];
+
+        if (e.type === 'unchanged') {
+          const escA = escapeHtml(e.valA);
+          leftHtml += `
+            <div class="diff-line">
+              <span class="line-num">${lineNumA++}</span>
+              <span class="line-content">${escA}</span>
+            </div>
+          `;
+          rightHtml += `
+            <div class="diff-line">
+              <span class="line-num">${lineNumB++}</span>
+              <span class="line-content">${escA}</span>
+            </div>
+          `;
+        } else if (e.type === 'deletion') {
+          // Look ahead to check if next edit is an addition (modification pair)
+          const next = edits[i + 1];
+          if (next && next.type === 'addition') {
+            const charDiff = diffCharacters(e.valA, next.valB);
+            leftHtml += `
+              <div class="diff-line deletion">
+                <span class="line-num">${lineNumA++}</span>
+                <span class="line-content">${charDiff.htmlA}</span>
+              </div>
+            `;
+            rightHtml += `
+              <div class="diff-line addition">
+                <span class="line-num">${lineNumB++}</span>
+                <span class="line-content">${charDiff.htmlB}</span>
+              </div>
+            `;
+            i++; // skip next since paired
+          } else {
+            leftHtml += `
+              <div class="diff-line deletion">
+                <span class="line-num">${lineNumA++}</span>
+                <span class="line-content">${escapeHtml(e.valA)}</span>
+              </div>
+            `;
+            rightHtml += `
+              <div class="diff-line empty">
+                <span class="line-num"></span>
+                <span class="line-content">&nbsp;</span>
+              </div>
+            `;
+          }
+        } else if (e.type === 'addition') {
+          leftHtml += `
+            <div class="diff-line empty">
+              <span class="line-num"></span>
+              <span class="line-content">&nbsp;</span>
+            </div>
+          `;
+          rightHtml += `
+            <div class="diff-line addition">
+              <span class="line-num">${lineNumB++}</span>
+              <span class="line-content">${escapeHtml(e.valB)}</span>
+            </div>
+          `;
+        }
+      }
+
+      diffContainer.innerHTML = `
+        <div class="side-by-side">
+          <div class="diff-col">${leftHtml}</div>
+          <div class="diff-col">${rightHtml}</div>
+        </div>
+      `;
+    }
+
+    function renderUnified(edits) {
+      let html = '<div class="diff-col-header">UNIFIED DIFF STREAM</div>';
+      let lineNumA = 1;
+      let lineNumB = 1;
+
+      edits.forEach(e => {
+        if (e.type === 'unchanged') {
+          html += `
+            <div class="unified-line">
+              <span class="line-num">${lineNumA++}</span>
+              <span class="line-num">${lineNumB++}</span>
+              <span class="unified-symbol">&nbsp;</span>
+              <span class="line-content">${escapeHtml(e.valA)}</span>
+            </div>
+          `;
+        } else if (e.type === 'deletion') {
+          html += `
+            <div class="unified-line del">
+              <span class="line-num">${lineNumA++}</span>
+              <span class="line-num"></span>
+              <span class="unified-symbol">-</span>
+              <span class="line-content">${escapeHtml(e.valA)}</span>
+            </div>
+          `;
+        } else if (e.type === 'addition') {
+          html += `
+            <div class="unified-line ins">
+              <span class="line-num"></span>
+              <span class="line-num">${lineNumB++}</span>
+              <span class="unified-symbol">+</span>
+              <span class="line-content">${escapeHtml(e.valB)}</span>
+            </div>
+          `;
+        }
+      });
+
+      diffContainer.innerHTML = html;
+    }
+
+    function setView(view) {
+      currentView = view;
+      document.getElementById('btn-side').classList.toggle('active', view === 'side');
+      document.getElementById('btn-unified').classList.toggle('active', view === 'unified');
+      computeDiff();
+    }
+
+    function swapInputs() {
+      const temp = textOriginal.value;
+      textOriginal.value = textModified.value;
+      textModified.value = temp;
+      computeDiff();
+    }
+
+    function loadSampleDiff() {
+      textOriginal.value = sampleOriginal;
+      textModified.value = sampleModified;
+      computeDiff();
+    }
+
+    function clearBoth() {
+      textOriginal.value = '';
+      textModified.value = '';
+      computeDiff();
+    }
+
+    function exportPatch() {
+      const edits = computeLCS(textOriginal.value.split('\n'), textModified.value.split('\n'), false, false);
+      let patch = `--- a/original.txt\n+++ b/modified.txt\n@@ -1,${textOriginal.value.split('\n').length} +1,${textModified.value.split('\n').length} @@\n`;
+      edits.forEach(e => {
+        if (e.type === 'unchanged') patch += ` ${e.valA}\n`;
+        else if (e.type === 'deletion') patch += `-${e.valA}\n`;
+        else if (e.type === 'addition') patch += `+${e.valB}\n`;
+      });
+
+      const blob = new Blob([patch], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `changes-${Date.now()}.patch`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    textOriginal.addEventListener('input', computeDiff);
+    textModified.addEventListener('input', computeDiff);
+
+    // Initial load with sample
+    loadSampleDiff();
+
+    // --- Interactive Live Background: Dual-Polarity Particle Stream ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.floor(width / 16);
+      for (let i = 0; i < count; i++) {
+        const isLeft = Math.random() < 0.5;
+        particles.push({
+          x: isLeft ? Math.random() * (width * 0.45) : width - Math.random() * (width * 0.45),
+          y: Math.random() * height,
+          vx: isLeft ? (Math.random() * 1.5 + 0.5) : -(Math.random() * 1.5 + 0.5),
+          vy: (Math.random() - 0.5) * 0.8,
+          isLeft: isLeft,
+          size: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.6 + 0.2
+        });
+      }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function renderBg() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Center separator line
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Collision or reset at boundary
+        if (p.isLeft) {
+          if (p.x > width * 0.52) {
+            p.x = 0;
+            p.y = Math.random() * height;
+          }
+        } else {
+          if (p.x < width * 0.48) {
+            p.x = width;
+            p.y = Math.random() * height;
+          }
+        }
+
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.fillStyle = p.isLeft ? `rgba(222, 88, 73, ${p.alpha})` : `rgba(16, 185, 129, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+  </script>
+</body>
+</html>

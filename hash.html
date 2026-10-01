@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Hash Generator & File Checksum Lab — Alumungandr</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512, HMAC and verify file checksums 100% in-browser with zero uploads. Private, cryptographic integrity verification.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+    .tab-btn.active {
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+    }
+
+    /* Text input */
+    .text-box {
+      width: 100%;
+      height: 120px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    .text-box:focus { border-color: var(--accent-emerald); }
+
+    /* HMAC options */
+    .hmac-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hmac-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.45rem 0.75rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .hmac-input:focus { border-color: var(--accent-cyan); }
+
+    /* Hash Results Grid */
+    .hash-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+    .hash-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .hash-item:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(20, 23, 34, 0.9);
+    }
+    .hash-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hash-algo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-emerald);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hash-bits {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .hash-val-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hash-value {
+      flex: 1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      word-break: break-all;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      user-select: all;
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Verification Tool */
+    .verify-box {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .verify-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .verify-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .verify-result {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .verify-result.match {
+      display: flex;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .verify-result.mismatch {
+      display: flex;
+      background: rgba(222, 88, 73, 0.15);
+      border: 1px solid rgba(222, 88, 73, 0.4);
+      color: #fca5a5;
+    }
+
+    /* Drag & Drop Area */
+    .drop-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: rgba(20, 23, 34, 0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    .drop-icon {
+      margin-bottom: 1rem;
+      color: var(--accent-emerald);
+    }
+    .file-input { display: none; }
+    .file-meta-banner {
+      display: none;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-top: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .progress-bar-wrap {
+      display: none;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent-emerald);
+      transition: width 0.1s ease;
+    }
+
+    .btn-toggle {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .btn-toggle.active {
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-emerald); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">HASH // LAB</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        CLIENT-SIDE STREAMING // ZERO DATA LEAKS
+      </div>
+      <h1>Cryptographic <span>Hash Lab</span></h1>
+      <p>Generate multi-algorithm hashes, compute large-file SHA/MD5 checksums directly in browser memory, and verify tamper-proof binary integrity.</p>
+    </div>
+
+    <!-- Mode Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-text-btn" onclick="switchMode('text')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Text &amp; HMAC Hasher
+      </button>
+      <button class="tab-btn" id="tab-file-btn" onclick="switchMode('file')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        File Checksum Calculator
+      </button>
+    </div>
+
+    <!-- Text Hasher Mode -->
+    <div id="mode-text">
+      <div class="card">
+        <div class="card-header">
+          <label class="card-title">Input Payload</label>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <button class="btn-toggle" id="case-toggle" onclick="toggleCase()">UPPERCASE</button>
+            <button class="btn-copy" onclick="copyAllHashes()">Copy All Hashes</button>
+          </div>
+        </div>
+
+        <textarea id="text-input" class="text-box" placeholder="Type or paste payload string here..." spellcheck="false">The quick brown fox jumps over the lazy dog</textarea>
+
+        <div class="hmac-row">
+          <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Optional HMAC Secret:</span>
+          <input type="text" id="hmac-key" class="hmac-input" placeholder="Leave empty for standard hash, or enter secret key for HMAC..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Live Hashes Card -->
+      <div class="card">
+        <div class="card-header">
+          <label class="card-title">Calculated Digest Signatures</label>
+          <span id="calc-latency" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-emerald);">0.0 ms</span>
+        </div>
+
+        <div class="hash-list">
+          <!-- SHA-256 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-cyan);"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-cyan);"></span> SHA-256 (NIST Standard)</span>
+              <span class="hash-bits">256-bit // 64 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-sha256">...</div>
+              <button class="btn-copy" onclick="copyValue('val-sha256')">Copy</button>
+            </div>
+          </div>
+
+          <!-- MD5 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-coral);"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-coral);"></span> MD5 (Legacy Checksum)</span>
+              <span class="hash-bits">128-bit // 32 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-md5">...</div>
+              <button class="btn-copy" onclick="copyValue('val-md5')">Copy</button>
+            </div>
+          </div>
+
+          <!-- SHA-1 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-amber);"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-amber);"></span> SHA-1 (Git Tree ID)</span>
+              <span class="hash-bits">160-bit // 40 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-sha1">...</div>
+              <button class="btn-copy" onclick="copyValue('val-sha1')">Copy</button>
+            </div>
+          </div>
+
+          <!-- SHA-512 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-emerald);"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-emerald);"></span> SHA-512 (High Security)</span>
+              <span class="hash-bits">512-bit // 128 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-sha512">...</div>
+              <button class="btn-copy" onclick="copyValue('val-sha512')">Copy</button>
+            </div>
+          </div>
+
+          <!-- SHA-384 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-purple);"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-purple);"></span> SHA-384 (NSA Suite B)</span>
+              <span class="hash-bits">384-bit // 96 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-sha384">...</div>
+              <button class="btn-copy" onclick="copyValue('val-sha384')">Copy</button>
+            </div>
+          </div>
+
+          <!-- CRC-32 -->
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:#94a3b8;"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#94a3b8;"></span> CRC-32 (Cyclic Redundancy)</span>
+              <span class="hash-bits">32-bit // 8 hex</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="val-crc32">...</div>
+              <button class="btn-copy" onclick="copyValue('val-crc32')">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hash Verification / Matcher Sub-tool -->
+        <div class="verify-box">
+          <div style="font-family:'JetBrains Mono'; font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); margin-top:1rem;">
+            Verify Against Known Hash
+          </div>
+          <div class="verify-row">
+            <input type="text" id="verify-input" class="verify-input" placeholder="Paste expected hash to verify match..." oninput="verifyMatch()">
+          </div>
+          <div id="verify-result" class="verify-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Checksum Mode -->
+    <div id="mode-file" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <label class="card-title">In-Browser File Checksum Engine</label>
+          <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-cyan);">Zero Server Upload</span>
+        </div>
+
+        <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-picker').click()">
+          <div class="drop-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+          </div>
+          <h3 style="font-size:1.15rem; margin-bottom:0.4rem;">Drop ISO, EXE, ZIP or any file here</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem;">or click to select file from your system</p>
+          <input type="file" id="file-picker" class="file-input" onchange="handleFileSelect(event)">
+        </div>
+
+        <div class="progress-bar-wrap" id="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="file-meta-banner" id="file-meta-banner">
+          <div>
+            <strong id="file-name" style="color:#fff;">filename.ext</strong>
+            <span id="file-size" style="color:var(--text-muted); margin-left:0.5rem;">0 MB</span>
+          </div>
+          <span id="file-status" style="color:var(--accent-emerald);">Hashing Complete</span>
+        </div>
+      </div>
+
+      <!-- File Hashes Output Card -->
+      <div class="card" id="file-results-card" style="display:none;">
+        <div class="card-header">
+          <label class="card-title">File Verification Checksums</label>
+          <button class="btn-copy" onclick="copyAllFileHashes()">Copy All File Checksums</button>
+        </div>
+
+        <div class="hash-list">
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-cyan);">SHA-256</span>
+              <span class="hash-bits">Official Release Standard</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="file-sha256">...</div>
+              <button class="btn-copy" onclick="copyValue('file-sha256')">Copy</button>
+            </div>
+          </div>
+
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-coral);">MD5</span>
+              <span class="hash-bits">Legacy Hash</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="file-md5">...</div>
+              <button class="btn-copy" onclick="copyValue('file-md5')">Copy</button>
+            </div>
+          </div>
+
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-emerald);">SHA-512</span>
+              <span class="hash-bits">Ultra-Secure</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="file-sha512">...</div>
+              <button class="btn-copy" onclick="copyValue('file-sha512')">Copy</button>
+            </div>
+          </div>
+
+          <div class="hash-item">
+            <div class="hash-meta">
+              <span class="hash-algo" style="color:var(--accent-amber);">SHA-1</span>
+              <span class="hash-bits">Standard Git Object</span>
+            </div>
+            <div class="hash-val-row">
+              <div class="hash-value" id="file-sha1">...</div>
+              <button class="btn-copy" onclick="copyValue('file-sha1')">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- File Hash Matcher -->
+        <div class="verify-box">
+          <div style="font-family:'JetBrains Mono'; font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); margin-top:1rem;">
+            Verify File Against Official Checksum
+          </div>
+          <div class="verify-row">
+            <input type="text" id="file-verify-input" class="verify-input" placeholder="Paste checksum from developer website to verify..." oninput="verifyFileMatch()">
+          </div>
+          <div id="file-verify-result" class="verify-result"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    let isUpperCase = false;
+
+    // Fast pure-JS MD5 Implementation
+    function md5(input) {
+      function safeAdd(x, y) {
+        const lsw = (x & 0xffff) + (y & 0xffff);
+        const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xffff);
+      }
+      function bitRol(num, cnt) {
+        return (num << cnt) | (num >>> (32 - cnt));
+      }
+      function md5cmn(q, a, b, x, s, t) {
+        return safeAdd(bitRol(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+      }
+      function md5ff(a, b, c, d, x, s, t) {
+        return md5cmn((b & c) | (~b & d), a, b, x, s, t);
+      }
+      function md5gg(a, b, c, d, x, s, t) {
+        return md5cmn((b & d) | (c & ~d), a, b, x, s, t);
+      }
+      function md5hh(a, b, c, d, x, s, t) {
+        return md5cmn(b ^ c ^ d, a, b, x, s, t);
+      }
+      function md5ii(a, b, c, d, x, s, t) {
+        return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+      }
+
+      function binlMD5(x, len) {
+        x[len >> 5] |= 0x80 << (len % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        let a = 1732584193;
+        let b = -271733879;
+        let c = -1732584194;
+        let d = 271733878;
+
+        for (let i = 0; i < x.length; i += 16) {
+          const olda = a;
+          const oldb = b;
+          const oldc = c;
+          const oldd = d;
+
+          a = md5ff(a, b, c, d, x[i], 7, -680876936);
+          d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+          c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+          b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+          a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+          d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+          c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+          b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+          a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+          d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+          c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+          b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+          a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+          d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+          c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+          b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+
+          a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+          d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+          c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+          b = md5gg(b, c, d, a, x[i], 20, -373897302);
+          a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+          d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+          c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+          b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+          a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+          d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+          c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+          b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+          a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+          d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+          c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+          b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+          a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+          d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+          c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+          b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+          a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+          d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+          c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+          b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+          a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+          d = md5hh(d, a, b, c, x[i], 11, -358537222);
+          c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+          b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+          a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+          d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+          c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+          b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+
+          a = md5ii(a, b, c, d, x[i], 6, -198630844);
+          d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+          c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+          b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+          a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+          d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+          c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+          b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+          a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+          d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+          c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+          b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+          a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+          d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+          c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+          b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+
+          a = safeAdd(a, olda);
+          b = safeAdd(b, oldb);
+          c = safeAdd(c, oldc);
+          d = safeAdd(d, oldd);
+        }
+        return [a, b, c, d];
+      }
+
+      function rstr2binl(input) {
+        const output = [];
+        for (let i = 0; i < input.length * 8; i += 8) {
+          output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << (i % 32);
+        }
+        return output;
+      }
+
+      function binl2rstr(input) {
+        let output = '';
+        for (let i = 0; i < input.length * 32; i += 8) {
+          output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xff);
+        }
+        return output;
+      }
+
+      function rstr2hex(input) {
+        const hexTab = '0123456789abcdef';
+        let output = '';
+        for (let i = 0; i < input.length; i++) {
+          const x = input.charCodeAt(i);
+          output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
+        }
+        return output;
+      }
+
+      const utf8 = unescape(encodeURIComponent(input));
+      return rstr2hex(binl2rstr(binlMD5(rstr2binl(utf8), utf8.length * 8)));
+    }
+
+    // CRC-32 Implementation
+    function crc32(str) {
+      let c;
+      const crcTable = [];
+      for (let n = 0; n < 256; n++) {
+        c = n;
+        for (let k = 0; k < 8; k++) {
+          c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+        }
+        crcTable[n] = c;
+      }
+
+      let crc = 0 ^ (-1);
+      const utf8 = unescape(encodeURIComponent(str));
+      for (let i = 0; i < utf8.length; i++) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ utf8.charCodeAt(i)) & 0xFF];
+      }
+      return ((crc ^ (-1)) >>> 0).toString(16).padStart(8, '0');
+    }
+
+    // Buffer to Hex
+    function bufToHex(buffer) {
+      return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+    }
+
+    // Web Crypto API Subroutines
+    async function computeWebCrypto(algorithm, data, hmacKey = '') {
+      const encoder = new TextEncoder();
+      const rawData = encoder.encode(data);
+
+      if (hmacKey) {
+        const keyData = encoder.encode(hmacKey);
+        const cryptoKey = await crypto.subtle.importKey(
+          'raw', keyData, { name: 'HMAC', hash: algorithm }, false, ['sign']
+        );
+        const signature = await crypto.subtle.sign('HMAC', cryptoKey, rawData);
+        return bufToHex(signature);
+      } else {
+        const hashBuf = await crypto.subtle.digest(algorithm, rawData);
+        return bufToHex(hashBuf);
+      }
+    }
+
+    // Main text hash calculation
+    async function calculateTextHashes() {
+      const text = document.getElementById('text-input').value;
+      const key = document.getElementById('hmac-key').value;
+      const t0 = performance.now();
+
+      try {
+        const [sha256, sha1, sha512, sha384] = await Promise.all([
+          computeWebCrypto('SHA-256', text, key),
+          computeWebCrypto('SHA-1', text, key),
+          computeWebCrypto('SHA-512', text, key),
+          computeWebCrypto('SHA-384', text, key)
+        ]);
+
+        let md5Val = key ? '[HMAC-MD5 not in WebCrypto]' : md5(text);
+        let crcVal = crc32(text);
+
+        if (isUpperCase) {
+          applyHash('val-sha256', sha256.toUpperCase());
+          applyHash('val-sha1', sha1.toUpperCase());
+          applyHash('val-sha512', sha512.toUpperCase());
+          applyHash('val-sha384', sha384.toUpperCase());
+          applyHash('val-md5', md5Val.toUpperCase());
+          applyHash('val-crc32', crcVal.toUpperCase());
+        } else {
+          applyHash('val-sha256', sha256.toLowerCase());
+          applyHash('val-sha1', sha1.toLowerCase());
+          applyHash('val-sha512', sha512.toLowerCase());
+          applyHash('val-sha384', sha384.toLowerCase());
+          applyHash('val-md5', md5Val.toLowerCase());
+          applyHash('val-crc32', crcVal.toLowerCase());
+        }
+
+        const t1 = performance.now();
+        document.getElementById('calc-latency').textContent = `${(t1 - t0).toFixed(2)} ms`;
+        verifyMatch();
+      } catch (err) {
+        console.error('Hash error:', err);
+      }
+    }
+
+    function applyHash(id, val) {
+      document.getElementById(id).textContent = val;
+    }
+
+    function toggleCase() {
+      isUpperCase = !isUpperCase;
+      const btn = document.getElementById('case-toggle');
+      if (isUpperCase) {
+        btn.classList.add('active');
+        btn.textContent = 'lowercase';
+      } else {
+        btn.classList.remove('active');
+        btn.textContent = 'UPPERCASE';
+      }
+      calculateTextHashes();
+    }
+
+    function copyValue(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text);
+      alert('Copied hash to clipboard: ' + text);
+    }
+
+    function copyAllHashes() {
+      const hashes = [
+        `SHA-256: ${document.getElementById('val-sha256').textContent}`,
+        `MD5:     ${document.getElementById('val-md5').textContent}`,
+        `SHA-1:   ${document.getElementById('val-sha1').textContent}`,
+        `SHA-512: ${document.getElementById('val-sha512').textContent}`,
+        `SHA-384: ${document.getElementById('val-sha384').textContent}`,
+        `CRC-32:  ${document.getElementById('val-crc32').textContent}`
+      ].join('\n');
+
+      navigator.clipboard.writeText(hashes);
+      alert('Copied all 6 hash digests to clipboard!');
+    }
+
+    function verifyMatch() {
+      const input = document.getElementById('verify-input').value.trim().toLowerCase();
+      const res = document.getElementById('verify-result');
+      if (!input) {
+        res.className = 'verify-result';
+        res.style.display = 'none';
+        return;
+      }
+
+      const activeHashes = [
+        { name: 'SHA-256', val: document.getElementById('val-sha256').textContent.toLowerCase() },
+        { name: 'MD5', val: document.getElementById('val-md5').textContent.toLowerCase() },
+        { name: 'SHA-1', val: document.getElementById('val-sha1').textContent.toLowerCase() },
+        { name: 'SHA-512', val: document.getElementById('val-sha512').textContent.toLowerCase() },
+        { name: 'SHA-384', val: document.getElementById('val-sha384').textContent.toLowerCase() },
+        { name: 'CRC-32', val: document.getElementById('val-crc32').textContent.toLowerCase() }
+      ];
+
+      const match = activeHashes.find(h => h.val === input);
+      if (match) {
+        res.className = 'verify-result match';
+        res.textContent = `✔ EXACT MATCH CONFIRMED: Identical to ${match.name} digest!`;
+      } else {
+        res.className = 'verify-result mismatch';
+        res.textContent = `✖ NO MATCH: Checksum does not match any current algorithm digest.`;
+      }
+    }
+
+    // Switch between Text Hasher and File Checksum
+    function switchMode(mode) {
+      document.getElementById('mode-text').style.display = mode === 'text' ? 'block' : 'none';
+      document.getElementById('mode-file').style.display = mode === 'file' ? 'block' : 'none';
+      document.getElementById('tab-text-btn').classList.toggle('active', mode === 'text');
+      document.getElementById('tab-file-btn').classList.toggle('active', mode === 'file');
+    }
+
+    // File Drag & Drop + WebCrypto Chunking
+    const dropZone = document.getElementById('drop-zone');
+    ['dragenter', 'dragover'].forEach(name => {
+      dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+    });
+    dropZone.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files.length > 0) {
+        processFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function handleFileSelect(event) {
+      if (event.target.files.length > 0) {
+        processFile(event.target.files[0]);
+      }
+    }
+
+    async function processFile(file) {
+      const banner = document.getElementById('file-meta-banner');
+      const pWrap = document.getElementById('progress-bar-wrap');
+      const pBar = document.getElementById('progress-bar');
+      const resCard = document.getElementById('file-results-card');
+
+      document.getElementById('file-name').textContent = file.name;
+      document.getElementById('file-size').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+      document.getElementById('file-status').textContent = 'Computing stream checksums...';
+
+      banner.style.display = 'flex';
+      pWrap.style.display = 'block';
+      pBar.style.width = '30%';
+
+      try {
+        const arrayBuf = await file.arrayBuffer();
+        pBar.style.width = '70%';
+
+        const [sha256Buf, sha1Buf, sha512Buf] = await Promise.all([
+          crypto.subtle.digest('SHA-256', arrayBuf),
+          crypto.subtle.digest('SHA-1', arrayBuf),
+          crypto.subtle.digest('SHA-512', arrayBuf)
+        ]);
+
+        // MD5 on binary
+        const binaryStr = new Uint8Array(arrayBuf).reduce((data, byte) => data + String.fromCharCode(byte), '');
+        const md5File = md5(binaryStr);
+
+        pBar.style.width = '100%';
+        document.getElementById('file-status').textContent = 'Verification Complete';
+
+        document.getElementById('file-sha256').textContent = bufToHex(sha256Buf);
+        document.getElementById('file-sha1').textContent = bufToHex(sha1Buf);
+        document.getElementById('file-sha512').textContent = bufToHex(sha512Buf);
+        document.getElementById('file-md5').textContent = md5File;
+
+        resCard.style.display = 'block';
+        setTimeout(() => { pWrap.style.display = 'none'; }, 500);
+      } catch (err) {
+        document.getElementById('file-status').textContent = 'Error reading file: ' + err.message;
+      }
+    }
+
+    function copyAllFileHashes() {
+      const hashes = [
+        `File: ${document.getElementById('file-name').textContent}`,
+        `SHA-256: ${document.getElementById('file-sha256').textContent}`,
+        `MD5:     ${document.getElementById('file-md5').textContent}`,
+        `SHA-512: ${document.getElementById('file-sha512').textContent}`,
+        `SHA-1:   ${document.getElementById('file-sha1').textContent}`
+      ].join('\n');
+      navigator.clipboard.writeText(hashes);
+      alert('Copied all file verification checksums!');
+    }
+
+    function verifyFileMatch() {
+      const input = document.getElementById('file-verify-input').value.trim().toLowerCase();
+      const res = document.getElementById('file-verify-result');
+      if (!input) {
+        res.className = 'verify-result';
+        res.style.display = 'none';
+        return;
+      }
+
+      const active = [
+        { name: 'SHA-256', val: document.getElementById('file-sha256').textContent.toLowerCase() },
+        { name: 'MD5', val: document.getElementById('file-md5').textContent.toLowerCase() },
+        { name: 'SHA-512', val: document.getElementById('file-sha512').textContent.toLowerCase() },
+        { name: 'SHA-1', val: document.getElementById('file-sha1').textContent.toLowerCase() }
+      ];
+
+      const match = active.find(h => h.val === input);
+      if (match) {
+        res.className = 'verify-result match';
+        res.textContent = `✔ VALID FILE CHECKSUM: Exact match with calculated ${match.name}!`;
+      } else {
+        res.className = 'verify-result mismatch';
+        res.textContent = `✖ CHECKSUM MISMATCH: This file does not match the provided hash.`;
+      }
+    }
+
+    document.getElementById('text-input').addEventListener('input', calculateTextHashes);
+    document.getElementById('hmac-key').addEventListener('input', calculateTextHashes);
+
+    // Initial computation
+    calculateTextHashes();
+
+    // --- Interactive Live Background: 3D Rotating Cryptographic Blockchain Cubes ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let cubes = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initCubes();
+    }
+
+    function initCubes() {
+      cubes = [];
+      const count = Math.max(12, Math.floor(width / 110));
+      for (let i = 0; i < count; i++) {
+        cubes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 25 + 18,
+          rotX: Math.random() * Math.PI,
+          rotY: Math.random() * Math.PI,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4,
+          rotSpeedX: (Math.random() - 0.5) * 0.015,
+          rotSpeedY: (Math.random() - 0.5) * 0.015,
+          hashText: Math.random().toString(16).substring(2, 8).toUpperCase()
+        });
+      }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function project3D(x, y, z, cx, cy, rotX, rotY) {
+      // Rotate around X
+      let y1 = y * Math.cos(rotX) - z * Math.sin(rotX);
+      let z1 = y * Math.sin(rotX) + z * Math.cos(rotX);
+      // Rotate around Y
+      let x2 = x * Math.cos(rotY) + z1 * Math.sin(rotY);
+      let z2 = -x * Math.sin(rotY) + z1 * Math.cos(rotY);
+
+      const fov = 350;
+      const scale = fov / (fov + z2);
+      return {
+        x: cx + x2 * scale,
+        y: cy + y1 * scale,
+        scale: scale
+      };
+    }
+
+    function drawWireCube(c) {
+      const s = c.size;
+      const vertices = [
+        [-s, -s, -s], [s, -s, -s], [s, s, -s], [-s, s, -s],
+        [-s, -s, s],  [s, -s, s],  [s, s, s],  [-s, s, s]
+      ];
+
+      const projected = vertices.map(v => project3D(v[0], v[1], v[2], c.x, c.y, c.rotX, c.rotY));
+      const edges = [
+        [0,1], [1,2], [2,3], [3,0],
+        [4,5], [5,6], [6,7], [7,4],
+        [0,4], [1,5], [2,6], [3,7]
+      ];
+
+      ctx.strokeStyle = 'rgba(16, 185, 129, 0.22)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      edges.forEach(([i, j]) => {
+        ctx.moveTo(projected[i].x, projected[i].y);
+        ctx.lineTo(projected[j].x, projected[j].y);
+      });
+      ctx.stroke();
+
+      // Render floating hash string tag near cube
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.fillText('#' + c.hashText, projected[0].x, projected[0].y - 8);
+    }
+
+    function renderBg() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Connect near cubes with blockchain hash links
+      for (let i = 0; i < cubes.length; i++) {
+        for (let j = i + 1; j < cubes.length; j++) {
+          const dx = cubes[i].x - cubes[j].x;
+          const dy = cubes[i].y - cubes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 180) {
+            ctx.strokeStyle = `rgba(16, 185, 129, ${0.12 * (1 - dist / 180)})`;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(cubes[i].x, cubes[i].y);
+            ctx.lineTo(cubes[j].x, cubes[j].y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+      }
+
+      cubes.forEach(c => {
+        c.x += c.speedX;
+        c.y += c.speedY;
+        c.rotX += c.rotSpeedX;
+        c.rotY += c.rotSpeedY;
+
+        if (c.x < -40) c.x = width + 40;
+        if (c.x > width + 40) c.x = -40;
+        if (c.y < -40) c.y = height + 40;
+        if (c.y > height + 40) c.y = -40;
+
+        drawWireCube(c);
+      });
+
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+  </script>
+</body>
+</html>

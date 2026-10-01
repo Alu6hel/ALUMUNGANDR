@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free JSON Formatter, Validator & Tree Inspector | Alumungandr™</title>
+  <meta name="description" content="100% private in-browser JSON formatter, validator, interactive tree inspector, and converter. Convert JSON to TypeScript, YAML, and CSV with pinpoint error location. Zero server uploads.">
+  <link rel="canonical" href="https://alumungandr.com/json">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/json">
+  <meta property="og:title" content="Free JSON Formatter & Tree Inspector | Alumungandr™">
+  <meta property="og:description" content="Validate, beautify, and inspect JSON with interactive collapsible tree view and TypeScript interface generation.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.35);
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-yellow: #f59e0b;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Data-Lattice Canvas */
+    #latticeCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* Top Navigation */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(14, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--border-solid);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #07080a;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 14px var(--accent-cyan-glow);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Toolbar Header */
+    .app-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-solid);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      backdrop-filter: blur(12px);
+    }
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      padding: 0.5rem 0.9rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .tool-btn.primary {
+      background: var(--accent-cyan);
+      color: #000;
+      border-color: var(--accent-cyan);
+    }
+    .tool-btn.primary:hover {
+      background: #7dd3fc;
+      box-shadow: 0 0 12px var(--accent-cyan-glow);
+    }
+
+    .tool-select {
+      background: rgba(0, 0, 0, 0.4);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      outline: none;
+    }
+
+    /* Dual-Pane Editor Workspace */
+    .editor-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      flex: 1;
+      min-height: 520px;
+    }
+    .pane-card {
+      background: rgba(14, 16, 22, 0.92);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+    .pane-header {
+      padding: 0.75rem 1.25rem;
+      background: rgba(20, 23, 32, 0.95);
+      border-bottom: var(--border-solid);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
+    }
+    .status-dot.error {
+      background: #ef4444;
+      box-shadow: 0 0 6px #ef4444;
+    }
+
+    .raw-textarea {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      padding: 1.25rem;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      resize: none;
+      outline: none;
+      white-space: pre;
+    }
+
+    /* Tree View / Output Pane */
+    .view-mode-tabs {
+      display: flex;
+      gap: 4px;
+    }
+    .view-tab {
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+    .view-tab.active {
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .tree-scroll-container {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* Collapsible Tree Nodes */
+    .tree-node {
+      margin-left: 18px;
+      position: relative;
+    }
+    .tree-toggle {
+      cursor: pointer;
+      user-select: none;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+    .tree-key {
+      color: #93c5fd;
+      cursor: pointer;
+    }
+    .tree-key:hover { text-decoration: underline; }
+    .tree-string { color: #34d399; }
+    .tree-number { color: #38bdf8; }
+    .tree-boolean { color: #c084fc; font-weight: bold; }
+    .tree-null { color: #f87171; font-weight: bold; }
+    .tree-badge {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    /* Diagnostics Strip */
+    .error-strip {
+      padding: 0.75rem 1.25rem;
+      background: rgba(239, 68, 68, 0.12);
+      border-top: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .error-strip.show { display: flex; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 20;
+      border-top: var(--border-solid);
+      padding: 1.5rem 2rem;
+      background: rgba(7, 8, 10, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    @media (max-width: 860px) {
+      .editor-workspace { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+
+  <!-- Live Data-Lattice Canvas -->
+  <canvas id="latticeCanvas"></canvas>
+
+  <!-- Top Navigation -->
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">JSON // INSPECTOR</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <!-- Action Toolbar -->
+    <div class="app-toolbar">
+      <div class="toolbar-left">
+        <button id="btnFormat" class="tool-btn primary">
+          <span>&#x26A1;</span>
+          <span>Beautify JSON</span>
+        </button>
+        <button id="btnMinify" class="tool-btn">Minify / Compact</button>
+        
+        <select id="indentSelect" class="tool-select">
+          <option value="2">2 Spaces</option>
+          <option value="4">4 Spaces</option>
+          <option value="tab">Tabs</option>
+        </select>
+
+        <select id="sampleSelect" class="tool-select">
+          <option value="">Load Sample JSON...</option>
+          <option value="user">User Profile</option>
+          <option value="config">App Config</option>
+          <option value="nested">Complex Nested Data</option>
+        </select>
+      </div>
+
+      <div class="toolbar-right">
+        <button id="btnToTS" class="tool-btn" title="Generate TypeScript Interface">&rarr; TypeScript</button>
+        <button id="btnToYAML" class="tool-btn" title="Convert to YAML">&rarr; YAML</button>
+        <button id="btnCopyResult" class="tool-btn">&#x1F4CB; Copy</button>
+        <button id="btnClear" class="tool-btn">&times; Clear</button>
+      </div>
+    </div>
+
+    <!-- Dual Workspace -->
+    <div class="editor-workspace">
+      <!-- Left Raw Editor -->
+      <div class="pane-card">
+        <div class="pane-header">
+          <span>Input JSON Raw</span>
+          <div class="status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Valid</span>
+          </div>
+        </div>
+        <textarea id="rawInput" class="raw-textarea" placeholder="Paste messy or unformatted JSON here..." autofocus></textarea>
+        <div class="error-strip" id="errorStrip">
+          <span>&#x26A0;&#xFE0F;</span>
+          <span id="errorMessage">Syntax Error</span>
+        </div>
+      </div>
+
+      <!-- Right Formatted & Tree Inspector -->
+      <div class="pane-card">
+        <div class="pane-header">
+          <span>Formatted Inspector &amp; Tree</span>
+          <div class="view-mode-tabs">
+            <button class="view-tab active" id="tabTree">Tree View</button>
+            <button class="view-tab" id="tabCode">Code View</button>
+          </div>
+        </div>
+        <div class="tree-scroll-container" id="treeOutput">
+          <!-- Tree or formatted code rendered here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <!-- Footer -->
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    /* =========================================================
+       1. LIVE DATA-LATTICE CANVAS BACKGROUND
+       ========================================================= */
+    const canvas = document.getElementById('latticeCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const gridNodes = [];
+
+    function initLattice() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      gridNodes.length = 0;
+
+      const spacing = 60;
+      for (let x = 0; x < width; x += spacing) {
+        for (let y = 0; y < height; y += spacing) {
+          if (Math.random() > 0.4) {
+            gridNodes.push({
+              x: x + (Math.random() - 0.5) * 15,
+              y: y + (Math.random() - 0.5) * 15,
+              pulse: Math.random() * Math.PI,
+              active: Math.random() > 0.8
+            });
+          }
+        }
+      }
+    }
+    window.addEventListener('resize', initLattice);
+    initLattice();
+
+    function drawLattice() {
+      ctx.fillStyle = 'rgba(7, 8, 10, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = 0; i < gridNodes.length; i++) {
+        const n = gridNodes[i];
+        n.pulse += 0.02;
+
+        const size = n.active ? 2.5 : 1.5;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = n.active ? 'rgba(56, 189, 248, 0.8)' : 'rgba(255, 255, 255, 0.12)';
+        ctx.fill();
+
+        // Draw sparse tree connections
+        if (i % 3 === 0 && i + 1 < gridNodes.length) {
+          const next = gridNodes[i + 1];
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(next.x, next.y);
+          ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)';
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(drawLattice);
+    }
+    requestAnimationFrame(drawLattice);
+
+
+    /* =========================================================
+       2. JSON PARSER, VALIDATOR, BEAUTIFIER & TREE RENDERER
+       ========================================================= */
+    const rawInput = document.getElementById('rawInput');
+    const treeOutput = document.getElementById('treeOutput');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const errorStrip = document.getElementById('errorStrip');
+    const errorMessage = document.getElementById('errorMessage');
+    const btnFormat = document.getElementById('btnFormat');
+    const btnMinify = document.getElementById('btnMinify');
+    const btnCopyResult = document.getElementById('btnCopyResult');
+    const btnClear = document.getElementById('btnClear');
+    const btnToTS = document.getElementById('btnToTS');
+    const btnToYAML = document.getElementById('btnToYAML');
+    const indentSelect = document.getElementById('indentSelect');
+    const sampleSelect = document.getElementById('sampleSelect');
+    const tabTree = document.getElementById('tabTree');
+    const tabCode = document.getElementById('tabCode');
+    const toast = document.getElementById('toast');
+
+    let currentParsedData = null;
+    let activeViewMode = 'tree'; // 'tree' or 'code'
+
+    const SAMPLES = {
+      user: {
+        id: "usr_99x87a",
+        username: "alumungandr_founder",
+        profile: {
+          name: "David Anthony Jones",
+          verified: true,
+          roles: ["architect", "quant", "maintainer"],
+          reputation: 9840
+        },
+        settings: { theme: "cyber-dark", telemetry: false }
+      },
+      config: {
+        version: "4.2.0",
+        engine: "ScientificMultiTFEA",
+        activePairs: ["GBPUSD", "USDCAD", "USDJPY", "EURUSD"],
+        riskLimits: { maxDailyDrawdown: 3.0, maxTotalDrawdown: 8.0, riskPerTrade: 0.75 },
+        sessionMode: "24/5_ALL_DAY"
+      },
+      nested: {
+        status: 200,
+        data: {
+          items: [
+            { sku: "OHP-01", name: "OmniHost Pro", price: 49.00, inStock: true, tags: ["android", "offline", "server"] },
+            { sku: "SMT-04", name: "ScientificMultiTFEA Suite", price: 149.00, inStock: true, tags: ["mql5", "trading"] }
+          ],
+          pagination: { page: 1, perPage: 25, total: 2 }
+        }
+      }
+    };
+
+    function parseAndRender() {
+      const raw = rawInput.value.trim();
+      if (!raw) {
+        treeOutput.innerHTML = '<span style="color:var(--text-muted);">Paste JSON on the left to inspect tree and validate syntax.</span>';
+        statusDot.className = 'status-dot';
+        statusText.textContent = 'Empty';
+        errorStrip.classList.remove('show');
+        currentParsedData = null;
+        return;
+      }
+
+      try {
+        currentParsedData = JSON.parse(raw);
+        statusDot.className = 'status-dot';
+        statusText.textContent = 'Valid JSON';
+        errorStrip.classList.remove('show');
+
+        if (activeViewMode === 'tree') {
+          renderTreeView(currentParsedData);
+        } else {
+          renderCodeView(currentParsedData);
+        }
+      } catch (err) {
+        statusDot.className = 'status-dot error';
+        statusText.textContent = 'Invalid JSON';
+        errorMessage.textContent = err.message;
+        errorStrip.classList.add('show');
+        treeOutput.innerHTML = `<span style="color:#ef4444; font-family:var(--font-mono);">${escapeHtml(err.message)}</span>`;
+        currentParsedData = null;
+      }
+    }
+
+    function renderCodeView(data) {
+      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value);
+      const str = JSON.stringify(data, null, indent);
+      treeOutput.innerHTML = `<pre style="color:var(--accent-cyan); white-space:pre-wrap;">${escapeHtml(str)}</pre>`;
+    }
+
+    function renderTreeView(data) {
+      treeOutput.innerHTML = '';
+      const root = createTreeNode('root', data, '', true);
+      treeOutput.appendChild(root);
+    }
+
+    function createTreeNode(key, val, currentPath, isRoot = false) {
+      const node = document.createElement('div');
+      node.className = 'tree-node';
+
+      const path = isRoot ? '' : (currentPath ? `${currentPath}.${key}` : key);
+
+      if (val === null) {
+        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-null">null</span>`;
+      } else if (typeof val === 'boolean') {
+        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-boolean">${val}</span>`;
+      } else if (typeof val === 'number') {
+        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-number">${val}</span>`;
+      } else if (typeof val === 'string') {
+        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-string">"${escapeHtml(val)}"</span>`;
+      } else if (Array.isArray(val)) {
+        const toggle = document.createElement('span');
+        toggle.className = 'tree-toggle';
+        toggle.textContent = '▼ ';
+        
+        const header = document.createElement('span');
+        header.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: [ <span class="tree-badge">${val.length} items</span>`;
+
+        const children = document.createElement('div');
+        val.forEach((item, idx) => {
+          children.appendChild(createTreeNode(`[${idx}]`, item, `${path}[${idx}]`));
+        });
+
+        toggle.addEventListener('click', () => {
+          const isCollapsed = children.style.display === 'none';
+          children.style.display = isCollapsed ? 'block' : 'none';
+          toggle.textContent = isCollapsed ? '▼ ' : '▶ ';
+        });
+
+        node.appendChild(toggle);
+        node.appendChild(header);
+        node.appendChild(children);
+        const closing = document.createElement('div');
+        closing.textContent = ']';
+        closing.style.color = 'var(--text-muted)';
+        node.appendChild(closing);
+      } else if (typeof val === 'object') {
+        const toggle = document.createElement('span');
+        toggle.className = 'tree-toggle';
+        toggle.textContent = '▼ ';
+
+        const keys = Object.keys(val);
+        const header = document.createElement('span');
+        header.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: { <span class="tree-badge">${keys.length} keys</span>`;
+
+        const children = document.createElement('div');
+        keys.forEach(k => {
+          children.appendChild(createTreeNode(k, val[k], path));
+        });
+
+        toggle.addEventListener('click', () => {
+          const isCollapsed = children.style.display === 'none';
+          children.style.display = isCollapsed ? 'block' : 'none';
+          toggle.textContent = isCollapsed ? '▼ ' : '▶ ';
+        });
+
+        node.appendChild(toggle);
+        node.appendChild(header);
+        node.appendChild(children);
+        const closing = document.createElement('div');
+        closing.textContent = '}';
+        closing.style.color = 'var(--text-muted)';
+        node.appendChild(closing);
+      }
+
+      return node;
+    }
+
+    window.copyPath = function(path) {
+      if (!path) return;
+      navigator.clipboard.writeText(path).then(() => {
+        showToast(`Copied JSON Path: ${path}`);
+      });
+    };
+
+    /* Actions */
+    btnFormat.addEventListener('click', () => {
+      if (!currentParsedData) parseAndRender();
+      if (!currentParsedData) return;
+      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value);
+      rawInput.value = JSON.stringify(currentParsedData, null, indent);
+      parseAndRender();
+      showToast('JSON Beautified!');
+    });
+
+    btnMinify.addEventListener('click', () => {
+      if (!currentParsedData) parseAndRender();
+      if (!currentParsedData) return;
+      rawInput.value = JSON.stringify(currentParsedData);
+      parseAndRender();
+      showToast('JSON Minified!');
+    });
+
+    btnCopyResult.addEventListener('click', () => {
+      if (!rawInput.value) return;
+      navigator.clipboard.writeText(rawInput.value).then(() => {
+        showToast('JSON copied to clipboard!');
+      });
+    });
+
+    btnClear.addEventListener('click', () => {
+      rawInput.value = '';
+      parseAndRender();
+      showToast('Editor cleared.');
+    });
+
+    sampleSelect.addEventListener('change', () => {
+      const key = sampleSelect.value;
+      if (key && SAMPLES[key]) {
+        rawInput.value = JSON.stringify(SAMPLES[key], null, 2);
+        parseAndRender();
+      }
+    });
+
+    tabTree.addEventListener('click', () => {
+      tabTree.classList.add('active');
+      tabCode.classList.remove('active');
+      activeViewMode = 'tree';
+      parseAndRender();
+    });
+
+    tabCode.addEventListener('click', () => {
+      tabCode.classList.add('active');
+      tabTree.classList.remove('active');
+      activeViewMode = 'code';
+      parseAndRender();
+    });
+
+    /* TypeScript Generator */
+    btnToTS.addEventListener('click', () => {
+      if (!currentParsedData) return;
+      const tsCode = generateTypeScript(currentParsedData, 'RootPayload');
+      rawInput.value = tsCode;
+      activeViewMode = 'code';
+      tabCode.click();
+      treeOutput.innerHTML = `<pre style="color:#a855f7; white-space:pre-wrap;">${escapeHtml(tsCode)}</pre>`;
+      showToast('Generated TypeScript Interface!');
+    });
+
+    function generateTypeScript(obj, rootName = 'Root') {
+      let interfaces = [];
+      function infer(name, val) {
+        if (val === null) return 'null | any';
+        if (Array.isArray(val)) {
+          if (val.length === 0) return 'any[]';
+          return `${infer(name + 'Item', val[0])}[]`;
+        }
+        if (typeof val === 'object') {
+          let lines = [`export interface ${name} {`];
+          for (let k of Object.keys(val)) {
+            const childTypeName = capitalize(k);
+            lines.push(`  ${k}: ${infer(childTypeName, val[k])};`);
+          }
+          lines.push('}');
+          interfaces.push(lines.join('\n'));
+          return name;
+        }
+        return typeof val;
+      }
+      infer(rootName, obj);
+      return interfaces.reverse().join('\n\n');
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    /* YAML Converter */
+    btnToYAML.addEventListener('click', () => {
+      if (!currentParsedData) return;
+      const yaml = jsonToYaml(currentParsedData);
+      treeOutput.innerHTML = `<pre style="color:#f59e0b; white-space:pre-wrap;">${escapeHtml(yaml)}</pre>`;
+      tabCode.click();
+      showToast('Converted to YAML!');
+    });
+
+    function jsonToYaml(obj, depth = 0) {
+      const indent = '  '.repeat(depth);
+      let out = '';
+      if (Array.isArray(obj)) {
+        for (let item of obj) {
+          if (typeof item === 'object' && item !== null) {
+            out += `${indent}- \n${jsonToYaml(item, depth + 1)}`;
+          } else {
+            out += `${indent}- ${JSON.stringify(item)}\n`;
+          }
+        }
+      } else if (typeof obj === 'object' && obj !== null) {
+        for (let k of Object.keys(obj)) {
+          const v = obj[k];
+          if (typeof v === 'object' && v !== null) {
+            out += `${indent}${k}:\n${jsonToYaml(v, depth + 1)}`;
+          } else {
+            out += `${indent}${k}: ${JSON.stringify(v)}\n`;
+          }
+        }
+      } else {
+        out += `${indent}${JSON.stringify(obj)}\n`;
+      }
+      return out;
+    }
+
+    rawInput.addEventListener('input', parseAndRender);
+    indentSelect.addEventListener('change', () => {
+      if (currentParsedData) parseAndRender();
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      rawInput.value = JSON.stringify(SAMPLES.config, null, 2);
+      parseAndRender();
+    });
+  </script>
+</body>
+</html>

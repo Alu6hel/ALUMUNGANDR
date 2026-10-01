@@ -783,6 +783,7 @@
       color: var(--cyan);
     }
   </style>
+  <link rel="stylesheet" href="/assets/nav.css">
 </head>
 <body>
 
@@ -790,26 +791,53 @@
   <canvas id="telemetryCanvas"></canvas>
 
   <!-- Top Navigation Bar -->
-  <header class="speed-nav">
-    <a href="/speedtest" class="brand-logo">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12c0 3.69 2.47 6.86 6 8.25V17.5c-2.03-1.07-3.5-3.13-3.5-5.5 0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5c0 2.37-1.47 4.43-3.5 5.5v2.75c3.53-1.39 6-4.56 6-8.25 0-5.52-4.48-10-10-10zm1 6h-2v6l5.25 3.15.75-1.23-4-2.42V8z"/>
-      </svg>
-      <span>OmniSpeed &bull; Benchmark</span>
+    <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">BENCHMARK // DOSSIER</span>
     </a>
-    <div class="nav-links">
-      <a href="/">Apps</a>
-      <a href="/speedtest">Speed Test</a>
-      <a href="/speedtest-vs-ookla" style="color:var(--cyan); font-weight:700;">OmniSpeed vs Ookla</a>
-      <a href="/invoice">Invoice Maker</a>
-      <a href="/resizer">Social Resizer</a>
-      <a href="/subscriptions">Reality Check</a>
-      <a href="/ip">What Is My IP</a>
-      <a href="/about">About</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contact">Contact</a>
-      <a href="/speedtest" class="nav-btn-home">&larr; Return to Speed Test</a>
-    </div>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
   </header>
 
   <!-- Page Main Content Wrap -->
@@ -1167,25 +1195,61 @@
   </div>
 
   <!-- Footer -->
-  <footer class="speed-footer">
-    <div style="max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-      <div>&copy; 2026 Alumungandr Enterprise &bull; David Anthony Jones ("Alu") &bull; All Rights Strictly Reserved</div>
-      <div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
-        <a href="/">Apps</a>
-        <a href="/speedtest">Speed Test</a>
-        <a href="/speedtest-vs-ookla">OmniSpeed vs Ookla</a>
-        <a href="/invoice">Invoice Maker</a>
-        <a href="/resizer">Social Resizer</a>
-        <a href="/subscriptions">Reality Check</a>
-        <a href="/ip">What Is My IP</a>
-        <a href="/about">About</a>
-        <a href="/faq">FAQ</a>
-        <a href="/contact">Contact</a>
+    <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
         <a href="/privacy">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>
       </div>
     </div>
   </footer>
+  <script src="/assets/nav.js" defer></script>
 
   <!-- Interactive JavaScript: Live Telemetry Canvas & Calculator -->
   <script>

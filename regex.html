@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Regex Tester & Debugger — Alumungandr</title>
+  <meta name="description" content="Test, debug, and visualize regular expressions in real-time with capture group extraction, syntax error detection, substitution preview, and quick cheatsheet. 100% client-side.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Workbench Layout */
+    .workbench {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.5rem;
+    }
+    @media (max-width: 1024px) {
+      .workbench { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Pattern input box */
+    .pattern-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .pattern-row {
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      gap: 0.5rem;
+      transition: border-color 0.2s;
+    }
+    .pattern-row:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .pattern-delimiter {
+      color: var(--accent-coral);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      user-select: none;
+    }
+    .pattern-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+    }
+    .pattern-input::placeholder { color: #555c68; }
+
+    /* Flags bar */
+    .flags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .flags-pills {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .flag-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .flag-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .flag-btn.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .preset-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+    }
+    .preset-select option { background: var(--bg-card); color: #fff; }
+
+    .error-banner {
+      display: none;
+      background: rgba(222, 88, 73, 0.12);
+      border: 1px solid rgba(222, 88, 73, 0.35);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #fca5a5;
+      margin-top: 0.5rem;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Editor / Highlighting */
+    .editor-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .editor-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .editor-stats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .highlighter-container {
+      position: relative;
+      min-height: 180px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .highlighter-backdrop, .test-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0.85rem;
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-y: auto;
+      border: none;
+      box-sizing: border-box;
+    }
+    .highlighter-backdrop {
+      color: transparent;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .test-input {
+      z-index: 2;
+      background: transparent;
+      color: #e5e7eb;
+      caret-color: var(--accent-cyan);
+      resize: vertical;
+      outline: none;
+    }
+
+    mark.match {
+      background-color: rgba(56, 189, 248, 0.28);
+      border-radius: 3px;
+      color: transparent;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+    }
+    mark.match.alt {
+      background-color: rgba(168, 85, 247, 0.28);
+      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.6);
+    }
+
+    /* Substitution section */
+    .substitution-box {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sub-input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .sub-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .sub-input:focus { border-color: var(--accent-purple); }
+    .sub-result {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 48px;
+    }
+
+    /* Match Inspector List */
+    .matches-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .matches-empty {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 2rem 0;
+      font-style: italic;
+    }
+    .match-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+    .match-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.3rem;
+    }
+    .match-string {
+      color: var(--accent-cyan);
+      word-break: break-all;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+    }
+    .groups-table {
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .group-row {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
+    .group-label {
+      color: var(--accent-purple);
+      min-width: 65px;
+    }
+    .group-val {
+      color: #cbd5e1;
+      word-break: break-all;
+    }
+
+    /* Sidebar / Cheatsheet */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cheatsheet-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .cheat-group {
+      margin-bottom: 1rem;
+    }
+    .cheat-group-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .cheat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem 0.4rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .cheat-item:hover { background: rgba(255, 255, 255, 0.05); }
+    .cheat-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.1);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .cheat-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* Buttons */
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-cyan); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">REGEX // LAB</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        ZERO LATENCY // IN-BROWSER EXECUTION
+      </div>
+      <h1>Regex Tester & <span>Debugger</span></h1>
+      <p>Analyze regular expressions, inspect named/indexed capture groups, preview substitutions, and debug edge cases in real time.</p>
+    </div>
+
+    <div class="workbench">
+      <!-- Main Work Area -->
+      <div class="work-col">
+        <!-- Regex Pattern Input Card -->
+        <div class="card">
+          <div class="pattern-bar">
+            <div class="flags-wrap">
+              <label class="editor-title">Regular Expression</label>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <select id="preset-select" class="preset-select" onchange="loadPreset(this.value)">
+                  <option value="">⚡ Presets Library...</option>
+                  <option value="email">Email Address</option>
+                  <option value="url">Web URL (HTTP/HTTPS)</option>
+                  <option value="ipv4">IPv4 Address</option>
+                  <option value="date_iso">ISO 8601 Date (YYYY-MM-DD)</option>
+                  <option value="hex_color">Hex Color Code</option>
+                  <option value="slug">URL Slug</option>
+                  <option value="html_tag">HTML Tag</option>
+                  <option value="jwt">JWT Token Format</option>
+                  <option value="uuid">UUID v4</option>
+                </select>
+                <button class="btn-action" onclick="copyPattern()">Copy Regex</button>
+              </div>
+            </div>
+
+            <div class="pattern-row">
+              <span class="pattern-delimiter">/</span>
+              <input type="text" id="regex-input" class="pattern-input" placeholder="([a-zA-Z0-9_.-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})" value="([a-zA-Z0-9_.-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})" autocomplete="off" spellcheck="false">
+              <span class="pattern-delimiter">/</span>
+              <span id="flags-display" style="font-family:'JetBrains Mono'; font-weight:700; color:var(--accent-cyan); font-size:1.05rem;">g</span>
+            </div>
+
+            <div class="flags-wrap">
+              <div class="flags-pills">
+                <button class="flag-btn active" data-flag="g" onclick="toggleFlag('g')">g <span style="font-size:0.65rem; opacity:0.7;">(global)</span></button>
+                <button class="flag-btn" data-flag="i" onclick="toggleFlag('i')">i <span style="font-size:0.65rem; opacity:0.7;">(case-insensitive)</span></button>
+                <button class="flag-btn" data-flag="m" onclick="toggleFlag('m')">m <span style="font-size:0.65rem; opacity:0.7;">(multiline)</span></button>
+                <button class="flag-btn" data-flag="s" onclick="toggleFlag('s')">s <span style="font-size:0.65rem; opacity:0.7;">(dotAll)</span></button>
+                <button class="flag-btn" data-flag="u" onclick="toggleFlag('u')">u <span style="font-size:0.65rem; opacity:0.7;">(unicode)</span></button>
+              </div>
+            </div>
+
+            <div id="error-banner" class="error-banner">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span id="error-message">Invalid regular expression</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test String Input & Match Highlighting -->
+        <div class="card">
+          <div class="editor-section">
+            <div class="editor-header">
+              <label class="editor-title">Test String</label>
+              <div class="editor-stats">
+                <span id="stat-count">0 Matches</span>
+                <span id="stat-time">0.0 ms</span>
+              </div>
+            </div>
+
+            <div class="highlighter-container" id="container">
+              <div class="highlighter-backdrop" id="backdrop"></div>
+              <textarea id="test-input" class="test-input" spellcheck="false" placeholder="Enter or paste test string here...">Contact engineering at ops@alumungandr.com or security@corp.alumungandr.com for telemetry reports.
+Backup alerts dispatch to infra-team@subdomain.cloud-node.net once every 24 hours.
+Invalid addresses like test@@nowhere.com or no-domain@ are safely ignored.</textarea>
+            </div>
+
+            <!-- Substitution Panel -->
+            <div class="substitution-box">
+              <div class="editor-header">
+                <label class="editor-title">Substitution (Replace)</label>
+                <span style="font-family:'JetBrains Mono'; font-size:0.7rem; color:var(--text-muted);">Use $1, $2, or $&amp;</span>
+              </div>
+              <div class="sub-input-row">
+                <input type="text" id="sub-input" class="sub-input" placeholder="e.g. [REDACTED: $1@...]" value="[CONTACT: $1]">
+                <button class="btn-action" onclick="copySubstitution()">Copy Result</button>
+              </div>
+              <div class="sub-result" id="sub-result">...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Matches Inspection Cards -->
+        <div class="card">
+          <div class="editor-header" style="margin-bottom: 1rem;">
+            <label class="editor-title">Match Inspector & Capture Groups</label>
+            <button class="btn-action" onclick="exportMatchesJson()">Export Matches JSON</button>
+          </div>
+          <div id="matches-panel" class="matches-panel">
+            <div class="matches-empty">No matches found.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Reference Cheatsheet Sidebar -->
+      <div class="sidebar">
+        <div class="card">
+          <div class="cheatsheet-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            Quick Cheatsheet
+          </div>
+
+          <div class="cheat-group">
+            <div class="cheat-group-name">Character Classes</div>
+            <div class="cheat-item" onclick="insertToken('\\d')">
+              <span class="cheat-code">\d</span>
+              <span class="cheat-desc">Any digit [0-9]</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('\\w')">
+              <span class="cheat-code">\w</span>
+              <span class="cheat-desc">Word char [a-zA-Z0-9_]</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('\\s')">
+              <span class="cheat-code">\s</span>
+              <span class="cheat-desc">Whitespace char</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('.')">
+              <span class="cheat-code">.</span>
+              <span class="cheat-desc">Any character</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('[^...]')">
+              <span class="cheat-code">[^...]</span>
+              <span class="cheat-desc">Negated set</span>
+            </div>
+          </div>
+
+          <div class="cheat-group">
+            <div class="cheat-group-name">Quantifiers</div>
+            <div class="cheat-item" onclick="insertToken('+')">
+              <span class="cheat-code">+</span>
+              <span class="cheat-desc">1 or more</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('*')">
+              <span class="cheat-code">*</span>
+              <span class="cheat-desc">0 or more</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('?')">
+              <span class="cheat-code">?</span>
+              <span class="cheat-desc">0 or 1 (optional)</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('{2,5}')">
+              <span class="cheat-code">{n,m}</span>
+              <span class="cheat-desc">Between n and m</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('+?')">
+              <span class="cheat-code">+?</span>
+              <span class="cheat-desc">Lazy match</span>
+            </div>
+          </div>
+
+          <div class="cheat-group">
+            <div class="cheat-group-name">Anchors & Groups</div>
+            <div class="cheat-item" onclick="insertToken('^')">
+              <span class="cheat-code">^ / $</span>
+              <span class="cheat-desc">Start / End of line</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('\\b')">
+              <span class="cheat-code">\b</span>
+              <span class="cheat-desc">Word boundary</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('(...)')">
+              <span class="cheat-code">(...)</span>
+              <span class="cheat-desc">Capture group</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('(?:...)')">
+              <span class="cheat-code">(?:...)</span>
+              <span class="cheat-desc">Non-capturing group</span>
+            </div>
+            <div class="cheat-item" onclick="insertToken('(?=...)')">
+              <span class="cheat-code">(?=...)</span>
+              <span class="cheat-desc">Positive lookahead</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed rgba(255,255,255,0.08); font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">
+            💡 Click any token to insert it directly into your regular expression pattern.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    // Flag management
+    const activeFlags = new Set(['g']);
+
+    const regexInput = document.getElementById('regex-input');
+    const flagsDisplay = document.getElementById('flags-display');
+    const testInput = document.getElementById('test-input');
+    const backdrop = document.getElementById('backdrop');
+    const errorBanner = document.getElementById('error-banner');
+    const errorMessage = document.getElementById('error-message');
+    const statCount = document.getElementById('stat-count');
+    const statTime = document.getElementById('stat-time');
+    const subInput = document.getElementById('sub-input');
+    const subResult = document.getElementById('sub-result');
+    const matchesPanel = document.getElementById('matches-panel');
+
+    let currentMatches = [];
+
+    const presets = {
+      email: {
+        regex: "([a-zA-Z0-9_.-]+)@([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})",
+        flags: "g",
+        sample: "Hello alice@alumungandr.com, please alert support@cyber-nexus.io and backup bob.smith@example.org!"
+      },
+      url: {
+        regex: "https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)",
+        flags: "g",
+        sample: "Our telemetry is live at https://alumungandr.com/stats and docs are at https://github.com/alumungandr/engine?query=speed#anchor"
+      },
+      ipv4: {
+        regex: "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b",
+        flags: "g",
+        sample: "Connected gateway at 192.168.1.1, upstream DNS at 1.1.1.1 and 8.8.8.8, invalid 999.300.1.20 ignored."
+      },
+      date_iso: {
+        regex: "(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])",
+        flags: "g",
+        sample: "Release log: 2026-04-12 deployed to production; hotfix logged 2026-05-01; next audit 2026-11-20."
+      },
+      hex_color: {
+        regex: "#(?:[0-9a-fA-F]{3}){1,2}\\b",
+        flags: "gi",
+        sample: "Brand colors: Primary coral #DE5849, cyber cyan #38bdf8, deep dark #07080a, accent purple #a855f7."
+      },
+      slug: {
+        regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        flags: "m",
+        sample: "high-performance-regex-engine\nvalid-slug-2026\nInvalid_Slug!\nanother-good-one"
+      },
+      html_tag: {
+        regex: "<([a-z0-9]+)([^<]+)*(?:>(.*)<\\/\\1>|\\s+\\/>)",
+        flags: "gi",
+        sample: "<div class=\"hero\"><span>Hello World</span></div> and a standalone <img src=\"pic.png\" /> inside."
+      },
+      jwt: {
+        regex: "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)$",
+        flags: "m",
+        sample: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFsdW11bmdhbmRyIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      },
+      uuid: {
+        regex: "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}",
+        flags: "gi",
+        sample: "Session: 123e4567-e89b-12d3-a456-426614174000 created for user c9bf9e57-1685-4c89-bafb-ff5af830be8a."
+      }
+    };
+
+    function toggleFlag(flag) {
+      if (activeFlags.has(flag)) {
+        activeFlags.delete(flag);
+      } else {
+        activeFlags.add(flag);
+      }
+      updateFlagsUI();
+      evaluateRegex();
+    }
+
+    function updateFlagsUI() {
+      const sorted = Array.from(activeFlags).sort().join('');
+      flagsDisplay.textContent = sorted;
+      document.querySelectorAll('.flag-btn').forEach(btn => {
+        const f = btn.getAttribute('data-flag');
+        if (activeFlags.has(f)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function loadPreset(key) {
+      if (!key || !presets[key]) return;
+      const p = presets[key];
+      regexInput.value = p.regex;
+      testInput.value = p.sample;
+      activeFlags.clear();
+      for (const char of p.flags) activeFlags.add(char);
+      updateFlagsUI();
+      evaluateRegex();
+    }
+
+    function insertToken(token) {
+      const start = regexInput.selectionStart;
+      const end = regexInput.selectionEnd;
+      const val = regexInput.value;
+      regexInput.value = val.substring(0, start) + token + val.substring(end);
+      regexInput.focus();
+      regexInput.setSelectionRange(start + token.length, start + token.length);
+      evaluateRegex();
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function evaluateRegex() {
+      const pat = regexInput.value;
+      const text = testInput.value;
+      const flags = Array.from(activeFlags).join('');
+
+      errorBanner.style.display = 'none';
+
+      if (!pat) {
+        backdrop.innerHTML = escapeHtml(text);
+        statCount.textContent = '0 Matches';
+        statTime.textContent = '0.0 ms';
+        matchesPanel.innerHTML = '<div class="matches-empty">Enter a regular expression to see matches.</div>';
+        subResult.textContent = text;
+        currentMatches = [];
+        return;
+      }
+
+      let re;
+      try {
+        re = new RegExp(pat, flags);
+      } catch (err) {
+        errorBanner.style.display = 'flex';
+        errorMessage.textContent = err.message;
+        backdrop.innerHTML = escapeHtml(text);
+        statCount.textContent = '0 Matches';
+        matchesPanel.innerHTML = '<div class="matches-empty" style="color:#fca5a5;">Syntax Error: ' + escapeHtml(err.message) + '</div>';
+        return;
+      }
+
+      const t0 = performance.now();
+      currentMatches = [];
+
+      try {
+        if (!activeFlags.has('g')) {
+          // Single match mode
+          const m = text.match(re);
+          if (m) {
+            currentMatches.push({
+              index: m.index,
+              length: m[0].length,
+              match: m[0],
+              groups: m.slice(1),
+              namedGroups: m.groups || {}
+            });
+          }
+        } else {
+          // Global match mode
+          let m;
+          let safeLoop = 0;
+          while ((m = re.exec(text)) !== null && safeLoop < 5000) {
+            safeLoop++;
+            currentMatches.push({
+              index: m.index,
+              length: m[0].length,
+              match: m[0],
+              groups: m.slice(1),
+              namedGroups: m.groups || {}
+            });
+            if (m.index === re.lastIndex) {
+              re.lastIndex++; // prevent zero-length match infinite loops
+            }
+          }
+        }
+      } catch (execErr) {
+        errorBanner.style.display = 'flex';
+        errorMessage.textContent = 'Execution Error: ' + execErr.message;
+      }
+      const t1 = performance.now();
+
+      statCount.textContent = `${currentMatches.length} Match${currentMatches.length === 1 ? '' : 'es'}`;
+      statTime.textContent = `${(t1 - t0).toFixed(2)} ms`;
+
+      // Render highlighted backdrop
+      renderBackdrop(text, currentMatches);
+
+      // Render Substitution preview
+      renderSubstitution(re, text);
+
+      // Render Inspector Cards
+      renderMatchesInspector(currentMatches);
+    }
+
+    function renderBackdrop(text, matches) {
+      if (matches.length === 0) {
+        backdrop.innerHTML = escapeHtml(text) + '\n';
+        return;
+      }
+
+      let html = '';
+      let lastIndex = 0;
+
+      matches.forEach((m, idx) => {
+        // Plain text before match
+        if (m.index > lastIndex) {
+          html += escapeHtml(text.substring(lastIndex, m.index));
+        }
+        const matchText = text.substring(m.index, m.index + m.length);
+        const altClass = idx % 2 === 1 ? ' alt' : '';
+        html += `<mark class="match${altClass}">${escapeHtml(matchText)}</mark>`;
+        lastIndex = m.index + m.length;
+      });
+
+      if (lastIndex < text.length) {
+        html += escapeHtml(text.substring(lastIndex));
+      }
+      // Add trailing newline so backdrop scrolls synchronously with textarea
+      backdrop.innerHTML = html + '\n';
+    }
+
+    function renderSubstitution(re, text) {
+      try {
+        const subPattern = subInput.value;
+        const res = text.replace(re, subPattern);
+        subResult.textContent = res;
+      } catch (err) {
+        subResult.textContent = '[Substitution error: ' + err.message + ']';
+      }
+    }
+
+    function renderMatchesInspector(matches) {
+      if (matches.length === 0) {
+        matchesPanel.innerHTML = '<div class="matches-empty">No matches found in test string.</div>';
+        return;
+      }
+
+      let html = '';
+      matches.forEach((m, idx) => {
+        html += `
+          <div class="match-card">
+            <div class="match-meta">
+              <span>MATCH #${idx + 1}</span>
+              <span>INDEX: ${m.index}..${m.index + m.length} (${m.length} chars)</span>
+            </div>
+            <div class="match-string">${escapeHtml(m.match)}</div>
+        `;
+
+        const hasNumberedGroups = m.groups && m.groups.length > 0;
+        const namedKeys = Object.keys(m.namedGroups);
+
+        if (hasNumberedGroups || namedKeys.length > 0) {
+          html += `<div class="groups-table">`;
+          // Numbered groups
+          m.groups.forEach((gVal, gIdx) => {
+            html += `
+              <div class="group-row">
+                <span class="group-label">Group $${gIdx + 1}:</span>
+                <span class="group-val">${gVal !== undefined ? escapeHtml(gVal) : '<em style="opacity:0.4;">undefined</em>'}</span>
+              </div>
+            `;
+          });
+          // Named groups
+          namedKeys.forEach(name => {
+            html += `
+              <div class="group-row">
+                <span class="group-label" style="color:var(--accent-coral);">&lt;${escapeHtml(name)}&gt;:</span>
+                <span class="group-val">${m.namedGroups[name] !== undefined ? escapeHtml(m.namedGroups[name]) : '<em style="opacity:0.4;">undefined</em>'}</span>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        }
+        html += `</div>`;
+      });
+
+      matchesPanel.innerHTML = html;
+    }
+
+    // Synchronize scrolling between textarea and highlighted backdrop
+    testInput.addEventListener('scroll', () => {
+      backdrop.scrollTop = testInput.scrollTop;
+      backdrop.scrollLeft = testInput.scrollLeft;
+    });
+
+    regexInput.addEventListener('input', evaluateRegex);
+    testInput.addEventListener('input', evaluateRegex);
+    subInput.addEventListener('input', evaluateRegex);
+
+    function copyPattern() {
+      const pat = `/${regexInput.value}/${Array.from(activeFlags).join('')}`;
+      navigator.clipboard.writeText(pat);
+      alert('Copied regex to clipboard: ' + pat);
+    }
+
+    function copySubstitution() {
+      navigator.clipboard.writeText(subResult.textContent);
+      alert('Copied substitution result to clipboard!');
+    }
+
+    function exportMatchesJson() {
+      const json = JSON.stringify(currentMatches, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `regex-matches-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // --- Interactive Live Background: Laser Scanning Radar Grid ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let scanY = 0;
+    let scanDirection = 1;
+    let targets = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initTargets();
+    }
+
+    function initTargets() {
+      targets = [];
+      const count = Math.floor(width / 180);
+      for (let i = 0; i < count; i++) {
+        targets.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 20 + 10,
+          ping: Math.random(),
+          speed: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function renderBg() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Cyber Grid
+      const gridSize = 60;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.04)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+
+      // Sweeping Laser Scanner
+      scanY += scanDirection * 1.5;
+      if (scanY > height) { scanY = height; scanDirection = -1; }
+      if (scanY < 0) { scanY = 0; scanDirection = 1; }
+
+      // Laser Beam Gradient
+      const grad = ctx.createLinearGradient(0, scanY - 30 * scanDirection, 0, scanY);
+      grad.addColorStop(0, 'rgba(56, 189, 248, 0)');
+      grad.addColorStop(1, 'rgba(56, 189, 248, 0.18)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, scanDirection > 0 ? scanY - 30 : scanY, width, 30);
+
+      // Laser Core Line
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
+      ctx.lineWidth = 1.5;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#38bdf8';
+      ctx.beginPath();
+      ctx.moveTo(0, scanY);
+      ctx.lineTo(width, scanY);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Radar Crosshairs / Targets
+      targets.forEach(t => {
+        t.ping += 0.015;
+        if (t.ping > 1) t.ping = 0;
+
+        const distToLaser = Math.abs(t.y - scanY);
+        const isLaserNear = distToLaser < 25;
+
+        ctx.strokeStyle = isLaserNear ? 'rgba(222, 88, 73, 0.8)' : 'rgba(56, 189, 248, 0.25)';
+        ctx.lineWidth = isLaserNear ? 2 : 1;
+
+        // Reticle box
+        ctx.strokeRect(t.x - t.size/2, t.y - t.size/2, t.size, t.size);
+
+        // Center reticle pip
+        ctx.fillStyle = isLaserNear ? '#de5849' : '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Expanding radar ping
+        if (isLaserNear || t.ping < 0.5) {
+          ctx.strokeStyle = `rgba(56, 189, 248, ${0.4 * (1 - t.ping)})`;
+          ctx.beginPath();
+          ctx.arc(t.x, t.y, t.size * (1 + t.ping), 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+
+    // Initial evaluation
+    evaluateRegex();
+  </script>
+</body>
+</html>

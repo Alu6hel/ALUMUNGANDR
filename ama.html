@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask Me Anything (AMA) & Public Technical Archive | Alumungandr™</title>
+  <meta name="description" content="Direct, unfiltered answers on algorithmic trading, MQL5 EA architecture, sovereign offline Android engineering, AI multi-agent systems, and edge infrastructure. Submit your question.">
+  <link rel="canonical" href="https://alumungandr.com/ama">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/ama">
+  <meta property="og:title" content="Ask Me Anything (AMA) | Alumungandr™">
+  <meta property="og:description" content="Public technical Q&A archive on automated trading, sovereign compilers, and high-performance web engineering.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-coral-glow: rgba(222, 88, 73, 0.35);
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.35);
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Synaptic Constellation Canvas */
+    #synapseCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Top Navigation */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(14, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--border-solid);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      box-shadow: 0 0 14px var(--accent-coral-glow);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Hero */
+    .hero-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: var(--border-solid);
+    }
+    .hero-text h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-text p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 650px;
+      line-height: 1.6;
+    }
+    .btn-ask-prompt {
+      padding: 0.85rem 1.5rem;
+      background: var(--accent-green);
+      color: #07080a;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+    }
+    .btn-ask-prompt:hover {
+      background: #34d399;
+      transform: translateY(-2px);
+    }
+
+    /* Question Submission Form Modal/Card */
+    .ask-box {
+      background: rgba(14, 16, 22, 0.95);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(20px);
+    }
+    .ask-box.show { display: flex; }
+    .ask-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ask-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .ask-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .input-field:focus { border-color: var(--accent-green); }
+    textarea.input-field {
+      height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .ask-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .tag-select {
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .btn-submit-q {
+      padding: 0.75rem 1.75rem;
+      background: var(--accent-green);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* Filter & Search Toolbar */
+    .filter-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      flex: 1;
+      max-width: 380px;
+      padding: 0.6rem 1rem;
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .cat-tags {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+    }
+    .cat-btn {
+      padding: 0.4rem 0.8rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .cat-btn.active {
+      background: var(--accent-green);
+      color: #000;
+      border-color: var(--accent-green);
+    }
+
+    /* Q&A Stream */
+    .qa-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .qa-card {
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: border-color 0.2s;
+    }
+    .qa-card:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .qa-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .qa-category-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .btn-upvote {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.4rem 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-upvote:hover {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-green);
+    }
+    .btn-upvote.voted {
+      background: var(--accent-green);
+      color: #000;
+      border-color: var(--accent-green);
+    }
+
+    .qa-question {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .qa-answer-block {
+      background: rgba(20, 23, 32, 0.85);
+      border-left: 3px solid var(--accent-green);
+      border-radius: 0 10px 10px 0;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .author-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .author-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .verified-mark {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+    .qa-answer-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-green);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 20;
+      border-top: var(--border-solid);
+      padding: 1.5rem 2rem;
+      background: rgba(7, 8, 10, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+
+  <!-- Live Synaptic Thought Constellation Background -->
+  <canvas id="synapseCanvas"></canvas>
+
+  <!-- Top Navigation -->
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">FOUNDER // ARCHIVE</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1>Ask Me Anything (AMA)</h1>
+        <p>
+          A transparent, permanent knowledge archive on algorithmic trading systems, multi-timeframe backtesting, offline Android compilers, and sovereign software architecture. Ask a question or explore the verified answers below.
+        </p>
+      </div>
+      <button id="btnOpenAsk" class="btn-ask-prompt">
+        <span>&#x270F;&#xFE0F;</span>
+        <span>Ask a Question</span>
+      </button>
+    </div>
+
+    <!-- Question Submission Card -->
+    <form id="askForm" class="ask-box">
+      <div class="ask-header">
+        <span class="ask-title">Submit a Question for Public Answer</span>
+        <button type="button" id="btnCloseAsk" class="ask-close">&times;</button>
+      </div>
+      <textarea id="questionInput" class="input-field" placeholder="What would you like to ask about trading bots, compilers, edge servers, or our software? (Be as specific as possible)" required></textarea>
+      
+      <div class="ask-row">
+        <input type="text" id="askerName" class="input-field" placeholder="Your Name or Alias (optional)" style="flex:1;">
+        <select id="askerCategory" class="tag-select">
+          <option value="trading">Algorithmic Trading</option>
+          <option value="compilers">Compilers &amp; Android</option>
+          <option value="edge">Edge &amp; Web Systems</option>
+          <option value="ai">AI &amp; Agentic Tools</option>
+          <option value="general">Philosophy &amp; General</option>
+        </select>
+        <button type="submit" class="btn-submit-q">Submit &rarr;</button>
+      </div>
+    </form>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="filter-strip">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search archive by keyword...">
+      <div class="cat-tags">
+        <button class="cat-btn active" data-cat="all">All Topics</button>
+        <button class="cat-btn" data-cat="trading">Trading Bots</button>
+        <button class="cat-btn" data-cat="compilers">Compilers</button>
+        <button class="cat-btn" data-cat="edge">Edge Infrastructure</button>
+        <button class="cat-btn" data-cat="ai">AI &amp; Agents</button>
+      </div>
+    </div>
+
+    <!-- Q&A Archive Stream -->
+    <div class="qa-stream" id="qaStream">
+      <!-- Item 1 -->
+      <article class="qa-card" data-cat="trading">
+        <div class="qa-top">
+          <div class="qa-meta">
+            <span class="qa-category-tag">Algorithmic Trading</span>
+            <span>Asked by @AlexK &bull; 2 days ago</span>
+          </div>
+          <button class="btn-upvote" onclick="upvote(this, 42)">
+            <span>&#x25B2;</span>
+            <span class="v-count">42</span>
+          </button>
+        </div>
+        <h2 class="qa-question">Why execute your trading bots in native MQL5 on MT5 rather than pure Python or REST API bridges?</h2>
+        <div class="qa-answer-block">
+          <div class="author-badge">
+            <div class="author-avatar">A</div>
+            <span>David Anthony Jones (Alu)</span>
+            <span class="verified-mark">&check; Founder Answer</span>
+          </div>
+          <p class="qa-answer-text">
+            Latency, reliability, and broker tick fidelity. REST API bridges introduce 100–300ms network roundtrips and TCP handshake overhead on every tick. MQL5 compiles down to native 64-bit machine code executing inside the terminal process itself with sub-0.5ms tick latency. Furthermore, when trading during volatile events or overnight session handovers, a local MQL5 EA continues executing its SL/TP modifications and Trap Door locks even if an external Python process or internet bridge disconnects. We use Python strictly where it excels: vectorized multi-year historical auditing, Monte Carlo simulations, and trade rejection telemetry.
+          </p>
+        </div>
+      </article>
+
+      <!-- Item 2 -->
+      <article class="qa-card" data-cat="compilers">
+        <div class="qa-top">
+          <div class="qa-meta">
+            <span class="qa-category-tag">Compilers &amp; Android</span>
+            <span>Asked by @DevSovereign &bull; 5 days ago</span>
+          </div>
+          <button class="btn-upvote" onclick="upvote(this, 37)">
+            <span>&#x25B2;</span>
+            <span class="v-count">37</span>
+          </button>
+        </div>
+        <h2 class="qa-question">What does "100% Sovereign Offline Android Binary" mean for apps like OmniHost Pro?</h2>
+        <div class="qa-answer-block">
+          <div class="author-badge">
+            <div class="author-avatar">A</div>
+            <span>David Anthony Jones (Alu)</span>
+            <span class="verified-mark">&check; Founder Answer</span>
+          </div>
+          <p class="qa-answer-text">
+            Modern mobile applications are packed with telemetry trackers (Google Firebase Analytics, Adjust, Crashlytics, Facebook SDK) that constantly ping remote endpoints. An Alumungandr sovereign binary contains zero analytics SDKs, zero phone-home calls, and zero external cloud dependencies. You can put the Android device into Airplane Mode, turn off Wi-Fi and Bluetooth, and our FTP server, local engines, and compilers run indefinitely without degradation. You own your device and your data.
+          </p>
+        </div>
+      </article>
+
+      <!-- Item 3 -->
+      <article class="qa-card" data-cat="edge">
+        <div class="qa-top">
+          <div class="qa-meta">
+            <span class="qa-category-tag">Edge Infrastructure</span>
+            <span>Asked by @CloudArchitect &bull; 1 week ago</span>
+          </div>
+          <button class="btn-upvote" onclick="upvote(this, 29)">
+            <span>&#x25B2;</span>
+            <span class="v-count">29</span>
+          </button>
+        </div>
+        <h2 class="qa-question">Why did you build Alumungandr on Cloudflare Workers and Pages instead of a traditional Ubuntu VPS?</h2>
+        <div class="qa-answer-block">
+          <div class="author-badge">
+            <div class="author-avatar">A</div>
+            <span>David Anthony Jones (Alu)</span>
+            <span class="verified-mark">&check; Founder Answer</span>
+          </div>
+          <p class="qa-answer-text">
+            Single-point VPS servers are brittle. If you host on a single droplet in New York, a user in Kingston, Jamaica or Tokyo suffers 150–250ms of latency. Cloudflare Pages and Workers execute across 330+ edge data centers with sub-10ms latency globally, zero cold starts, zero Linux OS kernel maintenance, and native enterprise DDoS absorption. With Cloudflare R2 offering $0 egress fees and Workers AI running models at the edge, it is the most resilient, cost-effective infrastructure for independent software founders.
+          </p>
+        </div>
+      </article>
+
+      <!-- Item 4 -->
+      <article class="qa-card" data-cat="ai">
+        <div class="qa-top">
+          <div class="qa-meta">
+            <span class="qa-category-tag">AI &amp; Agentic Tools</span>
+            <span>Asked by @QuantResearcher &bull; 2 weeks ago</span>
+          </div>
+          <button class="btn-upvote" onclick="upvote(this, 53)">
+            <span>&#x25B2;</span>
+            <span class="v-count">53</span>
+          </button>
+        </div>
+        <h2 class="qa-question">How does AI assist in the development of ScientificMultiTFEA without introducing hallucinations?</h2>
+        <div class="qa-answer-block">
+          <div class="author-badge">
+            <div class="author-avatar">A</div>
+            <span>David Anthony Jones (Alu)</span>
+            <span class="verified-mark">&check; Founder Answer</span>
+          </div>
+          <p class="qa-answer-text">
+            Rule #1: The AI never makes trading decisions in real-time. All trade entries, exits, ATR multipliers, and circuit breakers are hardcoded mathematical invariants in MQL5. Where AI shines is deterministic code verification: mathematical proofs of risk limits, automated compilation diagnostics with zero warnings, vectorized backtest audit scripts in Python, and historical trade rejection analysis. We pair human architectural discipline with agentic precision to eliminate blind spots.
+          </p>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Question submitted!</div>
+
+  <!-- Footer -->
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    /* =========================================================
+       1. LIVE SYNAPTIC CONSTELLATION CANVAS BACKGROUND
+       ========================================================= */
+    const canvas = document.getElementById('synapseCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const synapses = [];
+
+    function initSynapses() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      synapses.length = 0;
+
+      const count = Math.floor((width * height) / 30000);
+      for (let i = 0; i < count; i++) {
+        synapses.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          pulse: Math.random() * Math.PI,
+          color: Math.random() > 0.4 ? 'rgba(16, 185, 129,' : 'rgba(56, 189, 248,'
+        });
+      }
+    }
+    window.addEventListener('resize', initSynapses);
+    initSynapses();
+
+    function drawSynapses() {
+      ctx.fillStyle = 'rgba(7, 8, 10, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = 0; i < synapses.length; i++) {
+        const s = synapses[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.pulse += 0.02;
+
+        if (s.x < 0 || s.x > width) s.vx *= -1;
+        if (s.y < 0 || s.y > height) s.vy *= -1;
+
+        const alpha = 0.4 + Math.sin(s.pulse) * 0.3;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = s.color + alpha + ')';
+        ctx.fill();
+
+        for (let j = i + 1; j < synapses.length; j++) {
+          const s2 = synapses[j];
+          const dist = Math.hypot(s.x - s2.x, s.y - s2.y);
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(s.x, s.y);
+            ctx.lineTo(s2.x, s2.y);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${0.12 * (1 - dist / 130)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(drawSynapses);
+    }
+    requestAnimationFrame(drawSynapses);
+
+
+    /* =========================================================
+       2. AMA SEARCH, FILTER & SUBMISSIONS
+       ========================================================= */
+    const btnOpenAsk = document.getElementById('btnOpenAsk');
+    const btnCloseAsk = document.getElementById('btnCloseAsk');
+    const askForm = document.getElementById('askForm');
+    const questionInput = document.getElementById('questionInput');
+    const askerName = document.getElementById('askerName');
+    const askerCategory = document.getElementById('askerCategory');
+    const qaStream = document.getElementById('qaStream');
+    const searchInput = document.getElementById('searchInput');
+    const catBtns = document.querySelectorAll('.cat-btn');
+    const toast = document.getElementById('toast');
+
+    btnOpenAsk.addEventListener('click', () => {
+      askForm.classList.add('show');
+      questionInput.focus();
+    });
+    btnCloseAsk.addEventListener('click', () => {
+      askForm.classList.remove('show');
+    });
+
+    askForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const question = questionInput.value.trim();
+      const name = askerName.value.trim() || 'Anonymous';
+      const category = askerCategory.value;
+
+      if (!question) return;
+
+      const newCard = document.createElement('article');
+      newCard.className = 'qa-card';
+      newCard.setAttribute('data-cat', category);
+      newCard.innerHTML = `
+        <div class="qa-top">
+          <div class="qa-meta">
+            <span class="qa-category-tag">${escapeHtml(category.toUpperCase())}</span>
+            <span>Asked by @${escapeHtml(name)} &bull; Just now</span>
+          </div>
+          <button class="btn-upvote" onclick="upvote(this, 1)">
+            <span>&#x25B2;</span>
+            <span class="v-count">1</span>
+          </button>
+        </div>
+        <h2 class="qa-question">${escapeHtml(question)}</h2>
+        <div class="qa-answer-block">
+          <div class="author-badge">
+            <div class="author-avatar">A</div>
+            <span>David Anthony Jones (Alu)</span>
+            <span class="verified-mark" style="background:rgba(245, 158, 11, 0.2); color:var(--accent-yellow);">&bull; In Review</span>
+          </div>
+          <p class="qa-answer-text">
+            Received! This question has been logged into our founder queue and will be formally answered with full technical breakdown.
+          </p>
+        </div>
+      `;
+
+      qaStream.insertBefore(newCard, qaStream.firstChild);
+
+      // Edge API Dispatch
+      try {
+        await fetch('/api/ama', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, name, category, timestamp: Date.now() })
+        });
+      } catch (_) {}
+
+      // Reset
+      questionInput.value = '';
+      askerName.value = '';
+      askForm.classList.remove('show');
+      showToast('Question submitted! It will appear publicly.');
+    });
+
+    function upvote(btn, count) {
+      if (btn.classList.contains('voted')) return;
+      btn.classList.add('voted');
+      const countEl = btn.querySelector('.v-count');
+      countEl.textContent = parseInt(countEl.textContent) + 1;
+      showToast('Upvote recorded!');
+    }
+
+    /* Filter */
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.getAttribute('data-cat');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    function filterCards() {
+      const activeCat = document.querySelector('.cat-btn.active').getAttribute('data-cat');
+      const query = searchInput.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.qa-card');
+
+      cards.forEach(card => {
+        const catMatch = (activeCat === 'all' || card.getAttribute('data-cat') === activeCat);
+        const textMatch = !query || card.textContent.toLowerCase().includes(query);
+        card.style.display = (catMatch && textMatch) ? 'flex' : 'none';
+      });
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>

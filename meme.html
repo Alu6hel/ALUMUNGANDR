@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Meme Studio — In-Browser Canvas Meme Generator — Alumungandr</title>
+  <meta name="description" content="Create viral memes with custom text, stickers, classic templates, or upload your own images. 100% client-side HTML5 Canvas. Zero watermarks, zero servers.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Impact&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --accent-amber: #f59e0b;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-pink: #ec4899;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Studio Layout */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 1.5rem;
+    }
+    @media (max-width: 1000px) {
+      .studio-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+    }
+
+    /* Canvas Viewport */
+    .canvas-viewport {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      min-height: 520px;
+      position: relative;
+    }
+    #meme-canvas {
+      max-width: 100%;
+      max-height: 580px;
+      border-radius: 6px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8);
+      background: #111;
+    }
+
+    /* Template Bar */
+    .template-bar {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    .template-card {
+      min-width: 90px;
+      height: 90px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-align: center;
+      padding: 0.4rem;
+      transition: all 0.15s;
+    }
+    .template-card:hover {
+      border-color: var(--accent-amber);
+      transform: translateY(-2px);
+    }
+
+    /* Controls Column */
+    .controls-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .form-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .form-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--accent-amber); }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .range-input {
+      flex: 1;
+      accent-color: var(--accent-amber);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-action {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.65rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.15s;
+    }
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #07080a;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--accent-amber); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">MEME // STUDIO</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        ZERO WATERMARKS // IN-BROWSER CANVAS RENDERING
+      </div>
+      <h1>Meme Generation <span>Studio</span></h1>
+      <p>Render classic top/bottom memes or custom text layers over viral presets and user photos. 100% private in-browser canvas pipeline.</p>
+    </div>
+
+    <div class="studio-grid">
+      <!-- Left: Interactive Canvas -->
+      <div class="card" style="display:flex; flex-direction:column;">
+        <div class="canvas-viewport">
+          <canvas id="meme-canvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="template-bar">
+          <div class="template-card" onclick="loadMemePreset('cyberpunk')">
+            <span style="font-size:1.5rem;">🤖</span>
+            <span>CYBERPUNK</span>
+          </div>
+          <div class="template-card" onclick="loadMemePreset('drake')">
+            <span style="font-size:1.5rem;">✋</span>
+            <span>REJECTION</span>
+          </div>
+          <div class="template-card" onclick="loadMemePreset('success')">
+            <span style="font-size:1.5rem;">✊</span>
+            <span>SUCCESS</span>
+          </div>
+          <div class="template-card" onclick="loadMemePreset('buttons')">
+            <span style="font-size:1.5rem;">🔴</span>
+            <span>TWO BUTTONS</span>
+          </div>
+          <div class="template-card" onclick="document.getElementById('file-upload').click()">
+            <span style="font-size:1.5rem;">📁</span>
+            <span>UPLOAD...</span>
+          </div>
+        </div>
+        <input type="file" id="file-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+      </div>
+
+      <!-- Right: Text & Style Controls -->
+      <div class="card controls-col">
+        <div class="form-group">
+          <label class="form-label">Top Text</label>
+          <input type="text" id="top-text" class="form-input" value="WHEN YOU DEPLOY ON FRIDAY" placeholder="TOP TEXT...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Bottom Text</label>
+          <input type="text" id="bottom-text" class="form-input" value="AND NOTHING BREAKS" placeholder="BOTTOM TEXT...">
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between;">
+            <label class="form-label">Font Size</label>
+            <span id="font-size-val" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-amber);">42px</span>
+          </div>
+          <div class="range-row">
+            <input type="range" id="font-size" class="range-input" min="20" max="72" value="42" oninput="updateFontSize(this.value)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Text Color</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="color" id="text-color" value="#ffffff" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
+            <input type="color" id="stroke-color" value="#000000" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
+            <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted); align-self:center;">Fill &amp; Outline</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:auto;">
+          <div class="btn-row">
+            <button class="btn-action" onclick="copyMemeImage()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy Image
+            </button>
+            <button class="btn-action btn-primary" onclick="downloadMeme()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download PNG
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    const canvas = document.getElementById('meme-canvas');
+    const ctx = canvas.getContext('2d');
+    let loadedImage = null;
+    let currentPreset = 'cyberpunk';
+
+    function updateFontSize(val) {
+      document.getElementById('font-size-val').textContent = val + 'px';
+      renderMeme();
+    }
+
+    function drawPresetBackground(name) {
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (name === 'cyberpunk') {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, '#1e1b4b');
+        grad.addColorStop(0.5, '#431407');
+        grad.addColorStop(1, '#022c22');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Cyber Grid Lines
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+        for (let i = 0; i < canvas.width; i += 40) {
+          ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+        }
+        for (let j = 0; j < canvas.height; j += 40) {
+          ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+        }
+      } else if (name === 'drake') {
+        // Two horizontal split panels
+        ctx.fillStyle = '#fde047';
+        ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 2);
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+      } else if (name === 'buttons') {
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Red buttons
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(canvas.width * 0.35, canvas.height * 0.45, 60, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(canvas.width * 0.65, canvas.height * 0.45, 60, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Success
+        const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 50, canvas.width/2, canvas.height/2, 350);
+        grad.addColorStop(0, '#10b981');
+        grad.addColorStop(1, '#064e3b');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function renderMeme() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (loadedImage) {
+        ctx.drawImage(loadedImage, 0, 0, canvas.width, canvas.height);
+      } else {
+        drawPresetBackground(currentPreset);
+      }
+
+      const topText = document.getElementById('top-text').value;
+      const bottomText = document.getElementById('bottom-text').value;
+      const fontSize = parseInt(document.getElementById('font-size').value, 10);
+      const fillColor = document.getElementById('text-color').value;
+      const strokeColor = document.getElementById('stroke-color').value;
+
+      ctx.font = `bold ${fontSize}px Impact, "Arial Black", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillStyle = fillColor;
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = Math.max(3, fontSize / 9);
+      ctx.lineJoin = 'round';
+
+      // Draw Top Text
+      if (topText) {
+        const topY = fontSize + 25;
+        ctx.strokeText(topText.toUpperCase(), canvas.width / 2, topY);
+        ctx.fillText(topText.toUpperCase(), canvas.width / 2, topY);
+      }
+
+      // Draw Bottom Text
+      if (bottomText) {
+        const bottomY = canvas.height - 25;
+        ctx.strokeText(bottomText.toUpperCase(), canvas.width / 2, bottomY);
+        ctx.fillText(bottomText.toUpperCase(), canvas.width / 2, bottomY);
+      }
+    }
+
+    function loadMemePreset(preset) {
+      loadedImage = null;
+      currentPreset = preset;
+      renderMeme();
+    }
+
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          loadedImage = img;
+          canvas.width = img.width > 800 ? 800 : img.width;
+          canvas.height = (canvas.width / img.width) * img.height;
+          renderMeme();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function downloadMeme() {
+      const link = document.createElement('a');
+      link.download = `alumungandr-meme-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    async function copyMemeImage() {
+      try {
+        canvas.toBlob(async blob => {
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          alert('Meme copied to clipboard as PNG!');
+        });
+      } catch (err) {
+        alert('Could not copy image to clipboard: ' + err.message);
+      }
+    }
+
+    document.getElementById('top-text').addEventListener('input', renderMeme);
+    document.getElementById('bottom-text').addEventListener('input', renderMeme);
+
+    renderMeme();
+
+    // --- Interactive Live Background: Pop-Art Halftone Mesh ---
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let width, height;
+    let mouse = { x: -1000, y: -1000 };
+
+    function resizeBg() {
+      width = bgCanvas.width = window.innerWidth;
+      height = bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeBg);
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    resizeBg();
+
+    function renderPopHalftone() {
+      bgCtx.clearRect(0, 0, width, height);
+
+      const spacing = 36;
+      for (let x = spacing / 2; x < width; x += spacing) {
+        for (let y = spacing / 2; y < height; y += spacing) {
+          const dx = mouse.x - x;
+          const dy = mouse.y - y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          const maxDist = 200;
+          let r = 1.5;
+          if (dist < maxDist) {
+            r = 1.5 + (1 - dist / maxDist) * 7;
+          }
+
+          bgCtx.fillStyle = dist < maxDist ? 'rgba(245, 158, 11, 0.4)' : 'rgba(255, 255, 255, 0.04)';
+          bgCtx.beginPath();
+          bgCtx.arc(x, y, r, 0, Math.PI * 2);
+          bgCtx.fill();
+        }
+      }
+
+      requestAnimationFrame(renderPopHalftone);
+    }
+    renderPopHalftone();
+  </script>
+</body>
+</html>

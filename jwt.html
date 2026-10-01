@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free JWT Debugger & Token Builder — Alumungandr</title>
+  <meta name="description" content="Inspect, decode, and verify JSON Web Tokens (JWT) in real-time. Humanized expiration dates, HMAC-SHA256 signature verification, and instant token builder. 100% client-side.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-card: #0e1016;
+      --bg-surface: #141722;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --text-main: #f3f4f6;
+      --text-muted: #8b949e;
+      --jwt-header: #de5849;
+      --jwt-payload: #38bdf8;
+      --jwt-signature: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: var(--border-dashed);
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img { width: 28px; height: 28px; }
+    .brand span { font-weight: 700; letter-spacing: -0.5px; font-size: 1.1rem; }
+    .brand-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1350px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .badge-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--jwt-payload);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.75px;
+      margin-bottom: 0.5rem;
+    }
+    .hero-header h1 span {
+      background: linear-gradient(135deg, #de5849 0%, #38bdf8 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+    .tab-btn.active {
+      color: var(--jwt-payload);
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    /* Workbench Grid */
+    .workbench {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 950px) {
+      .workbench { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-dashed);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Raw Token Input with colored styling */
+    .token-box {
+      width: 100%;
+      height: 280px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      word-break: break-all;
+    }
+    .token-box:focus { border-color: var(--jwt-payload); }
+
+    /* Decoded Section Cards */
+    .decoded-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .decoded-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .decoded-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #e2e8f0;
+    }
+
+    /* Claims Inspector Table */
+    .claims-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .claim-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+    .claim-key { color: var(--jwt-payload); font-weight: 600; }
+    .claim-val { color: #cbd5e1; }
+    .claim-human {
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+    }
+    .badge-valid { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .badge-expired { background: rgba(222, 88, 73, 0.2); color: #fca5a5; }
+
+    /* Signature Verifier Box */
+    .sig-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+    .sig-status-badge.verified {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .sig-status-badge.unverified {
+      background: rgba(222, 88, 73, 0.15);
+      border: 1px solid rgba(222, 88, 73, 0.4);
+      color: #fca5a5;
+    }
+
+    .secret-input-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .secret-input {
+      flex: 1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .secret-input:focus { border-color: var(--jwt-signature); }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: var(--border-dashed);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(7, 8, 10, 0.9);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer a { color: var(--jwt-payload); text-decoration: none; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">JWT // LAB</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-header">
+      <div class="badge-sub">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        CLIENT-SIDE CRYPTOGRAPHIC PARSER // ZERO LEAKS
+      </div>
+      <h1>JSON Web Token <span>Debugger</span></h1>
+      <p>Decode three-part JWTs, inspect claims with humanized timestamps, verify HMAC signatures directly in browser memory, and craft signed tokens.</p>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-decode-btn" onclick="setMode('decode')">Decode &amp; Inspect</button>
+      <button class="tab-btn" id="tab-encode-btn" onclick="setMode('encode')">Token Builder (Encode)</button>
+    </div>
+
+    <!-- Decode Mode -->
+    <div id="mode-decode" class="workbench">
+      <!-- Left Column: Raw Encoded JWT -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">
+              <span style="color:var(--jwt-header);">● Header</span>
+              <span style="color:var(--jwt-payload);">● Payload</span>
+              <span style="color:var(--jwt-signature);">● Signature</span>
+            </label>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn-action" onclick="loadSampleJwt()">Sample JWT</button>
+              <button class="btn-action" onclick="copyToken()">Copy Token</button>
+            </div>
+          </div>
+          <textarea id="raw-jwt" class="token-box" placeholder="Paste encoded JSON Web Token (header.payload.signature)..." spellcheck="false"></textarea>
+        </div>
+
+        <!-- Claims Inspector -->
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">Claims &amp; Expiration Timeline</label>
+          </div>
+          <div id="claims-inspector" class="claims-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Decoded Header, Payload & Signature -->
+      <div>
+        <!-- Decoded Header -->
+        <div class="card" style="border-left: 3px solid var(--jwt-header);">
+          <div class="decoded-header" style="color:var(--jwt-header);">
+            <span>HEADER: ALGORITHM &amp; TOKEN TYPE</span>
+            <span id="hdr-alg" style="font-weight:700;">HS256</span>
+          </div>
+          <pre class="decoded-code" id="decoded-header">{}</pre>
+        </div>
+
+        <!-- Decoded Payload -->
+        <div class="card" style="border-left: 3px solid var(--jwt-payload);">
+          <div class="decoded-header" style="color:var(--jwt-payload);">
+            <span>PAYLOAD: CLAIMS &amp; DATA</span>
+            <span id="payload-count" style="font-size:0.7rem; color:var(--text-muted);">0 claims</span>
+          </div>
+          <pre class="decoded-code" id="decoded-payload">{}</pre>
+        </div>
+
+        <!-- Signature Verification -->
+        <div class="card" style="border-left: 3px solid var(--jwt-signature);">
+          <div class="decoded-header" style="color:var(--jwt-signature);">
+            <span>SIGNATURE VERIFIER</span>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;">
+            HMAC-SHA256 signature verification calculated using the browser's native Web Crypto API:
+          </p>
+
+          <div class="secret-input-row">
+            <input type="text" id="secret-key" class="secret-input" placeholder="Enter secret key (e.g. your-256-bit-secret)..." value="your-256-bit-secret">
+            <button class="btn-action" onclick="verifySignature()">Verify</button>
+          </div>
+
+          <div id="sig-badge" class="sig-status-badge verified">
+            <span>✔ Signature Verified (Valid Secret)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Encode / Builder Mode -->
+    <div id="mode-encode" class="workbench" style="display:none;">
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">Header (JSON)</label>
+          </div>
+          <textarea id="builder-header" class="token-box" style="height:120px;" spellcheck="false">{
+  "alg": "HS256",
+  "typ": "JWT"
+}</textarea>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title">Payload (JSON)</label>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn-action" onclick="addExpTime(3600)">+1 Hour</button>
+              <button class="btn-action" onclick="addExpTime(86400)">+1 Day</button>
+            </div>
+          </div>
+          <textarea id="builder-payload" class="token-box" style="height:200px;" spellcheck="false">{
+  "sub": "user_99214",
+  "name": "Alex Mercer",
+  "role": "admin",
+  "iat": 1713484800,
+  "exp": 1745020800
+}</textarea>
+        </div>
+
+        <div class="card">
+          <label class="card-title" style="margin-bottom:0.75rem;">HMAC Secret Key</label>
+          <input type="text" id="builder-secret" class="secret-input" style="width:100%;" value="super-secure-alumungandr-secret">
+          <button class="btn-action" style="margin-top:0.75rem; width:100%; padding:0.6rem;" onclick="buildSignedToken()">⚡ Sign &amp; Generate JWT</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <label class="card-title" style="color:var(--jwt-payload);">Generated Signed JWT</label>
+            <button class="btn-action" onclick="copyBuiltToken()">Copy Token</button>
+          </div>
+          <textarea id="built-token-output" class="token-box" style="height:320px;" readonly spellcheck="false"></textarea>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    const sampleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE5MDk2OTM4OTUsImlzcyI6ImFsdW11bmdhbmRyLmNvbSJ9.eS9nN6mE8gEw8r9jX-8W0y5u7V-j4e6k3o1a4h9v2z8';
+
+    function setMode(mode) {
+      document.getElementById('mode-decode').style.display = mode === 'decode' ? 'grid' : 'none';
+      document.getElementById('mode-encode').style.display = mode === 'encode' ? 'grid' : 'none';
+      document.getElementById('tab-decode-btn').classList.toggle('active', mode === 'decode');
+      document.getElementById('tab-encode-btn').classList.toggle('active', mode === 'encode');
+    }
+
+    function base64UrlDecode(str) {
+      let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      try {
+        return decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      } catch (e) {
+        return atob(base64);
+      }
+    }
+
+    function base64UrlEncode(str) {
+      return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function decodeJwt() {
+      const token = document.getElementById('raw-jwt').value.trim();
+      if (!token) return;
+
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        document.getElementById('decoded-header').textContent = 'Invalid JWT format (must have 3 parts separated by dots)';
+        document.getElementById('decoded-payload').textContent = '';
+        return;
+      }
+
+      try {
+        const headerJson = JSON.parse(base64UrlDecode(parts[0]));
+        document.getElementById('decoded-header').textContent = JSON.stringify(headerJson, null, 2);
+        document.getElementById('hdr-alg').textContent = headerJson.alg || 'UNKNOWN';
+
+        const payloadJson = JSON.parse(base64UrlDecode(parts[1]));
+        document.getElementById('decoded-payload').textContent = JSON.stringify(payloadJson, null, 2);
+        document.getElementById('payload-count').textContent = `${Object.keys(payloadJson).length} claims`;
+
+        inspectClaims(payloadJson);
+        verifySignature();
+      } catch (err) {
+        document.getElementById('decoded-header').textContent = 'JSON parse error: ' + err.message;
+      }
+    }
+
+    function inspectClaims(payload) {
+      const container = document.getElementById('claims-inspector');
+      let html = '';
+
+      const now = Math.floor(Date.now() / 1000);
+
+      for (const [k, v] of Object.entries(payload)) {
+        let human = '';
+        if (k === 'exp' && typeof v === 'number') {
+          const date = new Date(v * 1000).toLocaleString();
+          const isExpired = v < now;
+          const diffSec = Math.abs(v - now);
+          const diffDays = Math.floor(diffSec / 86400);
+          const diffHours = Math.floor((diffSec % 86400) / 3600);
+
+          if (isExpired) {
+            human = `<span class="claim-human badge-expired">Expired (${diffDays > 0 ? diffDays + 'd ' : ''}${diffHours}h ago - ${date})</span>`;
+          } else {
+            human = `<span class="claim-human badge-valid">Valid (${diffDays > 0 ? diffDays + 'd ' : ''}${diffHours}h remaining - ${date})</span>`;
+          }
+        } else if (k === 'iat' && typeof v === 'number') {
+          human = `<span class="claim-human" style="background:rgba(255,255,255,0.08); color:#94a3b8;">Issued: ${new Date(v * 1000).toLocaleString()}</span>`;
+        } else if (k === 'nbf' && typeof v === 'number') {
+          human = `<span class="claim-human" style="background:rgba(255,255,255,0.08); color:#94a3b8;">Not Before: ${new Date(v * 1000).toLocaleString()}</span>`;
+        }
+
+        html += `
+          <div class="claim-item">
+            <span class="claim-key">${k}</span>
+            <div style="display:flex; align-items:center;">
+              <span class="claim-val">${typeof v === 'object' ? JSON.stringify(v) : v}</span>
+              ${human}
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    async function verifySignature() {
+      const token = document.getElementById('raw-jwt').value.trim();
+      const secret = document.getElementById('secret-key').value;
+      const badge = document.getElementById('sig-badge');
+
+      const parts = token.split('.');
+      if (parts.length !== 3) return;
+
+      const message = parts[0] + '.' + parts[1];
+      const signatureB64 = parts[2];
+
+      try {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(secret);
+        const cryptoKey = await crypto.subtle.importKey(
+          'raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+        );
+
+        const expectedSigBuf = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
+        const expectedSigB64 = btoa(String.fromCharCode(...new Uint8Array(expectedSigBuf)))
+          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+        if (expectedSigB64 === signatureB64) {
+          badge.className = 'sig-status-badge verified';
+          badge.innerHTML = '✔ Signature Verified (Cryptographically Valid)';
+        } else {
+          badge.className = 'sig-status-badge unverified';
+          badge.innerHTML = '✖ Invalid Signature (Secret mismatch or tampered payload)';
+        }
+      } catch (err) {
+        badge.className = 'sig-status-badge unverified';
+        badge.innerHTML = 'Error during verification: ' + err.message;
+      }
+    }
+
+    async function buildSignedToken() {
+      const headerStr = document.getElementById('builder-header').value;
+      const payloadStr = document.getElementById('builder-payload').value;
+      const secret = document.getElementById('builder-secret').value;
+
+      try {
+        const hB64 = base64UrlEncode(JSON.stringify(JSON.parse(headerStr)));
+        const pB64 = base64UrlEncode(JSON.stringify(JSON.parse(payloadStr)));
+        const message = hB64 + '.' + pB64;
+
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(secret);
+        const cryptoKey = await crypto.subtle.importKey(
+          'raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+        );
+
+        const sigBuf = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
+        const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sigBuf)))
+          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+        const finalToken = message + '.' + sigB64;
+        document.getElementById('built-token-output').value = finalToken;
+      } catch (err) {
+        alert('Builder error: ' + err.message);
+      }
+    }
+
+    function addExpTime(seconds) {
+      try {
+        const p = JSON.parse(document.getElementById('builder-payload').value);
+        p.exp = Math.floor(Date.now() / 1000) + seconds;
+        document.getElementById('builder-payload').value = JSON.stringify(p, null, 2);
+        buildSignedToken();
+      } catch (e) {
+        alert('Invalid payload JSON');
+      }
+    }
+
+    function loadSampleJwt() {
+      document.getElementById('raw-jwt').value = sampleToken;
+      decodeJwt();
+    }
+
+    function copyToken() {
+      navigator.clipboard.writeText(document.getElementById('raw-jwt').value);
+      alert('Copied JWT to clipboard!');
+    }
+
+    function copyBuiltToken() {
+      navigator.clipboard.writeText(document.getElementById('built-token-output').value);
+      alert('Copied freshly built signed JWT to clipboard!');
+    }
+
+    document.getElementById('raw-jwt').addEventListener('input', decodeJwt);
+    document.getElementById('secret-key').addEventListener('input', verifySignature);
+
+    loadSampleJwt();
+    buildSignedToken();
+
+    // --- Interactive Live Background: Triple-Orbital Cryptographic Gyroscope ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let angle = 0;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function renderBg() {
+      ctx.clearRect(0, 0, width, height);
+
+      const cx = width / 2;
+      const cy = height / 2;
+      angle += 0.008;
+
+      const rings = [
+        { r: 240, color: 'rgba(222, 88, 73, 0.25)', speed: 1.0, tilt: 0.6 },
+        { r: 180, color: 'rgba(56, 189, 248, 0.25)', speed: -1.3, tilt: -0.4 },
+        { r: 120, color: 'rgba(16, 185, 129, 0.25)', speed: 1.7, tilt: 0.8 }
+      ];
+
+      rings.forEach(ring => {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle * ring.speed);
+        ctx.scale(1, ring.tilt);
+
+        ctx.strokeStyle = ring.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, ring.r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Orbital nodes
+        const nodeCount = 3;
+        for (let i = 0; i < nodeCount; i++) {
+          const a = (i * (Math.PI * 2 / nodeCount)) + (angle * ring.speed * 2);
+          const nx = Math.cos(a) * ring.r;
+          const ny = Math.sin(a) * ring.r;
+
+          ctx.fillStyle = ring.color.replace('0.25', '0.8');
+          ctx.beginPath();
+          ctx.arc(nx, ny, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      });
+
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+  </script>
+</body>
+</html>

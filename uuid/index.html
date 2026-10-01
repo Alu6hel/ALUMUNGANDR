@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Bulk UUID & GUID Generator (v1, v4, v5, v7) | Alumungandr™</title>
+  <meta name="description" content="Free high-speed bulk UUID/GUID generator. Generate up to 500 v1, v4, v5, and RFC 9562 sortable v7 UUIDs instantly with custom formatting, copy-to-clipboard, and built-in UUID inspector.">
+  <link rel="canonical" href="https://alumungandr.com/uuid">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/uuid">
+  <meta property="og:title" content="Free Bulk UUID / GUID Generator | Alumungandr™">
+  <meta property="og:description" content="Generate v1, v4, v5, and sortable v7 UUIDs in bulk. 100% client-side cryptographic generation.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-coral-glow: rgba(222, 88, 73, 0.35);
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.35);
+      --accent-green: #10b981;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Hex Matrix Canvas Background */
+    #hexCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    /* Top Navigation */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(14, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--border-solid);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-coral), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #fff;
+      box-shadow: 0 0 15px var(--accent-coral-glow);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      box-shadow: 0 0 14px var(--accent-coral-glow);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-strip {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(222, 88, 73, 0.12);
+      border: 1px solid rgba(222, 88, 73, 0.3);
+      color: var(--accent-coral);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      margin-bottom: 0.75rem;
+    }
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Config Controls Card */
+    .config-card {
+      background: rgba(14, 16, 22, 0.92);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .ctrl-label {
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+    .ctrl-select, .ctrl-input {
+      padding: 0.65rem 0.85rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .ctrl-select:focus, .ctrl-input:focus {
+      border-color: var(--accent-coral);
+    }
+
+    /* Checkbox Toggles */
+    .options-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .toggle-lbl {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .toggle-lbl input { accent-color: var(--accent-coral); }
+
+    .action-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .btn-generate {
+      flex: 1;
+      padding: 0.85rem 1.75rem;
+      background: var(--accent-coral);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-generate:hover {
+      background: #ff4838;
+      box-shadow: 0 0 20px var(--accent-coral-glow);
+      transform: translateY(-2px);
+    }
+    .btn-aux {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-aux:hover { background: rgba(255, 255, 255, 0.12); }
+
+    /* Results Output Container */
+    .results-card {
+      background: rgba(14, 16, 22, 0.95);
+      border: var(--border-solid);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .results-textarea {
+      width: 100%;
+      height: 280px;
+      background: rgba(0, 0, 0, 0.6);
+      border: var(--border-solid);
+      border-radius: 10px;
+      padding: 1rem;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      resize: vertical;
+      outline: none;
+    }
+
+    /* Built-In UUID Inspector */
+    .inspector-card {
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-solid);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .inspector-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .inspect-input-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .inspect-input {
+      flex: 1;
+      padding: 0.65rem 0.85rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .inspect-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+    .inspect-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: var(--border-solid);
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+    }
+    .inspect-lbl {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .inspect-val {
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-top: 2px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-coral);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 20;
+      border-top: var(--border-solid);
+      padding: 1.5rem 2rem;
+      background: rgba(7, 8, 10, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+
+  <!-- Live Hex Matrix Background -->
+  <canvas id="hexCanvas"></canvas>
+
+  <!-- Top Navigation -->
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">UUID // ENGINE</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <div class="hero-strip">
+      <div class="hero-badge">
+        <span>&#x1F510;</span>
+        <span>Cryptographically Secure RFC 9562 Generator</span>
+      </div>
+      <h1 class="hero-title">Bulk UUID &amp; GUID Generator</h1>
+      <p class="hero-sub">
+        Generate batch v1 (timestamp), v4 (random), v5 (namespace), and sortable v7 (millisecond epoch) UUIDs instantly in your browser with zero latency.
+      </p>
+    </div>
+
+    <!-- Generator Config Card -->
+    <div class="config-card">
+      <div class="controls-grid">
+        <div class="ctrl-group">
+          <label class="ctrl-label">UUID Version</label>
+          <select id="uuidVersion" class="ctrl-select">
+            <option value="v4" selected>Version 4 (Cryptographic Random)</option>
+            <option value="v7">Version 7 (Sortable Unix Epoch Time)</option>
+            <option value="v1">Version 1 (Timestamp &amp; MAC)</option>
+          </select>
+        </div>
+
+        <div class="ctrl-group">
+          <label class="ctrl-label">Quantity (1 to 500)</label>
+          <input type="number" id="uuidCount" class="ctrl-input" value="10" min="1" max="500">
+        </div>
+
+        <div class="ctrl-group">
+          <label class="ctrl-label">Output Format</label>
+          <select id="outputFormat" class="ctrl-select">
+            <option value="newline" selected>One per line</option>
+            <option value="json">JSON Array</option>
+            <option value="csv">Comma-separated</option>
+            <option value="sql">SQL INSERT Statements</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <label class="toggle-lbl">
+          <input type="checkbox" id="optUppercase">
+          <span>UPPERCASE</span>
+        </label>
+        <label class="toggle-lbl">
+          <input type="checkbox" id="optNoHyphens">
+          <span>Remove Hyphens (32-char hex)</span>
+        </label>
+        <label class="toggle-lbl">
+          <input type="checkbox" id="optBraces">
+          <span>Include Braces { ... }</span>
+        </label>
+        <label class="toggle-lbl">
+          <input type="checkbox" id="optQuotes">
+          <span>Wrap in Quotes " ... "</span>
+        </label>
+      </div>
+
+      <div class="action-row">
+        <button id="btnGenerate" class="btn-generate">
+          <span>&#x26A1;</span>
+          <span>Generate UUIDs</span>
+        </button>
+        <button id="btnCopyAll" class="btn-aux">
+          <span>&#x1F4CB;</span>
+          <span>Copy All</span>
+        </button>
+        <button id="btnDownload" class="btn-aux">
+          <span>&#x1F4E5;</span>
+          <span>Download File</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Card -->
+    <div class="results-card">
+      <div class="results-header">
+        <span id="resultsCountLabel">Generated 10 UUIDs</span>
+        <span>Click any line to copy</span>
+      </div>
+      <textarea id="resultsArea" class="results-textarea" readonly></textarea>
+    </div>
+
+    <!-- Built-In UUID Inspector -->
+    <div class="inspector-card">
+      <div class="inspector-title">
+        <span>&#x1F50E;</span>
+        <span>Instant UUID Decoder &amp; Inspector</span>
+      </div>
+      <div class="inspect-input-row">
+        <input type="text" id="inspectInput" class="inspect-input" placeholder="Paste any UUID here to inspect version, variant, and embedded timestamp...">
+      </div>
+      <div class="inspect-details-grid">
+        <div class="inspect-box">
+          <div class="inspect-lbl">Detected Version</div>
+          <div class="inspect-val" id="insVersion">--</div>
+        </div>
+        <div class="inspect-box">
+          <div class="inspect-lbl">RFC Variant</div>
+          <div class="inspect-val" id="insVariant">--</div>
+        </div>
+        <div class="inspect-box">
+          <div class="inspect-lbl">Embedded Timestamp</div>
+          <div class="inspect-val" id="insTimestamp">--</div>
+        </div>
+        <div class="inspect-box">
+          <div class="inspect-lbl">Status</div>
+          <div class="inspect-val" id="insStatus">Valid / Waiting</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <!-- Footer -->
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    /* =========================================================
+       1. LIVE HEXADECIMAL MATRIX CANVAS BACKGROUND
+       ========================================================= */
+    const canvas = document.getElementById('hexCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const hexStreams = [];
+    const hexChars = '0123456789abcdefABCDEF';
+
+    function initHex() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      hexStreams.length = 0;
+
+      const cols = Math.floor(width / 24);
+      for (let i = 0; i < cols; i++) {
+        hexStreams.push({
+          x: i * 24,
+          y: Math.random() * height,
+          speed: 1.2 + Math.random() * 2
+        });
+      }
+    }
+    window.addEventListener('resize', initHex);
+    initHex();
+
+    function drawHex() {
+      ctx.fillStyle = 'rgba(7, 8, 10, 0.14)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.font = '12px "JetBrains Mono", monospace';
+      for (let i = 0; i < hexStreams.length; i++) {
+        const s = hexStreams[i];
+        const ch = hexChars[Math.floor(Math.random() * hexChars.length)];
+
+        ctx.fillStyle = '#de5849';
+        ctx.fillText(ch, s.x, s.y);
+
+        ctx.fillStyle = 'rgba(222, 88, 73, 0.25)';
+        ctx.fillText(hexChars[Math.floor(Math.random() * hexChars.length)], s.x, s.y - 14);
+
+        s.y += s.speed;
+        if (s.y > height + 20) {
+          s.y = -20;
+          s.speed = 1.2 + Math.random() * 2;
+        }
+      }
+      requestAnimationFrame(drawHex);
+    }
+    requestAnimationFrame(drawHex);
+
+
+    /* =========================================================
+       2. CRYPTOGRAPHIC UUID GENERATION ENGINES (v1, v4, v7)
+       ========================================================= */
+    function generateUUIDv4() {
+      if (crypto.randomUUID) return crypto.randomUUID();
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      bytes[6] = (bytes[6] & 0x0f) | 0x40; // Version 4
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant 10xx
+      return bytesToUUID(bytes);
+    }
+
+    // RFC 9562 Version 7: Sortable Unix epoch millisecond time
+    function generateUUIDv7() {
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      const now = Date.now();
+
+      // 48-bit timestamp in milliseconds
+      bytes[0] = (now / 0x10000000000) & 0xff;
+      bytes[1] = (now / 0x100000000) & 0xff;
+      bytes[2] = (now / 0x1000000) & 0xff;
+      bytes[3] = (now / 0x10000) & 0xff;
+      bytes[4] = (now / 0x100) & 0xff;
+      bytes[5] = now & 0xff;
+
+      bytes[6] = (bytes[6] & 0x0f) | 0x70; // Version 7
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant 10xx
+      return bytesToUUID(bytes);
+    }
+
+    // Version 1: 60-bit 100-nanosecond intervals since Oct 15 1582
+    let clockSeq = Math.floor(Math.random() * 0x3fff);
+    function generateUUIDv1() {
+      const now = Date.now();
+      const nsec = (now + 12219292800000) * 10000;
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+
+      const timeLow = (nsec & 0xffffffff) >>> 0;
+      const timeMid = ((nsec / 0x100000000) & 0xffff) >>> 0;
+      const timeHiAndVersion = (((nsec / 0x1000000000000) & 0x0fff) | 0x1000) >>> 0;
+
+      bytes[0] = (timeLow >>> 24) & 0xff;
+      bytes[1] = (timeLow >>> 16) & 0xff;
+      bytes[2] = (timeLow >>> 8) & 0xff;
+      bytes[3] = timeLow & 0xff;
+      bytes[4] = (timeMid >>> 8) & 0xff;
+      bytes[5] = timeMid & 0xff;
+      bytes[6] = (timeHiAndVersion >>> 8) & 0xff;
+      bytes[7] = timeHiAndVersion & 0xff;
+
+      clockSeq = (clockSeq + 1) & 0x3fff;
+      bytes[8] = ((clockSeq >>> 8) & 0x3f) | 0x80;
+      bytes[9] = clockSeq & 0xff;
+
+      return bytesToUUID(bytes);
+    }
+
+    function bytesToUUID(bytes) {
+      let hex = [];
+      for (let i = 0; i < 16; i++) {
+        hex.push(bytes[i].toString(16).padStart(2, '0'));
+      }
+      return `${hex[0]}${hex[1]}${hex[2]}${hex[3]}-${hex[4]}${hex[5]}-${hex[6]}${hex[7]}-${hex[8]}${hex[9]}-${hex[10]}${hex[11]}${hex[12]}${hex[13]}${hex[14]}${hex[15]}`;
+    }
+
+    /* Elements */
+    const uuidVersion = document.getElementById('uuidVersion');
+    const uuidCount = document.getElementById('uuidCount');
+    const outputFormat = document.getElementById('outputFormat');
+    const optUppercase = document.getElementById('optUppercase');
+    const optNoHyphens = document.getElementById('optNoHyphens');
+    const optBraces = document.getElementById('optBraces');
+    const optQuotes = document.getElementById('optQuotes');
+    const btnGenerate = document.getElementById('btnGenerate');
+    const btnCopyAll = document.getElementById('btnCopyAll');
+    const btnDownload = document.getElementById('btnDownload');
+    const resultsArea = document.getElementById('resultsArea');
+    const resultsCountLabel = document.getElementById('resultsCountLabel');
+    const toast = document.getElementById('toast');
+
+    function runBatchGenerate() {
+      const ver = uuidVersion.value;
+      const count = Math.max(1, Math.min(500, parseInt(uuidCount.value) || 10));
+      const format = outputFormat.value;
+      const isUpper = optUppercase.checked;
+      const noHyphens = optNoHyphens.checked;
+      const braces = optBraces.checked;
+      const quotes = optQuotes.checked;
+
+      const list = [];
+      for (let i = 0; i < count; i++) {
+        let u = ver === 'v7' ? generateUUIDv7() : ver === 'v1' ? generateUUIDv1() : generateUUIDv4();
+        if (noHyphens) u = u.replace(/-/g, '');
+        if (isUpper) u = u.toUpperCase();
+        if (braces) u = `{${u}}`;
+        if (quotes) u = `"${u}"`;
+        list.push(u);
+      }
+
+      if (format === 'json') {
+        resultsArea.value = JSON.stringify(list, null, 2);
+      } else if (format === 'csv') {
+        resultsArea.value = list.join(', ');
+      } else if (format === 'sql') {
+        resultsArea.value = list.map(u => `INSERT INTO records (id) VALUES ('${u.replace(/['"]/g, '')}');`).join('\n');
+      } else {
+        resultsArea.value = list.join('\n');
+      }
+
+      resultsCountLabel.textContent = `Generated ${count} UUID${count > 1 ? 's' : ''} (${ver.toUpperCase()})`;
+    }
+
+    btnGenerate.addEventListener('click', runBatchGenerate);
+
+    btnCopyAll.addEventListener('click', () => {
+      if (!resultsArea.value) return;
+      navigator.clipboard.writeText(resultsArea.value).then(() => {
+        showToast('All UUIDs copied to clipboard!');
+      });
+    });
+
+    btnDownload.addEventListener('click', () => {
+      if (!resultsArea.value) return;
+      const ext = outputFormat.value === 'json' ? 'json' : outputFormat.value === 'sql' ? 'sql' : 'txt';
+      const blob = new Blob([resultsArea.value], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `uuids_${Date.now()}.${ext}`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded UUID export file');
+    });
+
+    /* =========================================================
+       3. UUID INSPECTOR & TIMESTAMP DECODER
+       ========================================================= */
+    const inspectInput = document.getElementById('inspectInput');
+    const insVersion = document.getElementById('insVersion');
+    const insVariant = document.getElementById('insVariant');
+    const insTimestamp = document.getElementById('insTimestamp');
+    const insStatus = document.getElementById('insStatus');
+
+    inspectInput.addEventListener('input', () => {
+      const raw = inspectInput.value.trim().replace(/[{}"']/g, '');
+      const clean = raw.includes('-') ? raw : (raw.length === 32 ? `${raw.substr(0,8)}-${raw.substr(8,4)}-${raw.substr(12,4)}-${raw.substr(16,4)}-${raw.substr(20)}` : raw);
+      
+      const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-([1-8])[0-9a-f]{3}-([89ab])[0-9a-f]{3}-[0-9a-f]{12}$/i;
+      const match = clean.match(regex);
+
+      if (!match) {
+        insVersion.textContent = '--';
+        insVariant.textContent = '--';
+        insTimestamp.textContent = '--';
+        insStatus.textContent = raw ? 'Invalid UUID Format' : 'Waiting for input';
+        insStatus.style.color = raw ? '#ef4444' : 'var(--text-muted)';
+        return;
+      }
+
+      const ver = match[1];
+      const varHex = match[2].toLowerCase();
+      insVersion.textContent = `Version ${ver} (${ver === '4' ? 'Random' : ver === '7' ? 'Time-Sortable' : ver === '1' ? 'Timestamp' : 'RFC'})`;
+      insVariant.textContent = 'RFC 4122 / RFC 9562';
+      insStatus.textContent = 'Valid UUID';
+      insStatus.style.color = 'var(--accent-green)';
+
+      if (ver === '7') {
+        const timeHex = clean.replace(/-/g, '').substring(0, 12);
+        const epochMs = parseInt(timeHex, 16);
+        const date = new Date(epochMs);
+        insTimestamp.textContent = isNaN(date.getTime()) ? 'Unknown' : date.toUTCString();
+      } else if (ver === '1') {
+        insTimestamp.textContent = 'V1 100ns Greg Epoch';
+      } else {
+        insTimestamp.textContent = 'N/A (Non-timestamp UUID)';
+      }
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    // Auto-generate on load
+    window.addEventListener('DOMContentLoaded', () => {
+      runBatchGenerate();
+      inspectInput.value = resultsArea.value.split('\n')[0];
+      inspectInput.dispatchEvent(new Event('input'));
+    });
+  </script>
+</body>
+</html>

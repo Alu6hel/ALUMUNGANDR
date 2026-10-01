@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Cross-Device Universal Clipboard | Alumungandr™</title>
+  <meta name="description" content="Instant zero-download cross-device clipboard. Share text, code, URLs, and notes between phone, laptop, and desktop instantly via short room codes or QR scan. Optional end-to-end encryption.">
+  <link rel="canonical" href="https://alumungandr.com/clip">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/clip">
+  <meta property="og:title" content="Free Cross-Device Universal Clipboard | Alumungandr™">
+  <meta property="og:description" content="Instantly share text, code, and notes between your phone and laptop with zero accounts or apps. QR code and end-to-end encryption.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Local QR Code Library -->
+  <script src="/assets/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-coral-glow: rgba(222, 88, 73, 0.35);
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.35);
+      --accent-green: #10b981;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Quantum Matrix Canvas Background */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    /* Top Navigation */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(14, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--border-solid);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-cyan), #2563eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #fff;
+      box-shadow: 0 0 15px var(--accent-cyan-glow);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 0 14px var(--accent-cyan-glow);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-strip {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      margin-bottom: 0.75rem;
+    }
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* Two-Column App Layout */
+    .clip-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 1.5rem;
+    }
+
+    /* Left: Clipboard Editor */
+    .editor-card {
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+    }
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .editor-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .char-count {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .clip-textarea {
+      width: 100%;
+      height: 320px;
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 10px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      padding: 1rem;
+      outline: none;
+      resize: vertical;
+      line-height: 1.6;
+      transition: border-color 0.2s;
+    }
+    .clip-textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .btn-action-primary {
+      flex: 1;
+      padding: 0.85rem 1.5rem;
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-action-primary:hover {
+      background: #7dd3fc;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px var(--accent-cyan-glow);
+    }
+    .btn-action-secondary {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: var(--border-solid);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Right: Room & Security Controls */
+    .controls-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .panel-box {
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-solid);
+      border-radius: 12px;
+      padding: 1.25rem;
+      backdrop-filter: blur(16px);
+    }
+    .panel-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .room-code-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+    .code-val {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      letter-spacing: 0.1em;
+    }
+    .btn-code-copy {
+      padding: 0.4rem 0.75rem;
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* QR Code Display */
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: #ffffff;
+      border-radius: 8px;
+      margin-top: 0.75rem;
+      min-height: 160px;
+    }
+    .qr-container canvas, .qr-container img {
+      max-width: 140px;
+      max-height: 140px;
+    }
+    .qr-subtext {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.5rem;
+      font-family: var(--font-mono);
+    }
+
+    /* Option Toggles */
+    .option-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .option-row select {
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      color: #fff;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      outline: none;
+    }
+    .switch-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .pass-input {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      outline: none;
+      margin-top: 0.4rem;
+      display: none;
+    }
+    .pass-input.active {
+      display: block;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 20;
+      border-top: var(--border-solid);
+      padding: 1.5rem 2rem;
+      background: rgba(7, 8, 10, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    @media (max-width: 860px) {
+      .clip-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+
+  <!-- Live Quantum Matrix Data Stream Background -->
+  <canvas id="matrixCanvas"></canvas>
+
+  <!-- Top Navigation -->
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">QUANTUM // CLIPBOARD</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <div class="hero-strip">
+      <div class="hero-badge">
+        <span>&#x1F4F1; &harr; &#x1F4BB;</span>
+        <span>Zero-App Universal Text &amp; Code Sharing</span>
+      </div>
+      <h1 class="hero-title">Cross-Device Clipboard</h1>
+      <p class="hero-sub">
+        Type on your laptop, retrieve on your phone. Scan the QR code or enter the 4-digit pin. Instant, encrypted, and auto-expiring.
+      </p>
+    </div>
+
+    <div class="clip-grid">
+      <!-- Left Editor Pane -->
+      <div class="editor-card">
+        <div class="editor-header">
+          <div class="editor-label">
+            <span>&#x1F4CB;</span>
+            <span id="clipStatusLabel">Live Clipboard Buffer</span>
+          </div>
+          <div class="char-count" id="charCount">0 characters &bull; 0 lines</div>
+        </div>
+
+        <textarea id="clipText" class="clip-textarea" placeholder="Paste or type text, code, URLs, or notes here to sync immediately across devices..." autofocus></textarea>
+
+        <div class="editor-actions">
+          <button id="btnSaveSync" class="btn-action-primary">
+            <span>&#x26A1;</span>
+            <span>Sync &amp; Update Room</span>
+          </button>
+          <button id="btnCopyText" class="btn-action-secondary">
+            <span>&#x1F4CB;</span>
+            <span>Copy Text</span>
+          </button>
+          <button id="btnClearText" class="btn-action-secondary">
+            <span>&times;</span>
+            <span>Clear</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Controls & QR Pane -->
+      <div class="controls-card">
+        <!-- Room Info -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>&#x1F517;</span>
+            <span>Room Code &amp; QR</span>
+          </div>
+          
+          <div class="room-code-display">
+            <span class="code-val" id="roomCodeVal">----</span>
+            <button class="btn-code-copy" id="btnCopyRoomUrl">Copy Link</button>
+          </div>
+
+          <div class="qr-container" id="qrContainer">
+            <div id="qrcode"></div>
+          </div>
+          <div class="qr-subtext">Scan with phone camera to open instantly</div>
+        </div>
+
+        <!-- Security & Auto-Expiry Settings -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>&#x1F512;</span>
+            <span>Security &amp; Expiry</span>
+          </div>
+
+          <div class="option-row">
+            <span>Auto-Expire After:</span>
+            <select id="expirySelect">
+              <option value="300">5 Minutes</option>
+              <option value="3600" selected>1 Hour</option>
+              <option value="86400">24 Hours</option>
+              <option value="604800">7 Days</option>
+            </select>
+          </div>
+
+          <div class="option-row">
+            <label class="switch-label">
+              <input type="checkbox" id="burnCheck">
+              <span>Burn after reading (1-time view)</span>
+            </label>
+          </div>
+
+          <div class="option-row" style="margin-bottom: 0;">
+            <label class="switch-label">
+              <input type="checkbox" id="encryptCheck">
+              <span>Encrypt with Passphrase (AES-256)</span>
+            </label>
+          </div>
+
+          <input type="password" id="passphraseInput" class="pass-input" placeholder="Enter custom encryption password...">
+        </div>
+
+        <!-- Join Another Room -->
+        <div class="panel-box">
+          <div class="panel-title">
+            <span>&#x1F504;</span>
+            <span>Switch or Join Room</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="joinRoomInput" placeholder="Room code (e.g. A7X9)..." style="flex:1; padding:0.5rem 0.75rem; background:rgba(0,0,0,0.4); border:var(--border-solid); border-radius:6px; color:#fff; font-family:var(--font-mono); font-size:0.85rem; outline:none;">
+            <button id="btnJoinRoom" style="padding:0.5rem 0.9rem; background:rgba(255,255,255,0.08); border:var(--border-solid); color:#fff; border-radius:6px; font-weight:600; cursor:pointer;">Join</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <!-- Footer -->
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    /* =========================================================
+       1. LIVE QUANTUM MATRIX DATA STREAM BACKGROUND
+       ========================================================= */
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const columns = [];
+    const charList = '0123456789ABCDEF01010101XYZΩλπ∑µ∆';
+
+    function initMatrix() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      const colCount = Math.floor(width / 22);
+      columns.length = 0;
+      for (let i = 0; i < colCount; i++) {
+        columns.push({
+          x: i * 22,
+          y: Math.random() * height,
+          speed: 1.5 + Math.random() * 2.5,
+          chars: []
+        });
+      }
+    }
+    window.addEventListener('resize', initMatrix);
+    initMatrix();
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(7, 8, 10, 0.12)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.font = '12px "JetBrains Mono", monospace';
+      for (let i = 0; i < columns.length; i++) {
+        const col = columns[i];
+        const char = charList[Math.floor(Math.random() * charList.length)];
+
+        // Glowing cyan packet head
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText(char, col.x, col.y);
+
+        // Fainter trail behind
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+        ctx.fillText(charList[Math.floor(Math.random() * charList.length)], col.x, col.y - 14);
+
+        col.y += col.speed;
+        if (col.y > height + 20) {
+          col.y = -20;
+          col.speed = 1.5 + Math.random() * 2.5;
+        }
+      }
+      requestAnimationFrame(drawMatrix);
+    }
+    requestAnimationFrame(drawMatrix);
+
+
+    /* =========================================================
+       2. UNIVERSAL CLIPBOARD STATE & STORAGE ENGINE
+       ========================================================= */
+    let currentRoomCode = '';
+    let broadcastChannel = null;
+    let qrInstance = null;
+
+    const clipText = document.getElementById('clipText');
+    const charCount = document.getElementById('charCount');
+    const roomCodeVal = document.getElementById('roomCodeVal');
+    const btnSaveSync = document.getElementById('btnSaveSync');
+    const btnCopyText = document.getElementById('btnCopyText');
+    const btnClearText = document.getElementById('btnClearText');
+    const btnCopyRoomUrl = document.getElementById('btnCopyRoomUrl');
+    const expirySelect = document.getElementById('expirySelect');
+    const burnCheck = document.getElementById('burnCheck');
+    const encryptCheck = document.getElementById('encryptCheck');
+    const passphraseInput = document.getElementById('passphraseInput');
+    const joinRoomInput = document.getElementById('joinRoomInput');
+    const btnJoinRoom = document.getElementById('btnJoinRoom');
+    const toast = document.getElementById('toast');
+
+    encryptCheck.addEventListener('change', () => {
+      passphraseInput.classList.toggle('active', encryptCheck.checked);
+      if (encryptCheck.checked) passphraseInput.focus();
+    });
+
+    clipText.addEventListener('input', updateCharCount);
+
+    function updateCharCount() {
+      const val = clipText.value;
+      const chars = val.length;
+      const lines = val ? val.split('\n').length : 0;
+      charCount.textContent = `${chars.toLocaleString()} characters • ${lines} lines`;
+    }
+
+    function generateCode() {
+      const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+      let res = '';
+      for (let i = 0; i < 4; i++) {
+        res += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return res;
+    }
+
+    // Initialize or load room from URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code') || window.location.pathname.replace(/^\/clip\/?/, '');
+      
+      if (code && code.length >= 2) {
+        currentRoomCode = code.toUpperCase();
+      } else {
+        currentRoomCode = generateCode();
+      }
+
+      setRoom(currentRoomCode);
+    });
+
+    function setRoom(code) {
+      currentRoomCode = code;
+      roomCodeVal.textContent = code;
+      window.history.replaceState({}, '', `/clip?code=${encodeURIComponent(code)}`);
+
+      renderQRCode();
+      setupRoomBroadcast(code);
+      loadClipContent(code);
+    }
+
+    function renderQRCode() {
+      const qrEl = document.getElementById('qrcode');
+      qrEl.innerHTML = '';
+      const url = `${window.location.origin}/clip?code=${encodeURIComponent(currentRoomCode)}`;
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(qrEl, {
+          text: url,
+          width: 140,
+          height: 140,
+          colorDark: '#07080a',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }
+    }
+
+    function setupRoomBroadcast(code) {
+      if (broadcastChannel) broadcastChannel.close();
+      broadcastChannel = new BroadcastChannel(`alumungandr_clip_${code}`);
+      broadcastChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'update') {
+          handleIncomingClip(event.data);
+        }
+      };
+    }
+
+    /* Save & Sync */
+    btnSaveSync.addEventListener('click', async () => {
+      let content = clipText.value;
+      if (!content.trim()) {
+        showToast('Please enter text before syncing.');
+        return;
+      }
+
+      let isEncrypted = false;
+      if (encryptCheck.checked && passphraseInput.value) {
+        content = await encryptData(content, passphraseInput.value);
+        isEncrypted = true;
+      }
+
+      const payload = {
+        type: 'update',
+        room: currentRoomCode,
+        text: content,
+        encrypted: isEncrypted,
+        burn: burnCheck.checked,
+        expiresAt: Date.now() + (parseInt(expirySelect.value) * 1000),
+        timestamp: Date.now()
+      };
+
+      // 1. Local Cache
+      localStorage.setItem(`clip_${currentRoomCode}`, JSON.stringify(payload));
+
+      // 2. Real-Time Broadcast to open devices
+      if (broadcastChannel) broadcastChannel.postMessage(payload);
+
+      // 3. Edge Worker Sync (Cloudflare Backend API)
+      try {
+        await fetch('/api/clip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {
+        // Graceful offline/local mode fallback
+      }
+
+      showToast('Clipboard synced to room ' + currentRoomCode + '!');
+    });
+
+    /* Load Content */
+    async function loadClipContent(code) {
+      // Check Cloudflare Edge API first, fallback to localStorage
+      let record = null;
+      try {
+        const resp = await fetch(`/api/clip?code=${encodeURIComponent(code)}`);
+        if (resp.ok) record = await resp.json();
+      } catch (_) {}
+
+      if (!record) {
+        const cached = localStorage.getItem(`clip_${code}`);
+        if (cached) {
+          try { record = JSON.parse(cached); } catch(_) {}
+        }
+      }
+
+      if (record) {
+        if (record.expiresAt && Date.now() > record.expiresAt) {
+          showToast('This clipboard has expired.');
+          localStorage.removeItem(`clip_${code}`);
+          return;
+        }
+        handleIncomingClip(record);
+      }
+    }
+
+    async function handleIncomingClip(data) {
+      if (data.encrypted) {
+        const pass = prompt('This clipboard is encrypted with AES-256. Enter password to decrypt:');
+        if (pass) {
+          try {
+            const decrypted = await decryptData(data.text, pass);
+            clipText.value = decrypted;
+            updateCharCount();
+            showToast('Decrypted successfully!');
+          } catch (e) {
+            alert('Incorrect password or corrupted ciphertext.');
+          }
+        } else {
+          clipText.value = '[ENCRYPTED DATA: ' + data.text.substring(0, 32) + '...]';
+          updateCharCount();
+        }
+      } else {
+        clipText.value = data.text;
+        updateCharCount();
+        showToast('Clipboard updated from peer!');
+      }
+
+      if (data.burn) {
+        localStorage.removeItem(`clip_${currentRoomCode}`);
+        showToast('Burn after reading active: Content will expire upon refresh.');
+      }
+    }
+
+    /* Web Crypto API AES-GCM 256 Encryption */
+    async function getKey(passphrase) {
+      const enc = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(passphrase), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: enc.encode('alumungandr_salt_matrix'), iterations: 100000, hash: 'SHA-256' },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    async function encryptData(plainText, passphrase) {
+      const key = await getKey(passphrase);
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const encoded = new TextEncoder().encode(plainText);
+      const cipher = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
+      return btoa(String.fromCharCode(...iv) + ':' + String.fromCharCode(...new Uint8Array(cipher)));
+    }
+
+    async function decryptData(cipherText, passphrase) {
+      const raw = atob(cipherText);
+      const parts = raw.split(':');
+      const iv = new Uint8Array([...parts[0]].map(c => c.charCodeAt(0)));
+      const data = new Uint8Array([...parts[1]].map(c => c.charCodeAt(0)));
+      const key = await getKey(passphrase);
+      const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+      return new TextDecoder().decode(decrypted);
+    }
+
+    /* Buttons */
+    btnCopyText.addEventListener('click', () => {
+      if (!clipText.value) return;
+      navigator.clipboard.writeText(clipText.value).then(() => {
+        showToast('Text copied to system clipboard!');
+      });
+    });
+
+    btnClearText.addEventListener('click', () => {
+      clipText.value = '';
+      updateCharCount();
+      showToast('Cleared buffer.');
+    });
+
+    btnCopyRoomUrl.addEventListener('click', () => {
+      const url = `${window.location.origin}/clip?code=${encodeURIComponent(currentRoomCode)}`;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Room link copied: ' + url);
+      });
+    });
+
+    btnJoinRoom.addEventListener('click', () => {
+      const val = (joinRoomInput.value || '').trim();
+      if (val) setRoom(val.toUpperCase());
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+  </script>
+</body>
+</html>

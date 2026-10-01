@@ -1,0 +1,293 @@
+/* Alumungandr Unified Global Navigation & Footer System */
+:root {
+  --nav-bg: rgba(7, 8, 10, 0.94);
+  --nav-border: 1px dashed rgba(255, 255, 255, 0.14);
+  --nav-text: #f3f4f6;
+  --nav-muted: #8b949e;
+  --nav-accent: #38bdf8;
+  --nav-coral: #de5849;
+  --nav-emerald: #10b981;
+  --nav-dropdown-bg: rgba(14, 16, 22, 0.98);
+}
+
+header.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 0.85rem 2rem !important;
+  border-bottom: var(--nav-border) !important;
+  background: var(--nav-bg) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  height: auto !important;
+}
+
+header.site-header .brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  text-decoration: none !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.5px !important;
+  font-size: 1.1rem !important;
+}
+
+header.site-header .brand img {
+  width: 28px !important;
+  height: 28px !important;
+  display: block !important;
+}
+
+header.site-header .brand-badge {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.7rem !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: var(--nav-accent) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+nav.site-nav {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1.25rem !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+nav.site-nav a.nav-item {
+  color: var(--nav-muted) !important;
+  text-decoration: none !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: color 0.2s !important;
+  white-space: nowrap !important;
+  padding: 0.25rem 0.5rem !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+nav.site-nav a.nav-item:hover,
+nav.site-nav a.nav-item.active {
+  color: #fff !important;
+}
+
+/* Dropdown Menu */
+.nav-dropdown {
+  position: relative !important;
+}
+
+.dropdown-trigger {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--nav-text) !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  transition: all 0.2s !important;
+}
+
+.dropdown-trigger:hover,
+.nav-dropdown:hover .dropdown-trigger,
+.nav-dropdown:focus-within .dropdown-trigger {
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  color: var(--nav-accent) !important;
+}
+
+.dropdown-panel {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  margin-top: 0.5rem !important;
+  width: 740px !important;
+  background: var(--nav-dropdown-bg) !important;
+  border: var(--nav-border) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  display: none;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+  z-index: 2000 !important;
+  box-sizing: border-box !important;
+}
+
+.nav-dropdown:hover .dropdown-panel,
+.nav-dropdown:focus-within .dropdown-panel {
+  display: grid !important;
+}
+
+.dropdown-col {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.dropdown-header {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  color: var(--nav-accent) !important;
+  letter-spacing: 0.05em !important;
+  padding-bottom: 0.35rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin-bottom: 0.25rem !important;
+  text-transform: uppercase !important;
+}
+
+.dropdown-col a {
+  color: var(--nav-muted) !important;
+  text-decoration: none !important;
+  font-size: 0.8rem !important;
+  padding: 0.25rem 0.4rem !important;
+  border-radius: 4px !important;
+  transition: all 0.15s !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  white-space: nowrap !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.dropdown-col a:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Site Footer */
+footer.site-footer {
+  position: relative !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  display: block !important;
+  border-top: var(--nav-border) !important;
+  background: rgba(7, 8, 10, 0.95) !important;
+  padding: 3.5rem 2rem 2.5rem !important;
+  color: var(--nav-muted) !important;
+  font-size: 0.85rem !important;
+  margin-top: auto !important;
+  box-sizing: border-box !important;
+}
+
+.footer-container {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 1.4fr repeat(4, 1fr) !important;
+  gap: 2rem !important;
+  box-sizing: border-box !important;
+}
+
+.footer-col {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.6rem !important;
+}
+
+.footer-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.footer-desc {
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
+  color: var(--nav-muted) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.72rem !important;
+  color: #64748b !important;
+}
+
+.footer-heading {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 0.4rem !important;
+}
+
+.footer-col a {
+  color: var(--nav-muted) !important;
+  text-decoration: none !important;
+  font-size: 0.8rem !important;
+  transition: color 0.15s !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.footer-col a:hover {
+  color: #fff !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dropdown-panel {
+    width: 580px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .footer-container {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  header.site-header {
+    padding: 0.85rem 1rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem !important;
+  }
+  .dropdown-panel {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    border-radius: 16px 16px 0 0 !important;
+    grid-template-columns: 1fr !important;
+    padding: 1.25rem !important;
+  }
+  .footer-container {
+    grid-template-columns: 1fr !important;
+  }
+}

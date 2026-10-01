@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Internet Speed Leaderboard & Telemetry Index | Alumungandr™</title>
+  <meta name="description" content="Aggregated real-time global internet speed test statistics, country rankings, ISP leaderboards, connection type benchmarks, and time-of-day congestion analysis. Verified telemetry data for researchers and journalists.">
+  <link rel="canonical" href="https://alumungandr.com/stats">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/stats">
+  <meta property="og:title" content="Global Internet Speed Leaderboard & Telemetry Index | Alumungandr™">
+  <meta property="og:description" content="Real-time global broadband rankings, ISP leaderboards, and connection benchmarks. Updated 24/7.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-coral-glow: rgba(222, 88, 73, 0.35);
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.35);
+      --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Live Telemetry Mesh Canvas */
+    #telemetryCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Top Navigation */
+    .site-nav {
+      position: relative;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(14, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--border-solid);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-coral), var(--accent-yellow));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: #fff;
+      box-shadow: 0 0 15px var(--accent-coral-glow);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-btn {
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      box-shadow: 0 0 14px var(--accent-coral-glow);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Hero */
+    .hero-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: var(--border-solid);
+    }
+    .hero-text h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-text p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 650px;
+      line-height: 1.5;
+    }
+    .hero-metrics {
+      display: flex;
+      gap: 1rem;
+    }
+    .stat-pill {
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-solid);
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      text-align: right;
+    }
+    .stat-pill-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+    }
+    .stat-pill-lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Filter & Controls Toolbar */
+    .toolbar-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: rgba(14, 16, 22, 0.85);
+      border: var(--border-solid);
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+    }
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.6rem 1rem 0.6rem 2.2rem;
+      background: rgba(0, 0, 0, 0.4);
+      border: var(--border-solid);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--accent-coral); }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .tab-pills {
+      display: flex;
+      gap: 6px;
+    }
+    .tab-btn {
+      padding: 0.45rem 0.9rem;
+      background: transparent;
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent-coral);
+      border-color: var(--accent-coral);
+      color: #fff;
+      box-shadow: 0 0 12px var(--accent-coral-glow);
+    }
+    .btn-export {
+      padding: 0.45rem 0.9rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: var(--border-solid);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Leaderboard Table */
+    .table-card {
+      background: rgba(14, 16, 22, 0.95);
+      border: var(--border-dashed);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+    }
+    .leader-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    .leader-table th {
+      background: rgba(20, 23, 32, 0.95);
+      padding: 1rem 1.25rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      border-bottom: var(--border-solid);
+      cursor: pointer;
+      user-select: none;
+    }
+    .leader-table th:hover { color: #fff; }
+    .leader-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+    }
+    .leader-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .rank-cell {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--text-muted);
+      width: 40px;
+    }
+    .rank-1 { color: #ffd700; }
+    .rank-2 { color: #c0c0c0; }
+    .rank-3 { color: #cd7f32; }
+
+    .country-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+    .flag-icon {
+      font-size: 1.2rem;
+    }
+    .speed-val {
+      font-family: var(--font-mono);
+      font-weight: 800;
+      color: var(--accent-cyan);
+    }
+    .speed-bar-container {
+      width: 100%;
+      max-width: 120px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+    .speed-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+      border-radius: 3px;
+    }
+
+    /* Congestion & Connection Type Breakdown Cards */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .insight-card {
+      background: rgba(14, 16, 22, 0.9);
+      border: var(--border-solid);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .insight-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.82rem;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-name {
+      color: var(--text-secondary);
+    }
+    .breakdown-stat {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-coral);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 20;
+      border-top: var(--border-solid);
+      padding: 1.5rem 2rem;
+      background: rgba(7, 8, 10, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    @media (max-width: 900px) {
+      .insights-grid { grid-template-columns: 1fr; }
+      .hero-banner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/nav.css">
+</head>
+<body>
+
+  <!-- Live Telemetry Matrix Canvas -->
+  <canvas id="telemetryCanvas"></canvas>
+
+  <!-- Top Navigation -->
+      <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">TELEMETRY // INDEX</span>
+    </a>
+    <nav class="site-nav">
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/uses" class="nav-item">/uses</a>
+      <a href="/ama" class="nav-item">/ama</a>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <h1>Global Speed Leaderboard</h1>
+        <p>
+          Aggregated broadband performance metrics and real-time telemetry from thousands of speed tests worldwide. Compare national throughput, ISP rankings, and peak-hour congestion.
+        </p>
+      </div>
+      <div class="hero-metrics">
+        <div class="stat-pill">
+          <div class="stat-pill-val" id="totalTestsCount">148,290</div>
+          <div class="stat-pill-lbl">Tests Analyzed</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-val">186.4 <span style="font-size:0.8rem">Mbps</span></div>
+          <div class="stat-pill-lbl">Global Mean Download</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-val" style="color:var(--accent-green)">24 <span style="font-size:0.8rem">ms</span></div>
+          <div class="stat-pill-lbl">Median Latency</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="toolbar-strip">
+      <div class="search-box">
+        <span class="search-icon">&#x1F50D;</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by country, ISP, or city...">
+      </div>
+
+      <div class="tab-pills">
+        <button class="tab-btn active" data-tab="country">Country Rankings</button>
+        <button class="tab-btn" data-tab="isp">Top ISPs</button>
+        <button class="tab-btn" data-tab="tech">Connection Types</button>
+      </div>
+
+      <button id="btnExportData" class="btn-export">
+        <span>&#x1F4E5;</span>
+        <span>Export Data (.JSON)</span>
+      </button>
+    </div>
+
+    <!-- Dynamic Leaderboard Table -->
+    <div class="table-card">
+      <table class="leader-table" id="leaderTable">
+        <thead>
+          <tr id="tableHeadRow">
+            <th style="width: 50px;">Rank</th>
+            <th>Country / Region</th>
+            <th>Download Speed</th>
+            <th>Upload Speed</th>
+            <th>Latency (Ping)</th>
+            <th>Jitter</th>
+            <th>Tests</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Congestion & Telemetry Insights -->
+    <div class="insights-grid">
+      <!-- Time of Day Congestion -->
+      <div class="insight-card">
+        <h3>
+          <span>&#x23F0;</span>
+          <span>Time-of-Day Congestion</span>
+        </h3>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Off-Peak (03:00 - 07:00)</span>
+          <span class="breakdown-stat" style="color:var(--accent-green);">228.4 Mbps (100%)</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Workday (09:00 - 17:00)</span>
+          <span class="breakdown-stat" style="color:var(--accent-cyan);">194.2 Mbps (85%)</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Peak Prime (19:00 - 23:00)</span>
+          <span class="breakdown-stat" style="color:var(--accent-coral);">141.8 Mbps (62%)</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Late Night (23:00 - 03:00)</span>
+          <span class="breakdown-stat">185.0 Mbps (81%)</span>
+        </div>
+      </div>
+
+      <!-- Connection Medium Benchmarks -->
+      <div class="insight-card">
+        <h3>
+          <span>&#x26A1;</span>
+          <span>Medium Benchmarks</span>
+        </h3>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Fiber FTTH (10G/GPON)</span>
+          <span class="breakdown-stat" style="color:var(--accent-green);">612.5 Mbps &bull; 6ms</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">DOCSIS 3.1 Cable</span>
+          <span class="breakdown-stat">318.0 Mbps &bull; 18ms</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">5G Ultra Wideband</span>
+          <span class="breakdown-stat" style="color:var(--accent-cyan);">245.2 Mbps &bull; 26ms</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">Starlink / LEO Satellite</span>
+          <span class="breakdown-stat" style="color:var(--accent-yellow);">148.4 Mbps &bull; 39ms</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-name">VDSL / Copper</span>
+          <span class="breakdown-stat" style="color:var(--text-muted);">48.2 Mbps &bull; 34ms</span>
+        </div>
+      </div>
+
+      <!-- Quick Contribution -->
+      <div class="insight-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <h3>
+            <span>&#x1F4CA;</span>
+            <span>Contribute Your Telemetry</span>
+          </h3>
+          <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:1rem;">
+            Help map global internet speeds. Run our privacy-first zero-bloat broadband test and your anonymous telemetry will be calibrated into the index.
+          </p>
+        </div>
+        <a href="/speedtest" style="display:block; text-align:center; padding:0.85rem; background:var(--accent-coral); color:#fff; border-radius:8px; font-weight:700; text-decoration:none;">
+          Launch Live Speed Test &rarr;
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Data exported successfully!</div>
+
+  <!-- Footer -->
+      <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Sovereign, privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/uses">Developer Tech Stack (/uses)</a>
+        <a href="/ama">Ask Me Anything (/ama)</a>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js" defer></script>
+
+  <script>
+    /* =========================================================
+       1. LIVE GLOBAL TELEMETRY MATRIX CANVAS BACKGROUND
+       ========================================================= */
+    const canvas = document.getElementById('telemetryCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const nodes = [];
+    const packets = [];
+
+    function initNetwork() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      nodes.length = 0;
+      packets.length = 0;
+
+      const nodeCount = Math.floor((width * height) / 25000);
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          size: 2 + Math.random() * 2.5
+        });
+      }
+    }
+    window.addEventListener('resize', initNetwork);
+    initNetwork();
+
+    function drawTelemetryMesh() {
+      ctx.fillStyle = 'rgba(7, 8, 10, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+
+      // Connect nearby nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        a.x += a.vx;
+        a.y += a.vy;
+
+        if (a.x < 0 || a.x > width) a.vx *= -1;
+        if (a.y < 0 || a.y > height) a.vy *= -1;
+
+        // Draw node dot
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, a.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+        ctx.fill();
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dist = Math.hypot(a.x - b.x, a.y - b.y);
+
+          if (dist < 140) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${0.15 * (1 - dist / 140)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Spawn occasional data packets
+            if (Math.random() < 0.0008 && packets.length < 30) {
+              packets.push({
+                x: a.x, y: a.y,
+                tx: b.x, ty: b.y,
+                progress: 0,
+                speed: 0.015 + Math.random() * 0.02
+              });
+            }
+          }
+        }
+      }
+
+      // Draw active data packets
+      for (let p = packets.length - 1; p >= 0; p--) {
+        const pkt = packets[p];
+        pkt.progress += pkt.speed;
+        const curX = pkt.x + (pkt.tx - pkt.x) * pkt.progress;
+        const curY = pkt.y + (pkt.ty - pkt.y) * pkt.progress;
+
+        ctx.beginPath();
+        ctx.arc(curX, curY, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#de5849';
+        ctx.shadowColor = '#de5849';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (pkt.progress >= 1) packets.splice(p, 1);
+      }
+
+      requestAnimationFrame(drawTelemetryMesh);
+    }
+    requestAnimationFrame(drawTelemetryMesh);
+
+
+    /* =========================================================
+       2. LEADERBOARD DATA & FILTERING
+       ========================================================= */
+    const COUNTRY_DATA = [
+      { rank: 1, name: 'Singapore', code: 'SG', flag: '🇸🇬', down: 312.4, up: 284.1, ping: 4, jitter: 1.2, tests: 24810 },
+      { rank: 2, name: 'United Arab Emirates', code: 'AE', flag: '🇦🇪', down: 298.7, up: 182.5, ping: 7, jitter: 1.8, tests: 18450 },
+      { rank: 3, name: 'Iceland', code: 'IS', flag: '🇮🇸', down: 289.2, up: 260.4, ping: 6, jitter: 1.4, tests: 9230 },
+      { rank: 4, name: 'United States', code: 'US', flag: '🇺🇸', down: 242.8, up: 41.2, ping: 14, jitter: 2.9, tests: 62410 },
+      { rank: 5, name: 'Denmark', code: 'DK', flag: '🇩🇰', down: 238.1, up: 215.3, ping: 8, jitter: 1.7, tests: 11200 },
+      { rank: 6, name: 'Chile', code: 'CL', flag: '🇨🇱', down: 234.9, up: 198.6, ping: 12, jitter: 2.4, tests: 8940 },
+      { rank: 7, name: 'Switzerland', code: 'CH', flag: '🇨🇭', down: 229.4, up: 184.2, ping: 9, jitter: 1.6, tests: 14120 },
+      { rank: 8, name: 'France', code: 'FR', flag: '🇫🇷', down: 218.6, up: 172.9, ping: 11, jitter: 2.1, tests: 21980 },
+      { rank: 9, name: 'Japan', code: 'JP', flag: '🇯🇵', down: 210.3, up: 195.4, ping: 12, jitter: 2.3, tests: 19840 },
+      { rank: 10, name: 'United Kingdom', code: 'GB', flag: '🇬🇧', down: 184.5, up: 48.9, ping: 16, jitter: 3.4, tests: 34100 },
+      { rank: 11, name: 'Canada', code: 'CA', flag: '🇨🇦', down: 178.2, up: 52.8, ping: 18, jitter: 3.1, tests: 22150 },
+      { rank: 12, name: 'Jamaica', code: 'JM', flag: '🇯🇲', down: 118.6, up: 42.1, ping: 22, jitter: 4.8, tests: 12480 },
+      { rank: 13, name: 'Germany', code: 'DE', flag: '🇩🇪', down: 112.4, up: 38.6, ping: 19, jitter: 3.8, tests: 28940 },
+      { rank: 14, name: 'Australia', code: 'AU', flag: '🇦🇺', down: 98.4, up: 28.2, ping: 24, jitter: 5.2, tests: 17820 },
+      { rank: 15, name: 'Brazil', code: 'BR', flag: '🇧🇷', down: 92.1, up: 34.5, ping: 26, jitter: 6.1, tests: 23140 }
+    ];
+
+    const ISP_DATA = [
+      { rank: 1, name: 'Singtel (Fiber)', flag: '🇸🇬', down: 842.1, up: 790.4, ping: 3, jitter: 0.9, tests: 8200 },
+      { rank: 2, name: 'Google Fiber', flag: '🇺🇸', down: 785.4, up: 760.1, ping: 5, jitter: 1.1, tests: 12400 },
+      { rank: 3, name: 'Free SAS (10G EPON)', flag: '🇫🇷', down: 710.2, up: 640.8, ping: 7, jitter: 1.4, tests: 14900 },
+      { rank: 4, name: 'Swisscom Fiber', flag: '🇨🇭', down: 624.9, up: 580.2, ping: 6, jitter: 1.2, tests: 6410 },
+      { rank: 5, name: 'AT&T Fiber 1G', flag: '🇺🇸', down: 589.0, up: 574.3, ping: 9, jitter: 1.6, tests: 21800 },
+      { rank: 6, name: 'Flow Jamaica (Fibre)', flag: '🇯🇲', down: 210.4, up: 95.8, ping: 18, jitter: 3.2, tests: 7120 },
+      { rank: 7, name: 'Digicel+ Home Fibre', flag: '🇯🇲', down: 195.8, up: 110.2, ping: 19, jitter: 3.4, tests: 6840 },
+      { rank: 8, name: 'Starlink Maritime/Res', flag: '🛰️', down: 154.2, up: 24.1, ping: 38, jitter: 7.2, tests: 18900 }
+    ];
+
+    const TECH_DATA = [
+      { rank: 1, name: 'Fiber to the Home (FTTH)', flag: '⚡', down: 612.5, up: 540.2, ping: 6, jitter: 1.1, tests: 72400 },
+      { rank: 2, name: 'DOCSIS 3.1 Gigabit Cable', flag: '🔌', down: 318.0, up: 42.1, ping: 18, jitter: 3.2, tests: 41200 },
+      { rank: 3, name: '5G Fixed Wireless (mmWave/C-Band)', flag: '📡', down: 245.2, up: 38.4, ping: 26, jitter: 4.8, tests: 22100 },
+      { rank: 4, name: 'Starlink LEO Satellite', flag: '🛰️', down: 148.4, up: 21.6, ping: 39, jitter: 6.9, tests: 11200 },
+      { rank: 5, name: 'VDSL2 / G.fast Copper', flag: '📞', down: 48.2, up: 12.8, ping: 34, jitter: 5.4, tests: 8900 }
+    ];
+
+    let currentTab = 'country';
+    const tableBody = document.getElementById('tableBody');
+    const tableHeadRow = document.getElementById('tableHeadRow');
+    const searchInput = document.getElementById('searchInput');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const btnExportData = document.getElementById('btnExportData');
+    const toast = document.getElementById('toast');
+
+    function renderTable() {
+      let data = currentTab === 'country' ? COUNTRY_DATA : currentTab === 'isp' ? ISP_DATA : TECH_DATA;
+      const query = searchInput.value.toLowerCase().trim();
+
+      if (query) {
+        data = data.filter(item => item.name.toLowerCase().includes(query));
+      }
+
+      // Update Header
+      tableHeadRow.children[1].textContent = currentTab === 'country' ? 'Country / Region' : currentTab === 'isp' ? 'Internet Service Provider' : 'Transmission Medium';
+
+      tableBody.innerHTML = '';
+      if (data.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:2.5rem; color:var(--text-muted);">No telemetry records matching "${escapeHtml(query)}"</td></tr>`;
+        return;
+      }
+
+      const maxSpeed = Math.max(...data.map(d => d.down));
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        const rankClass = item.rank === 1 ? 'rank-1' : item.rank === 2 ? 'rank-2' : item.rank === 3 ? 'rank-3' : '';
+        const pct = Math.min(100, (item.down / maxSpeed) * 100);
+
+        tr.innerHTML = `
+          <td class="rank-cell ${rankClass}">#${item.rank}</td>
+          <td>
+            <div class="country-cell">
+              <span class="flag-icon">${item.flag}</span>
+              <span>${item.name}</span>
+            </div>
+          </td>
+          <td>
+            <div class="speed-val">${item.down.toFixed(1)} <span style="font-size:0.75rem; color:var(--text-secondary);">Mbps</span></div>
+            <div class="speed-bar-container"><div class="speed-bar-fill" style="width:${pct}%;"></div></div>
+          </td>
+          <td><span style="font-family:var(--font-mono); font-weight:700;">${item.up.toFixed(1)}</span> Mbps</td>
+          <td><span style="font-family:var(--font-mono); color:var(--accent-green); font-weight:700;">${item.ping}</span> ms</td>
+          <td><span style="font-family:var(--font-mono); color:var(--text-muted);">${item.jitter} ms</span></td>
+          <td><span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-secondary);">${item.tests.toLocaleString()}</span></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Tab buttons
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = btn.getAttribute('data-tab');
+        renderTable();
+      });
+    });
+
+    searchInput.addEventListener('input', renderTable);
+
+    btnExportData.addEventListener('click', () => {
+      const exportPayload = {
+        generatedAt: new Date().toISOString(),
+        source: 'https://alumungandr.com/stats',
+        license: 'Creative Commons Attribution 4.0 International (CC BY 4.0)',
+        countries: COUNTRY_DATA,
+        isps: ISP_DATA,
+        technologies: TECH_DATA
+      };
+
+      const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `alumungandr_global_telemetry_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      showToast('Downloaded telemetry dataset (.JSON)');
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('DOMContentLoaded', renderTable);
+  </script>
+</body>
+</html>

@@ -1,11 +1,136 @@
 // Cloudflare Pages / Workers Edge Function: /api/qa
-// High-performance, zero-tracking inquiry and AI capability dispatch
+// Alumungandr Founder & Platform Knowledge Base & Technical Inquiry Endpoint
+// Direct communication with founder David Anthony Jones with zero client telemetry
+
+const ALUMUNGANDR_QA_ARCHIVE = [
+  {
+    id: "alu-qa-01",
+    category: "privacy",
+    category_label: "Zero-Telemetry & Privacy",
+    tag: "FOUNDER ARCHITECTURE",
+    tag_class: "tag-qa",
+    metric_pill: "100% Client-Side RAM",
+    metric_color: "#10b981",
+    question: "How does Alumungandr guarantee zero tracking across its tools?",
+    answer: "Every web utility on this domain (Diff Checker, JSON Formatter, Hash Lab, UUID Generator, Image Resizer, Markdown Vault, Meme Canvas) executes 100% inside your browser's local JavaScript/WebAssembly memory. No input text, image, or payload is ever transmitted to an external server. You can disconnect your Wi-Fi after page load and every single tool functions with full offline capability.",
+    author: "David Anthony Jones ('Alu') • Chief Software Architect",
+    recommendation: "Zero analytics cookies, zero third-party telemetry beacons, zero user accounts.",
+    keywords: ["client-side", "privacy", "tracking", "zero telemetry", "browser", "ram", "offline", "tools", "security", "alumungandr"]
+  },
+  {
+    id: "alu-qa-02",
+    category: "applications",
+    category_label: "Mobile Binaries & OmniHost",
+    tag: "OMNIHOST ARCHITECTURE",
+    tag_class: "tag-qa",
+    metric_pill: "RFC 959 Edge Server",
+    metric_color: "#38bdf8",
+    question: "How does OmniHost convert standard Android devices into high-speed edge servers?",
+    answer: "OmniHost embeds an ultra-optimized RFC 959 WiFi FTP server and integrates native Cloudflare Quick Tunnels. By utilizing low-overhead POSIX socket bindings on Android's Linux kernel without requiring root access, it transforms dormant smartphones and tablets into instant local and globally accessible HTTP/FTP file servers running entirely on local device hardware.",
+    author: "David Anthony Jones ('Alu') • Systems Engineer",
+    recommendation: "Eliminates expensive AWS/VPS hosting subscriptions for personal data syndication.",
+    keywords: ["omnihost", "android", "ftp", "edge server", "cloudflare tunnel", "mobile", "binary", "apk"]
+  },
+  {
+    id: "alu-qa-03",
+    category: "applications",
+    category_label: "Mobile Binaries & SueChef",
+    tag: "SUECHEF ARCHITECTURE",
+    tag_class: "tag-qa",
+    metric_pill: "Deterministic SQLite",
+    metric_color: "#f59e0b",
+    question: "What is SueChef's deterministic offline culinary planning architecture?",
+    answer: "Unlike modern meal apps that require cloud accounts and monthly subscriptions, SueChef is an offline-first culinary database engine. It packages a relational ingredient matrix, dietary constraint solver, and pantry inventory tracking inside an embedded SQLite/Room store on device. Nutrient calculations and shopping lists compile deterministically with zero latency.",
+    author: "David Anthony Jones ('Alu') • Application Architect",
+    recommendation: "Autonomous meal scheduling with zero network dependency and zero data harvesting.",
+    keywords: ["suechef", "offline", "culinary", "recipes", "dietary", "sqlite", "room", "android", "apk"]
+  },
+  {
+    id: "alu-qa-04",
+    category: "brand",
+    category_label: "Founder, Origins & Motto",
+    tag: "BRAND ORIGIN",
+    tag_class: "tag-qa",
+    metric_pill: "Motto: Beyond Logic is Truth",
+    metric_color: "#de5849",
+    question: "What is the meaning and origin of the name Alumungandr and what is the company motto?",
+    answer: "Alumungandr is an original coined brand name combining 'Alu' (sole originator and architect David Anthony Jones) and 'Jörmungandr' (the great world-encircling presence of Norse cosmology). It symbolizes an all-encompassing, independent technical ecosystem that encircles all digital requirements without external reliance. The company motto is 'Beyond Logic is Truth'—the principle that while mathematical and logical consistency is essential, empirical truth and human autonomy transcend abstract models.",
+    author: "David Anthony Jones ('Alu') • Founder & Sole Originator",
+    recommendation: "Motto: 'Beyond Logic is Truth' • First Use in Commerce.",
+    keywords: ["alumungandr", "name origin", "motto", "beyond logic is truth", "david anthony jones", "alu", "philosophy"]
+  },
+  {
+    id: "alu-qa-05",
+    category: "brand",
+    category_label: "Founder, Origins & Motto",
+    tag: "JAMAICAN TECH R&D",
+    tag_class: "tag-qa",
+    metric_pill: "Independent R&D",
+    metric_color: "#10b981",
+    question: "How is Alumungandr pioneering high-performance independent technology from Jamaica?",
+    answer: "Alumungandr is proudly founded, operated, and engineered in Jamaica by David Anthony Jones. We prove that world-class, mathematically rigorous systems software—from astrodynamic simulations (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.",
+    author: "David Anthony Jones ('Alu') • Independent Software Pioneer",
+    recommendation: "Direct software distribution and global digital commerce from Jamaica.",
+    keywords: ["jamaica", "r&d", "caribbean", "independent", "software", "development", "david anthony jones"]
+  },
+  {
+    id: "alu-qa-06",
+    category: "privacy",
+    category_label: "Zero-Telemetry & Privacy",
+    tag: "PHILOSOPHY DOCTRINE",
+    tag_class: "tag-qa",
+    metric_pill: "Free Forever",
+    metric_color: "#ec4899",
+    question: "Why build 20 free standalone browser tools instead of a paid SaaS subscription?",
+    answer: "Modern SaaS has become predatory: charging $9/mo to inspect code diffs or forcing invasive email signups just to format a JSON string. Because client-side computation runs on the user's browser CPU rather than expensive cloud clusters, our operational bandwidth cost is minimal. Offering high-grade, ad-free utilities builds enduring organic authority and authentic developer trust.",
+    author: "David Anthony Jones ('Alu') • Founder Doctrine",
+    recommendation: "Sustainable, privacy-first utilities engineered by engineers, for engineers.",
+    keywords: ["free tools", "saas", "subscriptions", "business model", "privacy", "independent utilities", "no-bs"]
+  }
+];
+
+export async function onRequestGet({ request }) {
+  const url = new URL(request.url);
+  const q = (url.searchParams.get('q') || '').toLowerCase().trim();
+  const category = (url.searchParams.get('category') || 'all').toLowerCase().trim();
+
+  let filtered = ALUMUNGANDR_QA_ARCHIVE;
+
+  if (category !== 'all') {
+    filtered = filtered.filter(item => item.category === category);
+  }
+
+  if (q) {
+    filtered = filtered.filter(item =>
+      item.question.toLowerCase().includes(q) ||
+      item.answer.toLowerCase().includes(q) ||
+      item.author.toLowerCase().includes(q) ||
+      item.keywords.some(k => k.includes(q))
+    );
+  }
+
+  return new Response(JSON.stringify({
+    success: true,
+    platform: "Alumungandr Knowledge Base & Founder Q&A",
+    motto: "Beyond Logic is Truth",
+    founder: "David Anthony Jones",
+    total_entries: filtered.length,
+    entries: filtered
+  }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "public, max-age=60",
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
+}
 
 export async function onRequestPost({ request }) {
   try {
     const data = await request.json();
     const name = (data.name || 'Anonymous Engineer').trim().slice(0, 60);
-    const category = (data.category || 'AI Capabilities').trim().slice(0, 40);
+    const category = (data.category || 'Platform Architecture').trim().slice(0, 50);
     const question = (data.question || '').trim().slice(0, 2000);
 
     if (!question || question.length < 5) {
@@ -18,7 +143,6 @@ export async function onRequestPost({ request }) {
       });
     }
 
-    // Cryptographic submission receipt hash
     const timestamp = new Date().toISOString();
     const raw = `${name}:${category}:${question}:${timestamp}`;
     const encoder = new TextEncoder();
@@ -32,8 +156,8 @@ export async function onRequestPost({ request }) {
       timestamp: timestamp,
       category: category,
       author: name,
-      status: "LOGGED_TO_QUEUE",
-      message: "Technical inquiry cataloged securely. Added to the active engineering review queue with zero telemetry tracking."
+      status: "LOGGED_TO_FOUNDER_QUEUE",
+      message: "Technical inquiry dispatched securely to David Anthony Jones. Cataloged in the Alumungandr engineering queue with zero telemetry tracking."
     }), {
       status: 200,
       headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
@@ -47,78 +171,4 @@ export async function onRequestPost({ request }) {
       headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
     });
   }
-}
-
-export async function onRequestGet() {
-  // Return curated baseline updates & capability matrix
-  const updates = [
-    {
-      id: "ai-fact-01",
-      category: "SWE-bench & Coding Limits",
-      title: "Frontier LLM Single-File vs Multi-File Engineering Reality",
-      metric: "65.2% SWE-bench Verified Resolution Cap",
-      citation: "SWE-bench Verified (Princeton / OpenAI / Anthropic 2025-2026)",
-      reality: "Frontier reasoning models excel at isolated algorithmic fixes and single-file unit tests. On real multi-file refactors (>5 files) involving cross-component state synchronization, unassisted success rates decrease sharply without deterministic validation test suites.",
-      recommendation: "Always pair agentic coding with automated unit testing and sandbox execution verification before merging."
-    },
-    {
-      id: "ai-fact-02",
-      category: "Context Windows & Degradation",
-      title: "Effective Context Retrieval vs Advertised Window Size",
-      metric: "15% - 35% Retrieval Accuracy Drop between 40%–70% Depth",
-      citation: "Stanford CRFM / Liu et al. 'Lost in the Middle' (arXiv:2307.03172)",
-      reality: "Models support 1M–2M token context windows, but dense reasoning over long horizons suffers from positional attention dilution ('Lost in the Middle'). Targeted vector indexing (RAG) and structured AST retrieval consistently outperform brute-force million-token prompting for mission-critical facts.",
-      recommendation: "Keep system instructions and critical constraints pinned at the very start or end of context buffers."
-    },
-    {
-      id: "ai-fact-03",
-      category: "Agentic Tool Calling",
-      title: "Sequential Tool Chain Stability & Error Cascades",
-      metric: "Compound Error Rate > 40% on Chains > 8 Sequential Calls",
-      citation: "Berkeley Function Calling Leaderboard (BFCL v3)",
-      reality: "Single-step tool execution achieves 92%+ precision. However, in autonomous agent loops with multi-step sequential dependencies, any single malformed tool output cascades through subsequent steps unless validated by strict JSON schemas and AST error catching.",
-      recommendation: "Enforce strict schema validation and idempotent recovery checkpoints on every agent tool invocation."
-    },
-    {
-      id: "ai-fact-04",
-      category: "Local / Edge Inference",
-      title: "Consumer GPU Throughput on 4-Bit Quantized Models",
-      metric: "22 - 38 Tokens/sec on RTX 4090 / Apple M3 Max (70B Params)",
-      citation: "vLLM / llama.cpp GGUF & AWQ Kernels",
-      reality: "Running 70B parameter models locally without sending proprietary code to third-party cloud APIs is now entirely practical on workstation hardware. 4-bit quantization retains over 98.5% of FP16 perplexity while cutting VRAM footprint from 140GB down to 38GB.",
-      recommendation: "Utilize local GGUF/AWQ models for confidential codebase exploration, and reserve cloud frontier APIs for heavy reasoning."
-    },
-    {
-      id: "ai-fact-05",
-      category: "Token Economics",
-      title: "Inference Cost Compression vs High-Throughput Agent Overhead",
-      metric: "82% Price Compression per Million Tokens (2023–2026)",
-      citation: "Stanford AI Index Report & Edge Inference Metrics",
-      reality: "While token costs have fallen drastically, autonomous coding agents generating 200,000 tokens per complex PR accumulate substantial costs at scale. Prompt caching and local triage filtering reduce production token expenditure by 65–75%.",
-      recommendation: "Enable prompt prefix caching and implement tiered model routing (small model filters first, large model refactors)."
-    },
-    {
-      id: "ai-fact-06",
-      category: "Symbolic Reasoning & Math",
-      title: "Autoregressive Probability vs Formal Theorem Provers",
-      metric: "Non-Zero Hallucination on Cryptographic & Financial Arithmetic",
-      citation: "GSM8K / MATH Benchmark Analysis with Python REPL Verification",
-      reality: "LLMs do not perform arithmetic natively; they predict the most probable sequence of numeric tokens. For cryptographic key calculation, financial balance ledgers, and exact timestamps, execution must be delegated to local deterministic code engines (Web Crypto, BigInt, or Python).",
-      recommendation: "Never rely on raw LLM token outputs for financial math or cryptographic operations without programmatic runtime execution."
-    }
-  ];
-
-  return new Response(JSON.stringify({
-    success: true,
-    last_updated: "2026-10-01T05:00:00Z",
-    total_facts: updates.length,
-    facts: updates
-  }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=300",
-      "Access-Control-Allow-Origin": "*"
-    }
-  });
 }

@@ -1,6 +1,7 @@
 // Alumungandr Edge Gateway & API Router
 // Bridges Cloudflare Workers + Static Assets with /api endpoints and zero-tracking services
 
+import * as aiRealities from './functions/api/ai-realities.js';
 import * as qa from './functions/api/qa.js';
 import * as feedback from './functions/api/feedback.js';
 import * as clip from './functions/api/clip.js';
@@ -25,7 +26,13 @@ export default {
       });
     }
 
-    // Route /api/qa (AI Reality Matrix & Technical Q&A Engine)
+    // Route /api/ai-realities & /api/ai-matrix (Automated AI Capability Reality Matrix API)
+    if (url.pathname === '/api/ai-realities' || url.pathname === '/api/ai-matrix') {
+      if (method === 'POST' && aiRealities.onRequestPost) return aiRealities.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && aiRealities.onRequestGet) return aiRealities.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/qa (Alumungandr Founder & Platform Q&A Engine)
     if (url.pathname === '/api/qa') {
       if (method === 'POST' && qa.onRequestPost) return qa.onRequestPost({ request, env, ctx });
       if (method === 'GET' && qa.onRequestGet) return qa.onRequestGet({ request, env, ctx });

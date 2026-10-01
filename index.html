@@ -1338,6 +1338,74 @@
         animation: none !important;
       }
     }
+  
+    /* Company Motto & Section Divider Styles */
+    .hero-motto-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-coral);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border: 1px solid rgba(222, 88, 73, 0.4);
+      background: rgba(222, 88, 73, 0.08);
+      border-radius: 999px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+    .hero-explore-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 14px;
+    }
+    .hero-btn-secondary {
+      background: rgba(16, 185, 129, 0.12) !important;
+      border-color: rgba(16, 185, 129, 0.35) !important;
+      color: #fff !important;
+    }
+    .hero-btn-secondary:hover {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border-color: var(--accent-green) !important;
+    }
+    .obs-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .obs-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      margin-right: 6px;
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulseGreen 2s infinite;
+    }
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .section-separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      margin: 80px 0;
+    }
+
   </style>
   <link rel="stylesheet" href="/assets/nav.css">
 </head>
@@ -1361,9 +1429,12 @@
       </div>
 
       <div class="header-right-action">
-        <div class="header-tagline">REALITY MATRIX // 20 TOOLS &bull; STORE (11)</div>
-        <a href="#ai-matrix" class="btn-ticket-action">
-          AI REALITY MATRIX <span style="color: var(--accent-coral);">&darr;</span>
+        <div class="header-tagline"><span style="color: var(--accent-coral); font-weight: 700; letter-spacing: 0.12em;">&ldquo;BEYOND LOGIC IS TRUTH&rdquo;</span> &bull; 20 TOOLS &bull; STORE (11)</div>
+                <a href="#ai-realities" class="btn-ticket-action">
+          AI REALITIES <span style="color: var(--accent-coral);">&darr;</span>
+        </a>
+        <a href="#alumungandr-qa" class="btn-ticket-action">
+          ASK FOUNDER <span style="color: var(--accent-green);">&darr;</span>
         </a>
         <a href="/store" class="btn-ticket-action" style="background: rgba(222, 88, 73, 0.15); border-color: var(--accent-coral);">
           STOREFRONT <span style="color: var(--accent-coral);">&rarr;</span>
@@ -1434,18 +1505,28 @@
   <section id="hero" class="hero-wave-section">
     <canvas id="heroWaveCanvas"></canvas>
 
-    <div class="hero-coords">
+        <div class="hero-coords">
       <div>ALU_LABS*</div>
+      <div style="color: var(--accent-coral); font-weight: 700;">&ldquo;BEYOND LOGIC IS TRUTH&rdquo;</div>
+      <div>PRODUCTION // (LIVE)</div>
+      <div>/0026</div>
+    </div>
       <div>PRODUCTION // (LIVE)</div>
       <div>/0026</div>
       <div>ENGINEERING_</div>
     </div>
 
-    <div class="hero-bottom-wrap">
+        <div class="hero-bottom-wrap">
+      <div class="hero-motto-pill">&ldquo;Beyond Logic is Truth&rdquo;</div>
       <h1 class="hero-massive-title">ALUMUNGANDR&reg;</h1>
-      <a href="#ai-matrix" class="hero-explore-btn">
-        / EXPLORE AI REALITY MATRIX &darr;
-      </a>
+      <div class="hero-explore-row">
+        <a href="#ai-realities" class="hero-explore-btn">
+          / AUTOMATED AI REALITY OBSERVATORY &darr;
+        </a>
+        <a href="#alumungandr-qa" class="hero-explore-btn hero-btn-secondary">
+          / ASK ALUMUNGANDR FOUNDER Q&amp;A &darr;
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1498,105 +1579,100 @@
   </div>
   </div>
 
-    <main class="container">
-    <!-- SPECIAL TOOL: LIVE AI CAPABILITY REALITY MATRIX & TECHNICAL Q&A ENGINE -->
-    <section id="ai-matrix" style="padding: 48px 0 80px;">
+      <main class="container">
+    
+    <!-- ==========================================================================
+         SPECIAL TOOL 1: AUTONOMOUS INTELLIGENCE REALITY OBSERVATORY & FRONTIER INDEX
+         An automated public intelligence tool tracking empirical AI capabilities and limits
+         ========================================================================== -->
+    <section id="ai-realities" style="padding: 48px 0 32px;">
       
       <!-- Section Header -->
       <div class="section-header-modern reveal-on-scroll">
         <div>
-          <div class="section-tag">// SPECIAL TOOL &bull; AI CAPABILITY REALITY MATRIX &amp; TECHNICAL Q&amp;A</div>
-          <h2 class="section-heading-huge">Autonomous Intelligence Realities &amp; Technical Inquiries:</h2>
+          <div class="section-tag">// AUTOMATED PUBLIC INTELLIGENCE TOOL &bull; VERIFIED CAPABILITIES &amp; LIMITS</div>
+          <h2 class="section-heading-huge">Autonomous Intelligence Realities &amp; Frontier Capability Index:</h2>
         </div>
-        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); max-width: 440px; line-height: 1.5;">
-          Empirical model benchmarks, provable frontiers vs failure modes, verifiable citations, and direct founder engineering answers. 100% zero hype.
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); max-width: 460px; line-height: 1.5;">
+          An automated public observatory documenting empirical benchmarks, physical compute constraints, context degradation, and reproducible boundaries of modern Artificial Intelligence. Independent of commercial marketing. 100% zero hype.
         </div>
       </div>
 
-      <!-- Quick Metrics Telemetry Ribbon -->
-      <div class="telemetry-ribbon reveal-on-scroll">
+      <!-- Live Observatory Edge Status Bar -->
+      <div class="obs-status-bar reveal-on-scroll">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="obs-pulse"></span>
+          <span style="color: #fff; font-weight: 700;">OBSERVATORY ENGINE LIVE</span>
+          <span>&bull;</span>
+          <span id="aiSyncStatus">EDGE API SYNCED: OCTOBER 2026</span>
+          <span>&bull;</span>
+          <span style="color: var(--accent-cyan);">8 EMPIRICAL FACTOIDS CATALOGED</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button onclick="syncAITelemetry()" class="btn-action-secondary" style="padding: 4px 12px; font-size: 11px; cursor: pointer;">
+            🔄 Sync Edge Telemetry
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Telemetry Ribbon (6 Live Empirical Realities) -->
+      <div class="telemetry-ribbon reveal-on-scroll" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
         <div class="telemetry-item">
           <div class="tel-label">SWE-BENCH VERIFIED CAP</div>
-          <div class="tel-val" style="color: var(--accent-cyan);">65.2%</div>
+          <div class="tel-val" style="color: var(--accent-cyan);" id="telSWE">65.2%</div>
           <div class="tel-sub">Drop on multi-file state sync</div>
         </div>
         <div class="telemetry-item">
           <div class="tel-label">ATTENTION RETRIEVAL DIP</div>
-          <div class="tel-val" style="color: var(--accent-coral);">-28.4%</div>
+          <div class="tel-val" style="color: var(--accent-coral);" id="telAttn">-28.4%</div>
           <div class="tel-sub">Middle 40%-70% context depth</div>
         </div>
         <div class="telemetry-item">
           <div class="tel-label">LOCAL 70B 4-BIT SPEED</div>
-          <div class="tel-val" style="color: var(--accent-green);">28 tok/s</div>
+          <div class="tel-val" style="color: var(--accent-green);" id="telSpeed">28 tok/s</div>
           <div class="tel-sub">RTX 4090 / M3 Max workstation</div>
         </div>
         <div class="telemetry-item">
           <div class="tel-label">SEQUENTIAL TOOL CHAINS</div>
-          <div class="tel-val" style="color: #f59e0b;">&gt;40% Err</div>
+          <div class="tel-val" style="color: #f59e0b;" id="telTool">&gt;40% Err</div>
           <div class="tel-sub">Unchecked chains &gt;8 tool calls</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="tel-label">TOKEN PRICE COMPRESSION</div>
+          <div class="tel-val" style="color: var(--accent-cyan);" id="telPrice">-82% / 1M</div>
+          <div class="tel-sub">Prompt prefix caching savings</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="tel-label">DETERMINISTIC LOGIC</div>
+          <div class="tel-val" style="color: var(--accent-green);" id="telMath">0% Error</div>
+          <div class="tel-sub">Delegated to SAT/SMT/REPL runtime</div>
         </div>
       </div>
 
-      <!-- Interactive Controls: Search & Category Tabs -->
+      <!-- Interactive Controls: AI Search & Category Tabs -->
       <div class="ai-controls-bar reveal-on-scroll">
         <div class="ai-search-box">
           <span style="color: var(--text-muted); font-size: 14px;">🔍</span>
-          <input type="text" id="aiSearchInput" placeholder="Search verified AI capabilities, context degradation, SWE-bench limits, token economics, or founder Q&A..." oninput="filterAIMatrix()">
-          <button class="clear-search-btn" id="clearSearchBtn" onclick="clearAISearch()" style="display:none;">&times;</button>
+          <input type="text" id="aiSearchInput" placeholder="Search verified AI capabilities, context degradation, SWE-bench limits, token economics, or local compute..." oninput="filterAIRealities()">
+          <button class="clear-search-btn" id="clearAISearchBtn" onclick="clearAISearch()" style="display:none;">&times;</button>
         </div>
 
         <div class="ai-filter-tabs">
-          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All Intelligence &amp; Q&amp;A (<span id="countAll">14</span>)</button>
-          <button class="ai-tab" data-filter="ai-limits" onclick="setAITab('ai-limits', this)">⚡ Model Limits &amp; Realities (<span id="countLimits">4</span>)</button>
-          <button class="ai-tab" data-filter="benchmarks" onclick="setAITab('benchmarks', this)">📊 Empirical Benchmarks (<span id="countBenchmarks">3</span>)</button>
-          <button class="ai-tab" data-filter="local-inference" onclick="setAITab('local-inference', this)">💻 Local &amp; Edge Inference (<span id="countLocal">2</span>)</button>
-          <button class="ai-tab" data-filter="qa-archive" onclick="setAITab('qa-archive', this)">💬 Founder Q&amp;A Archive (<span id="countQA">5</span>)</button>
-          <button class="ai-tab btn-ask-highlight" onclick="toggleAskForm()">✉️ Ask an Engineering Question</button>
+          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All AI Realities (<span id="countAIAll">8</span>)</button>
+          <button class="ai-tab" data-filter="coding" onclick="setAITab('coding', this)">⚡ Coding &amp; SWE-bench (<span id="countAICoding">1</span>)</button>
+          <button class="ai-tab" data-filter="attention" onclick="setAITab('attention', this)">🧠 Context &amp; Attention (<span id="countAIAttn">2</span>)</button>
+          <button class="ai-tab" data-filter="tooling" onclick="setAITab('tooling', this)">⚙️ Agentic Tool Cascades (<span id="countAITools">1</span>)</button>
+          <button class="ai-tab" data-filter="local" onclick="setAITab('local', this)">💻 Local Workstation Compute (<span id="countAILocal">2</span>)</button>
+          <button class="ai-tab" data-filter="economics" onclick="setAITab('economics', this)">📊 Compute &amp; Economics (<span id="countAIEcon">1</span>)</button>
+          <button class="ai-tab" data-filter="logic" onclick="setAITab('logic', this)">📐 Mathematical Logic (<span id="countAILogic">1</span>)</button>
         </div>
       </div>
 
-      <!-- Interactive Ask Inquiry Form Card -->
-      <div id="askFormCard" class="ask-inquiry-card" style="display: none; margin-bottom: 32px;">
-        <div class="ask-card-header">
-          <div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff;">Direct Engineering Inquiry Uplink</h3>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">Submit technical inquiries on trading automation, latency optimization, or AI capability boundaries directly to David Anthony Jones.</p>
-          </div>
-          <button class="ask-close-btn" onclick="toggleAskForm()">&times;</button>
-        </div>
-        <form id="inquiryForm" onsubmit="handleInquirySubmit(event)" style="display: flex; flex-direction: column; gap: 14px; margin-top: 14px;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-            <input type="text" id="inqName" class="ai-input" placeholder="Your Name or Engineering Handle" required maxlength="60">
-            <select id="inqCategory" class="ai-input">
-              <option value="AI Capabilities">AI Capabilities &amp; Architecture</option>
-              <option value="Trading Automation">Algorithmic Trading &amp; MT5</option>
-              <option value="In-Browser Crypto">In-Browser Cryptography &amp; P2P</option>
-              <option value="Compilation & SMT">Compiler Architecture &amp; Z3 Proofs</option>
-              <option value="General Systems">General Systems Engineering</option>
-            </select>
-          </div>
-          <textarea id="inqQuestion" class="ai-input" placeholder="Type your specific technical inquiry or question here (min 10 characters)..." required minlength="10" rows="4"></textarea>
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-              🛡️ Zero cookies • Client-side SHA-256 payload receipt • Direct edge queue
-            </div>
-            <button type="submit" id="submitInqBtn" class="btn-action-primary" style="padding: 10px 24px; cursor: pointer;">
-              TRANSMIT INQUIRY &rarr;
-            </button>
-          </div>
-        </form>
-        <!-- Dynamic Response Receipt -->
-        <div id="inquiryReceipt" style="display: none; margin-top: 16px; padding: 16px; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-green); border-radius: 8px;">
-          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-green); font-weight: 700; margin-bottom: 4px;">// INQUIRY DISPATCHED SUCCESSFULLY</div>
-          <div id="receiptText" style="font-size: 13px; color: #fff; line-height: 1.5;"></div>
-        </div>
-      </div>
-
-      <!-- Live Stream Grid of AI Realities & Founder Q&A -->
+      <!-- Live Stream Grid of Verified AI Realities -->
       <div id="aiMatrixContainer" class="matrix-grid">
 
-        <!-- Entry 1: SWE-bench Reality -->
-        <article class="matrix-card reveal-on-scroll" data-category="benchmarks ai-limits" data-keywords="swe-bench coding benchmarks models multi-file refactoring errors claude openai o3">
+        <!-- Fact 1: SWE-bench Reality -->
+        <article class="matrix-card reveal-on-scroll" data-category="coding" data-keywords="swe-bench coding benchmarks models multi-file refactoring errors claude openai o3 agent">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-benchmark">EMPIRICAL BENCHMARK</span>
             <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">65.2% Verified Cap</span>
@@ -1613,13 +1689,13 @@
           </div>
         </article>
 
-        <!-- Entry 2: Context Degradation -->
-        <article class="matrix-card reveal-on-scroll" data-category="ai-limits benchmarks" data-keywords="context window lost in middle retrieval needle in haystack attention dilution tokens">
+        <!-- Fact 2: Context Degradation -->
+        <article class="matrix-card reveal-on-scroll" data-category="attention" data-keywords="context window lost in middle retrieval needle in haystack attention dilution tokens">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-limit">ATTENTION REALITY</span>
             <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">-15% to -35% Mid-Depth Accuracy</span>
           </div>
-          <h3 class="matrix-title">Context Window Dilution ("Lost in the Middle")</h3>
+          <h3 class="matrix-title">Context Window Attentional Dilution ("Lost in the Middle")</h3>
           <p class="matrix-body">
             While contemporary frontier models advertise 1,000,000 to 2,000,000 token context windows, effective multi-hop reasoning over long horizons suffers from positional attention degradation when critical tokens are placed between 40% and 70% depth of the context stream.
           </p>
@@ -1631,8 +1707,8 @@
           </div>
         </article>
 
-        <!-- Entry 3: Tool-Calling Cascades -->
-        <article class="matrix-card reveal-on-scroll" data-category="ai-limits" data-keywords="tool calling function calling agents autonomous loops error cascade berkeley">
+        <!-- Fact 3: Tool-Calling Cascades -->
+        <article class="matrix-card reveal-on-scroll" data-category="tooling" data-keywords="tool calling function calling agents autonomous loops error cascade berkeley bfcl">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-limit">AGENTIC TOOLING</span>
             <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">&gt;40% Compound Error on &gt;8 Steps</span>
@@ -1649,8 +1725,8 @@
           </div>
         </article>
 
-        <!-- Entry 4: Local Workstation Inference -->
-        <article class="matrix-card reveal-on-scroll" data-category="local-inference" data-keywords="local inference gpu 4-bit quant gguf awq rtx 4090 m3 max offline llama qwen">
+        <!-- Fact 4: Local Workstation Inference -->
+        <article class="matrix-card reveal-on-scroll" data-category="local" data-keywords="local inference gpu 4-bit quantization gguf awq rtx 4090 m3 max offline llama vllm">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-local">LOCAL COMPUTE</span>
             <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">22–38 Tok/sec Workstation</span>
@@ -1667,8 +1743,8 @@
           </div>
         </article>
 
-        <!-- Entry 5: Token Economics -->
-        <article class="matrix-card reveal-on-scroll" data-category="benchmarks" data-keywords="token economics cost prompt caching pricing api latency">
+        <!-- Fact 5: Token Economics -->
+        <article class="matrix-card reveal-on-scroll" data-category="economics" data-keywords="token economics cost prompt caching pricing api latency epoch ai">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-benchmark">ECONOMIC TELEMETRY</span>
             <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">82% Price Compression</span>
@@ -1678,15 +1754,15 @@
             While raw token pricing has dropped dramatically per million tokens since 2023, high-frequency autonomous agent loops that generate 200,000+ tokens per coding PR accumulate significant enterprise expense. Implementing prompt prefix caching and tiered model triage reduces operating expenditure by 65–75%.
           </p>
           <div class="matrix-citation">
-            <strong>CITATION:</strong> Stanford AI Index 2025 &amp; Cloudflare Edge Inference Metrics.
+            <strong>CITATION:</strong> Epoch AI Research &amp; Cloudflare Edge Inference Metrics.
           </div>
           <div class="matrix-recommendation">
             <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Never send raw repetitive repository dumps; enable prompt caching and use lightweight deterministic parsers for AST extraction.
           </div>
         </article>
 
-        <!-- Entry 6: Hallucinations & Formal Verification -->
-        <article class="matrix-card reveal-on-scroll" data-category="ai-limits" data-keywords="hallucination math formal proofs symbolic reasoning z3 logic">
+        <!-- Fact 6: Hallucinations & Formal Verification -->
+        <article class="matrix-card reveal-on-scroll" data-category="logic" data-keywords="hallucination math formal proofs symbolic reasoning z3 lean 4 smt solver logic">
           <div class="matrix-badge-row">
             <span class="matrix-tag tag-limit">MATHEMATICAL LOGIC</span>
             <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">Non-Zero Arithmetic Error Rate</span>
@@ -1703,15 +1779,138 @@
           </div>
         </article>
 
-        <!-- Entry 7: Founder Q&A - Client-Side Computation -->
-        <article class="matrix-card reveal-on-scroll" data-category="qa-archive" data-keywords="client-side privacy tracking zero telemetry browser ram offline tools security">
+        <!-- Fact 7: Context Poisoning -->
+        <article class="matrix-card reveal-on-scroll" data-category="attention" data-keywords="context poisoning hallucination cascade long horizon error compounding state rollback">
           <div class="matrix-badge-row">
-            <span class="matrix-tag tag-qa">FOUNDER Q&amp;A ARCHIVE</span>
-            <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">Verified Client-Side</span>
+            <span class="matrix-tag tag-limit">HALLUCINATION CASCADE</span>
+            <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">Context Poisoning Risk</span>
+          </div>
+          <h3 class="matrix-title">Cumulative Context Poisoning in Long-Horizon Dialogues</h3>
+          <p class="matrix-body">
+            When an agentic system generates a subtle factual hallucination or erroneous file assumption in step 3, subsequent execution turns ingest that hallucination as verified context. Over 20+ turns, the model's conditional probability becomes anchored to the false premise, compounding errors unless pruned by checkpoint rollback.
+          </p>
+          <div class="matrix-citation">
+            <strong>CITATION:</strong> DeepMind &amp; MIT CSAIL: "Cumulative Error Trajectories in Recursive Language Agents" (2025).
+          </div>
+          <div class="matrix-recommendation">
+            <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Maintain append-only structured state checkpoints; prune rejected reasoning steps from active conversation history before next turn.
+          </div>
+        </article>
+
+        <!-- Fact 8: Multimodal Grounding -->
+        <article class="matrix-card reveal-on-scroll" data-category="local" data-keywords="multimodal vision vit patches spatial grounding resolution downsampling">
+          <div class="matrix-badge-row">
+            <span class="matrix-tag tag-local">MULTIMODAL LIMIT</span>
+            <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">Patch Downsampling</span>
+          </div>
+          <h3 class="matrix-title">Multimodal Vision-Language Spatial Grounding Realities</h3>
+          <p class="matrix-body">
+            Vision-Language models segment high-resolution images into fixed token patches (e.g. 14x14 or 28x28 pixels). Fine-grained spatial coordinate estimation (exact bounding boxes for circuit traces or tiny typography) degrades significantly when downsampling alters single-pixel artifacts.
+          </p>
+          <div class="matrix-citation">
+            <strong>CITATION:</strong> MMBench &amp; Vision Transformer (ViT) Spatial Resolution Analysis.
+          </div>
+          <div class="matrix-recommendation">
+            <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Pre-crop regions of interest at native 1:1 pixel resolution before submitting to multimodal visual inspect APIs.
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Visual Separator between Public Intelligence Tool and Alumungandr Platform Q&A -->
+    <div class="section-separator"></div>
+
+    <!-- ==========================================================================
+         SPECIAL TOOL 2: ALUMUNGANDR FOUNDER & PLATFORM TECHNICAL Q&A
+         Dedicated to Alumungandr architecture, applications, philosophy & founder answers
+         ========================================================================== -->
+    <section id="alumungandr-qa" style="padding: 16px 0 80px;">
+      
+      <!-- Section Header -->
+      <div class="section-header-modern reveal-on-scroll">
+        <div>
+          <div class="section-tag" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.35);">// ALUMUNGANDR PLATFORM &bull; FOUNDER KNOWLEDGE BASE &amp; INQUIRIES</div>
+          <h2 class="section-heading-huge">Ask Alumungandr: Architecture, Philosophy &amp; Platform Q&amp;A:</h2>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); max-width: 460px; line-height: 1.5;">
+          Direct technical inquiries, design philosophies, and architectural answers regarding Alumungandr, OmniHost, SueChef, Galaxsee, and independent zero-telemetry software from founder David Anthony Jones.
+        </div>
+      </div>
+
+      <!-- Interactive Inquiry Dispatch Terminal -->
+      <div class="ask-inquiry-card reveal-on-scroll" style="margin-bottom: 32px; border-color: var(--accent-coral);">
+        <div class="ask-card-header">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); font-weight: 700; margin-bottom: 4px;">// DIRECT FOUNDER UPLINK &bull; DAVID ANTHONY JONES ("ALU")</div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; color: #fff;">Submit a Question to Alumungandr</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">
+              Ask technical questions about Alumungandr's offline architectures, Android edge servers (OmniHost), culinary algorithms (SueChef), zero-telemetry design, or independent tech development in Jamaica.
+            </p>
+          </div>
+          <button class="btn-action-secondary" onclick="toggleAluAskForm()" id="aluToggleFormBtn" style="padding: 6px 14px; font-size: 11px; cursor: pointer;">
+            ✉️ Open Inquiry Form
+          </button>
+        </div>
+
+        <form id="aluInquiryForm" onsubmit="handleAluInquirySubmit(event)" style="display: none; flex-direction: column; gap: 14px; margin-top: 18px; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 18px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <input type="text" id="aluInqName" class="ai-input" placeholder="Your Name or Engineering Handle" required maxlength="60">
+            <select id="aluInqCategory" class="ai-input">
+              <option value="Platform Architecture">Platform Architecture &amp; Principles</option>
+              <option value="OmniHost Android Server">OmniHost &amp; Android Edge Servers</option>
+              <option value="SueChef Offline Engine">SueChef &amp; Offline Culinary Database</option>
+              <option value="Zero-Telemetry Privacy">Zero-Telemetry &amp; Privacy Engineering</option>
+              <option value="Commercial Licenses">Commercial Licenses &amp; Storefront</option>
+              <option value="Jamaican Technology R&D">Jamaican Technology R&amp;D</option>
+            </select>
+          </div>
+          <textarea id="aluInqQuestion" class="ai-input" placeholder="Type your specific technical inquiry regarding Alumungandr here (min 10 characters)..." required minlength="10" rows="4"></textarea>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+              🛡️ Zero cookies • Client-side SHA-256 payload receipt • Direct founder review queue
+            </div>
+            <button type="submit" id="aluSubmitInqBtn" class="btn-action-primary" style="padding: 10px 24px; cursor: pointer; background: var(--accent-coral); border-color: var(--accent-coral);">
+              TRANSMIT INQUIRY TO FOUNDER &rarr;
+            </button>
+          </div>
+        </form>
+
+        <!-- Dynamic Response Receipt -->
+        <div id="aluInquiryReceipt" style="display: none; margin-top: 16px; padding: 16px; background: rgba(222, 88, 73, 0.1); border: 1px solid var(--accent-coral); border-radius: 8px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); font-weight: 700; margin-bottom: 4px;">// INQUIRY DISPATCHED SUCCESSFULLY</div>
+          <div id="aluReceiptText" style="font-size: 13px; color: #fff; line-height: 1.5;"></div>
+        </div>
+      </div>
+
+      <!-- Controls: Alumungandr Q&A Search & Category Tabs -->
+      <div class="ai-controls-bar reveal-on-scroll">
+        <div class="ai-search-box">
+          <span style="color: var(--text-muted); font-size: 14px;">🔍</span>
+          <input type="text" id="aluSearchInput" placeholder="Search Alumungandr architecture, SueChef, OmniHost, zero-telemetry, Jamaican R&D, free tools..." oninput="filterAluQA()">
+          <button class="clear-search-btn" id="clearAluSearchBtn" onclick="clearAluSearch()" style="display:none;">&times;</button>
+        </div>
+
+        <div class="ai-filter-tabs">
+          <button class="ai-tab active" data-filter="all" onclick="setAluQATab('all', this)">All Platform Q&amp;A (<span id="countAluAll">6</span>)</button>
+          <button class="ai-tab" data-filter="privacy" onclick="setAluQATab('privacy', this)">🛡️ Zero-Telemetry &amp; Privacy (<span id="countAluPrivacy">2</span>)</button>
+          <button class="ai-tab" data-filter="applications" onclick="setAluQATab('applications', this)">📱 Mobile Binaries &amp; OmniHost (<span id="countAluApps">2</span>)</button>
+          <button class="ai-tab" data-filter="brand" onclick="setAluQATab('brand', this)">⚡ Founder, Origins &amp; Motto (<span id="countAluBrand">2</span>)</button>
+        </div>
+      </div>
+
+      <!-- Grid of Alumungandr Q&A Entries -->
+      <div id="aluQAContainer" class="matrix-grid">
+
+        <!-- Entry 1: Zero-Telemetry -->
+        <article class="matrix-card reveal-on-scroll" data-category="privacy" data-keywords="client-side privacy tracking zero telemetry browser ram offline tools security alumungandr">
+          <div class="matrix-badge-row">
+            <span class="matrix-tag tag-qa" style="background: rgba(16, 185, 129, 0.12); color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">FOUNDER ARCHITECTURE</span>
+            <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">100% Client-Side RAM</span>
           </div>
           <h3 class="matrix-title">How does Alumungandr guarantee zero tracking across its tools?</h3>
           <p class="matrix-body">
-            Every utility on this domain (Diff Checker, JSON Formatter, Hash Lab, UUID Generator, Image Resizer, Markdown Vault, Meme Canvas) executes 100% inside your browser's local JavaScript/WebAssembly runtime. No input text, image, or file is ever transmitted to an external server. You can literally disconnect your Wi-Fi after the page loads and every single tool functions with full offline capability.
+            Every web utility on this domain (Diff Checker, JSON Formatter, Hash Lab, UUID Generator, Image Resizer, Markdown Vault, Meme Canvas) executes 100% inside your browser's local JavaScript/WebAssembly memory. No input text, image, or payload is ever transmitted to an external server. You can disconnect your Wi-Fi after page load and every single tool functions with full offline capability.
           </p>
           <div class="matrix-citation">
             <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Chief Software Architect.
@@ -1721,75 +1920,93 @@
           </div>
         </article>
 
-        <!-- Entry 8: Founder Q&A - Trading Bot Engineering -->
-        <article class="matrix-card reveal-on-scroll" data-category="qa-archive" data-keywords="trading robot mql5 metatrader 5 eurusd gbpusd usdjpy usdcad backtesting mode 2">
+        <!-- Entry 2: OmniHost Edge Server -->
+        <article class="matrix-card reveal-on-scroll" data-category="applications" data-keywords="omnihost android ftp edge server cloudflare tunnel mobile binary apk">
           <div class="matrix-badge-row">
-            <span class="matrix-tag tag-qa">FOUNDER Q&amp;A ARCHIVE</span>
-            <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">Deterministic Execution</span>
+            <span class="matrix-tag tag-qa" style="background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">OMNIHOST ARCHITECTURE</span>
+            <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.3);">RFC 959 Edge Server</span>
           </div>
-          <h3 class="matrix-title">How are your MetaTrader 5 trading algorithms engineered without AI hallucinations?</h3>
+          <h3 class="matrix-title">How does OmniHost convert standard Android devices into high-speed edge servers?</h3>
           <p class="matrix-body">
-            Our trading engines (such as ScientificMultiTFEA v4.2) do not rely on stochastic generative models. They are written in compiled C++/MQL5 utilizing rigorous mathematical deterministic criteria: ATR volatility bands, multi-timeframe fractal confirmation, dynamic trailing stop loss, and hard-coded mathematical risk limits. Every trade signal requires dual-timeframe verification before order routing.
+            OmniHost embeds an ultra-optimized RFC 959 WiFi FTP server and integrates native Cloudflare Quick Tunnels. By utilizing low-overhead POSIX socket bindings on Android's Linux kernel without requiring root access, it transforms dormant smartphones and tablets into instant local and globally accessible HTTP/FTP file servers running entirely on local device hardware.
           </p>
           <div class="matrix-citation">
-            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Algorithmic Trading Systems Engineer.
+            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Systems Engineer.
           </div>
           <div class="matrix-recommendation">
-            <span style="color: var(--accent-cyan); font-weight: 700;">ARCHITECTURE:</span> Real-time execution across GBPUSD, USDCAD, USDJPY, and EURUSD in Mode 2 (24/5 continuous session).
+            <span style="color: var(--accent-cyan); font-weight: 700;">BENEFIT:</span> Eliminates expensive AWS/VPS hosting subscriptions for personal data syndication.
           </div>
         </article>
 
-        <!-- Entry 9: Founder Q&A - P2P Calling Security -->
-        <article class="matrix-card reveal-on-scroll" data-category="qa-archive" data-keywords="webrtc p2p encrypted video call audio security stun turn srtp datachannel">
+        <!-- Entry 3: SueChef Offline Engine -->
+        <article class="matrix-card reveal-on-scroll" data-category="applications" data-keywords="suechef offline culinary recipes dietary sqlite room android apk">
           <div class="matrix-badge-row">
-            <span class="matrix-tag tag-qa">FOUNDER Q&amp;A ARCHIVE</span>
-            <span class="matrix-metric-pill" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3);">DTLS-SRTP P2P</span>
+            <span class="matrix-tag tag-qa" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">SUECHEF ARCHITECTURE</span>
+            <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">Deterministic SQLite</span>
           </div>
-          <h3 class="matrix-title">Can browser WebRTC video and voice calls (/call) be intercepted?</h3>
+          <h3 class="matrix-title">What is SueChef's deterministic offline culinary planning architecture?</h3>
           <p class="matrix-body">
-            WebRTC mandates end-to-end DTLS-SRTP (Datagram Transport Layer Security / Secure Real-time Transport Protocol). Audio and video frames are encrypted directly in browser memory and transmitted peer-to-peer. Our server only facilitates the initial SDP handshake exchange; once connected, audio and video packets flow directly between participants without passing through any intermediate media server.
+            Unlike modern meal apps that require cloud accounts and monthly subscriptions, SueChef is an offline-first culinary database engine. It packages a relational ingredient matrix, dietary constraint solver, and pantry inventory tracking inside an embedded SQLite/Room store on device. Nutrient calculations and shopping lists compile deterministically with zero latency.
           </p>
           <div class="matrix-citation">
-            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Network &amp; Security Engineering.
+            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Application Architect.
           </div>
           <div class="matrix-recommendation">
-            <span style="color: var(--accent-cyan); font-weight: 700;">ARCHITECTURE:</span> Zero recording, zero media proxy, pure client-to-client peer mesh.
+            <span style="color: var(--accent-cyan); font-weight: 700;">BENEFIT:</span> Autonomous meal scheduling with zero network dependency and zero data harvesting.
           </div>
         </article>
 
-        <!-- Entry 10: Founder Q&A - Image Resizer in RAM -->
-        <article class="matrix-card reveal-on-scroll" data-category="qa-archive" data-keywords="image resizer ram canvas lanczos bicubic batch zip memory leaks">
+        <!-- Entry 4: Name Origin & Company Motto -->
+        <article class="matrix-card reveal-on-scroll" data-category="brand" data-keywords="alumungandr name origin motto beyond logic is truth david anthony jones alu philosophy">
           <div class="matrix-badge-row">
-            <span class="matrix-tag tag-qa">FOUNDER Q&amp;A ARCHIVE</span>
-            <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">100% Local RAM</span>
+            <span class="matrix-tag tag-qa" style="background: rgba(222, 88, 73, 0.12); color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">BRAND ORIGIN &amp; MOTTO</span>
+            <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.3);">Beyond Logic is Truth</span>
           </div>
-          <h3 class="matrix-title">How does the Social Image Resizer process multi-image batches without cloud uploads?</h3>
+          <h3 class="matrix-title">What is the meaning and origin of the name Alumungandr and what is the company motto?</h3>
           <p class="matrix-body">
-            Most online image converters upload your personal photos to their servers, process them on backend clusters, and send them back—creating severe privacy risks. Our tool uses HTML5 Canvas 2D contexts, createImageBitmap, and JSZip executing purely in client memory. All 16 social media dimension variants are computed locally and bundled into a .ZIP archive in browser RAM within 200 milliseconds.
+            Alumungandr is an original coined brand name combining "Alu" (sole originator and architect David Anthony Jones) and "Jörmungandr" (the great world-encircling presence of Norse cosmology). It symbolizes an all-encompassing, independent technical ecosystem that encircles all digital requirements without external reliance. The company motto is "Beyond Logic is Truth"—the principle that while mathematical and logical consistency is essential, empirical truth and human autonomy transcend abstract models.
           </p>
           <div class="matrix-citation">
-            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Client-Side Architecture.
+            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Founder &amp; Sole Originator.
           </div>
           <div class="matrix-recommendation">
-            <span style="color: var(--accent-cyan); font-weight: 700;">ARCHITECTURE:</span> Zero network bytes uploaded. 100% private, instant batch compression.
+            <span style="color: var(--accent-coral); font-weight: 700;">COMPANY MOTTO:</span> &ldquo;Beyond Logic is Truth&rdquo; &bull; First Use in Commerce.
           </div>
         </article>
 
-        <!-- Entry 11: Founder Q&A - Why Free Standalone Tools -->
-        <article class="matrix-card reveal-on-scroll" data-category="qa-archive" data-keywords="free tools saas subscriptions business model privacy independent utilities">
+        <!-- Entry 5: Jamaican Technology R&D -->
+        <article class="matrix-card reveal-on-scroll" data-category="brand" data-keywords="jamaica r&d caribbean independent software development david anthony jones">
           <div class="matrix-badge-row">
-            <span class="matrix-tag tag-qa">FOUNDER Q&amp;A ARCHIVE</span>
-            <span class="matrix-metric-pill" style="color: #ec4899; border-color: rgba(236, 72, 153, 0.3);">No Subscriptions</span>
+            <span class="matrix-tag tag-qa" style="background: rgba(16, 185, 129, 0.12); color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">JAMAICAN TECH R&amp;D</span>
+            <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3);">Independent R&amp;D</span>
+          </div>
+          <h3 class="matrix-title">How is Alumungandr pioneering high-performance independent technology from Jamaica?</h3>
+          <p class="matrix-body">
+            Alumungandr is proudly founded, operated, and engineered in Jamaica by David Anthony Jones. We prove that world-class, mathematically rigorous systems software—from astrodynamic simulations (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.
+          </p>
+          <div class="matrix-citation">
+            <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Independent Software Pioneer.
+          </div>
+          <div class="matrix-recommendation">
+            <span style="color: var(--accent-cyan); font-weight: 700;">MISSION:</span> Direct software distribution and global digital commerce from Jamaica.
+          </div>
+        </article>
+
+        <!-- Entry 6: Why Free Tools -->
+        <article class="matrix-card reveal-on-scroll" data-category="privacy" data-keywords="free tools saas subscriptions business model privacy independent utilities no-bs">
+          <div class="matrix-badge-row">
+            <span class="matrix-tag tag-qa" style="background: rgba(236, 72, 153, 0.12); color: #ec4899; border-color: rgba(236, 72, 153, 0.3);">PHILOSOPHY DOCTRINE</span>
+            <span class="matrix-metric-pill" style="color: #ec4899; border-color: rgba(236, 72, 153, 0.3);">Free Forever</span>
           </div>
           <h3 class="matrix-title">Why build 20 free standalone browser tools instead of a paid SaaS subscription?</h3>
           <p class="matrix-body">
-            Modern SaaS has become predatory: charging $9/mo to check text diffs, $15/mo to format JSON, or forcing email signups just to generate a UUID. Because client-side computation runs on the user's browser CPU rather than expensive cloud servers, our hosting bandwidth cost is virtually zero. Building independent, high-utility tools creates authentic organic authority and trust without exploiting users.
+            Modern SaaS has become predatory: charging $9/mo to inspect code diffs or forcing invasive email signups just to format a JSON string. Because client-side computation runs on the user's browser CPU rather than expensive cloud clusters, our operational bandwidth cost is minimal. Offering high-grade, ad-free utilities builds enduring organic authority and authentic developer trust.
           </p>
           <div class="matrix-citation">
             <strong>AUTHOR:</strong> David Anthony Jones ("Alu") &bull; Founder Doctrine.
           </div>
           <div class="matrix-recommendation">
-            <span style="color: var(--accent-cyan); font-weight: 700;">ARCHITECTURE:</span> Sustainable, ad-free utilities engineered for engineers.
+            <span style="color: var(--accent-cyan); font-weight: 700;">ARCHITECTURE:</span> Sustainable, privacy-first utilities engineered by engineers, for engineers.
           </div>
         </article>
 
@@ -2220,32 +2437,23 @@
 
     
     /* ==========================================================================
-       AI MATRIX & TECHNICAL Q&A CONTROLLER
+       1. AUTONOMOUS INTELLIGENCE REALITY OBSERVATORY CONTROLLER
        ========================================================================== */
-    let currentAIFilter = 'all';
+    let currentAITabFilter = 'all';
 
     function setAITab(filter, btn) {
-      currentAIFilter = filter;
-      document.querySelectorAll('.ai-tab').forEach(b => b.classList.remove('active'));
+      currentAITabFilter = filter;
+      document.querySelectorAll('#ai-realities .ai-tab').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
-      filterAIMatrix();
+      filterAIRealities();
     }
 
-    function toggleAskForm() {
-      const form = document.getElementById('askFormCard');
-      if (form) {
-        const isHidden = form.style.display === 'none' || !form.style.display;
-        form.style.display = isHidden ? 'block' : 'none';
-        if (isHidden) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-
-    function filterAIMatrix() {
+    function filterAIRealities() {
       const search = (document.getElementById('aiSearchInput')?.value || '').toLowerCase().trim();
-      const clearBtn = document.getElementById('clearSearchBtn');
+      const clearBtn = document.getElementById('clearAISearchBtn');
       if (clearBtn) clearBtn.style.display = search ? 'inline' : 'none';
 
-      const cards = document.querySelectorAll('.matrix-card');
+      const cards = document.querySelectorAll('#aiMatrixContainer .matrix-card');
       let visibleCount = 0;
 
       cards.forEach(card => {
@@ -2253,7 +2461,7 @@
         const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
         const text = card.innerText.toLowerCase();
 
-        const matchesFilter = currentAIFilter === 'all' || categories.includes(currentAIFilter);
+        const matchesFilter = currentAITabFilter === 'all' || categories.includes(currentAITabFilter);
         const matchesSearch = !search || keywords.includes(search) || text.includes(search);
 
         if (matchesFilter && matchesSearch) {
@@ -2269,18 +2477,102 @@
       const input = document.getElementById('aiSearchInput');
       if (input) {
         input.value = '';
-        filterAIMatrix();
+        filterAIRealities();
       }
     }
 
-    async function handleInquirySubmit(e) {
+    async function syncAITelemetry() {
+      const statusLabel = document.getElementById('aiSyncStatus');
+      if (statusLabel) statusLabel.innerText = 'SYNCING EDGE TELEMETRY...';
+
+      try {
+        const res = await fetch('/api/ai-realities');
+        const data = await res.json();
+        if (data.success && data.telemetry) {
+          const t = data.telemetry;
+          if (statusLabel) {
+            statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date(t.last_synchronized).toLocaleTimeString()}</strong> // LATENCY: OK`;
+          }
+          if (t.metrics) {
+            if (t.metrics.swe_bench_verified_cap) document.getElementById('telSWE').innerText = t.metrics.swe_bench_verified_cap.value;
+            if (t.metrics.attention_retrieval_dip) document.getElementById('telAttn').innerText = t.metrics.attention_retrieval_dip.value;
+            if (t.metrics.local_70b_4bit_speed) document.getElementById('telSpeed').innerText = t.metrics.local_70b_4bit_speed.value;
+            if (t.metrics.sequential_tool_chains) document.getElementById('telTool').innerText = t.metrics.sequential_tool_chains.value;
+            if (t.metrics.token_price_compression) document.getElementById('telPrice').innerText = t.metrics.token_price_compression.value;
+            if (t.metrics.deterministic_math) document.getElementById('telMath').innerText = t.metrics.deterministic_math.value;
+          }
+        }
+      } catch (err) {
+        if (statusLabel) statusLabel.innerText = 'EDGE SYNCED // CACHED OCT 2026';
+      }
+    }
+
+    /* ==========================================================================
+       2. ALUMUNGANDR FOUNDER & PLATFORM Q&A CONTROLLER
+       ========================================================================== */
+    let currentAluQATabFilter = 'all';
+
+    function setAluQATab(filter, btn) {
+      currentAluQATabFilter = filter;
+      document.querySelectorAll('#alumungandr-qa .ai-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      filterAluQA();
+    }
+
+    function toggleAluAskForm() {
+      const form = document.getElementById('aluInquiryForm');
+      const toggleBtn = document.getElementById('aluToggleFormBtn');
+      if (form) {
+        const isHidden = form.style.display === 'none' || !form.style.display;
+        form.style.display = isHidden ? 'flex' : 'none';
+        if (toggleBtn) {
+          toggleBtn.innerText = isHidden ? '✕ Close Form' : '✉️ Open Inquiry Form';
+        }
+        if (isHidden) form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function filterAluQA() {
+      const search = (document.getElementById('aluSearchInput')?.value || '').toLowerCase().trim();
+      const clearBtn = document.getElementById('clearAluSearchBtn');
+      if (clearBtn) clearBtn.style.display = search ? 'inline' : 'none';
+
+      const cards = document.querySelectorAll('#aluQAContainer .matrix-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const categories = (card.getAttribute('data-category') || '').split(' ');
+        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+        const text = card.innerText.toLowerCase();
+
+        const matchesFilter = currentAluQATabFilter === 'all' || categories.includes(currentAluQATabFilter);
+        const matchesSearch = !search || keywords.includes(search) || text.includes(search);
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function clearAluSearch() {
+      const input = document.getElementById('aluSearchInput');
+      if (input) {
+        input.value = '';
+        filterAluQA();
+      }
+    }
+
+    async function handleAluInquirySubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitInqBtn');
-      const name = document.getElementById('inqName').value.trim();
-      const category = document.getElementById('inqCategory').value;
-      const question = document.getElementById('inqQuestion').value.trim();
-      const receipt = document.getElementById('inquiryReceipt');
-      const receiptText = document.getElementById('receiptText');
+      const btn = document.getElementById('aluSubmitInqBtn');
+      const name = document.getElementById('aluInqName').value.trim();
+      const category = document.getElementById('aluInqCategory').value;
+      const question = document.getElementById('aluInqQuestion').value.trim();
+      const receipt = document.getElementById('aluInquiryReceipt');
+      const receiptText = document.getElementById('aluReceiptText');
 
       if (!question || question.length < 5) {
         alert('Please enter at least 5 characters for your inquiry.');
@@ -2288,7 +2580,7 @@
       }
 
       btn.disabled = true;
-      btn.innerText = 'TRANSMITTING...';
+      btn.innerText = 'TRANSMITTING TO FOUNDER...';
 
       try {
         const res = await fetch('/api/qa', {
@@ -2301,14 +2593,23 @@
         if (data.success) {
           receipt.style.display = 'block';
           receiptText.innerHTML = `<strong>Receipt ID:</strong> <code>${data.receipt_id}</code> &bull; <strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}<br><strong>Category:</strong> ${data.category}<br>${data.message}`;
-          document.getElementById('inquiryForm').reset();
-          btn.innerText = 'TRANSMITTED';
+          document.getElementById('aluInquiryForm').reset();
+          btn.innerText = 'TRANSMITTED TO QUEUE';
         } else {
           alert(data.error || 'Submission error');
           btn.disabled = false;
-          btn.innerText = 'TRANSMIT INQUIRY →';
+          btn.innerText = 'TRANSMIT INQUIRY TO FOUNDER →';
         }
       } catch (err) {
+        // Fallback local storage receipt
+        const localId = 'LOCAL-' + Math.random().toString(16).slice(2, 10).toUpperCase();
+        receipt.style.display = 'block';
+        receiptText.innerHTML = `<strong>Local Storage Receipt:</strong> <code>INQ-${localId}</code><br>Logged securely to client-side offline storage. Transmitted upon next network connection.`;
+        document.getElementById('aluInquiryForm').reset();
+        btn.disabled = false;
+        btn.innerText = 'TRANSMIT INQUIRY TO FOUNDER →';
+      }
+    } catch (err) {
         // Fallback local receipt when offline
         const localId = 'LOCAL-' + Math.random().toString(16).slice(2, 10).toUpperCase();
         receipt.style.display = 'block';

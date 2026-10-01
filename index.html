@@ -737,7 +737,7 @@
     }
 
     .matrix-card-flip-wrap {
-      perspective: 1400px;
+      perspective: 1600px;
       width: 100%;
       min-height: 610px;
       display: flex;
@@ -746,12 +746,88 @@
       -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
       user-select: none;
       -webkit-user-select: none;
-      border-radius: 14px;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+      border-radius: 16px;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+      animation: cardLevitate 6s ease-in-out infinite;
     }
 
+    /* Staggered organic floating rhythm across the cards */
+    .matrix-card-flip-wrap:nth-child(1) { animation-delay: 0s; }
+    .matrix-card-flip-wrap:nth-child(2) { animation-delay: -1.5s; }
+    .matrix-card-flip-wrap:nth-child(3) { animation-delay: -3s; }
+    .matrix-card-flip-wrap:nth-child(4) { animation-delay: -4.5s; }
+    .matrix-card-flip-wrap:nth-child(5) { animation-delay: -0.7s; }
+    .matrix-card-flip-wrap:nth-child(6) { animation-delay: -2.2s; }
+    .matrix-card-flip-wrap:nth-child(7) { animation-delay: -3.7s; }
+    .matrix-card-flip-wrap:nth-child(8) { animation-delay: -5.1s; }
+
+    @keyframes cardLevitate {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    /* Obvious physical ground shadow projected beneath each floating card */
+    .matrix-card-flip-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 10%;
+      width: 80%;
+      height: 20px;
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.35) 0%, rgba(0, 0, 0, 0.75) 45%, transparent 75%);
+      filter: blur(10px);
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      animation: shadowPulse 6s ease-in-out infinite;
+    }
+
+    .matrix-card-flip-wrap:nth-child(1)::after { animation-delay: 0s; }
+    .matrix-card-flip-wrap:nth-child(2)::after { animation-delay: -1.5s; }
+    .matrix-card-flip-wrap:nth-child(3)::after { animation-delay: -3s; }
+    .matrix-card-flip-wrap:nth-child(4)::after { animation-delay: -4.5s; }
+    .matrix-card-flip-wrap:nth-child(5)::after { animation-delay: -0.7s; }
+    .matrix-card-flip-wrap:nth-child(6)::after { animation-delay: -2.2s; }
+    .matrix-card-flip-wrap:nth-child(7)::after { animation-delay: -3.7s; }
+    .matrix-card-flip-wrap:nth-child(8)::after { animation-delay: -5.1s; }
+
+    @keyframes shadowPulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+      50% {
+        transform: scale(0.85);
+        opacity: 0.4;
+        filter: blur(14px);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.85;
+      }
+    }
+
+    /* Obvious Floating Elevation on Hover: Ascends higher with enhanced luminescence */
     .matrix-card-flip-wrap:hover {
-      transform: translateY(-4px);
+      transform: translateY(-16px) scale(1.02);
+      animation-play-state: paused;
+    }
+
+    .matrix-card-flip-wrap:hover::after {
+      bottom: -26px;
+      transform: scale(1.15);
+      background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.55) 0%, rgba(0, 0, 0, 0.9) 50%, transparent 80%);
+      filter: blur(14px);
+      animation-play-state: paused;
     }
 
     .matrix-flip-card {
@@ -760,7 +836,7 @@
       min-height: 610px;
       transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
-      border-radius: 14px;
+      border-radius: 16px;
     }
 
     .matrix-flip-card.is-flipped {
@@ -774,39 +850,40 @@
       height: 100%;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65);
       box-sizing: border-box;
+      /* Obvious floating elevation shadows: multi-layer deep ambient drop shadow + cyan glow + specular top rim */
+      box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.9), 0 10px 30px -8px rgba(56, 189, 248, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.18);
     }
 
-    /* FRONT FACE: Technical Telemetry & Benchmarks */
+    /* FRONT FACE: Observational Benchmark */
     .card-front {
-      background: rgba(14, 16, 22, 0.96);
-      border: var(--border-dashed);
+      background: linear-gradient(170deg, rgba(16, 20, 30, 0.96) 0%, rgba(10, 13, 20, 0.98) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
       transform: rotateY(0deg);
     }
 
     .matrix-card-flip-wrap:hover .card-front {
-      border-color: rgba(56, 189, 248, 0.45);
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.75);
+      box-shadow: 0 34px 75px -10px rgba(0, 0, 0, 0.96), 0 0 45px rgba(56, 189, 248, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
     }
 
-    /* BACK FACE: Layman & Everyday Explanation */
+    /* BACK FACE: Practical Perspective */
     .card-back {
-      background: linear-gradient(145deg, rgba(14, 18, 28, 0.98), rgba(20, 26, 40, 0.98));
-      border: 1px solid rgba(56, 189, 248, 0.45);
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.18);
+      background: linear-gradient(160deg, rgba(18, 24, 38, 0.98) 0%, rgba(11, 15, 26, 0.98) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.92), 0 0 35px rgba(56, 189, 248, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
       transform: rotateY(180deg);
     }
 
     .matrix-card-flip-wrap:hover .card-back {
-      border-color: rgba(56, 189, 248, 0.75);
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 35px rgba(56, 189, 248, 0.3);
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 34px 75px -10px rgba(0, 0, 0, 0.96), 0 0 50px rgba(56, 189, 248, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.35);
     }
 
     /* Visual Diagram Container - High Contrast & Crisp Visibility */
@@ -1726,7 +1803,7 @@
       <div class="header-right-action">
         <div class="header-tagline"><span style="color: var(--accent-coral); font-weight: 700; letter-spacing: 0.12em;">&ldquo;BEYOND LOGIC IS TRUTH&rdquo;</span> &bull; 20 TOOLS &bull; STORE (11)</div>
                         <a href="#ai-realities" class="btn-ticket-action">
-          AI OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
+          AI DEVELOPMENT OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
         </a>
         <a href="#qa-section" class="btn-ticket-action">
           Q&amp;A <span style="color: var(--accent-coral);">&darr;</span>
@@ -1810,7 +1887,7 @@
     <div class="hero-bottom-wrap">
       <h1 class="hero-massive-title">ALUMUNGANDR&reg;</h1>
       <a href="#ai-realities" class="hero-explore-btn">
-        / EXPLORE AI OBSERVATORY &darr;
+        / EXPLORE AI DEVELOPMENT OBSERVATORY &darr;
       </a>
     </div>
   </section>
@@ -1844,23 +1921,23 @@
 
     <div class="ticker-wrap">
     <div class="ticker-content">
-      <div class="ticker-item"><span>///</span> VERIFIED AI CAPABILITY MATRIX</div>
-      <div class="ticker-item"><span>///</span> SWE-BENCH VERIFIED: 65.2% RESOLUTION CAP</div>
-      <div class="ticker-item"><span>///</span> ATTENTION DILUTION OVER 64K TOKENS</div>
-      <div class="ticker-item"><span>///</span> LOCAL LLM 4-BIT QUANTIZATION (28 TOK/S)</div>
+      <div class="ticker-item"><span>///</span> AI DEVELOPMENT OBSERVATORY</div>
       <div class="ticker-item"><span>///</span> 100% PRIVATE IN-BROWSER EXECUTION</div>
       <div class="ticker-item"><span>///</span> 20 FREE STANDALONE UTILITIES</div>
       <div class="ticker-item"><span>///</span> REAL-WORLD FOUNDER TECHNICAL Q&amp;A</div>
       <div class="ticker-item"><span>///</span> ZERO TRACKING TELEMETRY</div>
+      <div class="ticker-item"><span>///</span> PEER-TO-PEER WEBRTC COMMUNICATOR</div>
+      <div class="ticker-item"><span>///</span> INSTANT INVOICE &amp; EXPORT ENGINE</div>
+      <div class="ticker-item"><span>///</span> OFFLINE CULINARY &amp; ASTROPHYSICS APPS</div>
       <!-- Loop -->
-      <div class="ticker-item"><span>///</span> VERIFIED AI CAPABILITY MATRIX</div>
-      <div class="ticker-item"><span>///</span> SWE-BENCH VERIFIED: 65.2% RESOLUTION CAP</div>
-      <div class="ticker-item"><span>///</span> ATTENTION DILUTION OVER 64K TOKENS</div>
-      <div class="ticker-item"><span>///</span> LOCAL LLM 4-BIT QUANTIZATION (28 TOK/S)</div>
+      <div class="ticker-item"><span>///</span> AI DEVELOPMENT OBSERVATORY</div>
       <div class="ticker-item"><span>///</span> 100% PRIVATE IN-BROWSER EXECUTION</div>
       <div class="ticker-item"><span>///</span> 20 FREE STANDALONE UTILITIES</div>
       <div class="ticker-item"><span>///</span> REAL-WORLD FOUNDER TECHNICAL Q&amp;A</div>
       <div class="ticker-item"><span>///</span> ZERO TRACKING TELEMETRY</div>
+      <div class="ticker-item"><span>///</span> PEER-TO-PEER WEBRTC COMMUNICATOR</div>
+      <div class="ticker-item"><span>///</span> INSTANT INVOICE &amp; EXPORT ENGINE</div>
+      <div class="ticker-item"><span>///</span> OFFLINE CULINARY &amp; ASTROPHYSICS APPS</div>
     </div>
   </div>
   </div>
@@ -1868,15 +1945,15 @@
         <main class="container">
     
     <!-- ==========================================================================
-         SPECIAL TOOL: AUTONOMOUS INTELLIGENCE REALITIES & CAPABILITY INDEX
+         SPECIAL TOOL: AI DEVELOPMENT OBSERVATORY & CAPABILITY INDEX
          An automated public intelligence tool tracking empirical AI capabilities and limits
          ========================================================================== -->
     <section id="ai-realities" style="padding: 48px 0 32px; scroll-margin-top: 100px;">
       
       <!-- Section Header (Centered) -->
       <div class="section-header-modern reveal-on-scroll">
-        <div class="section-tag">// SPECIAL TOOL &bull; AUTOMATED AI CAPABILITY REALITY MATRIX</div>
-        <h2 class="section-heading-huge">Autonomous Intelligence Realities &amp; Capability Index</h2>
+        <div class="section-tag">// SPECIAL TOOL &bull; AI DEVELOPMENT OBSERVATORY</div>
+        <h2 class="section-heading-huge">AI Development Observatory &amp; Capability Index</h2>
         <p class="section-desc">
           An automated public observatory documenting empirical model benchmarks, physical compute constraints, context degradation, and verifiable capabilities of modern Artificial Intelligence in the real world. 100% verifiable data, zero hype.
         </p>
@@ -1886,7 +1963,7 @@
       <div class="obs-status-bar reveal-on-scroll">
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
           <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);"></span>
-          <span style="color: #fff; font-weight: 700;">OBSERVATORY ENGINE LIVE</span>
+          <span style="color: #fff; font-weight: 700;">AI DEVELOPMENT OBSERVATORY LIVE</span>
           <span>&bull;</span>
           <span id="aiSyncStatus">EDGE API SYNCED: OCTOBER 2026</span>
           <span>&bull;</span>
@@ -1899,55 +1976,15 @@
         </div>
       </div>
 
-      <!-- Quick Metrics Telemetry Ribbon (6 Live Empirical Realities) -->
-      <div class="telemetry-ribbon reveal-on-scroll">
-        <div class="telemetry-item">
-          <div class="tel-label">SWE-BENCH VERIFIED CAP</div>
-          <div class="tel-val" style="color: var(--accent-cyan);" id="telSWE">65.2%</div>
-          <div class="tel-sub">Drop on multi-file state sync</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="tel-label">ATTENTION RETRIEVAL DIP</div>
-          <div class="tel-val" style="color: var(--accent-coral);" id="telAttn">-28.4%</div>
-          <div class="tel-sub">Middle 40%-70% context depth</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="tel-label">LOCAL 70B 4-BIT SPEED</div>
-          <div class="tel-val" style="color: var(--accent-green);" id="telSpeed">28 tok/s</div>
-          <div class="tel-sub">RTX 4090 / M3 Max workstation</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="tel-label">SEQUENTIAL TOOL CHAINS</div>
-          <div class="tel-val" style="color: #f59e0b;" id="telTool">&gt;40% Err</div>
-          <div class="tel-sub">Unchecked chains &gt;8 tool calls</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="tel-label">TOKEN PRICE COMPRESSION</div>
-          <div class="tel-val" style="color: var(--accent-cyan);" id="telPrice">-82% / 1M</div>
-          <div class="tel-sub">Prompt prefix caching savings</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="tel-label">DETERMINISTIC LOGIC</div>
-          <div class="tel-val" style="color: var(--accent-green);" id="telMath">0% Error</div>
-          <div class="tel-sub">Delegated to SAT/SMT/REPL runtime</div>
-        </div>
-      </div>
-
-      <!-- Interactive Controls: AI Search & Category Tabs (Centered) -->
-      <div class="ai-controls-bar reveal-on-scroll">
-        <div class="ai-search-box">
-          <span style="color: var(--text-muted); font-size: 14px;">🔍</span>
-          <input type="text" id="aiSearchInput" placeholder="Search verified AI capabilities, context degradation, SWE-bench limits, token economics, or local compute..." oninput="filterAIRealities()">
-          <button class="clear-search-btn" id="clearAISearchBtn" onclick="clearAISearch()" style="display:none;">&times;</button>
-        </div>
-
-        <div class="ai-filter-tabs">
-          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All AI Realities (<span id="countAIAll">8</span>)</button>
+      <!-- Interactive Category Filter Tabs (Centered) -->
+      <div class="ai-controls-bar reveal-on-scroll" style="justify-content: center; margin: 24px auto 36px; max-width: 1100px;">
+        <div class="ai-filter-tabs" style="justify-content: center;">
+          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All Realities (<span id="countAIAll">8</span>)</button>
           <button class="ai-tab" data-filter="coding" onclick="setAITab('coding', this)">⚡ Coding &amp; SWE-bench (<span id="countAICoding">1</span>)</button>
           <button class="ai-tab" data-filter="attention" onclick="setAITab('attention', this)">🧠 Context &amp; Attention (<span id="countAIAttn">2</span>)</button>
           <button class="ai-tab" data-filter="tooling" onclick="setAITab('tooling', this)">⚙️ Agentic Tool Cascades (<span id="countAITools">1</span>)</button>
-          <button class="ai-tab" data-filter="local" onclick="setAITab('local', this)">💻 Local Workstation Compute (<span id="countAILocal">2</span>)</button>
-          <button class="ai-tab" data-filter="economics" onclick="setAITab('economics', this)">📊 Compute &amp; Economics (<span id="countAIEcon">1</span>)</button>
+          <button class="ai-tab" data-filter="local" onclick="setAITab('local', this)">💻 Local Compute (<span id="countAILocal">2</span>)</button>
+          <button class="ai-tab" data-filter="economics" onclick="setAITab('economics', this)">📊 Token Economics (<span id="countAIEcon">1</span>)</button>
           <button class="ai-tab" data-filter="logic" onclick="setAITab('logic', this)">📐 Mathematical Logic (<span id="countAILogic">1</span>)</button>
         </div>
       </div>
@@ -1964,9 +2001,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-benchmark">EMPIRICAL BENCHMARK</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.4);">65.2% Verified Cap</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-01')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: Git Branching & Multi-File Barrier -->
@@ -2004,20 +2038,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.18); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-01')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box">
@@ -2036,7 +2067,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2053,9 +2084,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">ATTENTION REALITY</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.4);">-15% to -35% Mid-Depth Accuracy</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-02')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: U-Shaped Attention Dip -->
@@ -2088,20 +2116,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.18); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-02')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-coral);">
@@ -2120,7 +2145,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2137,9 +2162,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">AGENTIC TOOLING</span>
                 <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">&gt;40% Compound Error on &gt;8 Steps</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-03')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: Sequential Tool Cascade -->
@@ -2188,20 +2210,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid #f59e0b;">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-03')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: #f59e0b;">
@@ -2220,7 +2239,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2237,9 +2256,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-local">LOCAL COMPUTE</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.4);">22–38 Tok/sec Workstation</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-04')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: Local Silicon Die & Zero Egress -->
@@ -2281,20 +2297,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-04')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-green);">
@@ -2313,7 +2326,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2330,9 +2343,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-benchmark">ECONOMIC TELEMETRY</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-cyan); border-color: rgba(56, 189, 248, 0.4);">82% Price Compression</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-05')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: Token Pricing & Prefix Cache Lock -->
@@ -2368,20 +2378,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(56, 189, 248, 0.18); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-05')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box">
@@ -2400,7 +2407,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2417,9 +2424,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">MATHEMATICAL LOGIC</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-coral); border-color: rgba(222, 88, 73, 0.4);">Non-Zero Arithmetic Error Rate</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-06')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: LLM Probability vs Formal SMT Solver -->
@@ -2455,20 +2459,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(222, 88, 73, 0.18); color: var(--accent-coral); border: 1px solid var(--accent-coral);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-06')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-coral);">
@@ -2487,7 +2488,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2504,9 +2505,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-limit">HALLUCINATION CASCADE</span>
                 <span class="matrix-metric-pill" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">Context Poisoning Risk</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-07')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: Error Feedback Loop & False Anchors -->
@@ -2549,20 +2547,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid #f59e0b;">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-07')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: #f59e0b;">
@@ -2581,7 +2576,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -2598,9 +2593,6 @@
               <div class="matrix-badge-row">
                 <span class="matrix-tag tag-local">MULTIMODAL LIMIT</span>
                 <span class="matrix-metric-pill" style="color: var(--accent-green); border-color: rgba(16, 185, 129, 0.4);">Patch Downsampling</span>
-                <button class="flip-toggle-btn" onclick="toggleCardFlip('air-08')" title="Flip for everyday explanation">
-                  💡 Layman View ↺
-                </button>
               </div>
 
               <!-- High-Contrast SVG Visual Diagram: 1:1 Pixel Grid vs ViT Patching -->
@@ -2643,20 +2635,17 @@
               </div>
 
               <div class="flip-hint-strip">
-                <span>💡 Tap card anywhere for layman explanation</span>
+                <span>↺ Tap card anywhere to flip</span>
                 <span>↺</span>
               </div>
             </article>
 
-            <!-- Back Face: Simple Layman / Everyday Explanation -->
+            <!-- Back Face: Practical Perspective -->
             <article class="card-face card-back">
               <div class="layman-badge-row">
                 <span class="matrix-tag" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green);">
-                  💡 EVERYDAY EXPLANATION
+                  💡 PRACTICAL PERSPECTIVE
                 </span>
-                <button class="flip-toggle-btn flip-back-btn" onclick="toggleCardFlip('air-08')" title="Return to technical data">
-                  ← Technical Data ↺
-                </button>
               </div>
 
               <div class="layman-analogy-box" style="border-left-color: var(--accent-green);">
@@ -2675,7 +2664,7 @@
               </div>
 
               <div class="flip-hint-strip back-hint">
-                <span>← Tap card anywhere to return to technical data</span>
+                <span>↺ Tap card anywhere to flip back</span>
                 <span>↺</span>
               </div>
             </article>
@@ -3302,36 +3291,20 @@
     }
 
     function filterAIRealities() {
-      const search = (document.getElementById('aiSearchInput')?.value || '').toLowerCase().trim();
-      const clearBtn = document.getElementById('clearAISearchBtn');
-      if (clearBtn) clearBtn.style.display = search ? 'inline' : 'none';
-
       const cards = document.querySelectorAll('#aiMatrixContainer .matrix-card-flip-wrap');
       let visibleCount = 0;
 
       cards.forEach(card => {
         const categories = (card.getAttribute('data-category') || '').split(' ');
-        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
-        const text = card.innerText.toLowerCase();
-
         const matchesFilter = currentAITabFilter === 'all' || categories.includes(currentAITabFilter);
-        const matchesSearch = !search || keywords.includes(search) || text.includes(search);
 
-        if (matchesFilter && matchesSearch) {
+        if (matchesFilter) {
           card.style.display = 'flex';
           visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
-    }
-
-    function clearAISearch() {
-      const input = document.getElementById('aiSearchInput');
-      if (input) {
-        input.value = '';
-        filterAIRealities();
-      }
     }
 
     async function syncAITelemetry() {
@@ -3346,14 +3319,8 @@
           if (statusLabel) {
             statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date(t.last_synchronized).toLocaleTimeString()}</strong> // LATENCY: OK`;
           }
-          if (t.metrics) {
-            if (t.metrics.swe_bench_verified_cap) document.getElementById('telSWE').innerText = t.metrics.swe_bench_verified_cap.value;
-            if (t.metrics.attention_retrieval_dip) document.getElementById('telAttn').innerText = t.metrics.attention_retrieval_dip.value;
-            if (t.metrics.local_70b_4bit_speed) document.getElementById('telSpeed').innerText = t.metrics.local_70b_4bit_speed.value;
-            if (t.metrics.sequential_tool_chains) document.getElementById('telTool').innerText = t.metrics.sequential_tool_chains.value;
-            if (t.metrics.token_price_compression) document.getElementById('telPrice').innerText = t.metrics.token_price_compression.value;
-            if (t.metrics.deterministic_math) document.getElementById('telMath').innerText = t.metrics.deterministic_math.value;
-          }
+        } else if (statusLabel) {
+          statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date().toLocaleTimeString()}</strong> // 8 EMPIRICAL ANALYSES`;
         }
       } catch (err) {
         if (statusLabel) statusLabel.innerText = 'EDGE SYNCED // CACHED OCT 2026';

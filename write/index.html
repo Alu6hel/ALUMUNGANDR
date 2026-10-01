@@ -285,12 +285,12 @@
       .preview-pane * { color: #000 !important; }
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
-          <header class="site-header">
+            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -517,8 +517,8 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     }
 
     function exportHtml() {
-      const docHtml = `<!DOCTYPE html><html><head><title>${currentDocId}</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}</style>  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">
-</head><body>${previewOut.innerHTML}  <script src="/assets/nav.js?v=20261001c" defer></script>
+      const docHtml = `<!DOCTYPE html><html><head><title>${currentDocId}</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}</style>  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+</head><body>${previewOut.innerHTML}  <script src="/assets/nav.js?v=20261001d" defer></script>
 </body></html>`;
       const blob = new Blob([docHtml], { type: 'text/html' });
       const a = document.createElement('a');
@@ -581,6 +581,6 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     }
     renderGlyphs();
   </script>
-  <script src="/assets/nav.js?v=20261001c" defer></script>
+  <script src="/assets/nav.js?v=20261001d" defer></script>
 </body>
 </html>

@@ -876,6 +876,313 @@ html[data-theme="paper"] .ticker-item {
 }
 
 /* ==========================================================================
+   PAPER THEME: STUDIO, WORKBENCH & INVOICE SUITE (High Daylight Cohesion)
+   ========================================================================== */
+html[data-theme="paper"] .studio-container {
+  background: #f8f9fa !important;
+}
+
+html[data-theme="paper"] .editor-pane {
+  background: #f8f9fa !important;
+  border-right: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .preview-pane {
+  background: #e2e8f0 !important;
+  background-image: radial-gradient(circle, rgba(15, 23, 42, 0.09) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+}
+
+html[data-theme="paper"] .invoice-sheet {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-theme="paper"] .form-section {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .form-section.highlight-glow {
+  border-color: #93c5fd !important;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08) !important;
+}
+
+html[data-theme="paper"] .section-title {
+  color: #0b0f19 !important;
+  font-weight: 800 !important;
+}
+
+html[data-theme="paper"] .section-tag {
+  color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .field-label {
+  color: #374151 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="paper"] .toggle-title {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .toggle-sub {
+  color: #6b7280 !important;
+}
+
+html[data-theme="paper"] .type-switcher {
+  background: #f1f5f9 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .type-btn {
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .type-btn.active {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3) !important;
+}
+
+html[data-theme="paper"] .styling-bar {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .color-picker-wrap {
+  color: #374151 !important;
+}
+
+html[data-theme="paper"] .currency-select {
+  background: #ffffff !important;
+  color: #0b0f19 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .btn-quick {
+  background: #f8fafc !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .btn-quick:hover {
+  background: #f1f5f9 !important;
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .btn-quick.highlight-autofill {
+  background: #e0f2fe !important;
+  border-color: #bae6fd !important;
+  color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .btn-quick.highlight-wa {
+  background: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #065f46 !important;
+}
+
+html[data-theme="paper"] .client-vault-bar {
+  background: #f0f9ff !important;
+  border: 1px dashed #7dd3fc !important;
+}
+
+html[data-theme="paper"] .client-vault-select {
+  background: #ffffff !important;
+  color: #0b0f19 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+html[data-theme="paper"] .btn-vault-action {
+  background: #e0f2fe !important;
+  color: #0284c7 !important;
+  border: 1px solid #bae6fd !important;
+}
+
+html[data-theme="paper"] .trade-tab-pill {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .trade-tab-pill.active {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .trade-item-chip {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+html[data-theme="paper"] .btn-add-item {
+  background: #f0f9ff !important;
+  border: 1px dashed #7dd3fc !important;
+  color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .btn-save-catalog {
+  background: #ecfdf5 !important;
+  border: 1px dashed #a7f3d0 !important;
+  color: #065f46 !important;
+}
+
+html[data-theme="paper"] .btn-pill-term {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+html[data-theme="paper"] #depositLockDisplay {
+  background: #f0fdf4 !important;
+  color: #166534 !important;
+  border: 1px solid #86efac !important;
+}
+
+html[data-theme="paper"] .line-items-header {
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .line-item-total {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .line-item-row div {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .slider-ui {
+  background-color: #d1d5db !important;
+}
+
+html[data-theme="paper"] input:checked + .slider-ui {
+  background-color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .hero-banner {
+  background: #f1f5f9 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html[data-theme="paper"] .hero-text h1 {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .hero-text p {
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .badge-pill {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+}
+
+html[data-theme="paper"] .badge-pill.highlight {
+  background: #e0f2fe !important;
+  border-color: #bae6fd !important;
+  color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .hero-tag {
+  background: #e0f2fe !important;
+  border-color: #bae6fd !important;
+  color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .overdue-simulator-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html[data-theme="paper"] #lateFeeStatusBadge {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+  color: #065f46 !important;
+}
+
+html[data-theme="paper"] .mobile-tab-switch {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .mobile-tab-btn {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .mobile-tab-btn.active {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .modal-card {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #0b0f19 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2) !important;
+}
+
+html[data-theme="paper"] .modal-header {
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+html[data-theme="paper"] .modal-header h3 {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .modal-close {
+  color: #4b5563 !important;
+}
+
+html[data-theme="paper"] .canvas-viewport {
+  background: #e5e7eb !important;
+  border-color: #d1d5db !important;
+}
+
+html[data-theme="paper"] .vault-bar {
+  background: #f1f5f9 !important;
+  border-bottom: 1px solid #d1d5db !important;
+}
+
+html[data-theme="paper"] .doc-select {
+  background: #ffffff !important;
+  color: #0b0f19 !important;
+  border-color: #d1d5db !important;
+}
+
+html[data-theme="paper"] .md-textarea {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .preview-content {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .draw-toolbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+html[data-theme="paper"] .draw-tool-btn {
+  color: #374151 !important;
+}
+
+html[data-theme="paper"] .draw-tool-btn.active {
+  background: #e0f2fe !important;
+  color: #0284c7 !important;
+}
+
+/* ==========================================================================
    STAGE 3: TELEMETRY AMBER / PHOSPHOR GOLD (Aerospace Cockpit HUD)
    ========================================================================== */
 html[data-theme="amber"],
@@ -1231,4 +1538,309 @@ html[data-theme="amber"] #glacialCanvas,
 html[data-theme="amber"] #heroWaveCanvas {
   filter: sepia(1) saturate(2.5) hue-rotate(-15deg) brightness(0.85);
 }
+
+/* ==========================================================================
+   AMBER THEME: STUDIO, WORKBENCH & INVOICE SUITE (Aerospace Telemetry Cohesion)
+   ========================================================================== */
+html[data-theme="amber"] .studio-container {
+  background: #090806 !important;
+}
+
+html[data-theme="amber"] .editor-pane {
+  background: #090806 !important;
+  border-right: 1px dashed rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .preview-pane {
+  background: #070604 !important;
+  background-image: radial-gradient(circle, rgba(245, 158, 11, 0.08) 1px, transparent 1px) !important;
+  background-size: 20px 20px !important;
+}
+
+html[data-theme="amber"] .invoice-sheet {
+  background: #ffffff !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.1) !important;
+}
+
+html[data-theme="amber"] .form-section {
+  background: #120f0a !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="amber"] .form-section.highlight-glow {
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.08) !important;
+}
+
+html[data-theme="amber"] .section-title {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .section-tag {
+  color: #f59e0b !important;
+}
+
+html[data-theme="amber"] .field-label {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .toggle-title {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .toggle-sub {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .type-switcher {
+  background: #16120b !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .type-btn {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .type-btn.active {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fbbf24 !important;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .styling-bar {
+  background: #120f0a !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .color-picker-wrap {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .currency-select {
+  background: #19140c !important;
+  color: #fef3c7 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .btn-quick {
+  background: #16120b !important;
+  color: #fef3c7 !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .btn-quick:hover {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #fbbf24 !important;
+}
+
+html[data-theme="amber"] .btn-quick.highlight-autofill {
+  background: rgba(245, 158, 11, 0.2) !important;
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+
+html[data-theme="amber"] .btn-quick.highlight-wa {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: #10b981 !important;
+  color: #34d399 !important;
+}
+
+html[data-theme="amber"] .client-vault-bar {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border: 1px dashed rgba(245, 158, 11, 0.35) !important;
+}
+
+html[data-theme="amber"] .client-vault-select {
+  background: #19140c !important;
+  color: #fef3c7 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .btn-vault-action {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+html[data-theme="amber"] .trade-tab-pill {
+  background: #16120b !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .trade-tab-pill.active {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fbbf24 !important;
+  border-color: #f59e0b !important;
+}
+
+html[data-theme="amber"] .trade-item-chip {
+  background: #16120b !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .btn-add-item {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border: 1px dashed rgba(245, 158, 11, 0.35) !important;
+  color: #fbbf24 !important;
+}
+
+html[data-theme="amber"] .btn-save-catalog {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px dashed rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+}
+
+html[data-theme="amber"] .btn-pill-term {
+  background: #16120b !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] #depositLockDisplay {
+  background: #19140c !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+}
+
+html[data-theme="amber"] .line-items-header {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .line-item-total {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .line-item-row div {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .slider-ui {
+  background-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] input:checked + .slider-ui {
+  background-color: #f59e0b !important;
+}
+
+html[data-theme="amber"] .hero-banner {
+  background: #100d08 !important;
+  border-bottom: 1px dashed rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .hero-text h1 {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .hero-text p {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .badge-pill {
+  background: #16120b !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+  color: #fde68a !important;
+}
+
+html[data-theme="amber"] .badge-pill.highlight {
+  background: rgba(245, 158, 11, 0.18) !important;
+  border-color: #f59e0b !important;
+  color: #fbbf24 !important;
+}
+
+html[data-theme="amber"] .hero-tag {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  color: #fbbf24 !important;
+}
+
+html[data-theme="amber"] .overdue-simulator-box {
+  background: #16120b !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+}
+
+html[data-theme="amber"] #lateFeeStatusBadge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+}
+
+html[data-theme="amber"] .mobile-tab-switch {
+  background: #090806 !important;
+  border-bottom: 1px dashed rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .mobile-tab-btn {
+  background: #14100a !important;
+  border: 1px solid rgba(245, 158, 11, 0.25) !important;
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .mobile-tab-btn.active {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fbbf24 !important;
+  border-color: #f59e0b !important;
+}
+
+html[data-theme="amber"] .modal-card {
+  background: #120f0a !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  color: #fef3c7 !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+}
+
+html[data-theme="amber"] .modal-header {
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2) !important;
+}
+
+html[data-theme="amber"] .modal-header h3 {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .modal-close {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .canvas-viewport {
+  background: #070604 !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .vault-bar {
+  background: #120f0a !important;
+  border-bottom: 1px dashed rgba(245, 158, 11, 0.25) !important;
+}
+
+html[data-theme="amber"] .doc-select {
+  background: #19140c !important;
+  color: #fef3c7 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+html[data-theme="amber"] .md-textarea {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .preview-content {
+  color: #fef3c7 !important;
+}
+
+html[data-theme="amber"] .draw-toolbar {
+  background: rgba(18, 15, 10, 0.95) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+html[data-theme="amber"] .draw-tool-btn {
+  color: #b48c58 !important;
+}
+
+html[data-theme="amber"] .draw-tool-btn.active {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fbbf24 !important;
+}
+
 

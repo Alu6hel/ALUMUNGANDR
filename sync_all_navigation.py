@@ -145,7 +145,7 @@ def get_footer_html():
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261001c" defer></script>'''
+  <script src="/assets/nav.js?v=20261001d" defer></script>'''
 
 def update_page(filename, badge):
     if not os.path.exists(filename):
@@ -157,9 +157,9 @@ def update_page(filename, badge):
 
     # 1. Ensure nav.css is included in <head> with cache-buster
     if '/assets/nav.css' not in html:
-        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">\n</head>')
+        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">\n</head>')
     else:
-        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261001c', html)
+        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261001d', html)
 
     # 2. Update Header / Nav
     header_html = get_header_html(badge)
@@ -192,12 +192,12 @@ def update_page(filename, badge):
             html = html.replace('</body>', footer_html + '\n</body>')
     else:
         if '/assets/nav.js' not in html:
-            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261001c" defer></script>\n</body>')
+            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261001d" defer></script>\n</body>')
         else:
-            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001c', html)
+            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001d', html)
 
     # Also clean up any lingering old nav.js tags
-    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001c', html)
+    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001d', html)
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html)

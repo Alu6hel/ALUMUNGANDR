@@ -828,6 +828,38 @@
       background-color: #090e18;
     }
 
+    #depositLockDisplay {
+      font-size: 0.95rem;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      color: var(--cyan);
+      padding: 0.5rem 0.8rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .line-item-total {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: right;
+    }
+
+    .overdue-simulator-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+    }
+
+    .btn-save-catalog {
+      border-color: rgba(16, 185, 129, 0.4);
+      color: var(--emerald);
+    }
+
     /* Right Preview / Document Pane */
     .preview-pane {
       background: #060911;
@@ -1455,12 +1487,12 @@
       }
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001c">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
 </head>
 <body>
 
   <!-- Top Navigation -->
-        <header class="site-header">
+          <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1766,7 +1798,7 @@
         </div>
 
         <!-- Overdue Simulator -->
-        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); padding:0.6rem 0.8rem; border-radius:8px;">
+        <div class="overdue-simulator-box">
           <div style="font-size:0.72rem; color:var(--text-subtle); display:flex; justify-content:space-between; align-items:center;">
             <span>Simulate Overdue Days (Preview):</span>
             <span id="simOverdueLabel" style="font-family:var(--font-mono); color:var(--cyan); font-weight:bold;">0 Days</span>
@@ -1813,7 +1845,7 @@
 
         <div style="display:flex; gap:0.5rem;">
           <button class="btn-add-item" style="flex:1;" onclick="addLineItem()">+ Add Line Item</button>
-          <button class="btn-add-item" style="flex:1; border-color:rgba(16,185,129,0.4); color:var(--emerald);" onclick="promptSaveCustomItem()">+ Save Item to Catalog</button>
+          <button class="btn-add-item btn-save-catalog" style="flex:1;" onclick="promptSaveCustomItem()">+ Save Item to Catalog</button>
         </div>
       </div>
 
@@ -1870,7 +1902,7 @@
           </div>
           <div class="field-wrap">
             <label class="field-label">Lock Deposit Amount</label>
-            <div id="depositLockDisplay" style="font-size:0.95rem; font-weight:900; font-family:var(--font-mono); color:var(--cyan); padding:0.5rem 0.8rem; background:rgba(0,0,0,0.6); border:1px solid rgba(0,242,254,0.25); border-radius:8px;">
+            <div id="depositLockDisplay">
               $0.00
             </div>
           </div>
@@ -2447,7 +2479,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
           <input type="text" class="field-input" value="${escapeHtml(item.desc)}" placeholder="Item description" oninput="updateItem(${idx}, 'desc', this.value)">
           <input type="number" class="field-input" value="${item.qty}" min="1" step="1" oninput="updateItem(${idx}, 'qty', this.value)">
           <input type="number" class="field-input" value="${item.rate}" min="0" step="0.01" oninput="updateItem(${idx}, 'rate', this.value)">
-          <div style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:#fff; text-align:right;">${STATE.currency}${lineTotal}</div>
+          <div class="line-item-total" style="font-family:var(--font-mono); font-size:0.85rem; font-weight:700; text-align:right;">${STATE.currency}${lineTotal}</div>
           <button class="btn-del-item" onclick="deleteLineItem(${idx})" title="Remove item">&times;</button>
         `;
         container.appendChild(row);
@@ -3177,7 +3209,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-      <footer class="site-footer">
+        <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -3229,6 +3261,6 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261001c" defer></script>
+  <script src="/assets/nav.js?v=20261001d" defer></script>
 </body>
 </html>

@@ -839,7 +839,101 @@
       border-radius: 16px;
     }
 
+    /* Base flip fallback */
     .matrix-flip-card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* ==========================================================================
+       DISTINCT 3D FLIP DYNAMICS FOR EACH INDIVIDUAL CARD
+       Each card executes a mathematically unique 3D spatial transformation
+       ========================================================================== */
+    
+    /* Card 1: Horizontal Classical Y-Axis Flip (Left-to-Right Spring) */
+    #card-inner-air-01 {
+      transition: transform 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
+    }
+    #card-inner-air-01.is-flipped {
+      transform: rotateY(180deg);
+    }
+    #card-inner-air-01 .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Card 2: Vertical Upward Coin Flip (X-Axis, Bottom-to-Top) */
+    #card-inner-air-02 {
+      transition: transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    #card-inner-air-02.is-flipped {
+      transform: rotateX(180deg);
+    }
+    #card-inner-air-02 .card-back {
+      transform: rotateX(180deg);
+    }
+
+    /* Card 3: Isometric Diagonal Corner Pivot (1, 1, 0 Axis) */
+    #card-inner-air-03 {
+      transition: transform 0.75s cubic-bezier(0.34, 1.25, 0.64, 1);
+    }
+    #card-inner-air-03.is-flipped {
+      transform: rotate3d(1, 1, 0, 180deg);
+    }
+    #card-inner-air-03 .card-back {
+      transform: rotate3d(1, 1, 0, 180deg);
+    }
+
+    /* Card 4: Counter-Clockwise Inverted Y-Axis Spin (Right-to-Left) */
+    #card-inner-air-04 {
+      transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.2, 1.05);
+    }
+    #card-inner-air-04.is-flipped {
+      transform: rotateY(-180deg);
+    }
+    #card-inner-air-04 .card-back {
+      transform: rotateY(-180deg);
+    }
+
+    /* Card 5: Downward Cascade Roll (Reverse X-Axis, Top-to-Bottom) */
+    #card-inner-air-05 {
+      transition: transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    #card-inner-air-05.is-flipped {
+      transform: rotateX(-180deg);
+    }
+    #card-inner-air-05 .card-back {
+      transform: rotateX(-180deg);
+    }
+
+    /* Card 6: Reverse Diagonal Gyroscopic Pivot (1, -1, 0 Axis) */
+    #card-inner-air-06 {
+      transition: transform 0.75s cubic-bezier(0.34, 1.25, 0.64, 1);
+    }
+    #card-inner-air-06.is-flipped {
+      transform: rotate3d(1, -1, 0, 180deg);
+    }
+    #card-inner-air-06 .card-back {
+      transform: rotate3d(1, -1, 0, 180deg);
+    }
+
+    /* Card 7: Elastic Spring Overshoot Flip (Custom Mechanical Bounce) */
+    #card-inner-air-07 {
+      transition: transform 0.85s cubic-bezier(0.68, -0.35, 0.27, 1.35);
+    }
+    #card-inner-air-07.is-flipped {
+      transform: rotateY(180deg) scale(1.02);
+    }
+    #card-inner-air-07 .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Card 8: High-Depth 3D Z-Burst Vortex Flip */
+    #card-inner-air-08 {
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #card-inner-air-08.is-flipped {
+      transform: rotateY(180deg) translateZ(40px);
+    }
+    #card-inner-air-08 .card-back {
       transform: rotateY(180deg);
     }
 
@@ -2039,7 +2133,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">HORIZONTAL 3D FLIP</span>
               </div>
             </article>
 
@@ -2068,7 +2162,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2117,7 +2211,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">VERTICAL COIN FLIP</span>
               </div>
             </article>
 
@@ -2146,7 +2240,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2211,7 +2305,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">DIAGONAL CORNER PIVOT</span>
               </div>
             </article>
 
@@ -2240,7 +2334,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2298,7 +2392,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">REVERSE Y-AXIS SPIN</span>
               </div>
             </article>
 
@@ -2327,7 +2421,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2379,7 +2473,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">DOWNWARD CASCADE ROLL</span>
               </div>
             </article>
 
@@ -2408,7 +2502,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2460,7 +2554,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">GYROSCOPIC MATRIX FLIP</span>
               </div>
             </article>
 
@@ -2489,7 +2583,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2548,7 +2642,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">ELASTIC SPRING BOUNCE</span>
               </div>
             </article>
 
@@ -2577,7 +2671,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 
@@ -2636,7 +2730,7 @@
 
               <div class="flip-hint-strip">
                 <span>↺ Tap card anywhere to flip</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">3D Z-BURST VORTEX</span>
               </div>
             </article>
 
@@ -2665,7 +2759,7 @@
 
               <div class="flip-hint-strip back-hint">
                 <span>↺ Tap card anywhere to flip back</span>
-                <span>↺</span>
+                <span style="font-size: 10px; opacity: 0.8; letter-spacing: 0.05em;">RETURN</span>
               </div>
             </article>
 

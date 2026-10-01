@@ -6,6 +6,15 @@
   "observability": {
     "enabled": true
   },
+  "kv_namespaces": [
+    {
+      "binding": "OBSERVATORY_KV",
+      "id": "94edb752459a4e2298cdad97f37c524a"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 0 * * SUN"]
+  },
   "assets": {
     "directory": "."
   }

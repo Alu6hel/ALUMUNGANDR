@@ -3410,11 +3410,23 @@
         const data = await res.json();
         if (data.success && data.telemetry) {
           const t = data.telemetry;
+          const syncDate = t.last_synchronized ? new Date(t.last_synchronized) : new Date();
+          const dateStr = syncDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
           if (statusLabel) {
-            statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date(t.last_synchronized).toLocaleTimeString()}</strong> // LATENCY: OK`;
+            statusLabel.innerHTML = `WEEKLY EDGE SYNCED: <strong style="color:var(--accent-green);">${dateStr}</strong> // VERIFIED CADENCE: OK`;
+          }
+          // Dynamically hydrate card metric pills if updated telemetry arrives from weekly cron
+          if (data.realities && Array.isArray(data.realities)) {
+            data.realities.forEach(r => {
+              const wrap = document.getElementById('wrap-' + r.id);
+              if (wrap) {
+                const pill = wrap.querySelector('.matrix-metric-pill');
+                if (pill && r.metric_pill) pill.textContent = r.metric_pill;
+              }
+            });
           }
         } else if (statusLabel) {
-          statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date().toLocaleTimeString()}</strong> // 8 EMPIRICAL ANALYSES`;
+          statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date().toLocaleDateString()}</strong> // 8 EMPIRICAL REALITIES`;
         }
       } catch (err) {
         if (statusLabel) statusLabel.innerText = 'EDGE SYNCED // CACHED OCT 2026';

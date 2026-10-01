@@ -27,6 +27,14 @@ export default {
     }
 
     // Route /api/ai-realities & /api/ai-matrix (Automated AI Capability Reality Matrix API)
+    if (url.pathname === '/api/ai-realities/sync') {
+      const syncResult = await aiRealities.runWeeklyObservatorySync(env);
+      return new Response(JSON.stringify(syncResult), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
+
     if (url.pathname === '/api/ai-realities' || url.pathname === '/api/ai-matrix') {
       if (method === 'POST' && aiRealities.onRequestPost) return aiRealities.onRequestPost({ request, env, ctx });
       if (method === 'GET' && aiRealities.onRequestGet) return aiRealities.onRequestGet({ request, env, ctx });
@@ -75,5 +83,10 @@ export default {
 
     // Fall back to Cloudflare Static Assets
     return env.ASSETS.fetch(request);
+  },
+
+  // Cloudflare Worker Cron Trigger: Runs weekly on Sunday at midnight UTC (100% Free, zero maintenance)
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(aiRealities.runWeeklyObservatorySync(env));
   }
 };

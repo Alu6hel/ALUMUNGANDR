@@ -1492,7 +1492,7 @@
 <body>
 
   <!-- Top Navigation -->
-              <header class="site-header">
+                <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1669,25 +1669,25 @@
         </div>
         <div class="field-wrap">
           <label class="field-label">Company / Contractor Name</label>
-          <input type="text" id="fromName" class="field-input" placeholder="e.g. Apex Technical Solutions LLC" oninput="handleBusinessInput()">
+          <input type="text" id="fromName" class="field-input" value="Apex Technical Solutions LLC" placeholder="e.g. Apex Technical Solutions LLC" oninput="handleBusinessInput()">
         </div>
         <div class="field-wrap">
           <label class="field-label">Trade / Specialty Subtitle</label>
-          <input type="text" id="fromTrade" class="field-input" placeholder="e.g. Systems Architecture &bull; Engineering &bull; Cloud Infrastructure" oninput="handleBusinessInput()">
+          <input type="text" id="fromTrade" class="field-input" value="Systems Architecture &bull; Engineering &bull; Cloud Infrastructure" placeholder="e.g. Systems Architecture &bull; Engineering &bull; Cloud Infrastructure" oninput="handleBusinessInput()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Email</label>
-            <input type="email" id="fromEmail" class="field-input" placeholder="billing@apexsolutions.io" oninput="handleBusinessInput()">
+            <input type="email" id="fromEmail" class="field-input" value="billing@apexsolutions.io" placeholder="billing@apexsolutions.io" oninput="handleBusinessInput()">
           </div>
           <div class="field-wrap">
             <label class="field-label">Phone / WhatsApp</label>
-            <input type="text" id="fromPhone" class="field-input" placeholder="+1 (512) 555-0199" oninput="handleBusinessInput()">
+            <input type="text" id="fromPhone" class="field-input" value="+1 (512) 555-0199" placeholder="+1 (512) 555-0199" oninput="handleBusinessInput()">
           </div>
         </div>
         <div class="field-wrap">
           <label class="field-label">Business Address &amp; EIN / Tax ID</label>
-          <input type="text" id="fromAddress" class="field-input" placeholder="100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789" oninput="handleBusinessInput()">
+          <input type="text" id="fromAddress" class="field-input" value="100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789" placeholder="100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789" oninput="handleBusinessInput()">
         </div>
       </div>
 
@@ -1696,21 +1696,21 @@
         <div class="section-title">Client Information (Billed To)</div>
         <div class="field-wrap">
           <label class="field-label">Client Name / Business</label>
-          <input type="text" id="toName" class="field-input" placeholder="e.g. Global Enterprise Dynamics Inc." oninput="renderDoc()">
+          <input type="text" id="toName" class="field-input" value="Global Enterprise Dynamics Inc." placeholder="e.g. Global Enterprise Dynamics Inc." oninput="renderDoc()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Client Phone / WhatsApp</label>
-            <input type="text" id="toPhone" class="field-input" placeholder="+1 (415) 555-0142" oninput="renderDoc()">
+            <input type="text" id="toPhone" class="field-input" value="+1 (415) 555-0142" placeholder="+1 (415) 555-0142" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
             <label class="field-label">Client Email</label>
-            <input type="email" id="toEmail" class="field-input" placeholder="accounts@gedynamics.com" oninput="renderDoc()">
+            <input type="email" id="toEmail" class="field-input" value="accounts@gedynamics.com" placeholder="accounts@gedynamics.com" oninput="renderDoc()">
           </div>
         </div>
         <div class="field-wrap">
           <label class="field-label">Job Site / Billing Address</label>
-          <input type="text" id="toAddress" class="field-input" placeholder="500 Howard Street, Suite 400, San Francisco, CA 94105" oninput="renderDoc()">
+          <input type="text" id="toAddress" class="field-input" value="500 Howard Street, Suite 400, San Francisco, CA 94105" placeholder="500 Howard Street, Suite 400, San Francisco, CA 94105" oninput="renderDoc()">
         </div>
 
         <!-- Repeat Customer Loyalty Toggle -->
@@ -1817,11 +1817,11 @@
 
         <!-- Trade Category Tabs -->
         <div class="trade-tabs-row">
-          <button type="button" class="trade-tab-pill active" onclick="switchTradeCatalog('Plumbing', this)">🔧 Plumbing</button>
+          <button type="button" class="trade-tab-pill active" onclick="switchTradeCatalog('Tech & Systems', this)">💻 Tech &amp; Systems</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Engineering Consulting', this)">⚡ Consulting</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('General Contractor', this)">🔨 Contractor</button>
+          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Plumbing', this)">🔧 Plumbing</button>
           <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Mobile Mechanic', this)">🚗 Mechanic</button>
-          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Landscaping & Yard', this)">🌿 Landscaping</button>
-          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Catering & Events', this)">🍳 Catering</button>
-          <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('General Contractor', this)">⚡ General</button>
           <button type="button" class="trade-tab-pill" onclick="switchTradeCatalog('Custom', this)">💾 Custom</button>
         </div>
 
@@ -1919,7 +1919,7 @@
 
         <div class="field-wrap">
           <label class="field-label">Direct Bank Instructions (Optional)</label>
-          <input type="text" id="paymentDetails" class="field-input" placeholder="Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N" oninput="handleBusinessInput()">
+          <input type="text" id="paymentDetails" class="field-input" value="Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N" placeholder="Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N" oninput="handleBusinessInput()">
         </div>
 
         <div class="field-wrap">
@@ -2151,14 +2151,14 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       themeColor: '#00f2fe',
       currency: '$',
       items: [
-        { desc: 'Emergency Diagnostic Scan & Leak Detection', qty: 1, rate: 180.0 },
-        { desc: 'Heavy-Duty Schedule 80 PVC Pipe & Compression Coupling', qty: 2, rate: 45.0 },
-        { desc: 'High-Pressure Hydro Jetting & Line Flush', qty: 1, rate: 140.0 }
+        { desc: 'Cloud Infrastructure Architecture & Microservices Deployment', qty: 1, rate: 850.0 },
+        { desc: 'High-Performance Database Indexing & Query Optimization', qty: 1, rate: 450.0 },
+        { desc: 'Formal Security Verification & SMT Memory Bounds Audit', qty: 1, rate: 600.0 }
       ],
       savedClients: [],
       tradeCatalog: {},
       customCatalog: [],
-      currentTrade: 'Plumbing',
+      currentTrade: 'Tech & Systems',
       simulatedOverdueDays: 0,
       activeClient: null
     };
@@ -2182,22 +2182,50 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       due.setDate(today.getDate() + 30);
       document.getElementById('docDueDate').value = due.toISOString().split('T')[0];
 
-      // Local storage restore
+      // Local storage restore & sanitize stale legacy profiles
       const saved = localStorage.getItem('alumungandr_invoice_profile');
+      let prof = null;
       if (saved) {
-        try {
-          const prof = JSON.parse(saved);
-          if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
-          if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
-          if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
-          if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
-          if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
-          if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
-          if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
-          if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
-          if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
-          if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
-        } catch(e) {}
+        try { prof = JSON.parse(saved); } catch(e) {}
+      }
+
+      // Check for legacy stale test data with Montego Bay / 876 area code / TRN / NCB bank
+      const isStaleLegacy = prof && (
+        JSON.stringify(prof).toLowerCase().includes('montego') ||
+        JSON.stringify(prof).toLowerCase().includes('876') ||
+        JSON.stringify(prof).toLowerCase().includes('trn:') ||
+        JSON.stringify(prof).toLowerCase().includes('jncbjm') ||
+        JSON.stringify(prof).toLowerCase().includes('national commercial bank')
+      );
+
+      if (prof && !isStaleLegacy) {
+        if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
+        if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
+        if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
+        if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
+        if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+        if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
+        if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
+        if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
+        if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
+        if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
+      } else {
+        // Standard American professional enterprise defaults
+        document.getElementById('fromName').value = 'Apex Technical Solutions LLC';
+        document.getElementById('fromTrade').value = 'Systems Architecture • Engineering • Cloud Infrastructure';
+        document.getElementById('fromEmail').value = 'billing@apexsolutions.io';
+        document.getElementById('fromPhone').value = '+1 (512) 555-0199';
+        document.getElementById('fromAddress').value = '100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789';
+        document.getElementById('toName').value = 'Global Enterprise Dynamics Inc.';
+        document.getElementById('toPhone').value = '+1 (415) 555-0142';
+        document.getElementById('toEmail').value = 'accounts@gedynamics.com';
+        document.getElementById('toAddress').value = '500 Howard Street, Suite 400, San Francisco, CA 94105';
+        document.getElementById('paymentMethod').value = 'card';
+        document.getElementById('paymentHandle').value = 'https://buy.stripe.com/demo_apex_pay';
+        document.getElementById('paymentDetails').value = 'Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N';
+        if (document.getElementById('taxLabel')) document.getElementById('taxLabel').value = 'Sales Tax';
+        if (document.getElementById('taxRate')) document.getElementById('taxRate').value = '8.25';
+        saveProfile(false);
       }
     }
 
@@ -2362,11 +2390,29 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       } catch(e) {
         // Fallback trade defaults
         STATE.tradeCatalog = {
+          "Tech & Systems": [
+            { desc: "Cloud Architecture & Microservices Deployment", rate: 850 },
+            { desc: "High-Performance DB Indexing & Query Tuning", rate: 450 },
+            { desc: "Formal Security Verification & SMT Memory Audit", rate: 600 },
+            { desc: "Automated CI/CD Pipeline & Worker Integration", rate: 250 }
+          ],
+          "Engineering Consulting": [
+            { desc: "Principal Systems Engineering Consulting (Day)", rate: 1200 },
+            { desc: "Full-Stack Technical Architecture Review", rate: 500 },
+            { desc: "Distributed Systems Low-Latency Profiling", rate: 650 },
+            { desc: "Zero-Telemetry Security Hardening Audit", rate: 750 }
+          ],
+          "General Contractor": [
+            { desc: "Diagnostic Site Survey & Mechanical Assessment", rate: 220 },
+            { desc: "Commercial Hardware Installation & Mount", rate: 350 },
+            { desc: "Industrial Electrical Conduit & Breaker Tie-in", rate: 420 },
+            { desc: "Facility Preventative Maintenance Service", rate: 280 }
+          ],
           "Plumbing": [
-            { desc: "Emergency Leak Detection & Repair", rate: 180 },
-            { desc: "Drain Machine Snaking & Clearing", rate: 140 },
-            { desc: "PVC Pipe & Compression Coupling", rate: 45 },
-            { desc: "Water Heater Flush / Installation", rate: 260 }
+            { desc: "Emergency Diagnostic Scan & Leak Repair", rate: 180 },
+            { desc: "Commercial Backflow Preventer Replacement", rate: 420 },
+            { desc: "High-Pressure Hydro Jetting & Line Flush", rate: 140 },
+            { desc: "Heavy-Duty Schedule 80 Compression Fitting", rate: 45 }
           ],
           "Mobile Mechanic": [
             { desc: "OBD2 Computer Diagnostic Scan", rate: 95 },
@@ -2545,10 +2591,10 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
 
       // Business info
       const fromName = document.getElementById('fromName').value.trim() || 'Apex Technical Solutions LLC';
-      const fromTrade = document.getElementById('fromTrade').value.trim();
-      const fromEmail = document.getElementById('fromEmail').value.trim();
-      const fromPhone = document.getElementById('fromPhone').value.trim();
-      const fromAddress = document.getElementById('fromAddress').value.trim();
+      const fromTrade = document.getElementById('fromTrade').value.trim() || 'Systems Architecture • Engineering • Cloud Infrastructure';
+      const fromEmail = document.getElementById('fromEmail').value.trim() || 'billing@apexsolutions.io';
+      const fromPhone = document.getElementById('fromPhone').value.trim() || '+1 (512) 555-0199';
+      const fromAddress = document.getElementById('fromAddress').value.trim() || '100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789';
 
       document.getElementById('previewFromName').textContent = fromName;
       document.getElementById('previewFromTrade').textContent = fromTrade || '';
@@ -2562,9 +2608,9 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
 
       // Client info
       const toName = document.getElementById('toName').value.trim() || 'Global Enterprise Dynamics Inc.';
-      const toEmail = document.getElementById('toEmail').value.trim();
-      const toPhone = document.getElementById('toPhone').value.trim();
-      const toAddress = document.getElementById('toAddress').value.trim();
+      const toEmail = document.getElementById('toEmail').value.trim() || 'accounts@gedynamics.com';
+      const toPhone = document.getElementById('toPhone').value.trim() || '+1 (415) 555-0142';
+      const toAddress = document.getElementById('toAddress').value.trim() || '500 Howard Street, Suite 400, San Francisco, CA 94105';
 
       document.getElementById('previewToName').textContent = toName;
       let toDetails = [toAddress, [toEmail, toPhone].filter(Boolean).join(' • ')].filter(Boolean).join('\n');
@@ -2758,7 +2804,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       // Payment Details & QR Code
       const payMethod = document.getElementById('paymentMethod').value;
       const payHandle = document.getElementById('paymentHandle').value.trim() || 'https://buy.stripe.com/demo_apex_pay';
-      const payDetails = document.getElementById('paymentDetails').value.trim();
+      const payDetails = document.getElementById('paymentDetails').value.trim() || 'Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N';
 
       let payTitle = 'Credit / Debit Card (Stripe / Link)';
       let qrPayload = payHandle;
@@ -3132,26 +3178,34 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       showToast('📑 Loaded complete professional sample invoice!');
     }
 
-    // Auto-fill & Profile save
     function autoFillMyInfo() {
       const saved = localStorage.getItem('alumungandr_invoice_profile');
       if (saved) {
         try {
           const prof = JSON.parse(saved);
-          if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
-          if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
-          if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
-          if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
-          if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
-          if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
-          if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
-          if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
-          if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
-          if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
-          renderDoc();
-          showToast('⚡ Business profile auto-filled from memory!');
-          playBeep(580);
-          return;
+          const isStaleLegacy = prof && (
+            JSON.stringify(prof).toLowerCase().includes('montego') ||
+            JSON.stringify(prof).toLowerCase().includes('876') ||
+            JSON.stringify(prof).toLowerCase().includes('trn:') ||
+            JSON.stringify(prof).toLowerCase().includes('jncbjm') ||
+            JSON.stringify(prof).toLowerCase().includes('national commercial bank')
+          );
+          if (prof && !isStaleLegacy) {
+            if (prof.fromName) document.getElementById('fromName').value = prof.fromName;
+            if (prof.fromTrade) document.getElementById('fromTrade').value = prof.fromTrade;
+            if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
+            if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
+            if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+            if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
+            if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
+            if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
+            if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
+            if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
+            renderDoc();
+            showToast('⚡ Business profile auto-filled from memory!');
+            playBeep(580);
+            return;
+          }
         } catch(e) {}
       }
       loadSampleContractorData();
@@ -3260,7 +3314,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-            <footer class="site-footer">
+              <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">

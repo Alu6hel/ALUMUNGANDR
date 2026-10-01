@@ -1240,7 +1240,8 @@
 
     function initCubes() {
       cubes = [];
-      const count = Math.max(12, Math.floor(width / 110));
+      const isMobileHash = window.innerWidth < 768;
+      const count = Math.max(isMobileHash ? 6 : 12, Math.floor(width / (isMobileHash ? 200 : 110)));
       for (let i = 0; i < count; i++) {
         cubes.push({
           x: Math.random() * width,

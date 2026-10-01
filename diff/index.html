@@ -5,7 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Text Diff Checker — Side-by-Side & Unified Code Comparison — Alumungandr</title>
   <meta name="description" content="Compare text, code, JSON, and documents with instant character-level and word-level diff highlights. Side-by-side and unified views with zero server uploads.">
+  <link rel="canonical" href="https://alumungandr.com/diff">
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/diff">
+  <meta property="og:title" content="Free Text Diff Checker — Side-by-Side & Unified Code Comparison — Alumungandr™">
+  <meta property="og:description" content="Compare text, code, JSON, and documents with instant character-level and word-level diff highlights. Side-by-side and unified views with zero server uploads.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Text Diff Checker — Side-by-Side & Unified Code Comparison — Alumungandr™">
+  <meta name="twitter:description" content="Compare text, code, JSON, and documents with instant character-level and word-level diff highlights. Side-by-side and unified views with zero server uploads.">
+  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://alumungandr.com/#organization",
+        "name": "Alumungandr",
+        "url": "https://alumungandr.com",
+        "logo": "https://alumungandr.com/logo.svg"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://alumungandr.com/diff/#app",
+        "name": "Alumungandr Text Diff Checker & Code Comparison Lab",
+        "url": "https://alumungandr.com/diff",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "In-browser character-by-character and word-by-word text difference comparison engine with side-by-side and unified diff views. 100% private.",
+        "publisher": {
+          "@id": "https://alumungandr.com/#organization"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -900,7 +947,7 @@
 
     function initParticles() {
       particles = [];
-      const count = Math.floor(width / 16);
+      const count = Math.floor(width / (window.innerWidth < 768 ? 36 : 16));
       for (let i = 0; i < count; i++) {
         const isLeft = Math.random() < 0.5;
         particles.push({

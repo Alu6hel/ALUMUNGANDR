@@ -1340,9 +1340,10 @@
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 20;
 
-      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      const isMobileIp = window.innerWidth < 768;
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobileIp });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isMobileIp ? 1 : Math.min(window.devicePixelRatio, 2));
 
       // Lighting
       const ambientLight = new THREE.AmbientLight(0xd0f0fd, 0.7);
@@ -1396,8 +1397,8 @@
       crystalGroup.position.set(0, 1, 0);
       scene.add(crystalGroup);
 
-      // Drifting Snow & Ice Crystal Particles
-      const particleCount = 450;
+      // Drifting Snow & Ice Crystal Particles (Mobile-Adaptive)
+      const particleCount = isMobileIp ? 100 : 450;
       const partGeom = new THREE.BufferGeometry();
       const posArray = new Float32Array(particleCount * 3);
       for (let i = 0; i < particleCount * 3; i += 3) {

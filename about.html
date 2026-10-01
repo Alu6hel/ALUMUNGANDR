@@ -890,7 +890,8 @@
       starCanvas.width = window.innerWidth;
       starCanvas.height = window.innerHeight;
       stars = [];
-      for (let i = 0; i < 180; i++) {
+      const starCount = window.innerWidth < 768 ? 45 : 180;
+      for (let i = 0; i < starCount; i++) {
         stars.push({
           x: Math.random() * starCanvas.width,
           y: Math.random() * starCanvas.height,
@@ -924,9 +925,10 @@
       const camera = new THREE.PerspectiveCamera(45, canvas3D.clientWidth / canvas3D.clientHeight, 0.1, 1000);
       camera.position.z = 5.2;
 
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas3D, alpha: true, antialias: true });
+      const isMobileAbout = window.innerWidth < 768;
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas3D, alpha: true, antialias: !isMobileAbout });
       renderer.setSize(canvas3D.clientWidth, canvas3D.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isMobileAbout ? 1 : Math.min(window.devicePixelRatio, 2));
 
       // Icosahedron Celestial Core
       const geom = new THREE.IcosahedronGeometry(1.7, 1);

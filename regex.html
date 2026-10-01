@@ -1196,7 +1196,7 @@ Invalid addresses like test@@nowhere.com or no-domain@ are safely ignored.</text
 
     function initTargets() {
       targets = [];
-      const count = Math.floor(width / 180);
+      const count = Math.floor(width / (window.innerWidth < 768 ? 300 : 180));
       for (let i = 0; i < count; i++) {
         targets.push({
           x: Math.random() * width,

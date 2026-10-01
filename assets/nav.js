@@ -109,5 +109,210 @@
     // Expose closeAllMenus globally for inline handlers
     window.closeAllNavMenus = closeAllMenus;
   });
+
+  /* ==========================================================================
+     UNIVERSAL MOBILE ENGINE: AUTO-DETECTION, OFF-SCREEN PAUSING & ADAPTIVE GRAPHICS
+     (Strictly active on mobile screens: window.innerWidth < 768)
+     ========================================================================== */
+  const isMobileScreen = function() {
+    return window.innerWidth < 768 || (window.matchMedia && window.matchMedia('(max-width: 767px)').matches);
+  };
+  window.isAluMobile = isMobileScreen;
+
+  // Track active canvas for requestAnimationFrame association
+  let currentRenderingCanvas = null;
+  let isTouchScrolling = false;
+  let scrollReleaseTimer = null;
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', function() {
+      if (!isMobileScreen()) return;
+      isTouchScrolling = true;
+      clearTimeout(scrollReleaseTimer);
+      scrollReleaseTimer = setTimeout(function() {
+        isTouchScrolling = false;
+      }, 100);
+    }, { passive: true });
+  }
+
+  // Native RAF references
+  const nativeRaf = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(fn) { return setTimeout(fn, 16); };
+  const nativeCancelRaf = window.cancelAnimationFrame ? window.cancelAnimationFrame.bind(window) : clearTimeout;
+
+  // 1. Mobile-Adaptive WebGL & Three.js Graphics Optimizer
+  function patchThreeJS() {
+    if (typeof THREE !== 'undefined' && THREE.WebGLRenderer && !THREE.WebGLRenderer._aluMobilePatched) {
+      THREE.WebGLRenderer._aluMobilePatched = true;
+
+      // Mobile-Adaptive Graphics: Cap pixel ratio to 1.0 on phones
+      const origSetPixelRatio = THREE.WebGLRenderer.prototype.setPixelRatio;
+      THREE.WebGLRenderer.prototype.setPixelRatio = function(ratio) {
+        if (isMobileScreen()) {
+          return origSetPixelRatio.call(this, 1);
+        }
+        return origSetPixelRatio.call(this, ratio);
+      };
+
+      // Pause Off-Screen WebGL rendering
+      const origRender = THREE.WebGLRenderer.prototype.render;
+      THREE.WebGLRenderer.prototype.render = function(scene, camera) {
+        if (isMobileScreen() && this.domElement && this.domElement._mobileIsVisible === false) {
+          // Off-screen canvas: completely skip WebGL render calls on mobile
+          return;
+        }
+        currentRenderingCanvas = this.domElement;
+        try {
+          return origRender.apply(this, arguments);
+        } finally {
+          currentRenderingCanvas = null;
+        }
+      };
+    }
+  }
+
+  patchThreeJS();
+  document.addEventListener('DOMContentLoaded', patchThreeJS);
+  window.addEventListener('load', patchThreeJS);
+
+  // 2. Pause Off-Screen Canvas Animations via IntersectionObserver
+  let mobileCanvasObserver = null;
+  const observedCanvases = new Set();
+
+  function initMobileCanvasObserver() {
+    if (!('IntersectionObserver' in window)) return;
+
+    if (!mobileCanvasObserver) {
+      mobileCanvasObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          const canvas = entry.target;
+          const isVisible = entry.isIntersecting && entry.intersectionRatio > 0 && !document.hidden;
+          const wasVisible = canvas._mobileIsVisible;
+          canvas._mobileIsVisible = isVisible;
+          canvas.setAttribute('data-mobile-visible', isVisible ? 'true' : 'false');
+          if (isVisible) {
+            canvas.removeAttribute('data-offscreen');
+          } else {
+            canvas.setAttribute('data-offscreen', 'true');
+          }
+
+          // Resume any parked animation callback when scrolled back into viewport
+          if (isVisible && wasVisible === false && canvas._pendingRafCallbacks && canvas._pendingRafCallbacks.size > 0) {
+            canvas._pendingRafCallbacks.forEach(function(cb) {
+              nativeRaf(cb);
+            });
+            canvas._pendingRafCallbacks.clear();
+          }
+        });
+      }, { threshold: [0, 0.02] });
+    }
+
+    // Scan and observe all canvas elements
+    document.querySelectorAll('canvas').forEach(function(canvas) {
+      if (!observedCanvases.has(canvas)) {
+        observedCanvases.add(canvas);
+        canvas._mobileIsVisible = true;
+        canvas._pendingRafCallbacks = new Set();
+        mobileCanvasObserver.observe(canvas);
+      }
+    });
+  }
+
+  // 3. Hook 2D Context clearRect for active canvas tracking and off-screen pause
+  if (typeof CanvasRenderingContext2D !== 'undefined') {
+    const origClearRect = CanvasRenderingContext2D.prototype.clearRect;
+    CanvasRenderingContext2D.prototype.clearRect = function(x, y, w, h) {
+      currentRenderingCanvas = this.canvas;
+      if (isMobileScreen() && this.canvas && this.canvas._mobileIsVisible === false) {
+        return; // Off-screen canvas on mobile: skip clear & drawing
+      }
+      return origClearRect.apply(this, arguments);
+    };
+  }
+
+  // 4. Mobile-Adaptive requestAnimationFrame Supervisor
+  window.requestAnimationFrame = function(callback) {
+    // If desktop (>= 768px), pass through directly with zero overhead
+    if (!isMobileScreen()) {
+      return nativeRaf(callback);
+    }
+
+    // Check if associated with an off-screen canvas on mobile
+    const targetCanvas = currentRenderingCanvas;
+    if (targetCanvas && targetCanvas._mobileIsVisible === false) {
+      // Pause animation loop: park callback until canvas re-enters the viewport
+      if (!targetCanvas._pendingRafCallbacks) {
+        targetCanvas._pendingRafCallbacks = new Set();
+      }
+      targetCanvas._pendingRafCallbacks.add(callback);
+      return 0;
+    }
+
+    // Mobile background canvas throttling: during fast mobile touch scrolling,
+    // skip background decorative renders to guarantee 60fps touch velocity
+    if (isTouchScrolling && targetCanvas && (targetCanvas.id === 'bg-canvas' || targetCanvas.id === 'spaceCanvas' || targetCanvas.id === 'holoCanvas')) {
+      return nativeRaf(function() {
+        // Yield frame to UI touch gestures
+      });
+    }
+
+    return nativeRaf(function(timestamp) {
+      currentRenderingCanvas = targetCanvas;
+      try {
+        callback(timestamp);
+      } finally {
+        currentRenderingCanvas = null;
+      }
+    });
+  };
+
+  // Visibility Change: pause all canvas animations when mobile tab is hidden / minimized
+  document.addEventListener('visibilitychange', function() {
+    const isHidden = document.hidden;
+    observedCanvases.forEach(function(canvas) {
+      if (isHidden) {
+        canvas._mobileIsVisible = false;
+        canvas.setAttribute('data-offscreen', 'true');
+      } else {
+        if (canvas.getBoundingClientRect) {
+          const rect = canvas.getBoundingClientRect();
+          const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+          canvas._mobileIsVisible = inView;
+          if (inView) {
+            canvas.removeAttribute('data-offscreen');
+            if (canvas._pendingRafCallbacks && canvas._pendingRafCallbacks.size > 0) {
+              canvas._pendingRafCallbacks.forEach(function(cb) { nativeRaf(cb); });
+              canvas._pendingRafCallbacks.clear();
+            }
+          }
+        }
+      }
+    });
+  });
+
+  // Initialize canvas observation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileCanvasObserver);
+  } else {
+    initMobileCanvasObserver();
+  }
+  window.addEventListener('load', initMobileCanvasObserver);
+
+  // MutationObserver for dynamic canvases (e.g. resizer previews)
+  if (typeof MutationObserver !== 'undefined' && document.body) {
+    const domCanvasObserver = new MutationObserver(function(mutations) {
+      let foundCanvas = false;
+      mutations.forEach(function(m) {
+        if (m.addedNodes) {
+          m.addedNodes.forEach(function(n) {
+            if (n.nodeName === 'CANVAS' || (n.querySelector && n.querySelector('canvas'))) {
+              foundCanvas = true;
+            }
+          });
+        }
+      });
+      if (foundCanvas) initMobileCanvasObserver();
+    });
+    domCanvasObserver.observe(document.body, { childList: true, subtree: true });
+  }
 })();
 

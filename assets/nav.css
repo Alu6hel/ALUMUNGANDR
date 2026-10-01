@@ -336,3 +336,85 @@ button, .dropdown-trigger, .btn-ticket-action, .drawer-link {
   }
 }
 
+/* ==========================================================================
+   MOBILE SCREEN AUTO-DETECTION: CSS CONTAIN: PAINT & WILL-CHANGE
+   (Strictly active on mobile screens: max-width: 767px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* Enforce paint containment and GPU compositor promotion:
+     Only the touched card is repainted, preventing costly whole-screen reflow/rasterization */
+  .matrix-card-flip-wrap,
+  .matrix-flip-card,
+  .card-face,
+  .app-card,
+  .app-card-3d,
+  .qa-card-minimal,
+  .tool-card,
+  .tool-panel,
+  .workbench-card,
+  .canvas-container,
+  .tool-box,
+  .generator-card,
+  .card,
+  .stat-card,
+  .pricing-card,
+  .faq-card,
+  .contact-card,
+  .feature-card,
+  .stage-item,
+  .stage-body,
+  .resizer-card,
+  .palette-card,
+  .contrast-card,
+  .diff-box,
+  .vault-card,
+  .sub-card,
+  .setting-card,
+  .preview-card,
+  .editor-pane,
+  .matrix-item,
+  .telemetry-metric,
+  .ip-card,
+  .call-panel,
+  .capsule-card {
+    contain: layout paint style !important;
+    will-change: transform !important;
+    transform: translateZ(0);
+  }
+
+  /* Disable heavy continuous floating keyframe thrashing & ambient shadow glows on mobile */
+  .matrix-card-flip-wrap {
+    animation: none !important;
+  }
+  .matrix-card-flip-wrap::after {
+    display: none !important;
+    animation: none !important;
+  }
+  .app-card-3d:hover {
+    transform: none !important;
+  }
+  .card-face {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Prevent background canvases from blocking or competing with mobile touch threads */
+  #bg-canvas,
+  #spaceCanvas,
+  #holoCanvas,
+  #matrixCanvas,
+  #crystalCanvas,
+  #glacialCanvas,
+  #latticeCanvas,
+  #telemetryCanvas,
+  #wireframeCanvas,
+  #shockwaveCanvas,
+  #hexCanvas,
+  #sealCanvas {
+    pointer-events: none !important;
+    will-change: transform !important;
+    contain: strict !important;
+  }
+}
+

@@ -1127,8 +1127,9 @@
       targetRotX = -mouseY * 0.8;
     });
 
-    // Particle field
-    const PARTICLE_COUNT = 85;
+    // Particle field (Mobile-Adaptive)
+    const isMobileContact = window.innerWidth < 768;
+    const PARTICLE_COUNT = isMobileContact ? 25 : 85;
     const particles = [];
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
@@ -1140,12 +1141,12 @@
       });
     }
 
-    // Gyroscope Rings
+    // Gyroscope Rings (Mobile-Adaptive)
     const rings = [
-      { radius: 240, tilt: 0.3, speed: 0.008, color: 'rgba(0, 242, 254, 0.45)', dots: 32 },
-      { radius: 190, tilt: 1.1, speed: -0.012, color: 'rgba(127, 0, 255, 0.45)', dots: 24 },
-      { radius: 140, tilt: 2.2, speed: 0.015, color: 'rgba(79, 172, 254, 0.5)', dots: 18 },
-      { radius: 80,  tilt: 0.8, speed: -0.02,  color: 'rgba(225, 0, 255, 0.6)', dots: 12 }
+      { radius: 240, tilt: 0.3, speed: 0.008, color: 'rgba(0, 242, 254, 0.45)', dots: isMobileContact ? 16 : 32 },
+      { radius: 190, tilt: 1.1, speed: -0.012, color: 'rgba(127, 0, 255, 0.45)', dots: isMobileContact ? 12 : 24 },
+      { radius: 140, tilt: 2.2, speed: 0.015, color: 'rgba(79, 172, 254, 0.5)', dots: isMobileContact ? 10 : 18 },
+      { radius: 80,  tilt: 0.8, speed: -0.02,  color: 'rgba(225, 0, 255, 0.6)', dots: isMobileContact ? 8 : 12 }
     ];
 
     let baseAngle = 0;

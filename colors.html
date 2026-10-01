@@ -876,7 +876,8 @@
         ctx.beginPath();
         ctx.moveTo(0, height);
 
-        for (let x = 0; x <= width; x += 15) {
+        const xStep = window.innerWidth < 768 ? 35 : 15;
+        for (let x = 0; x <= width; x += xStep) {
           const y = height * a.yOffset + Math.sin(x * a.freq + waveStep * a.speed) * 80 + Math.cos(x * 0.005 + waveStep) * 40;
           ctx.lineTo(x, y);
         }

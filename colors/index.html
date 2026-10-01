@@ -5,7 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Color Palette Generator, WCAG Contrast & Image Extractor — Alumungandr</title>
   <meta name="description" content="Design palettes, generate harmonic color schemes, check WCAG 2.1 accessibility contrast ratios, and extract dominant palettes from uploaded images. 100% in-browser.">
+  <link rel="canonical" href="https://alumungandr.com/colors">
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/colors">
+  <meta property="og:title" content="Free Color Palette Generator, WCAG Contrast & Image Extractor — Alumungandr™">
+  <meta property="og:description" content="Design palettes, generate harmonic color schemes, check WCAG 2.1 accessibility contrast ratios, and extract dominant palettes from uploaded images. 100% in-browser.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free Color Palette Generator, WCAG Contrast & Image Extractor — Alumungandr™">
+  <meta name="twitter:description" content="Design palettes, generate harmonic color schemes, check WCAG 2.1 accessibility contrast ratios, and extract dominant palettes from uploaded images. 100% in-browser.">
+  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://alumungandr.com/#organization",
+        "name": "Alumungandr",
+        "url": "https://alumungandr.com",
+        "logo": "https://alumungandr.com/logo.svg"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://alumungandr.com/colors/#app",
+        "name": "Alumungandr Color Palette Studio & WCAG Contrast Lab",
+        "url": "https://alumungandr.com/colors",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Harmonic color palette generator, HEX/RGB/HSL conversion, WCAG 2.1 accessibility contrast checker, and instant client-side image palette extractor.",
+        "publisher": {
+          "@id": "https://alumungandr.com/#organization"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -829,7 +876,8 @@
         ctx.beginPath();
         ctx.moveTo(0, height);
 
-        for (let x = 0; x <= width; x += 15) {
+        const xStep = window.innerWidth < 768 ? 35 : 15;
+        for (let x = 0; x <= width; x += xStep) {
           const y = height * a.yOffset + Math.sin(x * a.freq + waveStep * a.speed) * 80 + Math.cos(x * 0.005 + waveStep) * 40;
           ctx.lineTo(x, y);
         }

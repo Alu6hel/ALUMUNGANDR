@@ -892,7 +892,7 @@
   <div class="arctic-fog-overlay"></div>
 
   <!-- Header -->
-          <header class="site-header">
+            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -986,8 +986,8 @@
 
       <div class="hero-pills">
         <div class="pill-item">PROTOCOL: <strong id="pillProtocol" class="cypher-decode">IPv4 (Public WAN)</strong></div>
-        <div class="pill-item">ISP: <strong id="pillIsp" class="cypher-decode">FLOW Jamaica</strong></div>
-        <div class="pill-item">LOCATION: <strong id="pillLocation" class="cypher-decode">Montego Bay, JM</strong></div>
+        <div class="pill-item">ISP: <strong id="pillIsp" class="cypher-decode">Cloudflare Edge Network</strong></div>
+        <div class="pill-item">LOCATION: <strong id="pillLocation" class="cypher-decode">Ashburn, VA (US)</strong></div>
         <div class="pill-item">ROUTING: <strong id="pillEncapsulation" class="cypher-decode">Direct Anycast Edge</strong></div>
       </div>
 
@@ -1017,12 +1017,12 @@
         <div class="dossier-tag"><span>GEO_DOSSIER_01</span><span>&bull; LIVE</span></div>
         <div class="dossier-title">Geolocation</div>
         <div class="dossier-data-list">
-          <div class="dossier-row"><span class="lbl">City</span><span class="val cypher-decode" id="valCity">Montego Bay</span></div>
-          <div class="dossier-row"><span class="lbl">Region</span><span class="val cypher-decode" id="valRegion">Saint James</span></div>
-          <div class="dossier-row"><span class="lbl">Country</span><span class="val cypher-decode" id="valCountry">Jamaica (JM)</span></div>
-          <div class="dossier-row"><span class="lbl">Postal Code</span><span class="val cypher-decode" id="valPostal">JMDNC01</span></div>
-          <div class="dossier-row"><span class="lbl">Coordinates</span><span class="val cypher-decode" id="valCoords">18.4712° N, -77.9188° W</span></div>
-          <div class="dossier-row"><span class="lbl">Timezone</span><span class="val cypher-decode" id="valTz">America/Jamaica</span></div>
+          <div class="dossier-row"><span class="lbl">City</span><span class="val cypher-decode" id="valCity">Ashburn</span></div>
+          <div class="dossier-row"><span class="lbl">Region</span><span class="val cypher-decode" id="valRegion">Virginia</span></div>
+          <div class="dossier-row"><span class="lbl">Country</span><span class="val cypher-decode" id="valCountry">United States (US)</span></div>
+          <div class="dossier-row"><span class="lbl">Postal Code</span><span class="val cypher-decode" id="valPostal">20147</span></div>
+          <div class="dossier-row"><span class="lbl">Coordinates</span><span class="val cypher-decode" id="valCoords">39.0438° N, -77.4874° W</span></div>
+          <div class="dossier-row"><span class="lbl">Timezone</span><span class="val cypher-decode" id="valTz">America/New_York</span></div>
         </div>
       </div>
 
@@ -1031,10 +1031,10 @@
         <div class="dossier-tag"><span>NET_CARRIER_02</span><span>&bull; VERIFIED</span></div>
         <div class="dossier-title">Carrier &amp; ASN</div>
         <div class="dossier-data-list">
-          <div class="dossier-row"><span class="lbl">ISP Name</span><span class="val cypher-decode" id="valIsp">FLOW Jamaica</span></div>
-          <div class="dossier-row"><span class="lbl">ASN Code <span class="ip-jargon-hint" title="Autonomous System Number: Global routing identifier of your internet carrier's network.">(?)</span></span><span class="val cypher-decode" id="valAsn">AS23520</span></div>
-          <div class="dossier-row"><span class="lbl">Organization</span><span class="val cypher-decode" id="valOrg">Cable &amp; Wireless Jamaica</span></div>
-          <div class="dossier-row"><span class="lbl">Reverse DNS (PTR) <span class="ip-jargon-hint" title="Pointer Record: Resolves an IP back to its official carrier domain name.">(?)</span></span><span class="val cypher-decode" id="valPtr" style="font-size:0.7rem;">cwjamaica.com</span></div>
+          <div class="dossier-row"><span class="lbl">ISP Name</span><span class="val cypher-decode" id="valIsp">Cloudflare, Inc.</span></div>
+          <div class="dossier-row"><span class="lbl">ASN Code <span class="ip-jargon-hint" title="Autonomous System Number: Global routing identifier of your internet carrier's network.">(?)</span></span><span class="val cypher-decode" id="valAsn">AS13335</span></div>
+          <div class="dossier-row"><span class="lbl">Organization</span><span class="val cypher-decode" id="valOrg">Cloudflare Anycast Network</span></div>
+          <div class="dossier-row"><span class="lbl">Reverse DNS (PTR) <span class="ip-jargon-hint" title="Pointer Record: Resolves an IP back to its official carrier domain name.">(?)</span></span><span class="val cypher-decode" id="valPtr" style="font-size:0.7rem;">104-28-19-44.cloudflare.net</span></div>
           <div class="dossier-row"><span class="lbl">IP Range Class</span><span class="val">Class A (/8 Public)</span></div>
         </div>
       </div>
@@ -1173,9 +1173,9 @@
         </div>
         <div class="terminal-body" id="termBody">
           <div><span class="terminal-prompt">$</span> <span class="terminal-cmd">curl -s https://alumungandr.com/api/ip</span></div>
-          <div class="terminal-res cypher-decode" id="termRawIp">72.27.211.125</div>
+          <div class="terminal-res cypher-decode" id="termRawIp">104.28.19.44</div>
           <div style="margin-top:0.8rem;"><span class="terminal-prompt">$</span> <span class="terminal-cmd">curl -s https://alumungandr.com/api/ip?format=json | jq .isp</span></div>
-          <div class="terminal-res cypher-decode" id="termRawIsp">"FLOW Jamaica (Cable & Wireless)"</div>
+          <div class="terminal-res cypher-decode" id="termRawIsp">"Cloudflare, Inc. (AS13335)"</div>
           <div style="margin-top:0.8rem;"><span class="terminal-prompt">$</span> <span class="terminal-cmd">ping -c 3 edge.alumungandr.com</span></div>
           <div style="color:var(--text-subtle);">64 bytes from anycast: icmp_seq=1 ttl=58 time=12.4 ms</div>
           <div style="color:var(--text-subtle);">--- 0% packet loss, min/avg/max = 11.2/12.4/13.8 ms ---</div>
@@ -1238,7 +1238,7 @@
   </div>
 
   <!-- Footer -->
-          <footer class="site-footer">
+            <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -1661,15 +1661,15 @@
     function copyItSummary() {
       const d = currentData || {
         ip: document.getElementById('displayIp').textContent.trim(),
-        local_ip: '192.168.50.179',
-        isp: 'FLOW Jamaica',
-        asn: 'AS23520',
-        city: 'Montego Bay',
-        country: 'Jamaica (JM)'
+        local_ip: '192.168.1.105',
+        isp: 'Cloudflare Edge Network',
+        asn: 'AS13335',
+        city: 'Ashburn',
+        country: 'United States (US)'
       };
       const summary = `--- IT HELPDESK & VPN DIAGNOSTIC SUMMARY ---
 Public WAN IP : ${d.ip}
-Local LAN IP  : ${d.local_ip || '192.168.50.179'}
+Local LAN IP  : ${d.local_ip || '192.168.1.105'}
 ISP Carrier   : ${d.isp} (${d.asn})
 Location      : ${d.city}, ${d.country}
 Time Verified : ${new Date().toUTCString()}
@@ -1695,12 +1695,17 @@ Diagnostic Hub: Alumungandr Network Intelligence`;
     function downloadPassport() {
       const d = currentData || {
         ip: document.getElementById('displayIp').textContent.trim(),
-        local_ip: '192.168.50.179',
-        isp: 'FLOW Jamaica',
-        asn: 'AS23520',
-        city: 'Montego Bay',
-        country: 'Jamaica (JM)',
-        hostname: 'cwjamaica.com',
+        local_ip: '192.168.1.105',
+        isp: 'Cloudflare Edge Network',
+        asn: 'AS13335',
+        city: 'Ashburn',
+        region: 'Virginia',
+        country: 'United States (US)',
+        country_code: 'US',
+        latitude: '39.0438',
+        longitude: '-77.4874',
+        hostname: '104-28-19-44.cloudflare.net',
+        timezone: 'America/New_York',
         timestamp: new Date().toISOString()
       };
 
@@ -1713,16 +1718,16 @@ Protocol: RFC 791 / RFC 8200 Verified
 [CLIENT PUBLIC IDENTITY]
 Public WAN IP        : ${d.ip}
 IP Version           : ${d.ip_version || 'IPv4'}
-Local LAN Gateway    : ${d.local_ip || '192.168.50.179'}
-Reverse DNS (PTR)    : ${d.hostname || 'cwjamaica.com'}
+Local LAN Gateway    : ${d.local_ip || '192.168.1.105'}
+Reverse DNS (PTR)    : ${d.hostname || '104-28-19-44.cloudflare.net'}
 
 [GEOLOCATION & CARRIER]
 ISP Carrier          : ${d.isp}
 Autonomous System    : ${d.asn}
-City / Region        : ${d.city}, ${d.region || 'Saint James'}
-Country              : ${d.country} (${d.country_code || 'JM'})
-Coordinates          : ${d.latitude || '18.4712'} N, ${d.longitude || '-77.9188'} W
-Timezone             : ${d.timezone || 'America/Jamaica'}
+City / Region        : ${d.city}, ${d.region || 'Virginia'}
+Country              : ${d.country} (${d.country_code || 'US'})
+Coordinates          : ${d.latitude || '39.0438'} N, ${d.longitude || '-77.4874'} W
+Timezone             : ${d.timezone || 'America/New_York'}
 
 [SYSADMIN FIREWALL DIRECTIVES]
 CIDR /32 Range       : ${d.ip}/32

@@ -1766,7 +1766,7 @@
 <body>
 
   <!-- Top Navigation Bar -->
-          <header class="site-header">
+            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1933,7 +1933,7 @@
           <div class="overall-quality-banner" id="qualityAssessmentBanner">
             <div class="quality-badge-pill" id="qualityBadgePill">✓ Optimal Speed</div>
             <div class="quality-badge-text" id="qualityBadgeText">
-              Your connection delivers <strong>51 Mbps</strong> with <strong>6ms</strong> latency — ideal for 4K streaming, competitive gaming, and Zoom conferences with zero buffer.
+              Your connection delivers <strong>240 Mbps</strong> with <strong>12ms</strong> latency — ideal for 4K streaming, competitive gaming, and Zoom conferences with zero buffer.
             </div>
           </div>
 
@@ -1941,7 +1941,7 @@
           <div class="latency-strip">
             <div class="latency-col">
               <span class="latency-title" title="Idle Latency: Baseline round-trip reaction time when resting. Under 20ms is esports-grade.">Idle Latency <span class="speed-tip-icon" title="Idle Latency: Baseline round-trip reaction time. Under 20ms is esports-grade.">(?)</span></span>
-              <div><span class="latency-num" id="pingVal">6</span><span class="latency-unit">ms</span></div>
+              <div><span class="latency-num" id="pingVal">12</span><span class="latency-unit">ms</span></div>
             </div>
             <div class="latency-col">
               <span class="latency-title" title="Download Bufferbloat: Latency spike under heavy download load. Lower keeps calls smooth during large downloads.">Download Loaded <span class="speed-tip-icon" title="Latency spike while downloading. Lower is better.">(?)</span></span>
@@ -1970,8 +1970,8 @@
             </svg>
           </div>
           <div class="entity-details">
-            <div class="entity-name" id="ispNameLabel">Flow</div>
-            <div class="entity-sub" id="clientIpLabel">72.27.211.125</div>
+            <div class="entity-name" id="ispNameLabel">Fiber / High-Speed Broadband</div>
+            <div class="entity-sub" id="clientIpLabel">104.28.19.44</div>
           </div>
         </div>
 
@@ -1983,10 +1983,10 @@
           </div>
           <div class="entity-details">
             <div class="entity-name">
-              <span id="serverNameLabel">FLOW Jamaica</span>
+              <span id="serverNameLabel">Cloudflare / Edge CDN</span>
               <button class="server-select-btn" onclick="openServerModal()">Change Server</button>
             </div>
-            <div class="entity-sub" id="serverLocationLabel">Montego Bay</div>
+            <div class="entity-sub" id="serverLocationLabel">Ashburn / Dallas (US)</div>
           </div>
         </div>
       </div>
@@ -2176,17 +2176,17 @@
         <div class="sla-input-group">
           <label class="sla-input-label" for="selectRegulator">Regulatory Jurisdiction</label>
           <select id="selectRegulator" class="sla-input-field" onchange="updateSlaSettings()">
-            <option value="OUR" selected>Jamaica (OUR &amp; FTC)</option>
-            <option value="FCC">United States (FCC &amp; FTC)</option>
+            <option value="FCC" selected>United States (FCC &amp; FTC)</option>
             <option value="OFCOM">United Kingdom (Ofcom)</option>
             <option value="CRTC">Canada (CRTC / CCTS)</option>
+            <option value="OUR">Jamaica (OUR &amp; FTC)</option>
             <option value="GENERAL">General International</option>
           </select>
         </div>
 
         <div class="sla-input-group">
           <label class="sla-input-label" for="inputAccountNumber">Account / Ref Number</label>
-          <input type="text" id="inputAccountNumber" class="sla-input-field" placeholder="e.g. ACC-876-2091" value="ACC-876-2091" onchange="updateSlaSettings()">
+          <input type="text" id="inputAccountNumber" class="sla-input-field" placeholder="e.g. ACC-US-89201" value="ACC-US-89201" onchange="updateSlaSettings()">
         </div>
       </div>
 
@@ -2391,7 +2391,7 @@
   </div>
 
   <!-- Footer -->
-          <footer class="site-footer">
+            <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -2450,20 +2450,21 @@
     const STATE = {
       isTesting: false,
       mode: 'multi', // 'multi' (default) or 'single'
-      clientIp: '72.27.211.125',
-      isp: 'Flow',
+      clientIp: '104.28.19.44',
+      isp: 'Fiber / High-Speed Broadband',
       selectedServer: {
-        id: 'flow-mobay',
-        name: 'FLOW Jamaica',
-        location: 'Montego Bay',
-        basePing: 6,
-        baseDown: 51.01,
-        baseUp: 20.43
+        id: 'alu-edge-us',
+        name: 'Cloudflare / Edge CDN',
+        location: 'Ashburn / Dallas (US)',
+        basePing: 12,
+        baseDown: 240.50,
+        baseUp: 85.20
       },
       availableServers: [
-        { id: 'flow-mobay', name: 'FLOW Jamaica', location: 'Montego Bay', basePing: 6, baseDown: 51.01, baseUp: 20.43 },
-        { id: 'flow-kingston', name: 'FLOW Jamaica', location: 'Kingston', basePing: 14, baseDown: 48.50, baseUp: 19.80 },
-        { id: 'alu-edge', name: 'Alu OmniSpeed Edge', location: 'Miami / Global', basePing: 38, baseDown: 45.20, baseUp: 18.50 }
+        { id: 'alu-edge-us', name: 'Cloudflare / Edge CDN', location: 'Ashburn / Dallas (US)', basePing: 12, baseDown: 240.50, baseUp: 85.20 },
+        { id: 'alu-edge-eu', name: 'Alu Global Edge', location: 'London / Frankfurt (EU)', basePing: 28, baseDown: 195.40, baseUp: 65.10 },
+        { id: 'flow-mobay', name: 'FLOW Jamaica', location: 'Montego Bay (JM)', basePing: 34, baseDown: 51.01, baseUp: 20.43 },
+        { id: 'flow-kingston', name: 'FLOW Jamaica', location: 'Kingston (JM)', basePing: 38, baseDown: 48.50, baseUp: 19.80 }
       ]
     };
 
@@ -3072,8 +3073,8 @@
       monthlyBill: 85.0,
       slaThreshold: 80.0,
       currency: 'USD',
-      regulator: 'OUR',
-      accountNumber: 'ACC-876-2091',
+      regulator: 'FCC',
+      accountNumber: 'ACC-US-89201',
       customerName: 'Authorized Account Holder',
       customerAddress: 'Service Address on File',
       probeActive: false,
@@ -3086,8 +3087,8 @@
       const adv = parseFloat(document.getElementById('inputAdvertisedMbps').value) || 100.0;
       const bill = parseFloat(document.getElementById('inputMonthlyBill').value) || 85.0;
       const sla = parseFloat(document.getElementById('inputSlaThreshold').value) || 80.0;
-      const reg = document.getElementById('selectRegulator').value || 'OUR';
-      const acc = document.getElementById('inputAccountNumber').value || 'ACC-876-2091';
+      const reg = document.getElementById('selectRegulator').value || 'FCC';
+      const acc = document.getElementById('inputAccountNumber').value || 'ACC-US-89201';
 
       AUDIT_STATE.advertisedMbps = adv;
       AUDIT_STATE.monthlyBill = bill;
@@ -3380,7 +3381,7 @@
       showSpeedToast('⚡ Generating 14-Day ISP Throttling Audit Ledger...');
       const now = Date.now();
       const samples = [];
-      const isp = STATE.isp || 'FLOW Jamaica';
+      const isp = STATE.isp || 'Fiber / High-Speed Broadband';
       const adv = AUDIT_STATE.advertisedMbps;
       const bill = AUDIT_STATE.monthlyBill;
       const sla = AUDIT_STATE.slaThreshold;
@@ -3784,7 +3785,7 @@ if __name__ == "__main__":
         'FCC': { name: 'Federal Communications Commission (FCC) Enforcement Bureau', ref: 'Communications Act of 1934 (Title II) & FTC Act Section 5' },
         'Ofcom': { name: 'Ofcom (Office of Communications) Broadband Standards', ref: 'Ofcom Voluntary Codes of Practice & Consumer Rights Act 2015' },
         'CRTC': { name: 'CRTC / Commission for Complaints for Telecom-television Services (CCTS)', ref: 'Telecommunications Act (S.C. 1993, c. 38)' }
-      }[AUDIT_STATE.regulator] || { name: 'Office of Utilities Regulation (OUR)', ref: 'Telecommunications Regulatory Standards' };
+      }[AUDIT_STATE.regulator] || { name: 'Federal Communications Commission (FCC) Enforcement Bureau', ref: 'Communications Act of 1934 (Title II) & FTC Act Section 5' };
 
       const letterText = `FORMAL NOTICE OF CONTRACTUAL BREACH & STATUTORY REBATE DEMAND
 DATE: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}

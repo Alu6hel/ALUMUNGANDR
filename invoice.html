@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>No-BS Invoice & Estimate Maker - Free Instant PDF & WhatsApp Generator</title>
-  <meta name="description" content="Free, ad-free contractor invoice & quote generator. Built for plumbers, mobile mechanics, landscapers, caterers, and freelance contractors. WhatsApp instant estimate, Lynk/Card QR deposit lock, 20-client memory, and late payment fee auto-tagger.">
-  <meta name="keywords" content="invoice maker, contractor invoice, jamaica invoice, lynk payment qr, whatsapp estimate generator, free invoice generator, no quickbooks, mechanic quote, plumber invoice">
+  <meta name="description" content="Free, ad-free contractor invoice & quote generator. Built for independent businesses, contractors, consultants, and trade professionals. WhatsApp instant estimate, Card/QR deposit lock, 20-client memory, and late payment fee auto-tagger.">
+  <meta name="keywords" content="invoice maker, contractor invoice, free invoice generator, instant payment qr, whatsapp estimate generator, pdf invoice maker, small business billing, quote creator">
   <link rel="canonical" href="https://alumungandr.com/invoice">
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
 
@@ -13,13 +13,13 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alumungandr.com/invoice">
   <meta property="og:title" content="No-BS Invoice & Estimate Maker — Alumungandr™">
-  <meta property="og:description" content="Free, ad-free contractor invoice & quote generator. Built for plumbers, mobile mechanics, landscapers, caterers, and freelance contractors. WhatsApp instant estimate, Lynk/Card QR deposit lock, and PDF exports.">
+  <meta property="og:description" content="Free, ad-free contractor invoice & quote generator. Built for independent businesses, contractors, consultants, and trade professionals. WhatsApp instant estimate, Card/QR deposit lock, and PDF exports.">
   <meta property="og:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="No-BS Invoice & Estimate Maker — Alumungandr™">
-  <meta name="twitter:description" content="Free, ad-free contractor invoice & quote generator. Built for plumbers, mobile mechanics, landscapers, caterers, and freelance contractors. WhatsApp instant estimate, Lynk/Card QR deposit lock, and PDF exports.">
+  <meta name="twitter:description" content="Free, ad-free contractor invoice & quote generator. Built for independent businesses, contractors, consultants, and trade professionals. WhatsApp instant estimate, Card/QR deposit lock, and PDF exports.">
   <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
@@ -46,7 +46,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "Free, instant in-browser contractor invoice, estimate, and quote generator with WhatsApp direct sharing, Lynk/Card QR deposits, and PDF export.",
+        "description": "Free, instant in-browser contractor invoice, estimate, and quote generator with WhatsApp direct sharing, instant payment QR deposits, and PDF export.",
         "publisher": {
           "@id": "https://alumungandr.com/#organization"
         }
@@ -1492,7 +1492,7 @@
 <body>
 
   <!-- Top Navigation -->
-          <header class="site-header">
+            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1563,7 +1563,7 @@
     </div>
     <div class="hero-features-strip">
       <span class="badge-pill highlight">⚡ WhatsApp Instant Estimate</span>
-      <span class="badge-pill highlight">💳 Lynk &amp; Card QR Deposit Lock</span>
+      <span class="badge-pill highlight">💳 Instant Payment QR &amp; Deposit Lock</span>
       <span class="badge-pill">💾 20-Client Memory</span>
       <span class="badge-pill">⚖️ Late Fee Auto-Tagger</span>
       <span class="badge-pill">⭐ Repeat Client Perks</span>
@@ -1669,25 +1669,25 @@
         </div>
         <div class="field-wrap">
           <label class="field-label">Company / Contractor Name</label>
-          <input type="text" id="fromName" class="field-input" placeholder="e.g. Acme Plumbing &amp; Electrical Services" oninput="handleBusinessInput()">
+          <input type="text" id="fromName" class="field-input" placeholder="e.g. Apex Technical Solutions LLC" oninput="handleBusinessInput()">
         </div>
         <div class="field-wrap">
           <label class="field-label">Trade / Specialty Subtitle</label>
-          <input type="text" id="fromTrade" class="field-input" placeholder="e.g. Master Licensed Plumber &bull; 24/7 Mobile Diagnostics" oninput="handleBusinessInput()">
+          <input type="text" id="fromTrade" class="field-input" placeholder="e.g. Systems Architecture &bull; Engineering &bull; Cloud Infrastructure" oninput="handleBusinessInput()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Email</label>
-            <input type="email" id="fromEmail" class="field-input" placeholder="billing@contractor.com" oninput="handleBusinessInput()">
+            <input type="email" id="fromEmail" class="field-input" placeholder="billing@apexsolutions.io" oninput="handleBusinessInput()">
           </div>
           <div class="field-wrap">
             <label class="field-label">Phone / WhatsApp</label>
-            <input type="text" id="fromPhone" class="field-input" placeholder="+1 (876) 555-0199" oninput="handleBusinessInput()">
+            <input type="text" id="fromPhone" class="field-input" placeholder="+1 (512) 555-0199" oninput="handleBusinessInput()">
           </div>
         </div>
         <div class="field-wrap">
-          <label class="field-label">Business Address &amp; TRN / Tax ID</label>
-          <input type="text" id="fromAddress" class="field-input" placeholder="10 Innovation Blvd, Montego Bay, Jamaica | TRN: 987-654-321" oninput="handleBusinessInput()">
+          <label class="field-label">Business Address &amp; EIN / Tax ID</label>
+          <input type="text" id="fromAddress" class="field-input" placeholder="100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789" oninput="handleBusinessInput()">
         </div>
       </div>
 
@@ -1696,21 +1696,21 @@
         <div class="section-title">Client Information (Billed To)</div>
         <div class="field-wrap">
           <label class="field-label">Client Name / Business</label>
-          <input type="text" id="toName" class="field-input" placeholder="e.g. Apex Global Solutions Ltd" oninput="renderDoc()">
+          <input type="text" id="toName" class="field-input" placeholder="e.g. Global Enterprise Dynamics Inc." oninput="renderDoc()">
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Client Phone / WhatsApp</label>
-            <input type="text" id="toPhone" class="field-input" placeholder="+1 (876) 555-0199" oninput="renderDoc()">
+            <input type="text" id="toPhone" class="field-input" placeholder="+1 (415) 555-0142" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
             <label class="field-label">Client Email</label>
-            <input type="email" id="toEmail" class="field-input" placeholder="accounts@apexglobal.io" oninput="renderDoc()">
+            <input type="email" id="toEmail" class="field-input" placeholder="accounts@gedynamics.com" oninput="renderDoc()">
           </div>
         </div>
         <div class="field-wrap">
           <label class="field-label">Job Site / Billing Address</label>
-          <input type="text" id="toAddress" class="field-input" placeholder="25 Knutsford Boulevard, Kingston, Jamaica" oninput="renderDoc()">
+          <input type="text" id="toAddress" class="field-input" placeholder="500 Howard Street, Suite 400, San Francisco, CA 94105" oninput="renderDoc()">
         </div>
 
         <!-- Repeat Customer Loyalty Toggle -->
@@ -1852,17 +1852,23 @@
       <!-- Financial Adjustments -->
       <div class="form-section">
         <div class="section-title">Adjustments &amp; Taxes</div>
-        <div class="input-grid-3">
+        <div class="input-grid-2">
           <div class="field-wrap">
-            <label class="field-label">Tax / GCT (%)</label>
-            <input type="number" id="taxRate" class="field-input" value="15" min="0" step="0.5" oninput="renderDoc()">
+            <label class="field-label">Tax Label</label>
+            <input type="text" id="taxLabel" class="field-input" value="Sales Tax" placeholder="e.g. Sales Tax, VAT, GCT" oninput="renderDoc()">
           </div>
+          <div class="field-wrap">
+            <label class="field-label">Tax Rate (%)</label>
+            <input type="number" id="taxRate" class="field-input" value="8.25" min="0" step="0.25" oninput="renderDoc()">
+          </div>
+        </div>
+        <div class="input-grid-2" style="margin-top:0.4rem;">
           <div class="field-wrap">
             <label class="field-label">Flat Discount ($)</label>
             <input type="number" id="discountVal" class="field-input" value="0" min="0" step="1" oninput="renderDoc()">
           </div>
           <div class="field-wrap">
-            <label class="field-label">Travel / Callout ($)</label>
+            <label class="field-label">Travel / Callout / Shipping ($)</label>
             <input type="number" id="shippingVal" class="field-input" value="0" min="0" step="1" oninput="renderDoc()">
           </div>
         </div>
@@ -1871,22 +1877,25 @@
       <!-- Payment QR & Deposit Lock Settings -->
       <div class="form-section highlight-glow">
         <div class="section-title">
-          <span>💳 Lynk &amp; Card QR Deposit Lock</span>
+          <span>💳 Instant Payment QR &amp; Deposit Lock</span>
           <span class="section-tag">Instant Payment QR</span>
         </div>
         <div class="input-grid-2">
           <div class="field-wrap">
             <label class="field-label">Payment Method</label>
             <select id="paymentMethod" class="field-select" onchange="handlePaymentMethodChange()">
-              <option value="lynk" selected>Lynk Jamaica (NCB Mobile Wallet)</option>
-              <option value="card">Credit / Debit Card (Stripe / Link)</option>
-              <option value="bank">Bank Transfer (NCB / BNS / Wire)</option>
-              <option value="paypal">PayPal / Zelle</option>
+              <option value="card" selected>Credit / Debit Card (Stripe / Link / Apple Pay)</option>
+              <option value="zelle">Zelle Instant Bank Transfer</option>
+              <option value="venmo">Venmo / Cash App</option>
+              <option value="ach">ACH Direct Deposit / US Wire Transfer</option>
+              <option value="paypal">PayPal</option>
+              <option value="lynk">Lynk Jamaica (NCB Mobile Wallet)</option>
+              <option value="other">Custom Payment Link / QR</option>
             </select>
           </div>
           <div class="field-wrap">
-            <label class="field-label" id="paymentHandleLabel">Lynk Handle or ID</label>
-            <input type="text" id="paymentHandle" class="field-input" value="@alumungandr" placeholder="@yourhandle" oninput="renderDoc()">
+            <label class="field-label" id="paymentHandleLabel">Card Checkout URL or Handle</label>
+            <input type="text" id="paymentHandle" class="field-input" value="https://buy.stripe.com/demo_apex_pay" placeholder="https://buy.stripe.com/..." oninput="renderDoc()">
           </div>
         </div>
 
@@ -1910,12 +1919,12 @@
 
         <div class="field-wrap">
           <label class="field-label">Direct Bank Instructions (Optional)</label>
-          <input type="text" id="paymentDetails" class="field-input" placeholder="Bank: National Commercial Bank (NCB) | Acct: 847291038" oninput="handleBusinessInput()">
+          <input type="text" id="paymentDetails" class="field-input" placeholder="Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N" oninput="handleBusinessInput()">
         </div>
 
         <div class="field-wrap">
           <label class="field-label">Notes &amp; Thank You Message</label>
-          <input type="text" id="notesText" class="field-input" value="Payment due upon receipt. Formally verified deliverables deployed." oninput="renderDoc()">
+          <input type="text" id="notesText" class="field-input" value="Payment due upon receipt. Deliverables deployed and verified. Thank you for your business!" oninput="renderDoc()">
         </div>
       </div>
 
@@ -1951,10 +1960,10 @@
           <!-- Header Area -->
           <div class="sheet-top">
             <div class="sheet-brand-area">
-              <div class="sheet-company-name" id="previewFromName">Acme Plumbing &amp; Electrical Services</div>
-              <div class="sheet-company-trade" id="previewFromTrade">Master Licensed Plumber &bull; 24/7 Mobile Diagnostics</div>
-              <div class="sheet-company-sub" id="previewFromDetails">10 Innovation Blvd, Montego Bay, Jamaica
-billing@contractor.com &bull; +1 (876) 555-0199</div>
+              <div class="sheet-company-name" id="previewFromName">Apex Technical Solutions LLC</div>
+              <div class="sheet-company-trade" id="previewFromTrade">Systems Architecture &bull; Engineering &bull; Cloud Infrastructure</div>
+              <div class="sheet-company-sub" id="previewFromDetails">100 Congress Ave, Suite 2000, Austin, TX 78701
+billing@apexsolutions.io &bull; +1 (512) 555-0199</div>
             </div>
             <div class="sheet-doc-meta">
               <div class="sheet-doc-title" id="previewDocTitle">INVOICE</div>
@@ -1974,14 +1983,14 @@ billing@contractor.com &bull; +1 (876) 555-0199</div>
           <div class="sheet-billing-grid">
             <div>
               <div class="sheet-bill-label">Billed To</div>
-              <div class="sheet-bill-name" id="previewToName">Apex Global Solutions Ltd</div>
-              <div class="sheet-bill-text" id="previewToDetails">25 Knutsford Boulevard, Kingston, Jamaica
-accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
+              <div class="sheet-bill-name" id="previewToName">Global Enterprise Dynamics Inc.</div>
+              <div class="sheet-bill-text" id="previewToDetails">500 Howard Street, Suite 400, San Francisco, CA 94105
+accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
             </div>
             <div>
               <div class="sheet-bill-label">Payment &amp; Terms</div>
-              <div class="sheet-bill-text" id="previewPaymentMethodTitle">Lynk Digital Wallet / Card Payment</div>
-              <div class="sheet-bill-text" id="previewPaymentBankInfo" style="font-family:var(--font-mono); font-size:0.8rem; margin-top:3px;">Lynk Handle: @alumungandr</div>
+              <div class="sheet-bill-text" id="previewPaymentMethodTitle">Credit / Debit Card (Stripe / Link)</div>
+              <div class="sheet-bill-text" id="previewPaymentBankInfo" style="font-family:var(--font-mono); font-size:0.8rem; margin-top:3px;">Payment Link: https://buy.stripe.com/demo_apex_pay</div>
             </div>
           </div>
 
@@ -2016,8 +2025,8 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
                   <span id="qrBoxHeader">Scan to Pay / Lock Job</span>
                 </div>
                 <div class="sheet-deposit-badge" id="qrDepositBadge">🔒 50% Deposit to Lock: $776.25</div>
-                <div class="sheet-qr-handle" id="qrHandleText">Lynk: @alumungandr</div>
-                <div class="sheet-qr-sub" id="qrSubText">Scan with your phone camera or Lynk app to submit instant payment.</div>
+                <div class="sheet-qr-handle" id="qrHandleText">Payment: https://buy.stripe.com/...</div>
+                <div class="sheet-qr-sub" id="qrSubText">Scan with your phone camera to submit instant payment.</div>
               </div>
             </div>
 
@@ -2083,7 +2092,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       </div>
       <div class="modal-body">
         <p style="font-size:0.85rem; color:var(--text-subtle);">
-          No messy texts. Send this structured estimate with your Lynk/Card deposit link directly to the client's WhatsApp in 1 tap.
+          No messy texts. Send this structured estimate with your instant payment link directly to the client's WhatsApp in 1 tap.
         </p>
         <textarea id="whatsappMessageText" class="field-textarea" style="height:220px; font-family:var(--font-mono); font-size:0.82rem;" readonly></textarea>
         <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
@@ -2183,6 +2192,8 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
           if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
           if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
           if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+          if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
+          if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
           if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
           if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
           if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
@@ -2450,15 +2461,24 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       const pm = document.getElementById('paymentMethod').value;
       const handleLbl = document.getElementById('paymentHandleLabel');
       const handleInput = document.getElementById('paymentHandle');
-      if (pm === 'lynk') {
+      if (pm === 'card') {
+        handleLbl.textContent = 'Card Checkout URL or Handle';
+        handleInput.placeholder = 'https://buy.stripe.com/...';
+      } else if (pm === 'zelle') {
+        handleLbl.textContent = 'Zelle Email or Phone Number';
+        handleInput.placeholder = 'payments@yourcompany.com';
+      } else if (pm === 'venmo') {
+        handleLbl.textContent = 'Venmo / Cash App Handle';
+        handleInput.placeholder = '@yourcompany';
+      } else if (pm === 'ach') {
+        handleLbl.textContent = 'Routing & Account Details';
+        handleInput.placeholder = 'Routing: 121000358 | Acct: 123456789';
+      } else if (pm === 'paypal') {
+        handleLbl.textContent = 'PayPal.me Link or Email';
+        handleInput.placeholder = 'https://paypal.me/yourcompany';
+      } else if (pm === 'lynk') {
         handleLbl.textContent = 'Lynk Jamaica Handle';
-        handleInput.placeholder = '@contractor';
-      } else if (pm === 'card') {
-        handleLbl.textContent = 'Card Payment Link (Stripe / WiPay)';
-        handleInput.placeholder = 'https://pay.stripe.com/...';
-      } else if (pm === 'bank') {
-        handleLbl.textContent = 'Bank Transfer Account Number';
-        handleInput.placeholder = 'NCB Acct: 123456789';
+        handleInput.placeholder = '@yourhandle';
       } else {
         handleLbl.textContent = 'Payment ID / URL';
         handleInput.placeholder = 'Handle or Link';
@@ -2524,7 +2544,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       STATE.currency = document.getElementById('currencySelect').value;
 
       // Business info
-      const fromName = document.getElementById('fromName').value.trim() || 'Acme Plumbing & Electrical Services';
+      const fromName = document.getElementById('fromName').value.trim() || 'Apex Technical Solutions LLC';
       const fromTrade = document.getElementById('fromTrade').value.trim();
       const fromEmail = document.getElementById('fromEmail').value.trim();
       const fromPhone = document.getElementById('fromPhone').value.trim();
@@ -2541,7 +2561,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       document.getElementById('previewFromDetails').textContent = fromSub || 'Address & Contact Information';
 
       // Client info
-      const toName = document.getElementById('toName').value.trim() || 'Client Business / Name';
+      const toName = document.getElementById('toName').value.trim() || 'Global Enterprise Dynamics Inc.';
       const toEmail = document.getElementById('toEmail').value.trim();
       const toPhone = document.getElementById('toPhone').value.trim();
       const toAddress = document.getElementById('toAddress').value.trim();
@@ -2593,6 +2613,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
 
       // Basic financial modifiers
       const discount = parseFloat(document.getElementById('discountVal').value) || 0;
+      const taxLabel = document.getElementById('taxLabel') ? (document.getElementById('taxLabel').value.trim() || 'Sales Tax') : 'Sales Tax';
       const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
       const shipping = parseFloat(document.getElementById('shippingVal').value) || 0;
 
@@ -2708,7 +2729,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       const taxRow = document.getElementById('previewTaxRow');
       if (taxRate > 0) {
         taxRow.style.display = 'flex';
-        document.getElementById('previewTaxLabel').textContent = `Tax / GCT (${taxRate}%):`;
+        document.getElementById('previewTaxLabel').textContent = `${taxLabel} (${taxRate}%):`;
         document.getElementById('previewTax').textContent = `${STATE.currency}${taxAmount.toFixed(2)}`;
       } else {
         taxRow.style.display = 'none';
@@ -2736,26 +2757,46 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
 
       // Payment Details & QR Code
       const payMethod = document.getElementById('paymentMethod').value;
-      const payHandle = document.getElementById('paymentHandle').value.trim() || '@alumungandr';
+      const payHandle = document.getElementById('paymentHandle').value.trim() || 'https://buy.stripe.com/demo_apex_pay';
       const payDetails = document.getElementById('paymentDetails').value.trim();
 
-      let payTitle = 'Lynk Mobile Wallet';
+      let payTitle = 'Credit / Debit Card (Stripe / Link)';
       let qrPayload = payHandle;
-      if (payMethod === 'lynk') {
+      if (payMethod === 'card') {
+        payTitle = 'Credit / Debit Card (Stripe / Link / Apple Pay)';
+        document.getElementById('qrHandleText').textContent = payHandle.startsWith('http') ? 'Online Card Checkout' : payHandle;
+        document.getElementById('qrSubText').textContent = 'Scan with smartphone camera to open secure card checkout.';
+        qrPayload = payHandle.startsWith('http') ? payHandle : `https://${payHandle}`;
+      } else if (payMethod === 'zelle') {
+        payTitle = 'Zelle Instant Bank Transfer';
+        document.getElementById('qrHandleText').textContent = `Zelle: ${payHandle}`;
+        document.getElementById('qrSubText').textContent = 'Send via Zelle app or scan to pay registered recipient.';
+        qrPayload = `ZELLE:${payHandle}?amount=${depositAmount.toFixed(2)}`;
+      } else if (payMethod === 'venmo') {
+        payTitle = 'Venmo / Cash App';
+        document.getElementById('qrHandleText').textContent = `Handle: ${payHandle}`;
+        document.getElementById('qrSubText').textContent = 'Scan with mobile camera to submit payment.';
+        qrPayload = payHandle.startsWith('http') ? payHandle : (payHandle.startsWith('@') ? `https://venmo.com/${payHandle.replace('@','')}` : payHandle);
+      } else if (payMethod === 'ach') {
+        payTitle = 'ACH Direct Deposit / US Wire Transfer';
+        document.getElementById('qrHandleText').textContent = payDetails || 'ACH Routing & Account';
+        document.getElementById('qrSubText').textContent = 'Direct electronic funds transfer (EFT/ACH/Fedwire).';
+        qrPayload = `ACH TRANSFER: ${payDetails || payHandle} | AMT: ${STATE.currency}${depositAmount.toFixed(2)}`;
+      } else if (payMethod === 'paypal') {
+        payTitle = 'PayPal Transfer';
+        document.getElementById('qrHandleText').textContent = `PayPal: ${payHandle}`;
+        document.getElementById('qrSubText').textContent = 'Scan to pay via PayPal balance or card.';
+        qrPayload = payHandle.startsWith('http') ? payHandle : `https://paypal.me/${payHandle.replace('@','')}/${depositAmount.toFixed(2)}`;
+      } else if (payMethod === 'lynk') {
         payTitle = 'Lynk Jamaica (NCB Mobile Wallet)';
         document.getElementById('qrHandleText').textContent = `Lynk Handle: ${payHandle}`;
         document.getElementById('qrSubText').textContent = 'Scan with your Lynk app or phone camera to deposit.';
         qrPayload = `lynk://pay/${payHandle.replace('@','')}?amount=${depositAmount.toFixed(2)}`;
-      } else if (payMethod === 'card') {
-        payTitle = 'Credit / Debit Card (Stripe / Link)';
-        document.getElementById('qrHandleText').textContent = `Payment Link: ${payHandle}`;
-        document.getElementById('qrSubText').textContent = 'Scan with your smartphone camera to open secure card checkout.';
-        qrPayload = payHandle.startsWith('http') ? payHandle : `https://${payHandle}`;
-      } else if (payMethod === 'bank') {
-        payTitle = 'Direct Bank Wire / NCB Transfer';
-        document.getElementById('qrHandleText').textContent = payDetails || 'NCB Transfer';
-        document.getElementById('qrSubText').textContent = 'Scan or transfer to bank account details listed above.';
-        qrPayload = `BANK TRANSFER: ${payDetails} | AMT: ${STATE.currency}${depositAmount.toFixed(2)}`;
+      } else {
+        payTitle = 'Direct Electronic Payment';
+        document.getElementById('qrHandleText').textContent = payHandle;
+        document.getElementById('qrSubText').textContent = 'Scan with camera or mobile app to complete transaction.';
+        qrPayload = payHandle;
       }
 
       document.getElementById('previewPaymentMethodTitle').textContent = payTitle;
@@ -2842,8 +2883,12 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       if (payHandle) {
         if (payMethod === 'lynk') {
           lines.push(`💳 *Pay via Lynk App:* \`${payHandle}\``);
+        } else if (payMethod === 'zelle') {
+          lines.push(`💳 *Pay via Zelle:* \`${payHandle}\``);
+        } else if (payMethod === 'venmo') {
+          lines.push(`💳 *Pay via Venmo / Cash App:* \`${payHandle}\``);
         } else {
-          lines.push(`💳 *Pay Link:* ${payHandle}`);
+          lines.push(`💳 *Payment / Checkout Link:* ${payHandle}`);
         }
       }
 
@@ -3047,25 +3092,26 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
 
     // Sample contractor data
     function loadSampleContractorData() {
-      document.getElementById('fromName').value = 'Apex Master Plumbing & Emergency Repairs';
-      document.getElementById('fromTrade').value = 'Licensed Master Plumber &bull; Commercial &bull; 24/7 Mobile Dispatch';
-      document.getElementById('fromEmail').value = 'dispatch@apexplumbing.com';
-      document.getElementById('fromPhone').value = '+1 (876) 555-0199';
-      document.getElementById('fromAddress').value = '10 Innovation Blvd, Montego Bay, Jamaica | TRN: 987-654-321';
+      document.getElementById('fromName').value = 'Apex Technical Solutions LLC';
+      document.getElementById('fromTrade').value = 'Systems Architecture &bull; Engineering &bull; Cloud Infrastructure';
+      document.getElementById('fromEmail').value = 'billing@apexsolutions.io';
+      document.getElementById('fromPhone').value = '+1 (512) 555-0199';
+      document.getElementById('fromAddress').value = '100 Congress Ave, Suite 2000, Austin, TX 78701 | EIN: 12-3456789';
 
-      document.getElementById('toName').value = 'Apex Global Technologies Ltd.';
-      document.getElementById('toPhone').value = '+1 (876) 555-0842';
-      document.getElementById('toEmail').value = 'facilities@apexglobal.io';
-      document.getElementById('toAddress').value = '25 Knutsford Boulevard, Kingston, Jamaica';
+      document.getElementById('toName').value = 'Global Enterprise Dynamics Inc.';
+      document.getElementById('toPhone').value = '+1 (415) 555-0142';
+      document.getElementById('toEmail').value = 'accounts@gedynamics.com';
+      document.getElementById('toAddress').value = '500 Howard Street, Suite 400, San Francisco, CA 94105';
 
       document.getElementById('docNumber').value = 'INV-2026-084';
-      document.getElementById('paymentMethod').value = 'lynk';
-      document.getElementById('paymentHandle').value = '@alumungandr';
-      document.getElementById('paymentDetails').value = 'Bank: National Commercial Bank (NCB) | Acct: 847291038 | SWIFT: JNCBJM';
-      document.getElementById('notesText').value = 'Work completed according to certified safety code. 100% parts & labor warranty for 90 days.';
-      document.getElementById('taxRate').value = '15';
+      document.getElementById('paymentMethod').value = 'card';
+      document.getElementById('paymentHandle').value = 'https://buy.stripe.com/demo_apex_pay';
+      document.getElementById('paymentDetails').value = 'Bank of America | Routing: 121000358 | Acct: 9876543210 | Swift: BOFAUS3N';
+      document.getElementById('notesText').value = 'Payment due upon receipt. Deliverables deployed and verified. Thank you for your business!';
+      if (document.getElementById('taxLabel')) document.getElementById('taxLabel').value = 'Sales Tax';
+      document.getElementById('taxRate').value = '8.25';
       document.getElementById('discountVal').value = '0';
-      document.getElementById('shippingVal').value = '50';
+      document.getElementById('shippingVal').value = '0';
       document.getElementById('depositLockPct').value = '50';
 
       document.getElementById('repeatCustomerCheck').checked = true;
@@ -3074,16 +3120,16 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
       document.getElementById('repeatNote').value = 'Preferred Repeat Client Courtesy Discount Applied';
 
       STATE.items = [
-        { desc: 'Emergency High-Pressure Main Line Hydro-Jetting', qty: 1, rate: 350.00 },
-        { desc: 'Commercial Brass Backflow Preventer Replacement', qty: 1, rate: 420.00 },
-        { desc: 'Electronic Ultrasonic Pipe Leak Detection & Acoustic Scan', qty: 1, rate: 180.00 },
-        { desc: 'Heavy-Duty Compression Pipe Couplings & Gasket Seals', qty: 4, rate: 25.00 }
+        { desc: 'Cloud Infrastructure Architecture & Microservices Deployment', qty: 1, rate: 850.00 },
+        { desc: 'High-Performance Database Indexing & Query Optimization', qty: 1, rate: 450.00 },
+        { desc: 'Formal Security Verification & SMT Memory Bounds Audit', qty: 1, rate: 600.00 },
+        { desc: 'Automated CI/CD Pipeline & Cloudflare Worker Integration', qty: 2, rate: 250.00 }
       ];
 
       renderLineItemInputs();
       renderDoc();
       playBeep(660);
-      showToast('📑 Loaded complete professional contractor sample job!');
+      showToast('📑 Loaded complete professional sample invoice!');
     }
 
     // Auto-fill & Profile save
@@ -3097,6 +3143,9 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
           if (prof.fromEmail) document.getElementById('fromEmail').value = prof.fromEmail;
           if (prof.fromPhone) document.getElementById('fromPhone').value = prof.fromPhone;
           if (prof.fromAddress) document.getElementById('fromAddress').value = prof.fromAddress;
+          if (prof.taxLabel && document.getElementById('taxLabel')) document.getElementById('taxLabel').value = prof.taxLabel;
+          if (prof.taxRate && document.getElementById('taxRate')) document.getElementById('taxRate').value = prof.taxRate;
+          if (prof.paymentMethod) document.getElementById('paymentMethod').value = prof.paymentMethod;
           if (prof.paymentHandle) document.getElementById('paymentHandle').value = prof.paymentHandle;
           if (prof.paymentDetails) document.getElementById('paymentDetails').value = prof.paymentDetails;
           renderDoc();
@@ -3124,6 +3173,8 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
         fromEmail: document.getElementById('fromEmail').value,
         fromPhone: document.getElementById('fromPhone').value,
         fromAddress: document.getElementById('fromAddress').value,
+        taxLabel: document.getElementById('taxLabel') ? document.getElementById('taxLabel').value : 'Sales Tax',
+        taxRate: document.getElementById('taxRate') ? document.getElementById('taxRate').value : '8.25',
         paymentMethod: document.getElementById('paymentMethod').value,
         paymentHandle: document.getElementById('paymentHandle').value,
         paymentDetails: document.getElementById('paymentDetails').value
@@ -3209,7 +3260,7 @@ accounts@apexglobal.io &bull; +1 (876) 555-0199</div>
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-        <footer class="site-footer">
+          <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">

@@ -81,8 +81,19 @@ export default {
       return Response.redirect(new URL('/', request.url).toString(), 301);
     }
 
-    // Fall back to Cloudflare Static Assets
-    return env.ASSETS.fetch(request);
+    // Fall back to Cloudflare Static Assets with Zero-FOUC Theme Pre-bootstrap
+    const res = await env.ASSETS.fetch(request);
+    const contentType = res.headers.get('content-type') || '';
+    if (res.status === 200 && contentType.includes('text/html')) {
+      const html = await res.text();
+      const themeScript = `<script>try{var t=localStorage.getItem('alu_theme');if(t==='paper'||t==='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
+      return new Response(html.replace('<head>', '<head>' + themeScript), {
+        status: res.status,
+        statusText: res.statusText,
+        headers: res.headers
+      });
+    }
+    return res;
   },
 
   // Cloudflare Worker Cron Trigger: Runs weekly on Sunday at midnight UTC (100% Free, zero maintenance)

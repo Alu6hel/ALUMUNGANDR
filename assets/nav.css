@@ -442,18 +442,19 @@ button, .dropdown-trigger, .btn-ticket-action, .drawer-link {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 5px !important;
+  gap: 0 !important;
   background: transparent !important;
   border: none !important;
   border-radius: 20px !important;
-  padding: 4px 10px !important;
+  padding: 5px 9px !important;
   font-family: 'JetBrains Mono', -apple-system, sans-serif !important;
-  font-size: 0.72rem !important;
+  font-size: 0.95rem !important;
   font-weight: 600 !important;
   color: var(--nav-muted) !important;
   cursor: pointer !important;
   transition: color 0.2s ease, transform 0.15s ease !important;
-  min-height: 34px !important;
+  min-height: 32px !important;
+  min-width: 34px !important;
   white-space: nowrap !important;
   outline: none !important;
   touch-action: manipulation !important;
@@ -468,14 +469,13 @@ button, .dropdown-trigger, .btn-ticket-action, .drawer-link {
 }
 
 .theme-toggle-btn .theme-icon {
-  font-size: 0.85rem !important;
+  font-size: 0.95rem !important;
   display: inline-block !important;
   line-height: 1 !important;
 }
 
 .theme-toggle-btn .theme-label {
-  font-size: 0.7rem !important;
-  letter-spacing: 0.02em !important;
+  display: none !important;
 }
 
 .theme-slider-thumb {
@@ -498,7 +498,8 @@ button, .dropdown-trigger, .btn-ticket-action, .drawer-link {
   }
   .theme-toggle-btn {
     padding: 6px 9px !important;
-    min-height: 44px !important;
+    min-height: 40px !important;
+    min-width: 36px !important;
   }
   .theme-toggle-btn .theme-label {
     display: none !important;

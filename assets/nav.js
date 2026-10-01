@@ -127,14 +127,14 @@
         toggleWrap.setAttribute('role', 'radiogroup');
         toggleWrap.setAttribute('aria-label', 'Display Theme');
         toggleWrap.innerHTML = `
-          <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-checked="true">
-            <span class="theme-icon">🌙</span><span class="theme-label">Dark</span>
+          <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+            <span class="theme-icon">🌙</span>
           </button>
-          <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome & Negative" aria-checked="false">
-            <span class="theme-icon">☀️</span><span class="theme-label">Paper</span>
+          <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome & Negative" aria-label="Paper Theme" aria-checked="false">
+            <span class="theme-icon">☀️</span>
           </button>
-          <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-checked="false">
-            <span class="theme-icon">⚡</span><span class="theme-label">Amber</span>
+          <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
+            <span class="theme-icon">⚡</span>
           </button>
           <div class="theme-slider-thumb"></div>
         `;

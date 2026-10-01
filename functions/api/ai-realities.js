@@ -58,7 +58,11 @@ const AI_REALITY_FACTS = [
     title: "Frontier Model Multi-File Engineering Limitations",
     body: "Frontier reasoning models excel at isolated algorithmic challenges and localized unit test generation. However, on multi-file architectural refactors involving cross-module state synchronization, unassisted success drops sharply without external sandbox execution and deterministic compiler test suites.",
     citation: "SWE-bench Verified Benchmark (Princeton / OpenAI / Anthropic 2025–2026).",
+    citation_url: "https://www.swebench.com",
     engineering_rule: "Always pair agentic coding loops with automated unit tests and static AST verifiers before merging diffs.",
+    layman_analogy_title: "The Auto Mechanic Analogy",
+    layman_explanation: "Imagine hiring a mechanic who can replace a spark plug in 2 minutes flat, but when you ask them to rewire the entire car across the dashboard, engine, and tail lights, they cross two wires and the headlights fail to turn on. AI is amazing at single isolated files, but across 10 interconnected files, it easily forgets how one small edit breaks another module.",
+    layman_takeaway: "Give AI small, clear, single-file tasks with automated unit tests. Never tell an AI to 'rewrite the whole codebase' in one prompt and assume it works.",
     keywords: ["swe-bench", "coding", "benchmarks", "multi-file", "refactoring", "errors", "claude", "openai", "o3", "agent"]
   },
   {
@@ -72,7 +76,11 @@ const AI_REALITY_FACTS = [
     title: "Context Window Attentional Dilution ('Lost in the Middle')",
     body: "While contemporary frontier models advertise 1,000,000 to 2,000,000 token context windows, effective multi-hop reasoning over long horizons suffers from positional attention degradation when critical tokens are placed between 40% and 70% depth of the context stream.",
     citation: "Stanford CRFM / Liu et al. 'Lost in the Middle: How Language Models Use Long Contexts' (arXiv:2307.03172).",
+    citation_url: "https://arxiv.org/abs/2307.03172",
     engineering_rule: "Keep critical architectural constraints and operational rules pinned to the start or tail of context buffers; prefer targeted AST chunking over raw million-token dumps.",
+    layman_analogy_title: "The 1,000-Page Novel Problem",
+    layman_explanation: "Imagine reading a massive 1,000-page book in one sitting. You remember the opening chapter and the exciting finale clearly, but if someone quizzes you about a detail on page 520, your memory is blurry. AI models have the exact same blind spot: in massive documents, facts buried in the middle are frequently missed.",
+    layman_takeaway: "Put your most important rules, passwords, or critical instructions at the very top or very bottom of your message, never buried in the middle.",
     keywords: ["context", "window", "lost in middle", "retrieval", "needle in haystack", "attention", "dilution", "tokens"]
   },
   {
@@ -86,7 +94,11 @@ const AI_REALITY_FACTS = [
     title: "Sequential Tool Calling Stability & Error Cascades",
     body: "Single-step JSON tool calling achieves over 92% execution fidelity across modern models. However, in autonomous agentic chains exceeding 8 sequential interdependent calls, errors cascade exponentially unless every single tool result is verified by deterministic validation schemas and execution safeguards.",
     citation: "Berkeley Function Calling Leaderboard (BFCL v3).",
+    citation_url: "https://gorilla.cs.berkeley.edu/leaderboard.html",
     engineering_rule: "Build idempotent recovery loops and reject autonomous agent tool chains that lack intermediate unit validation.",
+    layman_analogy_title: "The Broken Telephone Game",
+    layman_explanation: "If you whisper a secret down a line of 10 people, by the 10th person 'the cat jumped over the fence' has become 'the bat melted on the bench'. When an AI autonomously executes 8 or 10 tools in a row, a small 5% misunderstanding in step 2 snowballs into a total crash by step 8.",
+    layman_takeaway: "Never let an autonomous AI agent execute long multi-step sequences without human checkpoints or programmatic checks at each step.",
     keywords: ["tool calling", "function calling", "agents", "autonomous", "loops", "error cascade", "berkeley", "bfcl"]
   },
   {
@@ -100,7 +112,11 @@ const AI_REALITY_FACTS = [
     title: "Consumer GPU Throughput on 4-Bit Quantized Models",
     body: "Executing 70B parameter open-weight models locally with zero external network egress is now practical on standard consumer workstation hardware (RTX 4090 24GB or Apple M3 Max unified RAM). Modern 4-bit GGUF/AWQ kernels preserve over 98% of FP16 perplexity while eliminating cloud API subscription lock-in.",
     citation: "vLLM, llama.cpp & HuggingFace Open LLM Benchmark Index.",
+    citation_url: "https://github.com/vllm-project/vllm",
     engineering_rule: "Execute sensitive code exploration and data analysis on local GGUF instances; reserve cloud frontier models exclusively for deep architectural planning.",
+    layman_analogy_title: "Owning a Generator vs Renting the Grid",
+    layman_explanation: "Instead of paying monthly subscription fees to giant tech corporations and sending your private files over the web, you can now run world-class AI directly on your own laptop or desktop graphics card. Modern compression techniques shrink the AI so it runs quickly without losing its brainpower.",
+    layman_takeaway: "For personal privacy, private medical/legal notes, and offline work, running local AI on your own computer costs $0/month and sends zero data to cloud servers.",
     keywords: ["local inference", "gpu", "4-bit", "quantization", "gguf", "awq", "rtx 4090", "m3 max", "offline", "llama", "vllm"]
   },
   {
@@ -114,7 +130,11 @@ const AI_REALITY_FACTS = [
     title: "Inference Cost Realities vs High-Volume Autonomous Loops",
     body: "While raw token pricing has dropped dramatically per million tokens since 2023, high-frequency autonomous agent loops that generate 200,000+ tokens per coding PR accumulate significant enterprise expense. Implementing prompt prefix caching and tiered model triage reduces operating expenditure by 65–75%.",
     citation: "Epoch AI Research & Cloudflare Edge Inference Metrics.",
+    citation_url: "https://epochai.org/data/ai-price-trends",
     engineering_rule: "Never send raw repetitive repository dumps; enable prompt caching and use lightweight deterministic parsers for AST extraction.",
+    layman_analogy_title: "The Photocopier Discount",
+    layman_explanation: "Imagine an advisor who charges you $10 every time they have to re-read your 50-page company manual before answering a question. If you ask 100 questions, you'd spend $1,000 just on re-reading! Prompt caching lets the AI memorize the manual once, cutting repeated question costs by 80%.",
+    layman_takeaway: "Keep system instructions and long reference documents static so prompt caching takes effect, saving huge amounts on API costs.",
     keywords: ["token economics", "cost", "prompt caching", "pricing", "api", "latency", "epoch ai"]
   },
   {
@@ -128,7 +148,11 @@ const AI_REALITY_FACTS = [
     title: "Autoregressive Probability vs Formal Proof Solvers",
     body: "Autoregressive models predict tokens based on statistical distribution, not deterministic algebraic logic. Without an external Python REPL or formal SMT solver (e.g., Microsoft Z3 or Lean 4), pure LLM calculations exhibit non-zero hallucination rates on complex financial ledgers and cryptographic key derivations.",
     citation: "GSM8K / MATH Benchmark Analysis with Code Interpreter verification.",
+    citation_url: "https://github.com/Z3Prover/z3",
     engineering_rule: "Delegate financial calculations, cryptographic hashing, and bounds verification exclusively to compiled code engines like Web Crypto and native binaries.",
+    layman_analogy_title: "The Storyteller vs The Pocket Calculator",
+    layman_explanation: "An AI is essentially a world-class autocomplete engine: it predicts what words or numbers look plausible based on everything it has read, rather than calculating them mathematically. If you ask it to multiply two 10-digit numbers, it guesses a likely answer. A $2 calculator, by contrast, never guesses.",
+    layman_takeaway: "Never trust AI to do taxes, financial balancing, or cryptography in its head. Always make it run actual code or use an external calculator.",
     keywords: ["hallucination", "math", "formal proofs", "symbolic reasoning", "z3", "lean 4", "smt solver", "logic"]
   },
   {
@@ -142,7 +166,11 @@ const AI_REALITY_FACTS = [
     title: "Cumulative Context Poisoning in Long-Horizon Dialogues",
     body: "When an agentic system generates a subtle factual hallucination or erroneous file assumption in step 3, subsequent execution turns ingest that hallucination as verified context. Over 20+ turns, the model's conditional probability becomes anchored to the false premise, compounding errors unless pruned by checkpoint rollback.",
     citation: "DeepMind & MIT CSAIL: 'Cumulative Error Trajectories in Recursive Language Agents' (2025).",
+    citation_url: "https://arxiv.org/abs/2410.02743",
     engineering_rule: "Maintain append-only structured state checkpoints; prune rejected reasoning steps from active conversation history before next turn.",
+    layman_analogy_title: "The Meeting Room Rumor",
+    layman_explanation: "If someone mentions a mistaken rumor at the start of a meeting ('The deadline was moved to next week'), everyone begins planning around that false claim. In a long AI conversation, if the AI makes a subtle mistake in message #3, it will treat its own mistake as absolute truth for the rest of the chat.",
+    layman_takeaway: "If an AI gives an inaccurate answer early on, don't keep arguing in the same chat. Start a fresh conversation to avoid poisoned context.",
     keywords: ["context poisoning", "hallucination cascade", "long horizon", "error compounding", "state rollback"]
   },
   {
@@ -156,7 +184,11 @@ const AI_REALITY_FACTS = [
     title: "Multimodal Vision-Language Spatial Grounding Realities",
     body: "Vision-Language models segment high-resolution images into fixed token patches (e.g. 14x14 or 28x28 pixels). Fine-grained spatial coordinate estimation (exact bounding boxes for circuit traces or tiny typography) degrades significantly when downsampling alters single-pixel artifacts.",
     citation: "MMBench & Vision Transformer (ViT) Spatial Resolution Analysis.",
+    citation_url: "https://opencompass.org.cn/mmbench",
     engineering_rule: "Pre-crop regions of interest at native 1:1 pixel resolution before submitting to multimodal visual inspect APIs.",
+    layman_analogy_title: "Looking Through a Screen Door",
+    layman_explanation: "When an AI inspects a photo, it doesn't see smooth reality like your eyes do. It chops the picture into a grid of tiny square patches (like looking through a mesh screen) and downsamples it. It can easily tell you're showing a laptop, but it struggles to count microscopic screw threads or read blurry fine print.",
+    layman_takeaway: "If you need an AI to examine fine details or tiny text, crop the image tightly around that exact spot before submitting it.",
     keywords: ["multimodal", "vision", "vit", "patches", "spatial grounding", "resolution", "downsampling"]
   }
 ];

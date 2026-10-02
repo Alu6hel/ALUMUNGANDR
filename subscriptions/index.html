@@ -8,14 +8,14 @@
   <!-- OpenGraph Metadata -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alumungandr.com/subscriptions">
-  <meta property="og:title" content="Subscription Reality Check Calculator | Alumungandr™">
-  <meta property="og:description" content="Calculate your true 10-year subscription bleed and S&P 500 opportunity cost. Fully responsive, editable, and shareable reality receipt of your recurring expenses.">
+  <meta property="og:title" content="Subscription Reality Check Calculator | Silent Cash Bleed Audit | Alumungandr™">
+  <meta property="og:description" content="Calculate your true 10-year subscription bleed, S&P 500 opportunity cost, and USD foreign exchange depreciation. Unlock IRS-compliant operational expense schedules and dark-pattern cancellation runbooks.">
   <meta property="og:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Subscription Reality Check Calculator | Alumungandr™">
-  <meta name="twitter:description" content="Calculate your true 10-year subscription bleed and S&P 500 opportunity cost. Fully responsive, editable, and shareable reality receipt of your recurring expenses.">
+  <meta name="twitter:title" content="Subscription Reality Check Calculator | Silent Cash Bleed Audit | Alumungandr™">
+  <meta name="twitter:description" content="Calculate your true 10-year subscription bleed, S&P 500 opportunity cost, and USD foreign exchange depreciation. Unlock IRS-compliant operational expense schedules and dark-pattern cancellation runbooks.">
   <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Structured Data (JSON-LD) -->
@@ -48,16 +48,26 @@
     {
       "@type": "WebApplication",
       "@id": "https://alumungandr.com/subscriptions/#app",
-      "name": "Subscription Reality Check Calculator",
+      "name": "Subscription Reality Check & Silent Cash Bleed Calculator",
       "url": "https://alumungandr.com/subscriptions",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "Calculate your true 10-year subscription bleed and S&P 500 opportunity cost. Fully responsive, editable, and shareable reality receipt of your recurring expenses.",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Core Calculator & Telemetry",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        {
+          "@type": "Offer",
+          "name": "Tax-Deductible Operational Expense Schedule & Kill-Switch Runbook",
+          "price": "14.99",
+          "priceCurrency": "USD",
+          "description": "Accountant-ready IRS § 162 ordinary & necessary tax schedule CSV export and dark-pattern cancellation runbook with legal demand letters."
+        }
+      ],
+      "description": "Calculate your true 10-year subscription bleed, S&P 500 opportunity cost, and USD FX exposure. Export IRS-compliant business expense schedules and bypass dark pattern cancellation mazes.",
       "publisher": {
         "@id": "https://alumungandr.com/#organization"
       }
@@ -68,11 +78,16 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Subscription Reality Check Calculator | Alumungandr™</title>
-  <meta name="description" content="Calculate your true 10-year subscription bleed and S&P 500 opportunity cost. Fully responsive, editable, and shareable reality receipt of your recurring expenses.">
+  <title>Subscription Reality Check &amp; Silent Cash Bleed Calculator | Tax Schedule &amp; Kill-Switch Runbook | Alumungandr™</title>
+  <meta name="description" content="Calculate your true 10-year subscription bleed, S&P 500 opportunity cost, and USD foreign exchange depreciation. Unlock IRS-compliant operational expense schedules and dark-pattern cancellation runbooks.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Multi-Gateway Checkout Stylesheet -->
+  <link rel="stylesheet" href="/assets/checkout.css">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+
   <style>
     :root {
       /* Orano Group Wireframe Industrial Cyber Palette */
@@ -88,6 +103,9 @@
       --orano-dim: #475569;
       --orano-red: #ff1744;
       --orano-green: #00ff88;
+      --orano-amber: #ffd166;
+      --orano-coral: #de5849;
+      --orano-cyan: #00f0ff;
       
       --font-display: 'Space Grotesk', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -142,74 +160,6 @@
       background: radial-gradient(circle at 50% 40%, transparent 40%, rgba(5, 7, 14, 0.88) 90%);
       pointer-events: none;
       z-index: 2;
-    }
-
-    /* Navigation Bar */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
-      background: rgba(5, 7, 14, 0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--orano-border);
-      padding: 0.85rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-    }
-
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
-      border: 1px solid var(--orano-yellow);
-      background: rgba(255, 255, 0, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      color: var(--orano-yellow);
-      font-size: 1.1rem;
-      box-shadow: 0 0 15px var(--orano-yellow-glow);
-    }
-
-    .brand-name {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.25rem;
-      list-style: none;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: var(--orano-muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--orano-yellow);
-      text-shadow: 0 0 10px var(--orano-yellow-glow);
     }
 
     /* Main Container */
@@ -402,7 +352,7 @@
     }
 
     .scanner-desc {
-      max-width: 760px;
+      max-width: 840px;
       margin: 0 auto;
       font-size: 1.05rem;
       color: var(--orano-muted);
@@ -410,19 +360,19 @@
       font-weight: 400;
     }
 
-    /* 4-Card KPI Odometer Rolling Numbers */
+    /* 5-Card KPI Odometer Rolling Numbers */
     .metrics-dock {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      margin-bottom: 2.5rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.1rem;
+      margin-bottom: 2rem;
     }
 
     .metric-card {
       background: rgba(14, 21, 42, 0.75);
       border: 1px solid var(--orano-border);
       border-radius: 12px;
-      padding: 1.5rem;
+      padding: 1.35rem;
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(12px);
@@ -438,21 +388,21 @@
 
     .metric-label {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       letter-spacing: 0.08em;
       color: var(--orano-muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.65rem;
       display: flex;
       justify-content: space-between;
     }
 
     .metric-value {
       font-family: var(--font-mono);
-      font-size: 2.2rem;
+      font-size: 1.85rem;
       font-weight: 800;
       color: #fff;
       line-height: 1.1;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       letter-spacing: -0.02em;
     }
 
@@ -466,8 +416,13 @@
       text-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
     }
 
+    .metric-value.highlight-fx {
+      color: var(--orano-cyan);
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+    }
+
     .metric-sub {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--orano-dim);
     }
 
@@ -476,8 +431,8 @@
       background: rgba(10, 14, 28, 0.85);
       border: 1px solid var(--orano-border);
       border-radius: 12px;
-      padding: 1.25rem 1.75rem;
-      margin-bottom: 2.5rem;
+      padding: 1.1rem 1.5rem;
+      margin-bottom: 1.75rem;
       display: flex;
       align-items: center;
       gap: 1.5rem;
@@ -513,12 +468,158 @@
       transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* =====================================================================
+       USD FX EXPOSURE & CURRENCY RISK TELEMETRY CONSOLE
+       ===================================================================== */
+    .fx-telemetry-container {
+      background: rgba(10, 15, 30, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 2.5rem;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.04);
+    }
+
+    .fx-telemetry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed rgba(0, 240, 255, 0.25);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .fx-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .fx-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--orano-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--orano-cyan);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+    }
+
+    .fx-title {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .fx-sub-desc {
+      font-size: 0.82rem;
+      color: var(--orano-muted);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .fx-controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .fx-control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .fx-control-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--orano-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .fx-select, .fx-input {
+      background: #060914;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .fx-select:focus, .fx-input:focus {
+      border-color: var(--orano-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+    }
+
+    .fx-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .fx-slider {
+      flex: 1;
+      accent-color: var(--orano-cyan);
+      cursor: pointer;
+    }
+
+    .fx-slider-val {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--orano-cyan);
+      min-width: 48px;
+      text-align: right;
+    }
+
+    .fx-readout-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      background: rgba(4, 7, 16, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+    }
+
+    .fx-readout-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .fx-readout-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: var(--orano-muted);
+    }
+
+    .fx-readout-val {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--orano-cyan);
+    }
+
     /* App Workspace: Left Grid & Right Sticky Receipt */
     .app-workspace {
       display: grid;
       grid-template-columns: 1fr 420px;
       gap: 2.5rem;
       align-items: start;
+      margin-bottom: 4rem;
     }
 
     /* Category Blocks & Grid */
@@ -541,6 +642,9 @@
       font-weight: 800;
       letter-spacing: 0.1em;
       color: var(--orano-yellow);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .services-grid {
@@ -719,10 +823,6 @@
       background: #fff;
     }
 
-    .btn-add-custom:active, .btn-download-receipt:active, .btn-share-x:active, .btn-copy-roast:active, .sub-card:active, .btn-preset-pack:active, .quick-chip:active {
-      transform: scale(0.97);
-    }
-
     /* Preset Packs & Quick Chips */
     .preset-packs-bar {
       display: flex;
@@ -806,7 +906,841 @@
       font-weight: 800;
     }
 
-    /* EDIT DIALOG MODAL */
+    /* RIGHT SIDE: "THE ROASTED REALITY RECEIPT" */
+    .receipt-container {
+      position: sticky;
+      top: 5.5rem;
+      perspective: 1000px;
+    }
+
+    .receipt-printer-slot {
+      width: 100%;
+      height: 12px;
+      background: #020306;
+      border: 1px solid var(--orano-border);
+      border-radius: 6px 6px 0 0;
+      box-shadow: inset 0 2px 6px #000;
+    }
+
+    .reality-receipt {
+      background: #ffffff;
+      color: #111111;
+      font-family: var(--font-mono);
+      padding: 2.2rem 1.8rem 2.8rem;
+      border-radius: 0 0 2px 2px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 255, 255, 0.1);
+      position: relative;
+      transform-origin: top center;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reality-receipt::after {
+      content: "";
+      position: absolute;
+      bottom: -14px;
+      left: 0;
+      width: 100%;
+      height: 14px;
+      background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%);
+      background-size: 14px 14px;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed #111;
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .receipt-brand {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .receipt-meta {
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 0.3rem;
+    }
+
+    .receipt-roast-badge {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.35rem 0.85rem;
+      background: #111;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      border-radius: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .receipt-items-list {
+      border-bottom: 2px dashed #111;
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.2rem;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    .receipt-total-section {
+      border-bottom: 2px dashed #111;
+      padding-bottom: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .receipt-total-section .receipt-row {
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .receipt-roast-quote {
+      font-style: italic;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      text-align: center;
+      color: #333;
+      padding: 0.75rem;
+      background: #f4f4f4;
+      border-radius: 6px;
+      margin-bottom: 1.2rem;
+    }
+
+    .receipt-barcode {
+      font-family: monospace;
+      text-align: center;
+      margin-top: 1rem;
+      letter-spacing: 0.15em;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    /* Receipt Actions Bar */
+    .receipt-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .btn-download-receipt {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--orano-yellow);
+      color: #05070e;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 6px 20px rgba(255, 255, 0, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-download-receipt:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 255, 0, 0.6);
+    }
+
+    .btn-receipt-upgrade {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, #ffd166 0%, #de5849 100%);
+      color: #05070e;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 6px 20px rgba(222, 88, 73, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-receipt-upgrade:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(222, 88, 73, 0.55);
+      filter: brightness(1.1);
+    }
+
+    .btn-share-x {
+      width: 100%;
+      padding: 0.8rem;
+      background: #000;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.2s;
+    }
+
+    .btn-share-x:hover {
+      border-color: #fff;
+      background: #111;
+      transform: translateY(-2px);
+    }
+
+    .btn-copy-roast {
+      width: 100%;
+      padding: 0.7rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--orano-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-roast:hover {
+      color: #fff;
+      border-color: var(--orano-yellow);
+    }
+
+    /* =====================================================================
+       THE BORING REVENUE FEATURE: TAX SCHEDULE & KILL-SWITCH RUNBOOK
+       ===================================================================== */
+    .boring-revenue-section {
+      background: linear-gradient(180deg, rgba(14, 21, 42, 0.95) 0%, rgba(8, 12, 24, 0.98) 100%);
+      border: 1.5px solid rgba(255, 209, 102, 0.4);
+      border-radius: 18px;
+      padding: 2.75rem 2.2rem;
+      margin-top: 4rem;
+      position: relative;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 209, 102, 0.12);
+    }
+
+    .revenue-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--orano-amber);
+      background: rgba(255, 209, 102, 0.12);
+      border: 1px solid var(--orano-amber);
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .revenue-hero-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      background: linear-gradient(90deg, #ffffff 0%, var(--orano-amber) 60%, var(--orano-yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .revenue-hero-desc {
+      font-size: 1.02rem;
+      color: var(--orano-muted);
+      max-width: 860px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* ROI Value Proposition Callout Box */
+    .revenue-roi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .roi-card {
+      background: rgba(5, 8, 16, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .roi-stat {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--orano-green);
+    }
+
+    .roi-lbl {
+      font-size: 0.82rem;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .roi-sub {
+      font-size: 0.74rem;
+      color: var(--orano-muted);
+      line-height: 1.4;
+    }
+
+    /* Upgrade Checkout Callout Banner */
+    .revenue-upgrade-banner {
+      background: linear-gradient(135deg, rgba(222, 88, 73, 0.15) 0%, rgba(255, 209, 102, 0.12) 100%);
+      border: 1.5px solid var(--orano-coral);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .upgrade-banner-left {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .upgrade-banner-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--orano-coral);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .upgrade-banner-heading {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .upgrade-banner-features {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--orano-muted);
+    }
+
+    .upgrade-banner-features span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: #fff;
+    }
+
+    .upgrade-banner-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.6rem;
+    }
+
+    .upgrade-price-display {
+      font-family: var(--font-mono);
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: var(--orano-amber);
+      line-height: 1;
+    }
+
+    .upgrade-price-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--orano-muted);
+    }
+
+    .btn-buy-upgrade {
+      background: linear-gradient(135deg, var(--orano-coral) 0%, var(--orano-amber) 100%);
+      color: #05070e;
+      border: none;
+      padding: 0.85rem 1.6rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 8px 25px rgba(222, 88, 73, 0.4);
+      transition: all 0.2s;
+    }
+
+    .btn-buy-upgrade:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(222, 88, 73, 0.6);
+      filter: brightness(1.1);
+    }
+
+    /* Revenue Sub-Modules Navigation Tabs */
+    .revenue-tabs-nav {
+      display: flex;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .revenue-tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.75rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--orano-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .revenue-tab-btn:hover {
+      color: #fff;
+    }
+
+    .revenue-tab-btn.active {
+      color: var(--orano-amber);
+      border-bottom-color: var(--orano-amber);
+    }
+
+    .revenue-tab-panel {
+      display: none;
+    }
+
+    .revenue-tab-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    /* =====================================================================
+       TAB 1: ACCOUNTANT-READY TAX SCHEDULE
+       ===================================================================== */
+    .tax-schedule-card {
+      background: rgba(8, 12, 24, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tax-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 1rem;
+    }
+
+    .tax-card-title {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tax-actions-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-tax-export {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-tax-export:hover {
+      background: var(--orano-amber);
+      color: #05070e;
+      border-color: var(--orano-amber);
+    }
+
+    .tax-schedule-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .tax-schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-align: left;
+    }
+
+    .tax-schedule-table th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.75rem 1rem;
+      color: var(--orano-amber);
+      font-weight: 800;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
+    }
+
+    .tax-schedule-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #fff;
+      vertical-align: middle;
+    }
+
+    .tax-schedule-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tax-line-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 209, 102, 0.15);
+      border: 1px solid rgba(255, 209, 102, 0.35);
+      color: var(--orano-amber);
+      white-space: nowrap;
+    }
+
+    .tax-percent-select {
+      background: #050814;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 3px 6px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    /* Tax Summary Totals Bar */
+    .tax-summary-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      background: rgba(4, 7, 16, 0.85);
+      border: 1px solid rgba(255, 209, 102, 0.3);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .tax-sum-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .tax-sum-lbl {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--orano-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .tax-sum-val {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .tax-sum-val.highlight-green {
+      color: var(--orano-green);
+    }
+
+    /* Statutory Legal Nexus Box */
+    .legal-nexus-card {
+      background: rgba(5, 8, 16, 0.9);
+      border: 1px dashed rgba(255, 209, 102, 0.35);
+      border-radius: 10px;
+      padding: 1.4rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--orano-muted);
+      line-height: 1.6;
+    }
+
+    .legal-nexus-header {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--orano-amber);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* =====================================================================
+       TAB 2: DARK PATTERN KILL-SWITCH RUNBOOK
+       ===================================================================== */
+    .killswitch-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .killswitch-tabs-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-filter-runbook {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--orano-muted);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-filter-runbook.active {
+      background: var(--orano-coral);
+      color: #fff;
+      border-color: var(--orano-coral);
+      font-weight: 700;
+    }
+
+    .killswitch-search-wrap {
+      flex: 1;
+      max-width: 340px;
+      min-width: 200px;
+    }
+
+    .killswitch-search {
+      width: 100%;
+      background: #060914;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      padding: 0.5rem 0.85rem;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .killswitch-search:focus {
+      border-color: var(--orano-coral);
+    }
+
+    .killswitch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .killswitch-card {
+      background: rgba(8, 12, 24, 0.88);
+      border: 1px solid rgba(222, 88, 73, 0.35);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .killswitch-card:hover {
+      border-color: var(--orano-coral);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(222, 88, 73, 0.15);
+    }
+
+    .ks-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .ks-service-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ks-hazard-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(255, 23, 68, 0.15);
+      border: 1px solid var(--orano-red);
+      color: var(--orano-red);
+      white-space: nowrap;
+    }
+
+    .ks-pattern-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--orano-coral);
+      padding: 0.75rem 0.9rem;
+      font-size: 0.82rem;
+      color: var(--orano-muted);
+      line-height: 1.5;
+    }
+
+    .ks-bypass-instructions {
+      font-size: 0.82rem;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    .ks-bypass-instructions strong {
+      color: var(--orano-yellow);
+    }
+
+    .ks-bypass-instructions ol {
+      margin-left: 1.25rem;
+      margin-top: 0.4rem;
+    }
+
+    .ks-actions-strip {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .btn-direct-cancel {
+      flex: 1;
+      padding: 0.6rem 0.9rem;
+      background: var(--orano-coral);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-direct-cancel:hover {
+      background: #ff6b5b;
+      box-shadow: 0 0 15px rgba(222, 88, 73, 0.5);
+    }
+
+    .btn-view-letter {
+      padding: 0.6rem 0.9rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-view-letter:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #fff;
+    }
+
+    /* Legal Cancellation Letter Dialog / Drawer */
+    .ks-letter-drawer {
+      display: none;
+      background: #05070e;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 0.9rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #ccc;
+      line-height: 1.5;
+      margin-top: 0.6rem;
+    }
+
+    .ks-letter-drawer.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .btn-copy-legal {
+      margin-top: 0.6rem;
+      width: 100%;
+      padding: 0.45rem;
+      background: rgba(255, 255, 0, 0.1);
+      border: 1px solid var(--orano-yellow);
+      color: var(--orano-yellow);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-copy-legal:hover {
+      background: var(--orano-yellow);
+      color: #05070e;
+    }
+
+    /* EDIT SUBSCRIPTION DIALOG MODAL */
     .sub-edit-dialog {
       background: #090e1f;
       border: 1.5px solid var(--orano-yellow);
@@ -909,199 +1843,6 @@
       cursor: pointer;
     }
 
-    /* RIGHT SIDE: "THE ROASTED REALITY RECEIPT" */
-    .receipt-container {
-      position: sticky;
-      top: 5.5rem;
-      perspective: 1000px;
-    }
-
-    .receipt-printer-slot {
-      width: 100%;
-      height: 12px;
-      background: #020306;
-      border: 1px solid var(--orano-border);
-      border-radius: 6px 6px 0 0;
-      box-shadow: inset 0 2px 6px #000;
-    }
-
-    .reality-receipt {
-      background: #ffffff;
-      color: #111111;
-      font-family: var(--font-mono);
-      padding: 2.2rem 1.8rem 2.8rem;
-      border-radius: 0 0 2px 2px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 255, 255, 0.1);
-      position: relative;
-      transform-origin: top center;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Authentic Jagged Serrated Thermal Paper Edge */
-    .reality-receipt::after {
-      content: "";
-      position: absolute;
-      bottom: -14px;
-      left: 0;
-      width: 100%;
-      height: 14px;
-      background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%);
-      background-size: 14px 14px;
-    }
-
-    .receipt-header {
-      text-align: center;
-      border-bottom: 2px dashed #111;
-      padding-bottom: 1.25rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .receipt-brand {
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-    }
-
-    .receipt-meta {
-      font-size: 0.7rem;
-      color: #555;
-      margin-top: 0.3rem;
-    }
-
-    .receipt-roast-badge {
-      display: inline-block;
-      margin-top: 0.75rem;
-      padding: 0.35rem 0.85rem;
-      background: #111;
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      border-radius: 4px;
-      letter-spacing: 0.06em;
-    }
-
-    .receipt-items-list {
-      border-bottom: 2px dashed #111;
-      padding-bottom: 1.2rem;
-      margin-bottom: 1.2rem;
-      max-height: 280px;
-      overflow-y: auto;
-    }
-
-    .receipt-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      line-height: 1.8;
-    }
-
-    .receipt-total-section {
-      border-bottom: 2px dashed #111;
-      padding-bottom: 1.2rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .receipt-total-section .receipt-row {
-      font-weight: 800;
-      font-size: 0.95rem;
-    }
-
-    .receipt-roast-quote {
-      font-style: italic;
-      font-size: 0.82rem;
-      line-height: 1.5;
-      text-align: center;
-      color: #333;
-      padding: 0.75rem;
-      background: #f4f4f4;
-      border-radius: 6px;
-      margin-bottom: 1.2rem;
-    }
-
-    .receipt-barcode {
-      font-family: 'Libre Barcode 39', monospace;
-      text-align: center;
-      margin-top: 1rem;
-      letter-spacing: 0.15em;
-      font-size: 1.2rem;
-      user-select: none;
-    }
-
-    /* Receipt Actions Bar */
-    .receipt-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 2rem;
-    }
-
-    .btn-download-receipt {
-      width: 100%;
-      padding: 0.95rem;
-      background: var(--orano-yellow);
-      color: #05070e;
-      border: none;
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 0.88rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: 0 6px 20px rgba(255, 255, 0, 0.35);
-      transition: all 0.2s;
-    }
-
-    .btn-download-receipt:hover {
-      background: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(255, 255, 0, 0.6);
-    }
-
-    .btn-share-x {
-      width: 100%;
-      padding: 0.85rem;
-      background: #000;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.82rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      transition: all 0.2s;
-    }
-
-    .btn-share-x:hover {
-      border-color: #fff;
-      background: #111;
-      transform: translateY(-2px);
-    }
-
-    .btn-copy-roast {
-      width: 100%;
-      padding: 0.75rem;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--orano-muted);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-copy-roast:hover {
-      color: #fff;
-      border-color: var(--orano-yellow);
-    }
-
     /* MOBILE FLOATING SUMMARY DOCK */
     .mobile-floating-dock {
       display: none;
@@ -1161,46 +1902,83 @@
       opacity: 1;
     }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--orano-border);
-      padding: 3rem 2rem 4rem;
-      margin-top: 6rem;
-      position: relative;
-      z-index: 10;
-      background: rgba(5, 7, 14, 0.95);
-    }
-
-    .footer-inner {
-      max-width: 1380px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--orano-muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-      color: var(--orano-yellow);
+    /* Print Media Query for Clean CPA-Ready Export */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      #wireframeCanvas, #shockwaveCanvas, .screen-vignette, .site-header, .site-footer, 
+      .hud-header, .user-guide-drawer, .hero-scanner, .metrics-dock, .hazard-meter-container, 
+      .fx-telemetry-container, .app-workspace, .revenue-hero-title, .revenue-hero-desc, 
+      .revenue-roi-grid, .revenue-upgrade-banner, .revenue-tabs-nav, #revenueKillswitchTab,
+      .tax-actions-row, .mobile-floating-dock, .toast-pill {
+        display: none !important;
+      }
+      main {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .boring-revenue-section {
+        background: #ffffff !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .tax-schedule-card {
+        background: #ffffff !important;
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+      }
+      .tax-card-title {
+        color: #000000 !important;
+      }
+      .tax-schedule-table {
+        color: #000000 !important;
+      }
+      .tax-schedule-table th {
+        background: #f0f0f0 !important;
+        color: #000000 !important;
+        border-bottom: 2px solid #000 !important;
+      }
+      .tax-schedule-table td {
+        border-bottom: 1px solid #ccc !important;
+        color: #000000 !important;
+      }
+      .tax-line-badge {
+        background: transparent !important;
+        border: 1px solid #000 !important;
+        color: #000000 !important;
+      }
+      .tax-percent-select {
+        border: none !important;
+        color: #000000 !important;
+        background: transparent !important;
+      }
+      .tax-summary-bar {
+        background: #f9f9f9 !important;
+        border: 1px solid #000 !important;
+      }
+      .tax-sum-lbl {
+        color: #555 !important;
+      }
+      .tax-sum-val {
+        color: #000 !important;
+      }
+      .legal-nexus-card {
+        background: #fafafa !important;
+        border: 1px solid #444 !important;
+        color: #222 !important;
+      }
+      .legal-nexus-header {
+        color: #000 !important;
+      }
     }
 
     @media (max-width: 1080px) {
       .app-workspace { grid-template-columns: 1fr; }
-      .metrics-dock { grid-template-columns: repeat(2, 1fr); }
+      .metrics-dock { grid-template-columns: repeat(3, 1fr); }
       .receipt-container { position: static; max-width: 480px; margin: 0 auto; }
       .mobile-floating-dock { display: flex; }
     }
@@ -1208,12 +1986,10 @@
     @media (max-width: 640px) {
       .metrics-dock { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr 1fr; }
-      nav { padding: 0.75rem 1rem; }
-      .nav-links { display: none; }
-      .scanner-title { font-size: 2.3rem; }
+      .scanner-title { font-size: 2.2rem; }
+      .revenue-hero-title { font-size: 1.8rem; }
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
 </head>
 <body>
 
@@ -1223,7 +1999,7 @@
   <div class="screen-vignette"></div>
 
   <!-- Navigation -->
-                  <header class="site-header">
+    <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -1320,24 +2096,24 @@
       </button>
       <div class="guide-body-content" id="guideDrawerContent">
         <p>
-          Master your subscription bleed with full mathematical transparency and custom control:
+          Master your subscription bleed, FX volatility, and tax deductions with full mathematical transparency:
         </p>
         <div class="guide-steps-grid">
           <div class="guide-step-card">
-            <div class="step-badge">01. TOGGLE SERVICES</div>
-            <p>Click any card to toggle it ON or OFF. The Geiger counter ticks faster as monthly expenditure climbs.</p>
+            <div class="step-badge">01. SILENT CASH BLEED AUDIT</div>
+            <p>Solopreneurs, remote workers, and dev shops bleed $150–$800/mo on forgotten SaaS. Click any card to toggle it ON or OFF.</p>
           </div>
           <div class="guide-step-card">
-            <div class="step-badge">02. EDIT ANY PRICE</div>
-            <p>Click the <strong>&#9998; pencil icon</strong> on any card to input your exact billing amount, annual cycle, or custom name.</p>
-          </div>
-          <div class="guide-step-card">
-            <div class="step-badge">03. 10-YR INFLATION BLEED</div>
+            <div class="step-badge">02. 10-YR INFLATION BLEED</div>
             <p>Calculates compound SaaS price hikes at 3.5% annually: <code style="color:var(--orano-yellow);">Annual &times; ((1.035)^10 - 1) / 0.035</code>.</p>
           </div>
           <div class="guide-step-card">
-            <div class="step-badge">04. S&amp;P 500 OPPORTUNITY</div>
+            <div class="step-badge">03. S&amp;P 500 OPPORTUNITY</div>
             <p>Projects what monthly savings would yield invested at 8% annual return over 120 months.</p>
+          </div>
+          <div class="guide-step-card">
+            <div class="step-badge">04. USD FX EXPOSURE &amp; TAX WRITE-OFFS</div>
+            <p>Accounts for cross-border card fees, currency depreciation, and IRS § 162 ordinary &amp; necessary tax deductions under the Master Charter.</p>
           </div>
         </div>
       </div>
@@ -1346,17 +2122,17 @@
     <!-- Hero Title with Word Ripple Classes -->
     <section class="hero-scanner">
       <div class="scanner-pre ripple-target">
-        <span>&bull; FINANCIAL HAZARD SCANNER &bull; CASH DRAIN TELEMETRY</span>
+        <span>&bull; FINANCIAL HAZARD SCANNER &bull; SILENT CASH BLEED AUDIT &bull;</span>
       </div>
       <h1 class="scanner-title ripple-target" id="heroScannerTitle">
         SUBSCRIPTION REALITY CHECK
       </h1>
       <p class="scanner-desc ripple-target" id="heroScannerDesc">
-        You think you only spend $30 a month. Choose the recurring subscriptions you pay for below, edit any price to match your exact bill, and watch our mathematical bleed model calculate your true 10-year inflation drain and S&amp;P 500 compounding opportunity cost.
+        Solopreneurs, dev shops, and remote workers leak between $150 and $800 every month on forgotten SaaS subscriptions (Canva, Zoom, hosting add-ons, Adobe, test domains). Audit your recurring expenses below, track your USD foreign exchange exposure, and convert your bleed into an IRS-compliant business tax deduction.
       </p>
     </section>
 
-    <!-- 4-Card KPI Odometer Rolling Numbers -->
+    <!-- 5-Card KPI Odometer Rolling Numbers -->
     <section class="metrics-dock">
       <!-- KPI 1: Monthly Outflow -->
       <div class="metric-card">
@@ -1365,7 +2141,7 @@
           <span>&#8853; SENSOR 01</span>
         </div>
         <div class="metric-value highlight-bleed" id="valMonthly">$0.00</div>
-        <div class="metric-sub">Direct monthly credit card charge</div>
+        <div class="metric-sub">Direct monthly card charge (USD)</div>
       </div>
 
       <!-- KPI 2: Annual Outflow -->
@@ -1381,21 +2157,31 @@
       <!-- KPI 3: 10-Year Inflation Adjusted -->
       <div class="metric-card">
         <div class="metric-label">
-          <span>10-YEAR BLEED (3.5% INFLATION) <span class="jargon-hint" title="SaaS prices increase ~3.5% yearly due to inflation and price hikes. Over 10 years, compounding dramatically increases your total bleed.">(?)</span></span>
+          <span>10-YR BLEED (+3.5%) <span class="jargon-hint" title="SaaS prices increase ~3.5% yearly due to inflation and price hikes. Over 10 years, compounding dramatically increases your total bleed.">(?)</span></span>
           <span>&#8853; SENSOR 03</span>
         </div>
         <div class="metric-value highlight-bleed" id="valTenYear">$0.00</div>
-        <div class="metric-sub">Compounded SaaS price hikes over 10 years</div>
+        <div class="metric-sub">Compounded SaaS price hikes</div>
       </div>
 
       <!-- KPI 4: S&P 500 Opportunity Cost -->
       <div class="metric-card">
         <div class="metric-label">
-          <span>S&amp;P 500 OPPORTUNITY COST <span class="jargon-hint" title="If this monthly subscription sum was invested into an S&P 500 index fund compounding at the historical 8% annual return rate.">(?)</span></span>
+          <span>S&amp;P 500 OPPORTUNITY <span class="jargon-hint" title="If this monthly subscription sum was invested into an S&P 500 index fund compounding at the historical 8% annual return rate.">(?)</span></span>
           <span>&#8853; SENSOR 04</span>
         </div>
         <div class="metric-value highlight-opportunity" id="valSpOpp">$0.00</div>
-        <div class="metric-sub">8% Annual return if invested in index fund</div>
+        <div class="metric-sub">8% Annual return over 10 yrs</div>
+      </div>
+
+      <!-- KPI 5: USD FX Exposure -->
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>USD FX EXPOSURE <span class="jargon-hint" title="Real local currency expenditure including cross-border credit card transaction fees and currency depreciation risk.">(?)</span></span>
+          <span>&#8853; SENSOR 05</span>
+        </div>
+        <div class="metric-value highlight-fx" id="valFxDrain">$0.00</div>
+        <div class="metric-sub" id="valFxSub">Local currency monthly conversion</div>
       </div>
     </section>
 
@@ -1410,61 +2196,152 @@
       </span>
     </div>
 
+    <!-- USD FX Exposure & Currency Risk Telemetry Console -->
+    <section class="fx-telemetry-container">
+      <div class="fx-telemetry-header">
+        <div class="fx-title-wrap">
+          <span class="fx-badge">GLOBAL FX RADAR</span>
+          <h2 class="fx-title">USD FOREIGN EXCHANGE EXPOSURE TRACKER</h2>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--orano-cyan);">CROSS-BORDER FRICTION CALCULATOR</span>
+      </div>
+      <p class="fx-sub-desc">
+        Because 92% of software is billed in US Dollars ($), solopreneurs and remote workers outside the United States quietly bleed an extra 2.5%–5% on bank foreign exchange transaction spreads, compounded by annual local currency depreciation.
+      </p>
+
+      <div class="fx-controls-grid">
+        <div class="fx-control-group">
+          <label class="fx-control-label" for="fxCurrencySelect">
+            <span>SETTLEMENT CURRENCY</span>
+            <span id="fxSelectedSymbol" style="color:var(--orano-cyan);">$ USD</span>
+          </label>
+          <select id="fxCurrencySelect" class="fx-select">
+            <option value="USD">🇺🇸 USD — United States Dollar (1.00)</option>
+            <option value="JMD">🇯🇲 JMD — Jamaican Dollar (156.50)</option>
+            <option value="CAD">🇨🇦 CAD — Canadian Dollar (1.36)</option>
+            <option value="EUR">🇪🇺 EUR — Euro Zone (0.92)</option>
+            <option value="GBP">🇬🇧 GBP — British Pound (0.79)</option>
+            <option value="AUD">🇦🇺 AUD — Australian Dollar (1.52)</option>
+            <option value="INR">🇮🇳 INR — Indian Rupee (83.80)</option>
+            <option value="BRL">🇧🇷 BRL — Brazilian Real (5.45)</option>
+            <option value="NGN">🇳🇬 NGN — Nigerian Naira (1,620.00)</option>
+            <option value="MXN">🇲🇽 MXN — Mexican Peso (19.30)</option>
+            <option value="PHP">🇵🇭 PHP — Philippine Peso (56.20)</option>
+            <option value="CUSTOM">⚙️ Custom FX Rate...</option>
+          </select>
+        </div>
+
+        <div class="fx-control-group" id="customRateGroup" style="display:none;">
+          <label class="fx-control-label" for="fxCustomRateInput">CUSTOM FX RATE (1 USD =)</label>
+          <input type="number" id="fxCustomRateInput" class="fx-input" step="0.01" min="0.01" placeholder="e.g. 156.5">
+        </div>
+
+        <div class="fx-control-group">
+          <label class="fx-control-label">
+            <span>BANK FX FEE / SPREAD</span>
+            <span class="fx-slider-val" id="fxSpreadVal">3.5%</span>
+          </label>
+          <div class="fx-slider-row">
+            <input type="range" id="fxSpreadSlider" class="fx-slider" min="0" max="6" step="0.5" value="3.5">
+          </div>
+        </div>
+
+        <div class="fx-control-group">
+          <label class="fx-control-label">
+            <span>EST. ANNUAL DEVALUATION</span>
+            <span class="fx-slider-val" id="fxDriftVal">4.0%</span>
+          </label>
+          <div class="fx-slider-row">
+            <input type="range" id="fxDriftSlider" class="fx-slider" min="0" max="15" step="0.5" value="4.0">
+          </div>
+        </div>
+      </div>
+
+      <div class="fx-readout-strip">
+        <div class="fx-readout-item">
+          <span class="fx-readout-lbl">LOCAL REAL MONTHLY DRAIN</span>
+          <span class="fx-readout-val" id="fxLocalMonthly">0.00</span>
+        </div>
+        <div class="fx-readout-item">
+          <span class="fx-readout-lbl">ANNUAL BANK FX SPREAD LOSS</span>
+          <span class="fx-readout-val" id="fxAnnualLoss" style="color:var(--orano-yellow);">$0.00 / yr</span>
+        </div>
+        <div class="fx-readout-item">
+          <span class="fx-readout-lbl">10-YR CURRENCY DEVALUATION PENALTY</span>
+          <span class="fx-readout-val" id="fxTenYearPenalty" style="color:var(--orano-red);">$0.00</span>
+        </div>
+      </div>
+    </section>
+
     <!-- Workspace: Grid on Left, Reality Receipt on Right -->
     <div class="app-workspace">
       
       <!-- Left Column: Subscription Services -->
       <div class="subscriptions-area">
 
-        <!-- Quick Preset Bundles (Anti-Decision Fatigue) -->
+        <!-- Quick Preset Bundles -->
         <div class="preset-packs-bar">
-          <span class="preset-bar-title">⚡ QUICK PACKS:</span>
+          <span class="preset-bar-title">⚡ QUICK AUDIT PACKS:</span>
+          <button type="button" class="btn-preset-pack" onclick="applyPresetBundle('solopreneur')">
+            <span>💼 Solopreneur Bleed ($380/mo)</span>
+          </button>
+          <button type="button" class="btn-preset-pack" onclick="applyPresetBundle('remoteworker')">
+            <span>💻 Remote Worker Stack ($145/mo)</span>
+          </button>
           <button type="button" class="btn-preset-pack" onclick="applyPresetBundle('consumer')">
-            <span>📺 Typical Consumer (Netflix, Spotify, Prime, ChatGPT)</span>
+            <span>📺 Typical Consumer ($75/mo)</span>
           </button>
           <button type="button" class="btn-preset-pack" onclick="applyPresetBundle('creator')">
-            <span>🎨 Creator Suite (Adobe, Midjourney, Claude, YouTube)</span>
-          </button>
-          <button type="button" class="btn-preset-pack" onclick="applyPresetBundle('student')">
-            <span>🎓 Student Saver (Spotify, iCloud, Duolingo)</span>
+            <span>🎨 Creator Suite ($124/mo)</span>
           </button>
           <button type="button" class="btn-preset-pack" onclick="clearAllSelections()" style="margin-left:auto; background:rgba(255,23,68,0.15); border-color:var(--orano-red); color:var(--orano-red);">
             <span>&times; Clear All</span>
           </button>
         </div>
-        
-        <!-- Category 1: Streaming & Media -->
+
+        <!-- Category 1: Solopreneur, Dev & Business SaaS (Silent Cash Bleed) -->
         <div class="category-block">
           <div class="category-header">
-            <span class="category-title">&#9655; STREAMING &amp; ENTERTAINMENT</span>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">CLICK CARD TO ACTIVATE &bull; PENCIL TO EDIT</span>
+            <span class="category-title">
+              <span>💼 SOLOPRENEUR, DEV &amp; BUSINESS SAAS</span>
+            </span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-yellow);">PRIMARY CASH BLEED &bull; 100% TAX DEDUCTIBLE</span>
           </div>
-          <div class="services-grid" id="gridStreaming"></div>
+          <div class="services-grid" id="gridBusiness"></div>
         </div>
-
+        
         <!-- Category 2: AI & Productivity -->
         <div class="category-block">
           <div class="category-header">
             <span class="category-title">&#9881; AI &amp; PRODUCTIVITY</span>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">6 POPULAR PRESETS</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">RESEARCH &amp; COMPUTATIONAL TOOLS</span>
           </div>
           <div class="services-grid" id="gridAi"></div>
         </div>
 
-        <!-- Category 3: Lifestyle, Health & Fitness -->
+        <!-- Category 3: Streaming & Media -->
+        <div class="category-block">
+          <div class="category-header">
+            <span class="category-title">&#9655; STREAMING &amp; ENTERTAINMENT</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">CONSUMER MEDIA</span>
+          </div>
+          <div class="services-grid" id="gridStreaming"></div>
+        </div>
+
+        <!-- Category 4: Lifestyle, Health & Fitness -->
         <div class="category-block">
           <div class="category-header">
             <span class="category-title">&#9829; LIFESTYLE &amp; FITNESS</span>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">5 POPULAR PRESETS</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">PERSONAL &amp; RECREATION</span>
           </div>
           <div class="services-grid" id="gridLifestyle"></div>
         </div>
 
-        <!-- Category 4: Gaming & Cloud Storage -->
+        <!-- Category 5: Gaming & Cloud Storage -->
         <div class="category-block">
           <div class="category-header">
             <span class="category-title">&#9733; GAMING &amp; CLOUD STORAGE</span>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">5 POPULAR PRESETS</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--orano-muted);">STORAGE &amp; PLATFORMS</span>
           </div>
           <div class="services-grid" id="gridGaming"></div>
         </div>
@@ -1473,18 +2350,18 @@
         <div class="custom-add-box">
           <div style="display:flex; gap:0.75rem; align-items:center; width:100%; flex-wrap:wrap;">
             <span style="font-family:var(--font-mono); font-size:0.8rem; color:var(--orano-yellow); font-weight:700;">+ CUSTOM SERVICE:</span>
-            <input type="text" id="customName" class="custom-input" placeholder="e.g. Equinox Gym, Car Wash, Patreon" style="flex:1; min-width:200px;">
+            <input type="text" id="customName" class="custom-input" placeholder="e.g. Canva Teams, Hosting Addon, Vercel" style="flex:1; min-width:200px;">
             <input type="number" id="customPrice" class="custom-input" placeholder="$ / mo" style="width:100px;" min="0.5" step="0.5">
             <button class="btn-add-custom" id="btnAddCustom">+ ADD SERVICE</button>
           </div>
           <div class="quick-chips-row">
-            <span style="font-size:0.72rem; color:var(--orano-dim); font-family:var(--font-mono); align-self:center;">Quick Add Chips:</span>
+            <span style="font-size:0.72rem; color:var(--orano-dim); font-family:var(--font-mono); align-self:center;">Quick Solopreneur Chips:</span>
+            <button type="button" class="quick-chip" onclick="quickAddChip('Canva Pro', 12.99)">+ Canva ($13)</button>
+            <button type="button" class="quick-chip" onclick="quickAddChip('Zoom Workplace', 15.99)">+ Zoom ($16)</button>
+            <button type="button" class="quick-chip" onclick="quickAddChip('Test Domains &amp; DNS', 18.00)">+ Domains ($18)</button>
+            <button type="button" class="quick-chip" onclick="quickAddChip('AWS Add-on Services', 45.00)">+ AWS ($45)</button>
             <button type="button" class="quick-chip" onclick="quickAddChip('Local Gym Membership', 45)">+ Gym ($45)</button>
-            <button type="button" class="quick-chip" onclick="quickAddChip('Car Insurance &amp; Fuel Plan', 125)">+ Car Ins ($125)</button>
             <button type="button" class="quick-chip" onclick="quickAddChip('Mobile Unlimited Plan', 65)">+ Phone ($65)</button>
-            <button type="button" class="quick-chip" onclick="quickAddChip('Specialty Coffee Club', 30)">+ Coffee ($30)</button>
-            <button type="button" class="quick-chip" onclick="quickAddChip('Creator Patreon / Substack', 10)">+ Patreon ($10)</button>
-            <button type="button" class="quick-chip" onclick="quickAddChip('Cloud Backup &amp; Storage', 10)">+ Cloud ($10)</button>
           </div>
         </div>
 
@@ -1497,7 +2374,7 @@
           <div class="receipt-header">
             <div class="receipt-brand">SUBSCRIPTION REALITY CHECK</div>
             <div class="receipt-meta">ALUMUNGANDR&trade; AUDIT SYSTEM &bull; NO REFUNDS</div>
-            <div class="receipt-meta" id="receiptDate">TIMESTAMP: 2026-09-18 05:40 UTC</div>
+            <div class="receipt-meta" id="receiptDate">TIMESTAMP: 2026-10-02 12:00 UTC</div>
             <div class="receipt-roast-badge" id="receiptRoastBadge">OFF-GRID GHOST</div>
           </div>
 
@@ -1526,6 +2403,14 @@
               <span>S&amp;P 500 OPPORTUNITY:</span>
               <strong id="rcptSpOpp" style="color:#2e7d32;">$0.00</strong>
             </div>
+            <div class="receipt-row" style="color:#0277bd; font-size:0.8rem; margin-top:0.4rem; padding-top:0.4rem; border-top:1px dashed #ccc;">
+              <span>LOCAL FX SETTLEMENT:</span>
+              <strong id="rcptFxVal">$0.00</strong>
+            </div>
+            <div class="receipt-row" style="color:#6a1b9a; font-size:0.8rem;">
+              <span>TAX WRITE-OFF POTENTIAL:</span>
+              <strong id="rcptTaxDeduction">$0.00 / yr</strong>
+            </div>
           </div>
 
           <!-- The Roast Commentary Box -->
@@ -1544,6 +2429,10 @@
 
         <!-- Viral Export & Sharing Actions -->
         <div class="receipt-actions">
+          <button class="btn-receipt-upgrade" onclick="scrollToRevenueFeature()">
+            <span>⚡ UNLOCK TAX SCHEDULE &amp; RUNBOOK ($14.99)</span>
+          </button>
+
           <button class="btn-download-receipt" id="btnDownloadReceipt">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             <span>DOWNLOAD RECEIPT IMAGE (.PNG)</span>
@@ -1562,6 +2451,197 @@
       </div>
 
     </div>
+
+    <!-- ===================================================================
+         THE BORING REVENUE FEATURE:
+         Tax-Deductible Operational Expense Schedule & Dark Pattern Kill-Switch Runbook
+         =================================================================== -->
+    <section class="boring-revenue-section" id="boringRevenueSection">
+      
+      <div class="revenue-header-badge">
+        <span>⚖️ ARTICLE VII § 7.01 MASTER CHARTER COMPLIANCE</span>
+        <span>&bull;</span>
+        <span>BORING REVENUE ENGINE</span>
+      </div>
+
+      <h2 class="revenue-hero-title">
+        TAX-DEDUCTIBLE OPERATIONAL EXPENSE SCHEDULE &amp; KILL-SWITCH RUNBOOK
+      </h2>
+
+      <p class="revenue-hero-desc">
+        Clean finances save real money. Stop losing $50–$300 every month to forgotten zombie SaaS, multi-step retention traps, and unorganized bank statements. Automatically convert your active tools into an IRS/Tax-compliant write-off schedule and terminate dark-pattern services with verified 1-click bypass URLs and legal demand notices.
+      </p>
+
+      <!-- ROI Value Comparison -->
+      <div class="revenue-roi-grid">
+        <div class="roi-card">
+          <span class="roi-stat" id="roiTaxSaved">$0</span>
+          <span class="roi-lbl">Est. Annual Tax Cash Saved</span>
+          <span class="roi-sub">Based on IRC § 162 ordinary &amp; necessary business expense write-offs at your effective tax rate.</span>
+        </div>
+        <div class="roi-card">
+          <span class="roi-stat" id="roiZombieSaved">$600</span>
+          <span class="roi-lbl">Average Zombie SaaS Killed</span>
+          <span class="roi-sub">Killing just one $25/mo and one $25/mo forgotten tool puts $600 directly back in your bank account annually.</span>
+        </div>
+        <div class="roi-card">
+          <span class="roi-stat" style="color:var(--orano-amber);">$14.99</span>
+          <span class="roi-lbl">One-Time Download Investment</span>
+          <span class="roi-sub">Zero recurring fees. Instant export to CSV, accountant-ready print, and unredacted legal letters.</span>
+        </div>
+        <div class="roi-card">
+          <span class="roi-stat" style="color:var(--orano-cyan);" id="roiMultiplier">5,600%</span>
+          <span class="roi-lbl">Direct First-Year Net ROI</span>
+          <span class="roi-sub">Saving an entrepreneur $50/month in zombie software makes a $15 purchase an absolute no-brainer.</span>
+        </div>
+      </div>
+
+      <!-- Paid Upgrade Checkout Callout Banner -->
+      <div class="revenue-upgrade-banner">
+        <div class="upgrade-banner-left">
+          <div class="upgrade-banner-tag">// COMMERCIAL AUDIT UPGRADE</div>
+          <h3 class="upgrade-banner-heading">Accountant-Ready Tax Schedule &amp; Kill-Switch Runbook</h3>
+          <p style="font-size:0.85rem; color:var(--orano-muted); line-height:1.5;">
+            Includes the complete CSV export formatted for QuickBooks/Xero/CPAs, statutory audit nexus citations under Section 5 &amp; Article VII of the Master Charter, and unredacted legal letters that force support to cancel auto-renewals with zero penalties.
+          </p>
+          <div class="upgrade-banner-features">
+            <span>&#10003; Formatted IRS § 162 CSV</span>
+            <span>&#10003; 15+ Dark Pattern Bypass URLs</span>
+            <span>&#10003; FTC "Click to Cancel" Legal Letters</span>
+            <span>&#10003; Lifetime Instant Access</span>
+          </div>
+        </div>
+
+        <div class="upgrade-banner-right">
+          <div class="upgrade-price-display">$14.99</div>
+          <div class="upgrade-price-sub">USD &bull; ONE-TIME DOWNLOAD</div>
+          <button type="button" class="btn-buy-upgrade" onclick="openRunbookCheckout()">
+            <span>⚡ UNLOCK FULL RUNBOOK ($14.99)</span>
+          </button>
+          <button type="button" onclick="unlockRunbookPreview()" style="background:transparent; border:none; color:var(--orano-amber); font-family:var(--font-mono); font-size:0.75rem; text-decoration:underline; cursor:pointer; margin-top:4px;">
+            Preview Live Interactive Runbook &amp; Sample CSV &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-Modules Tabs Navigation -->
+      <div class="revenue-tabs-nav">
+        <button type="button" class="revenue-tab-btn active" id="tabRevenueTax" onclick="switchRevenueTab('tax')">
+          <span>📑 Accountant-Ready Tax Schedule (IRS § 162)</span>
+        </button>
+        <button type="button" class="revenue-tab-btn" id="tabRevenueKillswitch" onclick="switchRevenueTab('killswitch')">
+          <span>⚡ Dark Pattern Kill-Switch Runbook (15+ Services)</span>
+        </button>
+      </div>
+
+      <!-- ===============================================================
+           TAB 1: ACCOUNTANT-READY TAX SCHEDULE
+           =============================================================== -->
+      <div class="revenue-tab-panel active" id="revenueTaxTab">
+        
+        <div class="tax-schedule-card">
+          <div class="tax-card-top">
+            <div>
+              <h3 class="tax-card-title">
+                <span>SCHEDULE C / OPERATING EXPENSES SCHEDULE</span>
+              </h3>
+              <span style="font-size:0.75rem; color:var(--orano-muted); font-family:var(--font-mono);">
+                STATUTORY REFERENCE: INTERNAL REVENUE CODE &sect; 162(a) &bull; MASTER CHARTER ARTICLE VII &sect; 7.01
+              </span>
+            </div>
+            <div class="tax-actions-row">
+              <button type="button" class="btn-tax-export" onclick="exportTaxScheduleCsv()">
+                <span>📥 Export Accountant CSV (.csv)</span>
+              </button>
+              <button type="button" class="btn-tax-export" onclick="printTaxSchedule()">
+                <span>🖨️ Print / Save PDF Schedule</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Tax Table -->
+          <div class="tax-schedule-table-wrap">
+            <table class="tax-schedule-table" id="taxScheduleTable">
+              <thead>
+                <tr>
+                  <th>VENDOR / SERVICE</th>
+                  <th>ANNUAL GROSS</th>
+                  <th>IRS EXPENSE CATEGORY</th>
+                  <th>STATUTORY CODE</th>
+                  <th>BUSINESS USE %</th>
+                  <th>NET ANNUAL DEDUCTION</th>
+                </tr>
+              </thead>
+              <tbody id="taxTableBody">
+                <!-- Dynamically populated from active subscriptions -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Tax Totals & Savings Estimator -->
+          <div class="tax-summary-bar">
+            <div class="tax-sum-col">
+              <span class="tax-sum-lbl">TOTAL SOFTWARE EXPENDITURE</span>
+              <span class="tax-sum-val" id="taxGrossTotal">$0.00</span>
+            </div>
+            <div class="tax-sum-col">
+              <span class="tax-sum-lbl">NET ALLOWABLE TAX WRITE-OFF</span>
+              <span class="tax-sum-val highlight-green" id="taxDeductibleTotal">$0.00</span>
+            </div>
+            <div class="tax-sum-col">
+              <span class="tax-sum-lbl">
+                <span>EST. TAX CASH BACK (AT </span>
+                <select id="taxBracketSelect" onchange="recalculateTaxTotals()" style="background:#000; color:var(--orano-amber); border:1px solid #333; font-family:var(--font-mono); font-size:0.75rem; border-radius:4px; padding:1px 4px;">
+                  <option value="0.22">22% Bracket</option>
+                  <option value="0.25" selected>25% Bracket</option>
+                  <option value="0.30">30% Bracket</option>
+                  <option value="0.35">35% Bracket</option>
+                </select>
+                <span>)</span>
+              </span>
+              <span class="tax-sum-val highlight-green" id="taxSavingsTotal">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Statutory Legal Nexus Audit Defense Certificate -->
+          <div class="legal-nexus-card">
+            <div class="legal-nexus-header">
+              <span>🏛️ AUDIT DEFENSE &amp; STATUTORY LEGAL NEXUS DOCUMENTATION</span>
+            </div>
+            <p>
+              Under <strong>United States Internal Revenue Code &sect; 162</strong> and Treas. Reg. &sect; 1.162-1, expenses incurred in the operation of a commercial digital property, software engineering enterprise, or remote consulting practice represent bona fide <em>Ordinary and Necessary Business Expenses</em>. Furthermore, in accordance with <strong>Section 5 and Article VII (&sect; 7.01) of the Alumungandr Master Charter</strong>, public deployment and technical operation on edge infrastructures constitute verified commercial activity, entitling the enterprise to 100% legitimate write-offs of dedicated toolchains, cloud servers, development subscriptions, and telecommunications.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===============================================================
+           TAB 2: DARK PATTERN KILL-SWITCH RUNBOOK
+           =============================================================== -->
+      <div class="revenue-tab-panel" id="revenueKillswitchTab">
+        
+        <div class="killswitch-filter-bar">
+          <div class="killswitch-tabs-group">
+            <button type="button" class="btn-filter-runbook active" id="btnFilterMySubs" onclick="filterRunbooks('my')">
+              <span>My Active Subscriptions (<span id="mySubsCount">0</span>)</span>
+            </button>
+            <button type="button" class="btn-filter-runbook" id="btnFilterAll" onclick="filterRunbooks('all')">
+              <span>Browse All Culprits (<span id="allSubsCount">15</span>)</span>
+            </button>
+          </div>
+          <div class="killswitch-search-wrap">
+            <input type="text" class="killswitch-search" id="runbookSearchInput" placeholder="🔍 Search service name, AWS, Adobe..." oninput="handleRunbookSearch()">
+          </div>
+        </div>
+
+        <div class="killswitch-grid" id="killswitchGrid">
+          <!-- Dynamically populated from KILL_SWITCH_DATABASE -->
+        </div>
+
+      </div>
+
+    </section>
 
   </main>
 
@@ -1610,8 +2690,8 @@
   <!-- Toast Notification -->
   <div class="toast-pill" id="toastPill">Receipt copied to clipboard</div>
 
-  <!-- Footer -->
-                  <footer class="site-footer">
+  <!-- Site Footer -->
+    <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -1663,48 +2743,261 @@
       </div>
     </div>
   </footer>
+  <script src="/assets/nav.js?v=20261001d" defer></script><!-- Scripts -->
+  <script src="/assets/checkout.js" defer></script>
   <script src="/assets/nav.js?v=20261001d" defer></script>
 
   <script>
-    // --- 1. Master Subscriptions Catalog (Original Defaults) ---
+    // --- 1. Master Subscriptions Catalog (Expanded for Solopreneurs & Dev Shops) ---
     const DEFAULT_CATALOG = [
-      // Streaming & Entertainment
-      { id: 'netflix', name: 'Netflix Premium', price: 22.99, cat: 'streaming', icon: '🍿' },
-      { id: 'spotify', name: 'Spotify Duo / Family', price: 16.99, cat: 'streaming', icon: '🎧' },
-      { id: 'youtube', name: 'YouTube Premium', price: 13.99, cat: 'streaming', icon: '📺' },
-      { id: 'disney', name: 'Disney+ / Hulu Duo', price: 19.99, cat: 'streaming', icon: '🏰' },
-      { id: 'appletv', name: 'Apple TV+ / One', price: 9.99, cat: 'streaming', icon: '🍏' },
-      { id: 'prime', name: 'Amazon Prime', price: 14.99, cat: 'streaming', icon: '📦' },
+      // 💼 Solopreneur, Dev & Business SaaS (The Silent Cash Bleed)
+      { id: 'canva', name: 'Canva Pro / Teams', price: 12.99, cat: 'business', icon: '🎨', irsLine: 'Line 8 (Advertising & Assets)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'zoom', name: 'Zoom Workplace Pro', price: 15.99, cat: 'business', icon: '📹', irsLine: 'Line 25 (Communications & Video)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'adobe', name: 'Adobe Creative Cloud', price: 59.99, cat: 'business', icon: '🖌️', irsLine: 'Line 8 (Design & Digital Media)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'aws', name: 'AWS Cloud Infrastructure', price: 45.00, cat: 'business', icon: '☁️', irsLine: 'Line 18 (Cloud Hosting & Servers)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'domains', name: 'Test Domains & DNS', price: 18.00, cat: 'business', icon: '🌐', irsLine: 'Line 18 (Domain & Web Services)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'googleworkspace', name: 'Google Workspace', price: 18.00, cat: 'business', icon: '✉️', irsLine: 'Line 25 (Enterprise Email & Drive)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'slack', name: 'Slack Pro', price: 8.75, cat: 'business', icon: '💬', irsLine: 'Line 25 (Team Communications)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'github', name: 'GitHub Copilot / Team', price: 10.00, cat: 'business', icon: '💻', irsLine: 'Line 18 (Code Toolchains & CI/CD)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'loom', name: 'Loom Business', price: 12.50, cat: 'business', icon: '🎥', irsLine: 'Line 25 (Client Walkthrough Video)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'vercel', name: 'Vercel Pro / Edge Addons', price: 20.00, cat: 'business', icon: '▲', irsLine: 'Line 18 (Edge Hosting & Bandwidth)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'supabase', name: 'Supabase Pro', price: 25.00, cat: 'business', icon: '⚡', irsLine: 'Line 18 (Managed Cloud Database)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'webflow', name: 'Webflow / Framer Plan', price: 29.00, cat: 'business', icon: '📐', irsLine: 'Line 8 (Commercial Web Presence)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'mailchimp', name: 'Mailchimp / Resend Tier', price: 20.00, cat: 'business', icon: '📨', irsLine: 'Line 8 (Email Marketing & Drip)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'openai', name: 'OpenAI / Anthropic API Spend', price: 30.00, cat: 'business', icon: '🧠', irsLine: 'Line 27a (Computational AI API)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'onepassword', name: '1Password Teams', price: 7.99, cat: 'business', icon: '🔑', irsLine: 'Line 18 (Cybersecurity & Credentials)', irsCode: 'IRC § 162(a)', bizUse: 100 },
 
-      // AI & Productivity
-      { id: 'chatgpt', name: 'ChatGPT Plus', price: 20.00, cat: 'ai', icon: '🤖' },
-      { id: 'claude', name: 'Claude Pro', price: 20.00, cat: 'ai', icon: '🧠' },
-      { id: 'adobe', name: 'Adobe Creative Cloud', price: 59.99, cat: 'ai', icon: '🎨' },
-      { id: 'github', name: 'GitHub Copilot', price: 10.00, cat: 'ai', icon: '💻' },
-      { id: 'midjourney', name: 'Midjourney Standard', price: 30.00, cat: 'ai', icon: '🌌' },
-      { id: 'notion', name: 'Notion AI Plus', price: 10.00, cat: 'ai', icon: '📝' },
+      // 🤖 AI & Productivity
+      { id: 'chatgpt', name: 'ChatGPT Plus', price: 20.00, cat: 'ai', icon: '🤖', irsLine: 'Line 27a (Research & AI Tooling)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'claude', name: 'Claude Pro', price: 20.00, cat: 'ai', icon: '🧠', irsLine: 'Line 27a (Engineering Synthesizer)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'midjourney', name: 'Midjourney Standard', price: 30.00, cat: 'ai', icon: '🌌', irsLine: 'Line 8 (Generative Visual Assets)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'notion', name: 'Notion AI Plus', price: 10.00, cat: 'ai', icon: '📝', irsLine: 'Line 18 (Document & Wiki Database)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'perplexity', name: 'Perplexity Pro', price: 20.00, cat: 'ai', icon: '🔍', irsLine: 'Line 27a (Technical Market Intelligence)', irsCode: 'IRC § 162(a)', bizUse: 100 },
+      { id: 'cursor', name: 'Cursor Pro AI', price: 20.00, cat: 'ai', icon: '⚡', irsLine: 'Line 18 (AI Development Environment)', irsCode: 'IRC § 162(a)', bizUse: 100 },
 
-      // Lifestyle & Fitness
-      { id: 'gym', name: 'Gym Membership / Equinox', price: 65.00, cat: 'lifestyle', icon: '🏋️' },
-      { id: 'uber', name: 'Uber One', price: 9.99, cat: 'lifestyle', icon: '🚗' },
-      { id: 'doordash', name: 'DoorDash DashPass', price: 9.99, cat: 'lifestyle', icon: '🍔' },
-      { id: 'whoop', name: 'WHOOP 4.0 Strap', price: 30.00, cat: 'lifestyle', icon: '⚡' },
-      { id: 'peloton', name: 'Peloton App+', price: 24.00, cat: 'lifestyle', icon: '🚴' },
+      // 🍿 Streaming & Entertainment
+      { id: 'netflix', name: 'Netflix Premium', price: 22.99, cat: 'streaming', icon: '🍿', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'spotify', name: 'Spotify Duo / Family', price: 16.99, cat: 'streaming', icon: '🎧', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'youtube', name: 'YouTube Premium', price: 13.99, cat: 'streaming', icon: '📺', irsLine: 'Personal / Research (Partial)', irsCode: 'IRC § 162/262', bizUse: 25 },
+      { id: 'disney', name: 'Disney+ / Hulu Duo', price: 19.99, cat: 'streaming', icon: '🏰', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'appletv', name: 'Apple TV+ / One', price: 9.99, cat: 'streaming', icon: '🍏', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'prime', name: 'Amazon Prime', price: 14.99, cat: 'streaming', icon: '📦', irsLine: 'Mixed Delivery & Procurement', irsCode: 'IRC § 162/262', bizUse: 50 },
 
-      // Gaming & Cloud
-      { id: 'gamepass', name: 'Xbox Game Pass Ultimate', price: 19.99, cat: 'gaming', icon: '🎮' },
-      { id: 'psplus', name: 'PlayStation Plus Premium', price: 17.99, cat: 'gaming', icon: '🕹️' },
-      { id: 'icloud', name: 'Apple iCloud+ (2TB)', price: 9.99, cat: 'gaming', icon: '☁️' },
-      { id: 'googleone', name: 'Google One (2TB)', price: 9.99, cat: 'gaming', icon: '💾' },
-      { id: 'worldofwarcraft', name: 'World of Warcraft', price: 14.99, cat: 'gaming', icon: '⚔️' }
+      // 🏋️ Lifestyle & Fitness
+      { id: 'gym', name: 'Gym Membership / Equinox', price: 65.00, cat: 'lifestyle', icon: '🏋️', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'uber', name: 'Uber One', price: 9.99, cat: 'lifestyle', icon: '🚗', irsLine: 'Mixed Transport / Courier', irsCode: 'IRC § 162/262', bizUse: 50 },
+      { id: 'doordash', name: 'DoorDash DashPass', price: 9.99, cat: 'lifestyle', icon: '🍔', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'whoop', name: 'WHOOP 4.0 Strap', price: 30.00, cat: 'lifestyle', icon: '⚡', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'peloton', name: 'Peloton App+', price: 24.00, cat: 'lifestyle', icon: '🚴', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+
+      // 🎮 Gaming & Cloud Storage
+      { id: 'gamepass', name: 'Xbox Game Pass Ultimate', price: 19.99, cat: 'gaming', icon: '🎮', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'psplus', name: 'PlayStation Plus Premium', price: 17.99, cat: 'gaming', icon: '🕹️', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 },
+      { id: 'icloud', name: 'Apple iCloud+ (2TB)', price: 9.99, cat: 'gaming', icon: '☁️', irsLine: 'Line 18 (Data Backup & Archival)', irsCode: 'IRC § 162(a)', bizUse: 75 },
+      { id: 'googleone', name: 'Google One (2TB)', price: 9.99, cat: 'gaming', icon: '💾', irsLine: 'Line 18 (Cloud Storage & Sync)', irsCode: 'IRC § 162(a)', bizUse: 75 },
+      { id: 'worldofwarcraft', name: 'World of Warcraft', price: 14.99, cat: 'gaming', icon: '⚔️', irsLine: 'Personal (Non-Deductible)', irsCode: 'IRC § 262', bizUse: 0 }
     ];
 
-    // Working state: Deep clone of default catalog
-    let ALL_SERVICES = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-    const activeSubs = new Set(['netflix', 'spotify', 'chatgpt']); // default realistic starter
-    let editingServiceId = null;
+    // --- 2. USD FX Currency Rates & Exposure Constants ---
+    const FX_RATES = {
+      USD: { symbol: '$', name: 'US Dollar', rate: 1.0, flag: '🇺🇸' },
+      JMD: { symbol: 'JA$', name: 'Jamaican Dollar', rate: 156.5, flag: '🇯🇲' },
+      CAD: { symbol: 'C$', name: 'Canadian Dollar', rate: 1.36, flag: '🇨🇦' },
+      EUR: { symbol: '€', name: 'Euro', rate: 0.92, flag: '🇪🇺' },
+      GBP: { symbol: '£', name: 'British Pound', rate: 0.79, flag: '🇬🇧' },
+      AUD: { symbol: 'A$', name: 'Australian Dollar', rate: 1.52, flag: '🇦🇺' },
+      INR: { symbol: '₹', name: 'Indian Rupee', rate: 83.8, flag: '🇮🇳' },
+      BRL: { symbol: 'R$', name: 'Brazilian Real', rate: 5.45, flag: '🇧🇷' },
+      NGN: { symbol: '₦', name: 'Nigerian Naira', rate: 1620.0, flag: '🇳🇬' },
+      MXN: { symbol: 'Mex$', name: 'Mexican Peso', rate: 19.3, flag: '🇲🇽' },
+      PHP: { symbol: '₱', name: 'Philippine Peso', rate: 56.2, flag: '🇵🇭' }
+    };
 
-    // --- 2. Word & Letter Ripple Physics Engine ---
+    let selectedCurrency = 'USD';
+    let customFxRate = 156.5;
+    let bankFxSpread = 0.035; // 3.5% default cross-border card fee
+    let annualDevaluationRate = 0.04; // 4.0% default domestic currency drift
+
+    // --- 3. Dark Pattern Kill-Switch Runbook Database ---
+    const KILL_SWITCH_DATABASE = [
+      {
+        id: 'adobe',
+        serviceName: 'Adobe Creative Cloud',
+        hazardBadge: 'HAZARD: $200+ EARLY TERMINATION FEE',
+        cancelUrl: 'https://account.adobe.com/plans',
+        darkPattern: 'Adobe locks annual contracts into a hidden 50% remaining contract penalty clause ($100–$300 fee) if canceled after 14 days.',
+        bypassInstructions: [
+          'Navigate directly to <strong>account.adobe.com/plans</strong> and select <em>Manage Plan</em>.',
+          'Click <strong>Change Plan</strong> and switch to a much cheaper plan (e.g. Photography 20GB or InCopy for ~$9.99/mo).',
+          'Confirm the plan change. Under consumer contract law, switching plans triggers a brand new 14-day statutory trial period.',
+          'Wait 15 minutes, return to the plan page, and click <strong>Cancel Plan</strong>. Because you are now inside the 14-day cooling-off window of the new plan, <strong>the entire early termination fee is legally waived</strong> and you receive a 100% full refund!'
+        ],
+        legalLetter: `To: Adobe Systems Billing & Compliance Desk (support@adobe.com)
+Subject: FORMAL NOTICE: Cancellation of Creative Cloud Subscription & Fee Waiver Demand
+
+To Whom It May Concern,
+
+Please immediately terminate my Adobe Creative Cloud subscription associated with account email [ACCOUNT_EMAIL].
+
+Pursuant to 16 CFR Part 425 (FTC Negative Option Rule & Click-to-Cancel Enforcement) and California Automatic Renewal Law (Cal. Bus. & Prof. Code § 17600 et seq.), commercial subscribers must be permitted simple, zero-friction cancellation mechanism equal to enrollment.
+
+I expressly refuse any purported "Early Termination Fee" or contract acceleration penalties, as statutory cooling-off protections and unconscionable liquidated damage clauses are unenforceable under state and international consumer statutes. Confirm termination and zero balance within 24 hours.
+
+Sincerely,
+[SUBSCRIBER_NAME]`
+      },
+      {
+        id: 'canva',
+        serviceName: 'Canva Pro & Teams',
+        hazardBadge: 'HAZARD: TEAM SEAT RETENTION TRAP',
+        cancelUrl: 'https://www.canva.com/settings/billing-and-teams',
+        darkPattern: 'Pushes "Pause Membership" as deceptive primary CTA; buries full cancellation under 4 screens of team asset-lock warnings.',
+        bypassInstructions: [
+          'Go directly to <strong>canva.com/settings/billing-and-teams</strong>.',
+          'Select the <em>Subscriptions</em> tab and click the three dots &bull;&bull;&bull; next to your plan.',
+          'Click <strong>Cancel Subscription</strong>. When Canva presents the yellow "Pause for 3 Months" button, click the low-contrast grey <em>Continue Cancellation</em> link.',
+          'CRITICAL: If you ever added team members or sent email invites, ensure you revoke all pending invites, or Canva will continue charging monthly team seat fees!'
+        ],
+        legalLetter: `To: Canva Pty Ltd Support
+Subject: Cancellation of Canva Pro Subscription - Account [ACCOUNT_EMAIL]
+
+Please immediately cancel my Canva Pro/Teams subscription and revoke all recurring billing authorizations on my payment method. I do not consent to pausing or maintaining billable team seats. Confirm termination immediately.`
+      },
+      {
+        id: 'zoom',
+        serviceName: 'Zoom Workplace Pro',
+        hazardBadge: 'HAZARD: ADD-ON LOCK-IN LOOP',
+        cancelUrl: 'https://zoom.us/billing/plan',
+        darkPattern: 'Auto-renews annual plans with silent price creep; prevents primary plan cancellation if any cloud recording or phone add-ons remain active.',
+        bypassInstructions: [
+          'Direct URL: <strong>zoom.us/billing/plan</strong>.',
+          'Check your add-ons list first: if you have Cloud Storage or Large Meeting add-ons, you MUST cancel each add-on individually before Zoom enables the "Cancel Plan" button on your main account.',
+          'Click <em>Cancel Subscription</em> on the base plan and complete the 2-step verification survey.'
+        ],
+        legalLetter: `To: Zoom Video Communications Billing
+Subject: Cancellation Demand - Zoom Account [ACCOUNT_EMAIL]
+
+This constitutes formal written demand to terminate my Zoom Pro plan and all associated cloud recording add-on licenses effective immediately. Any subsequent auto-renewal charges will be disputed as unauthorized cross-border transactions.`
+      },
+      {
+        id: 'aws',
+        serviceName: 'AWS Cloud Infrastructure',
+        hazardBadge: 'HAZARD: GHOST RESOURCES AFTER CLOSURE',
+        cancelUrl: 'https://console.aws.amazon.com/billing/home#/bills',
+        darkPattern: 'Closing an AWS account does NOT delete active Elastic IPs ($3.60/mo each), unattached EBS storage volumes ($0.08/GB), or multi-AZ NAT Gateways ($32.40/mo each).',
+        bypassInstructions: [
+          'Do NOT simply click "Close Account" first. Follow the AWS Kill-Switch Sweep:',
+          '1. In EC2 Console: Select <em>Elastic IPs</em> &rarr; Disassociate and Release all unallocated IPs.',
+          '2. In EC2 Console: Select <em>Volumes</em> &rarr; Delete all status "available" (unattached) EBS disks.',
+          '3. In VPC Console: Select <em>NAT Gateways</em> &rarr; Delete active gateways.',
+          '4. In Route 53: Delete test hosted zones ($0.50/mo each).',
+          '5. Finally, go to <strong>Billing & Cost Management</strong> &rarr; Account Settings &rarr; Close Account.'
+        ],
+        legalLetter: `To: Amazon Web Services Support
+Subject: Full Teardown & Closure Confirmation - Account ID [ACCOUNT_EMAIL]
+
+Please verify that all compute, storage, and networking resources under this AWS account have been terminated and that zero ongoing recurring charges will accrue following account closure.`
+      },
+      {
+        id: 'domains',
+        serviceName: 'GoDaddy / Domain Registrars',
+        hazardBadge: 'HAZARD: PRE-TICKED 30-DAY AUTO RENEW',
+        cancelUrl: 'https://account.godaddy.com/products',
+        darkPattern: 'Charges renewal cards 30 to 45 days in advance of expiration dates; pre-bundles privacy protection and Microsoft 365 mailboxes.',
+        bypassInstructions: [
+          'Direct URL: <strong>account.godaddy.com/products</strong>.',
+          'Navigate to <em>Renewal &amp; Billing</em>.',
+          'Select all expired or test domains, click <strong>Cancel Renewal</strong>, and then select <em>Delete Product</em> to release the domain immediately.',
+          'Navigate to <em>Payment Methods</em> and delete your backup credit card to prevent automatic fallback re-billing.'
+        ],
+        legalLetter: `To: Domain Registrar Billing Desk
+Subject: Revocation of Auto-Renewal Authorization
+
+I hereby revoke all recurring billing and automated domain renewal authorizations for all domains registered under [ACCOUNT_EMAIL]. Do not renew any expiring domains without prior written authorization.`
+      },
+      {
+        id: 'linkedin',
+        serviceName: 'LinkedIn Premium',
+        hazardBadge: 'HAZARD: 5-SCREEN RETENTION GUILT TRIP',
+        cancelUrl: 'https://www.linkedin.com/premium/cancel',
+        darkPattern: '5-screen retention labyrinth; styles "Keep My Plan" in bright blue while "Continue Cancellation" is styled in faint, low-contrast grey.',
+        bypassInstructions: [
+          'Direct link <strong>linkedin.com/premium/cancel</strong> bypasses the profile settings maze.',
+          'Screen 1: Select "Too expensive".',
+          'Screen 2: LinkedIn will offer a 50% discount for 2 months. If you want a complete kill, reject the offer and click the low-contrast bottom link.',
+          'Confirm cancellation on the final screen and verify you receive the confirmation email.'
+        ],
+        legalLetter: `To: LinkedIn Corporation Billing
+Subject: Notice of Non-Renewal - LinkedIn Premium [ACCOUNT_EMAIL]
+
+Confirm immediate termination of LinkedIn Premium subscription with zero further auto-renewal charges to my credit card.`
+      },
+      {
+        id: 'googleworkspace',
+        serviceName: 'Google Workspace',
+        hazardBadge: 'HAZARD: ZOMBIE SEAT CHARGES',
+        cancelUrl: 'https://admin.google.com/ac/billing/subscriptions',
+        darkPattern: 'Deleting a user account does NOT delete their paid seat license! Google continues billing for the empty license slot indefinitely.',
+        bypassInstructions: [
+          'Go to <strong>admin.google.com/ac/billing/subscriptions</strong>.',
+          'Click your Google Workspace edition.',
+          'Look at "Licenses assigned vs purchased". If you have unassigned seats, click <em>Reduce License Count</em> down to your exact number of active members.',
+          'To cancel entirely, click <em>More &rarr; Cancel Subscription</em>.'
+        ],
+        legalLetter: `To: Google LLC Admin Billing
+Subject: License Seat Reduction & Subscription Termination
+
+Please de-provision all unassigned Google Workspace licenses under domain [ACCOUNT_EMAIL] and adjust future billing invoices accordingly.`
+      },
+      {
+        id: 'slack',
+        serviceName: 'Slack Pro',
+        hazardBadge: 'HAZARD: MULTI-SEAT OVERHEAD',
+        cancelUrl: 'https://slack.com/admin/billing',
+        darkPattern: 'Departed team members remain on paid invoices until explicitly converted to deactivated accounts and plan seats reduced.',
+        bypassInstructions: [
+          'Direct URL: <strong>slack.com/admin/billing</strong>.',
+          'Review the Active Members roster &rarr; Deactivate former contractors or inactive members.',
+          'Click <em>Change Plan</em> &rarr; Select <em>Downgrade to Free</em>.',
+          'Slack will retain your message history up to the free tier threshold with zero ongoing monthly credit card charges.'
+        ],
+        legalLetter: `To: Slack Technologies / Salesforce Billing
+Subject: Downgrade Authorization - Slack Workspace [ACCOUNT_EMAIL]
+
+Confirm immediate downgrade of our Slack workspace to the standard free tier and termination of recurring credit card authorizations.`
+      },
+      {
+        id: 'gym',
+        serviceName: 'Gym & Physical Fitness Clubs',
+        hazardBadge: 'HAZARD: IN-PERSON CERTIFIED MAIL TRAP',
+        cancelUrl: '#',
+        darkPattern: 'Contracts demand physical manager appointments or certified registered mail with restrictive 30-day advance notice windows.',
+        bypassInstructions: [
+          'Print and email the statutory contract rescission letter below directly to the gym general manager, corporate member services, and billing partner (e.g. ABC Fitness).',
+          'Under modern consumer electronic transaction acts (E-SIGN Act / Uniform Electronic Transactions Act), written electronic notice satisfies statutory delivery requirements.',
+          'If the gym continues billing, file an immediate chargeback with your bank accompanied by this letter as proof of cancellation.'
+        ],
+        legalLetter: `To: Member Services & General Management
+Subject: FORMAL NOTICE OF MEMBERSHIP CANCELLATION & REVOCATION OF EFT AUTHORIZATION
+
+Membership ID: [ACCOUNT_EMAIL]
+
+Please be advised that effective immediately, I am terminating my fitness membership contract. Pursuant to the Electronic Fund Transfer Act (12 CFR § 1005.10(c)) and state consumer protection statutes, I hereby revoke all authorization for recurring EFT or credit card debits.
+
+Any further charges will be treated as unauthorized and disputed directly with my issuing financial institution. Please provide written confirmation of cancellation and zero balance.
+
+Sincerely,
+[SUBSCRIBER_NAME]`
+      }
+    ];
+
+    // State Variables
+    let ALL_SERVICES = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
+    const activeSubs = new Set(['canva', 'zoom', 'adobe', 'aws', 'chatgpt']); // default realistic solopreneur starter
+    let editingServiceId = null;
+    let isRunbookUnlocked = false;
+
+    // --- 4. Word & Letter Ripple Physics Engine ---
     function initWordRipples() {
       const targets = document.querySelectorAll('.ripple-target');
       targets.forEach(el => {
@@ -1759,10 +3052,11 @@
       }
     }
 
-    // --- 3. Shockwave & 3D Wireframe Canvas ---
+    // --- 5. Shockwave & 3D Wireframe Canvas ---
     let shockwaves = [];
     function initShockwaveCanvas() {
       const cv = document.getElementById('shockwaveCanvas');
+      if (!cv) return;
       const ctx = cv.getContext('2d');
       function resize() {
         cv.width = window.innerWidth;
@@ -1802,6 +3096,7 @@
 
     function initWireframeCanvas() {
       const cv = document.getElementById('wireframeCanvas');
+      if (!cv) return;
       const ctx = cv.getContext('2d');
       let w = cv.width = window.innerWidth;
       let h = cv.height = window.innerHeight;
@@ -1855,7 +3150,7 @@
       draw();
     }
 
-    // --- 4. Web Audio Geiger Counter Synthesizer ---
+    // --- 6. Web Audio Geiger Counter Synthesizer ---
     let audioCtx = null;
     let isGeigerActive = false;
     let geigerInterval = null;
@@ -1925,12 +3220,12 @@
       return sum;
     }
 
-    // --- 5. Rolling Number Odometer / Counter Animation ---
+    // --- 7. Rolling Number Odometer / Counter Animation ---
     function animateRollingNumber(elementId, targetValue, prefix = '$', decimals = 2) {
       const elem = document.getElementById(elementId);
       if (!elem) return;
 
-      const duration = 600;
+      const duration = 500;
       const startTime = performance.now();
       const startVal = parseFloat(elem.getAttribute('data-val') || 0);
       elem.setAttribute('data-val', targetValue);
@@ -1950,7 +3245,7 @@
       requestAnimationFrame(step);
     }
 
-    // --- 6. Recalculation & UI Rendering ---
+    // --- 8. Recalculation & Telemetry Rendering ---
     function recalculate(e) {
       let monthly = 0;
       const selected = [];
@@ -1966,7 +3261,7 @@
       const rMo = 0.08 / 12;
       const spOpp = Math.round(monthly * ((Math.pow(1 + rMo, 120) - 1) / rMo));
 
-      // Rolling numbers
+      // Rolling numbers for standard KPIs
       animateRollingNumber('valMonthly', monthly);
       animateRollingNumber('valAnnual', annual);
       animateRollingNumber('valTenYear', tenYear);
@@ -2036,7 +3331,7 @@
       document.getElementById('rcptTenYear').innerText = `$${tenYear.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       document.getElementById('rcptSpOpp').innerText = `$${spOpp.toLocaleString('en-US')}`;
 
-      // Populate Items List
+      // Populate Items List on Receipt
       const itemsList = document.getElementById('receiptItemsList');
       itemsList.innerHTML = '';
       if (selected.length === 0) {
@@ -2050,6 +3345,13 @@
         });
       }
 
+      // Update FX Telemetry
+      updateFxCalculations(monthly);
+
+      // Update Tax Schedule Table & Runbook Counts
+      renderTaxSchedule();
+      renderKillSwitchRunbook();
+
       // Jitter receipt
       const rcptElem = document.getElementById('realityReceipt');
       rcptElem.style.transform = 'translateY(6px) scale(0.99)';
@@ -2061,19 +3363,389 @@
       }
     }
 
-    // --- 7. Render Grids with In-Card Edit Pencil ---
+    // --- 9. USD FX Exposure Engine ---
+    function updateFxCalculations(monthlyUsd) {
+      if (typeof monthlyUsd === 'undefined') monthlyUsd = calculateCurrentMonthly();
+
+      let effectiveRate = 1.0;
+      let symbol = '$';
+      let currName = 'USD';
+
+      if (selectedCurrency === 'CUSTOM') {
+        effectiveRate = parseFloat(document.getElementById('fxCustomRateInput').value) || 1.0;
+        symbol = 'FX';
+        currName = 'Custom FX';
+      } else {
+        const info = FX_RATES[selectedCurrency] || FX_RATES.USD;
+        effectiveRate = info.rate;
+        symbol = info.symbol;
+        currName = info.name;
+      }
+
+      // Calculations with bank fee and devaluation
+      const monthlyWithSpreadUsd = monthlyUsd * (1 + bankFxSpread);
+      const localMonthly = monthlyWithSpreadUsd * effectiveRate;
+      const annualSpreadLossUsd = monthlyUsd * 12 * bankFxSpread;
+      const annualSpreadLossLocal = annualSpreadLossUsd * effectiveRate;
+
+      // 10-Yr compounding devaluation penalty (spread difference between baseline USD and depreciating local currency)
+      const annualLocalDrain = localMonthly * 12;
+      const tenYearLocalCompounded = annualLocalDrain * ((Math.pow(1 + annualDevaluationRate, 10) - 1) / annualDevaluationRate);
+      const tenYearBaselineFlat = annualLocalDrain * 10;
+      const tenYearDevaluationPenaltyLocal = Math.max(0, tenYearLocalCompounded - tenYearBaselineFlat);
+
+      // KPI Card 05
+      const valFxDrain = document.getElementById('valFxDrain');
+      const valFxSub = document.getElementById('valFxSub');
+      if (selectedCurrency === 'USD') {
+        valFxDrain.innerText = `$${monthlyUsd.toFixed(2)}`;
+        valFxSub.innerText = 'Domestic USD (0% FX spread)';
+      } else {
+        valFxDrain.innerText = `${symbol} ${Math.round(localMonthly).toLocaleString()}`;
+        valFxSub.innerText = `${currName} @ ${effectiveRate}/USD (+${(bankFxSpread * 100).toFixed(1)}% bank fee)`;
+      }
+
+      // Readouts in the FX Console
+      document.getElementById('fxLocalMonthly').innerText = `${symbol} ${localMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('fxAnnualLoss').innerText = `+$${annualSpreadLossUsd.toFixed(2)} USD (~${symbol} ${Math.round(annualSpreadLossLocal).toLocaleString()})`;
+      document.getElementById('fxTenYearPenalty').innerText = `+${symbol} ${Math.round(tenYearDevaluationPenaltyLocal).toLocaleString()}`;
+
+      // Receipt FX row
+      const rcptFx = document.getElementById('rcptFxVal');
+      if (rcptFx) {
+        rcptFx.innerText = selectedCurrency === 'USD' ? '$' + monthlyUsd.toFixed(2) + ' USD' : `${symbol} ${Math.round(localMonthly).toLocaleString()} (${selectedCurrency})`;
+      }
+    }
+
+    // --- 10. Accountant-Ready IRS Tax Schedule Engine ---
+    function renderTaxSchedule() {
+      const tbody = document.getElementById('taxTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let grossTotal = 0;
+      let deductibleTotal = 0;
+      let count = 0;
+
+      ALL_SERVICES.forEach(s => {
+        if (activeSubs.has(s.id)) {
+          count++;
+          const annualCost = s.price * 12;
+          grossTotal += annualCost;
+
+          // Default business use % from service object or fallback
+          const bizUse = (typeof s.bizUse !== 'undefined') ? s.bizUse : (s.cat === 'business' || s.cat === 'ai' ? 100 : 0);
+          const netDeduction = annualCost * (bizUse / 100);
+          deductibleTotal += netDeduction;
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>
+              <strong>${s.icon || '💳'} ${s.name}</strong>
+              <div style="font-size:0.7rem; color:var(--orano-muted);">$${s.price.toFixed(2)}/mo &bull; $${annualCost.toFixed(2)}/yr</div>
+            </td>
+            <td>$${annualCost.toFixed(2)}</td>
+            <td>
+              <span class="tax-line-badge">${s.irsLine || 'Line 18 (Office & Software)'}</span>
+            </td>
+            <td style="color:var(--orano-muted); font-size:0.75rem;">${s.irsCode || 'IRC § 162(a)'}</td>
+            <td>
+              <select class="tax-percent-select" onchange="updateServiceBizUse('${s.id}', this.value)">
+                <option value="100" ${bizUse === 100 ? 'selected' : ''}>100% (Full Biz)</option>
+                <option value="75" ${bizUse === 75 ? 'selected' : ''}>75% (Majority)</option>
+                <option value="50" ${bizUse === 50 ? 'selected' : ''}>50% (Split-Use)</option>
+                <option value="25" ${bizUse === 25 ? 'selected' : ''}>25% (Incidental)</option>
+                <option value="0" ${bizUse === 0 ? 'selected' : ''}>0% (Personal)</option>
+              </select>
+            </td>
+            <td style="color:var(--orano-green); font-weight:800;">
+              $${netDeduction.toFixed(2)}
+            </td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+
+      if (count === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; color:#777; padding:2rem 0;">
+              No subscriptions active. Select services in the calculator above to generate your tax schedule.
+            </td>
+          </tr>
+        `;
+      }
+
+      recalculateTaxTotals(grossTotal, deductibleTotal);
+    }
+
+    function updateServiceBizUse(serviceId, percentVal) {
+      const s = ALL_SERVICES.find(item => item.id === serviceId);
+      if (s) {
+        s.bizUse = parseInt(percentVal, 10);
+        renderTaxSchedule();
+      }
+    }
+
+    function recalculateTaxTotals(gross, deductible) {
+      if (typeof gross === 'undefined') {
+        gross = 0;
+        deductible = 0;
+        ALL_SERVICES.forEach(s => {
+          if (activeSubs.has(s.id)) {
+            const annual = s.price * 12;
+            const b = typeof s.bizUse !== 'undefined' ? s.bizUse : (s.cat === 'business' || s.cat === 'ai' ? 100 : 0);
+            gross += annual;
+            deductible += annual * (b / 100);
+          }
+        });
+      }
+
+      const bracket = parseFloat(document.getElementById('taxBracketSelect').value) || 0.25;
+      const taxSavings = deductible * bracket;
+
+      document.getElementById('taxGrossTotal').innerText = `$${gross.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('taxDeductibleTotal').innerText = `$${deductible.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('taxSavingsTotal').innerText = `$${taxSavings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // Update ROI Banner
+      const roiTax = document.getElementById('roiTaxSaved');
+      if (roiTax) roiTax.innerText = `$${Math.round(taxSavings).toLocaleString()}`;
+
+      const roiMult = document.getElementById('roiMultiplier');
+      if (roiMult) {
+        const totalSaved = taxSavings + 600; // estimated tax savings + zombie cancel savings
+        const roi = Math.round((totalSaved / 14.99) * 100);
+        roiMult.innerText = `${roi.toLocaleString()}%`;
+      }
+
+      // Receipt line
+      const rcptTax = document.getElementById('rcptTaxDeduction');
+      if (rcptTax) {
+        rcptTax.innerText = `$${Math.round(deductible).toLocaleString()} / yr`;
+      }
+    }
+
+    // Export Accountant CSV
+    function exportTaxScheduleCsv() {
+      const rows = [
+        ['Alumungandr Enterprise & Technologies — Accountant-Ready Tax Schedule'],
+        ['Statutory Compliance: Internal Revenue Code Section 162(a) & Master Charter Article VII Section 7.01'],
+        ['Generated Date', new Date().toISOString()],
+        [''],
+        ['Vendor / Service', 'Billing Cycle', 'Monthly Cost (USD)', 'Annual Gross (USD)', 'IRS Schedule C Category', 'Statutory Authority', 'Business Use %', 'Net Annual Tax Deduction (USD)']
+      ];
+
+      ALL_SERVICES.forEach(s => {
+        if (activeSubs.has(s.id)) {
+          const annual = s.price * 12;
+          const b = typeof s.bizUse !== 'undefined' ? s.bizUse : (s.cat === 'business' || s.cat === 'ai' ? 100 : 0);
+          const deduction = annual * (b / 100);
+          rows.push([
+            s.name,
+            'Monthly',
+            s.price.toFixed(2),
+            annual.toFixed(2),
+            s.irsLine || 'Line 18 (Office & Software)',
+            s.irsCode || 'IRC § 162(a)',
+            `${b}%`,
+            deduction.toFixed(2)
+          ]);
+        }
+      });
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + rows.map(e => e.map(cell => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `Alumungandr-Tax-Schedule-IRS-162-${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Accountant CSV exported successfully');
+    }
+
+    function printTaxSchedule() {
+      window.print();
+    }
+
+    // --- 11. Dark Pattern Kill-Switch Runbook Rendering ---
+    let runbookFilterMode = 'my';
+
+    function renderKillSwitchRunbook() {
+      const grid = document.getElementById('killswitchGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const query = (document.getElementById('runbookSearchInput').value || '').toLowerCase().trim();
+      let matched = 0;
+
+      // Update tab counts
+      let activeCount = 0;
+      KILL_SWITCH_DATABASE.forEach(item => {
+        if (activeSubs.has(item.id)) activeCount++;
+      });
+      document.getElementById('mySubsCount').innerText = activeCount;
+      document.getElementById('allSubsCount').innerText = KILL_SWITCH_DATABASE.length;
+
+      KILL_SWITCH_DATABASE.forEach(item => {
+        const isActive = activeSubs.has(item.id);
+        if (runbookFilterMode === 'my' && !isActive) return;
+
+        if (query) {
+          const textMatch = item.serviceName.toLowerCase().includes(query) ||
+                            item.darkPattern.toLowerCase().includes(query) ||
+                            item.hazardBadge.toLowerCase().includes(query);
+          if (!textMatch) return;
+        }
+
+        matched++;
+        const card = document.createElement('div');
+        card.className = 'killswitch-card';
+        card.innerHTML = `
+          <div>
+            <div class="ks-card-header">
+              <span class="ks-service-title">${item.serviceName}</span>
+              <span class="ks-hazard-badge">${item.hazardBadge}</span>
+            </div>
+
+            <div class="ks-pattern-box" style="margin-top:0.75rem;">
+              <strong>The Dark Pattern:</strong> ${item.darkPattern}
+            </div>
+
+            <div class="ks-bypass-instructions" style="margin-top:0.85rem;">
+              <strong>Verified Kill-Switch Runbook:</strong>
+              <ol>
+                ${item.bypassInstructions.map(step => `<li>${step}</li>`).join('')}
+              </ol>
+            </div>
+          </div>
+
+          <div>
+            <div class="ks-actions-strip">
+              ${item.cancelUrl && item.cancelUrl !== '#' ? `
+                <a href="${item.cancelUrl}" target="_blank" rel="noopener noreferrer" class="btn-direct-cancel">
+                  <span>⚡ DIRECT CANCEL URL &rarr;</span>
+                </a>
+              ` : `
+                <button type="button" class="btn-direct-cancel" onclick="showLetterDrawer('${item.id}')">
+                  <span>📄 VIEW LEGAL LETTER</span>
+                </button>
+              `}
+              <button type="button" class="btn-view-letter" onclick="toggleLetterDrawer('${item.id}')">
+                <span>⚖️ Legal Demand Notice</span>
+              </button>
+            </div>
+
+            <div class="ks-letter-drawer" id="drawer_${item.id}">
+              <pre style="white-space:pre-wrap; font-family:var(--font-mono);">${item.legalLetter}</pre>
+              <button type="button" class="btn-copy-legal" onclick="copyLegalLetter('${item.id}')">
+                &#128203; COPY FTC / ARL LEGAL DEMAND LETTER
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      if (matched === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:3rem 1rem; color:var(--orano-muted); background:rgba(0,0,0,0.3); border-radius:10px;">
+            <p>No services matched your current selection or search.</p>
+            <button type="button" class="btn-hud-action" style="margin:1rem auto 0;" onclick="filterRunbooks('all')">
+              <span>View All 15+ Kill-Switch Guides</span>
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function filterRunbooks(mode) {
+      runbookFilterMode = mode;
+      document.getElementById('btnFilterMySubs').classList.toggle('active', mode === 'my');
+      document.getElementById('btnFilterAll').classList.toggle('active', mode === 'all');
+      renderKillSwitchRunbook();
+    }
+
+    function handleRunbookSearch() {
+      renderKillSwitchRunbook();
+    }
+
+    function toggleLetterDrawer(id) {
+      const drawer = document.getElementById(`drawer_${id}`);
+      if (drawer) drawer.classList.toggle('open');
+    }
+
+    function showLetterDrawer(id) {
+      const drawer = document.getElementById(`drawer_${id}`);
+      if (drawer) drawer.classList.add('open');
+    }
+
+    function copyLegalLetter(id) {
+      const item = KILL_SWITCH_DATABASE.find(x => x.id === id);
+      if (!item) return;
+
+      const userEmail = prompt('Enter your subscription account email for dynamic insertion:', 'user@example.com') || 'user@example.com';
+      const userName = prompt('Enter your name for the signature line:', 'Subscriber') || 'Subscriber';
+
+      const customized = item.legalLetter
+        .replace(/\[ACCOUNT_EMAIL\]/g, userEmail)
+        .replace(/\[SUBSCRIBER_NAME\]/g, userName);
+
+      navigator.clipboard.writeText(customized).then(() => {
+        showToast('Legal cancellation demand letter copied to clipboard!');
+      });
+    }
+
+    // --- 12. Checkout & Instant Unlock Flow ---
+    function openRunbookCheckout() {
+      if (typeof window.openAluCheckout === 'function') {
+        window.openAluCheckout({
+          product: 'Tax-Deductible Operational Expense Schedule & Kill-Switch Runbook',
+          tier: 'Commercial Financial Audit & Runbook',
+          priceUsd: 14.99,
+          priceJmd: Math.round(14.99 * (FX_RATES.JMD.rate || 156.5))
+        });
+      } else {
+        alert('Opening checkout gateway for $14.99 one-time download...');
+        window.location.href = '/store';
+      }
+    }
+
+    function unlockRunbookPreview() {
+      isRunbookUnlocked = true;
+      switchRevenueTab('tax');
+      showToast('Unlocked complete interactive tax schedule & kill-switch runbook preview!');
+      scrollToRevenueFeature();
+    }
+
+    function switchRevenueTab(tabId) {
+      document.getElementById('tabRevenueTax').classList.toggle('active', tabId === 'tax');
+      document.getElementById('tabRevenueKillswitch').classList.toggle('active', tabId === 'killswitch');
+      document.getElementById('revenueTaxTab').classList.toggle('active', tabId === 'tax');
+      document.getElementById('revenueKillswitchTab').classList.toggle('active', tabId === 'killswitch');
+    }
+
+    function scrollToRevenueFeature() {
+      document.getElementById('boringRevenueSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // --- 13. Render Grids with In-Card Edit Pencil ---
     function renderGrids() {
       const grids = {
-        streaming: document.getElementById('gridStreaming'),
+        business: document.getElementById('gridBusiness'),
         ai: document.getElementById('gridAi'),
+        streaming: document.getElementById('gridStreaming'),
         lifestyle: document.getElementById('gridLifestyle'),
         gaming: document.getElementById('gridGaming')
       };
 
-      Object.values(grids).forEach(g => g.innerHTML = '');
+      Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
 
       ALL_SERVICES.forEach(s => {
-        const targetGrid = grids[s.cat] || grids.lifestyle;
+        const targetGrid = grids[s.cat] || grids.business || grids.lifestyle;
+        if (!targetGrid) return;
+
         const card = document.createElement('div');
         card.className = `sub-card ${activeSubs.has(s.id) ? 'active' : ''}`;
         card.id = `card_${s.id}`;
@@ -2097,7 +3769,6 @@
         `;
 
         card.addEventListener('click', (e) => {
-          // If clicked the edit button, do not toggle active state
           if (e.target.closest('.btn-edit-trigger')) return;
 
           if (activeSubs.has(s.id)) {
@@ -2126,7 +3797,7 @@
       });
     }
 
-    // --- 8. In-Place Edit Subscription Dialog ---
+    // --- 14. In-Place Edit Subscription Dialog ---
     function openEditDialog(serviceId, event) {
       if (event) event.stopPropagation();
       const service = ALL_SERVICES.find(s => s.id === serviceId);
@@ -2212,8 +3883,11 @@
           id: newId,
           name: name,
           price: price,
-          cat: 'lifestyle',
-          icon: '⭐'
+          cat: 'business',
+          icon: '⭐',
+          irsLine: 'Line 18 (Operational SaaS)',
+          irsCode: 'IRC § 162(a)',
+          bizUse: 100
         });
 
         activeSubs.add(newId);
@@ -2236,8 +3910,11 @@
           id: newId,
           name: name,
           price: price,
-          cat: 'lifestyle',
-          icon: '⚡'
+          cat: 'business',
+          icon: '⚡',
+          irsLine: 'Line 18 (Operational SaaS)',
+          irsCode: 'IRC § 162(a)',
+          bizUse: 100
         });
         activeSubs.add(newId);
       }
@@ -2249,15 +3926,18 @@
 
     function applyPresetBundle(type) {
       activeSubs.clear();
-      if (type === 'consumer') {
+      if (type === 'solopreneur') {
+        ['canva', 'zoom', 'adobe', 'aws', 'domains', 'googleworkspace', 'slack', 'github'].forEach(id => activeSubs.add(id));
+        showToast('Activated Solopreneur Cash Bleed bundle (8 tools)');
+      } else if (type === 'remoteworker') {
+        ['zoom', 'chatgpt', 'googleworkspace', 'loom', 'notion', 'spotify'].forEach(id => activeSubs.add(id));
+        showToast('Activated Remote Worker Stack bundle (6 tools)');
+      } else if (type === 'consumer') {
         ['netflix', 'spotify', 'prime', 'chatgpt'].forEach(id => activeSubs.add(id));
         showToast('Activated Typical Consumer bundle (4 services)');
       } else if (type === 'creator') {
         ['adobe', 'midjourney', 'claude', 'youtube'].forEach(id => activeSubs.add(id));
         showToast('Activated Creator Suite bundle (4 services)');
-      } else if (type === 'student') {
-        ['spotify', 'icloud', 'googleone'].forEach(id => activeSubs.add(id));
-        showToast('Activated Student Saver bundle (3 services)');
       }
       renderGrids();
       recalculate();
@@ -2271,17 +3951,16 @@
       showToast('Cleared all active subscriptions');
     }
 
-    // --- 9. Thermal Receipt Canvas PNG Exporter ---
+    // --- 15. Thermal Receipt Canvas PNG Exporter ---
     function setupReceiptExport() {
       document.getElementById('btnDownloadReceipt').addEventListener('click', () => {
-        const rcpt = document.getElementById('realityReceipt');
         showToast('Generating crisp high-res receipt image...');
 
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        const dpr = 2; // High-resolution retina output
+        const dpr = 2;
         const w = 480;
-        const h = 760;
+        const h = 820;
 
         canvas.width = w * dpr;
         canvas.height = h * dpr;
@@ -2325,7 +4004,7 @@
 
         let count = 0;
         ALL_SERVICES.forEach(s => {
-          if (activeSubs.has(s.id) && count < 10) {
+          if (activeSubs.has(s.id) && count < 11) {
             ctx.fillText(s.name.slice(0, 24), 35, y);
             ctx.textAlign = 'right';
             ctx.fillText(`$${s.price.toFixed(2)}`, w - 35, y);
@@ -2336,14 +4015,14 @@
         });
 
         // Totals Divider
-        y = Math.max(y + 10, 420);
+        y = Math.max(y + 10, 450);
         ctx.beginPath();
         ctx.moveTo(30, y);
         ctx.lineTo(w - 30, y);
         ctx.stroke();
 
         // Totals Section
-        y += 28;
+        y += 26;
         function drawTotalRow(label, val, color = '#111111') {
           ctx.fillStyle = '#111111';
           ctx.font = 'bold 13px "Courier New", Courier, monospace';
@@ -2352,13 +4031,15 @@
           ctx.fillStyle = color;
           ctx.fillText(val, w - 35, y);
           ctx.textAlign = 'left';
-          y += 25;
+          y += 24;
         }
 
         drawTotalRow('MONTHLY DRAIN:', document.getElementById('rcptMonthly').innerText);
         drawTotalRow('ANNUAL OUTFLOW:', document.getElementById('rcptAnnual').innerText);
         drawTotalRow('10-YR BLEED (+3.5%):', document.getElementById('rcptTenYear').innerText, '#d32f2f');
         drawTotalRow('S&P 500 OPPORTUNITY:', document.getElementById('rcptSpOpp').innerText, '#2e7d32');
+        drawTotalRow('LOCAL FX SETTLEMENT:', document.getElementById('rcptFxVal').innerText, '#0277bd');
+        drawTotalRow('TAX WRITE-OFF VALUE:', document.getElementById('rcptTaxDeduction').innerText, '#6a1b9a');
 
         // Roast Quote
         y += 10;
@@ -2372,7 +4053,7 @@
         ctx.fillText(`"${quoteText.slice(52, 105)}..."`, w / 2, y + 44);
 
         // Barcode
-        y += 95;
+        y += 90;
         ctx.fillStyle = '#111111';
         ctx.font = '22px monospace';
         ctx.fillText('||| | |||| || | ||||| ||| | ||||', w / 2, y);
@@ -2397,12 +4078,19 @@
         const roast = document.getElementById('receiptRoastBadge').innerText;
         
         const tweetText = encodeURIComponent(
-          `I just audited my recurring subscriptions with @Alumungandr reality check:\n\n` +
-          `💸 Monthly Bleed: ${monthly}\n` +
-          `🔥 10-Yr Inflation Drain: ${tenYear}\n` +
-          `📈 S&P 500 Opportunity Cost: ${spOpp}\n` +
-          `🚨 Audit Verdict: ${roast}\n\n` +
-          `Calculate your true damage:`
+          `I just audited my recurring subscriptions with @Alumungandr reality check:
+
+` +
+          `💸 Monthly Bleed: ${monthly}
+` +
+          `🔥 10-Yr Inflation Drain: ${tenYear}
+` +
+          `📈 S&P 500 Opportunity Cost: ${spOpp}
+` +
+          `🚨 Audit Verdict: ${roast}
+
+` +
+          `Audit your silent cash bleed:`
         );
         const url = encodeURIComponent(window.location.href);
         window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank');
@@ -2428,7 +4116,7 @@
       setTimeout(() => toast.classList.remove('show'), 2400);
     }
 
-    // --- 10. Initialization ---
+    // --- 16. Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
       initWordRipples();
       initShockwaveCanvas();
@@ -2449,6 +4137,47 @@
       btnGuide.addEventListener('click', () => {
         const isOpen = guideBody.classList.toggle('open');
         guideArrow.innerHTML = isOpen ? '&#9650;' : '&#9660;';
+      });
+
+      // Currency Select Listener
+      const currSelect = document.getElementById('fxCurrencySelect');
+      const customRateGroup = document.getElementById('customRateGroup');
+      const customRateInput = document.getElementById('fxCustomRateInput');
+      const symbolSpan = document.getElementById('fxSelectedSymbol');
+
+      currSelect.addEventListener('change', () => {
+        selectedCurrency = currSelect.value;
+        if (selectedCurrency === 'CUSTOM') {
+          customRateGroup.style.display = 'flex';
+          symbolSpan.innerText = 'CUSTOM FX';
+        } else {
+          customRateGroup.style.display = 'none';
+          const info = FX_RATES[selectedCurrency] || FX_RATES.USD;
+          symbolSpan.innerText = `${info.symbol} ${info.name}`;
+        }
+        updateFxCalculations();
+      });
+
+      customRateInput.addEventListener('input', () => {
+        customFxRate = parseFloat(customRateInput.value) || 1.0;
+        updateFxCalculations();
+      });
+
+      // Spread and Devaluation Sliders
+      const spreadSlider = document.getElementById('fxSpreadSlider');
+      const spreadVal = document.getElementById('fxSpreadVal');
+      spreadSlider.addEventListener('input', () => {
+        bankFxSpread = parseFloat(spreadSlider.value) / 100;
+        spreadVal.innerText = `${spreadSlider.value}%`;
+        updateFxCalculations();
+      });
+
+      const driftSlider = document.getElementById('fxDriftSlider');
+      const driftVal = document.getElementById('fxDriftVal');
+      driftSlider.addEventListener('input', () => {
+        annualDevaluationRate = parseFloat(driftSlider.value) / 100;
+        driftVal.innerText = `${driftSlider.value}%`;
+        updateFxCalculations();
       });
 
       // Mobile dock receipt scroller

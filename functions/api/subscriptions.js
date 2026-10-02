@@ -148,7 +148,7 @@ const FX_RATES = {
 export async function onRequestGet({ request }) {
   const url = new URL(request.url);
 
-  if (url.pathname.endsWith('/runbook')) {
+  if (url.pathname.endsWith('/runbook') || url.searchParams.get('runbook') === '1' || url.searchParams.get('full') === '1') {
     return new Response(JSON.stringify({
       success: true,
       count: KILL_SWITCH_DATABASE.length,
@@ -183,10 +183,10 @@ export async function onRequestGet({ request }) {
 export async function onRequestPost({ request }) {
   try {
     const body = await request.json();
-    const subs = Array.isArray(body.subscriptions) ? body.subscriptions : [];
+    const subs = Array.isArray(body.subscriptions) ? body.subscriptions : (Array.isArray(body.items) ? body.items : []);
     const currency = body.currency || 'USD';
     const fxInfo = FX_RATES[currency] || { rate: parseFloat(body.customFxRate) || 1.0, symbol: '$', name: 'Custom' };
-    const bankSpread = parseFloat(body.bankFxSpread) || 0.035;
+    const bankSpread = typeof body.bankFxSpread !== 'undefined' ? parseFloat(body.bankFxSpread) : (typeof body.bankSpread !== 'undefined' ? parseFloat(body.bankSpread) : 0.035);
     const devaluationRate = parseFloat(body.devaluationRate) || 0.04;
     const taxBracket = parseFloat(body.taxBracket) || 0.25;
 

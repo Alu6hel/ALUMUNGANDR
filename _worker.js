@@ -8,6 +8,7 @@ import * as clip from './functions/api/clip.js';
 import * as stats from './functions/api/stats.js';
 import * as timecapsule from './functions/api/timecapsule.js';
 import * as ama from './functions/api/ama.js';
+import * as subscriptions from './functions/api/subscriptions.js';
 
 export default {
   async fetch(request, env, ctx) {
@@ -74,6 +75,13 @@ export default {
     if (url.pathname === '/api/ama') {
       if (method === 'POST' && ama.onRequestPost) return ama.onRequestPost({ request, env, ctx });
       if (method === 'GET' && ama.onRequestGet) return ama.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/subscriptions (Subscription Audit, IRS Tax Engine & Kill-Switch Runbook)
+    if (url.pathname === '/api/subscriptions' || url.pathname.startsWith('/api/subscriptions/')) {
+      if (method === 'OPTIONS' && subscriptions.onRequestOptions) return subscriptions.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && subscriptions.onRequestPost) return subscriptions.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && subscriptions.onRequestGet) return subscriptions.onRequestGet({ request, env, ctx });
     }
 
     // 301 Permanent Redirects for retired pages

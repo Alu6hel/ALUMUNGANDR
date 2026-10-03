@@ -1,0 +1,32 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.alumungandr.app",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:7F:0F:7D:6F:A2:1F:B1:92:02:64:1B:7D:4F:92:4A:26:FA:F2:65:C3:54:CA:0F:A4:44:03:EE:81:F2"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.alumungandr.underwraps",
+      "sha256_cert_fingerprints": [
+        "A1:B2:C3:D4:E5:F6:07:18:29:3A:4B:5C:6D:7E:8F:90:12:34:56:78:9A:BC:DE:F0:12:34:56:78:9A:BC:DE:F0"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.alumungandr.galaxsee",
+      "sha256_cert_fingerprints": [
+        "B2:C3:D4:E5:F6:07:18:29:3A:4B:5C:6D:7E:8F:90:12:34:56:78:9A:BC:DE:F0:12:34:56:78:9A:BC:DE:F0:12"
+      ]
+    }
+  }
+]

@@ -29,3 +29,5 @@
 /uses.html / 301
 /ama / 301
 /ama.html / 301
+/drop.html /drop 301
+/security.txt /.well-known/security.txt 301

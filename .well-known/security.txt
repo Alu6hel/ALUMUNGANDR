@@ -1,0 +1,11 @@
+# RFC 9116 Security Disclosure Policy for Alumungandr
+# https://alumungandr.com/.well-known/security.txt
+
+Contact: mailto:security@alumungandr.com
+Contact: https://alumungandr.com/contact
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://alumungandr.com/.well-known/security.txt
+Policy: https://alumungandr.com/privacy
+Acknowledgments: https://alumungandr.com/about
+Hiring: https://alumungandr.com/contact

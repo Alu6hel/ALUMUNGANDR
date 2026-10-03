@@ -27,6 +27,7 @@ TOOL_BADGES = {
     'invoice': 'INVOICE // STUDIO',
     'resizer': 'IMAGE // RESIZER',
     'subscriptions': 'REALITY // CHECK',
+    'drop': 'ENCRYPTED // DROP',
     'ip': 'NETWORK // DIAGNOSTICS',
     'timezone': 'TEMPORAL // MATCHER',
     'store': 'COMMERCE // VAULT',
@@ -61,6 +62,7 @@ def get_header_html(badge="TOOL // SUITE"):
             <a href="/stats">&#127760; Speed Stats</a>
             <a href="/call">&#128249; P2P Video Call</a>
             <a href="/clip">&#128203; Clipboard</a>
+            <a href="/drop">&#128272; Secure Drop</a>
             <a href="/ip">&#10052;&#65039; What Is My IP</a>
             <a href="/timezone">&#127757; Timezone</a>
           </div>
@@ -111,6 +113,7 @@ def get_footer_html():
         <a href="/stats">Global Speed Leaderboard</a>
         <a href="/call">P2P Encrypted Video Call</a>
         <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/drop">Encrypted Secure Drop</a>
         <a href="/ip">What Is My IP?</a>
         <a href="/timezone">Timezone Matcher</a>
       </div>

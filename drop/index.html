@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encrypted Secure File Drop | Zero-Knowledge AES-256 | Alumungandr™</title>
+  <meta name="description" content="Direct-to-storage zero-knowledge encrypted file drop. Encrypt files in your browser with AES-256-GCM before upload, with automated link expiration and one-time burn after reading.">
+  <link rel="canonical" href="https://alumungandr.com/drop">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/drop">
+  <meta property="og:title" content="Encrypted Secure File Drop | Zero-Knowledge AES-256 | Alumungandr™">
+  <meta property="og:description" content="Direct-to-storage zero-knowledge encrypted file drop. Encrypt files in your browser with AES-256-GCM before upload, with automated link expiration and one-time burn after reading.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Encrypted Secure File Drop | Zero-Knowledge AES-256 | Alumungandr™">
+  <meta name="twitter:description" content="Direct-to-storage zero-knowledge encrypted file drop. Encrypt files in your browser with AES-256-GCM before upload, with automated link expiration and one-time burn after reading.">
+  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://alumungandr.com/#organization",
+        "name": "Alumungandr",
+        "url": "https://alumungandr.com",
+        "logo": "https://alumungandr.com/logo.svg"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://alumungandr.com/drop/#app",
+        "name": "Alumungandr Encrypted Secure File Drop",
+        "url": "https://alumungandr.com/drop",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Client-side encrypted file drop using browser-native AES-256-GCM. Cloudflare edge storage with automatic link expiration and one-time burn after read."
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+  <script src="/assets/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --drop-bg: #070911;
+      --drop-surface: #0c1020;
+      --drop-card: #10162a;
+      --drop-card-active: #162444;
+      --drop-yellow: #facc15;
+      --drop-cyan: #06b6d4;
+      --drop-green: #10b981;
+      --drop-coral: #ea580c;
+      --drop-border: rgba(255, 255, 255, 0.12);
+      --drop-muted: #94a3b8;
+      --drop-dim: #64748b;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--drop-bg);
+      color: #f8fafc;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 6.5rem 1.5rem 6rem;
+    }
+
+    /* HUD Status Header */
+    .hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(16, 22, 42, 0.85);
+      border: 1px solid var(--drop-border);
+      border-radius: 12px;
+      padding: 0.9rem 1.4rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .hud-meta-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--drop-muted);
+      flex-wrap: wrap;
+    }
+
+    .hud-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* Hero Section */
+    .hero-scanner {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .scanner-pre {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--drop-yellow);
+      background: rgba(250, 204, 21, 0.08);
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    .scanner-title {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .scanner-desc {
+      font-size: 1.05rem;
+      color: var(--drop-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Tabs Navigation */
+    .drop-tabs-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .drop-tab-btn {
+      background: rgba(16, 22, 42, 0.8);
+      border: 1px solid var(--drop-border);
+      color: var(--drop-muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.75rem 1.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .drop-tab-btn:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .drop-tab-btn.active {
+      background: var(--drop-surface);
+      color: var(--drop-yellow);
+      border-color: var(--drop-yellow);
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
+    }
+
+    /* Main Container Card */
+    .drop-panel {
+      display: none;
+      background: var(--drop-card);
+      border: 1px solid var(--drop-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .drop-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* File Drop Zone */
+    .dropzone {
+      border: 2px dashed rgba(250, 204, 21, 0.4);
+      background: rgba(7, 9, 17, 0.6);
+      border-radius: 12px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--drop-yellow);
+      background: rgba(250, 204, 21, 0.04);
+      transform: scale(1.005);
+    }
+
+    .dropzone-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .dropzone-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .dropzone-sub {
+      font-size: 0.85rem;
+      color: var(--drop-muted);
+      font-family: var(--font-mono);
+    }
+
+    .file-input-hidden {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Selected File Preview */
+    .selected-file-card {
+      display: none;
+      background: rgba(6, 10, 22, 0.9);
+      border: 1px solid var(--drop-border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .file-info-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      overflow: hidden;
+    }
+
+    .file-icon-badge {
+      font-size: 1.8rem;
+    }
+
+    .file-name-meta {
+      overflow: hidden;
+    }
+
+    .file-name-display {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 450px;
+    }
+
+    .file-size-display {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--drop-muted);
+    }
+
+    .btn-remove-file {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-remove-file:hover {
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    /* Config Controls */
+    .drop-controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .control-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--drop-muted);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .control-select, .control-input {
+      background: #080c18;
+      border: 1px solid var(--drop-border);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .control-select:focus, .control-input:focus {
+      border-color: var(--drop-yellow);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-custom {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--drop-yellow);
+      cursor: pointer;
+    }
+
+    /* Submit Action */
+    .btn-action-primary {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--drop-yellow);
+      color: #070911;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 2rem;
+      box-shadow: 0 4px 20px rgba(250, 204, 21, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-action-primary:hover:not(:disabled) {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-action-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Upload Result Box */
+    .result-box {
+      display: none;
+      background: rgba(6, 10, 22, 0.95);
+      border: 1px solid var(--drop-green);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .result-box.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--drop-green);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .share-link-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .share-link-input {
+      flex: 1;
+      background: #080c18;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--drop-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .btn-copy-link {
+      background: var(--drop-surface);
+      border: 1px solid var(--drop-border);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-link:hover {
+      background: var(--drop-yellow);
+      color: #070911;
+      border-color: var(--drop-yellow);
+    }
+
+    .qr-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.25rem;
+      background: #ffffff;
+      border-radius: 8px;
+      width: fit-content;
+      margin: 1.5rem auto 0;
+    }
+
+    /* Zero Knowledge Explanation Callout */
+    .zk-explainer {
+      background: rgba(16, 22, 42, 0.75);
+      border: 1px solid var(--drop-border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .zk-title {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--drop-cyan);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .zk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .zk-card {
+      background: rgba(6, 10, 22, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .zk-card h4 {
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .zk-card p {
+      font-size: 0.82rem;
+      color: var(--drop-muted);
+      line-height: 1.6;
+    }
+
+    /* Toast Pill */
+    .toast-pill {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #000;
+      border: 1px solid var(--drop-yellow);
+      color: var(--drop-yellow);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+
+    .toast-pill.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* =====================================================================
+       LIGHT THEME (PAPER MONOCHROME) HIGH-CONTRAST OVERRIDES
+       ===================================================================== */
+    html[data-theme="paper"] body {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+    }
+
+    html[data-theme="paper"] .hud-header,
+    html[data-theme="paper"] .drop-panel,
+    html[data-theme="paper"] .selected-file-card,
+    html[data-theme="paper"] .result-box,
+    html[data-theme="paper"] .zk-explainer,
+    html[data-theme="paper"] .zk-card {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    html[data-theme="paper"] .scanner-title,
+    html[data-theme="paper"] .zk-card h4,
+    html[data-theme="paper"] .file-name-display,
+    html[data-theme="paper"] .dropzone-title,
+    html[data-theme="paper"] .checkbox-label {
+      color: #0f172a !important;
+      -webkit-text-fill-color: initial !important;
+    }
+
+    html[data-theme="paper"] .scanner-desc,
+    html[data-theme="paper"] .zk-card p,
+    html[data-theme="paper"] .control-label,
+    html[data-theme="paper"] .file-size-display,
+    html[data-theme="paper"] .dropzone-sub,
+    html[data-theme="paper"] .hud-meta-left {
+      color: #475569 !important;
+    }
+
+    html[data-theme="paper"] .dropzone {
+      background: #f8fafc !important;
+      border-color: #0284c7 !important;
+    }
+
+    html[data-theme="paper"] .drop-tab-btn {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #475569 !important;
+    }
+
+    html[data-theme="paper"] .drop-tab-btn.active {
+      background: #0284c7 !important;
+      border-color: #0284c7 !important;
+      color: #ffffff !important;
+    }
+
+    html[data-theme="paper"] .control-select,
+    html[data-theme="paper"] .control-input,
+    html[data-theme="paper"] .share-link-input {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+
+    html[data-theme="paper"] .btn-action-primary {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+    }
+
+    html[data-theme="paper"] .btn-action-primary:hover:not(:disabled) {
+      background: #0369a1 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+    <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">ENCRYPTED // DROP</span>
+    </a>
+    <nav class="site-nav">
+      <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
+          <span class="theme-icon">⚡</span>
+        </button>
+        <div class="theme-slider-thumb"></div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/drop">&#128272; Secure Drop</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    
+    <!-- Top HUD Status -->
+    <div class="hud-header">
+      <div class="hud-meta-left">
+        <div class="hud-tag">
+          <span style="color:var(--drop-green);">&#9679;</span>
+          <span>GATEWAY: ACTIVE</span>
+        </div>
+        <div class="hud-tag">
+          <span>ENCRYPTION:</span>
+          <strong style="color:var(--drop-cyan);">AES-256-GCM (CLIENT-SIDE)</strong>
+        </div>
+        <div class="hud-tag">
+          <span>STORAGE:</span>
+          <strong style="color:var(--drop-yellow);">CLOUDFLARE EDGE R2 / KV</strong>
+        </div>
+        <div class="hud-tag">
+          <span>ZERO-KNOWLEDGE:</span>
+          <strong style="color:var(--drop-green);">KEY NEVER LEAVES BROWSER</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="hero-scanner">
+      <div class="scanner-pre">
+        <span>&bull; ZERO-KNOWLEDGE &bull; DIRECT-TO-STORAGE &bull; ZERO TRACKING &bull;</span>
+      </div>
+      <h1 class="scanner-title">
+        ENCRYPTED SECURE FILE DROP
+      </h1>
+      <p class="scanner-desc">
+        End-to-end client-side encryption powered by browser-native Web Crypto (AES-256-GCM). Files are encrypted before leaving your machine and deposited into high-speed Cloudflare edge storage with automatic link expiration and one-time self-destruct.
+      </p>
+    </section>
+
+    <!-- Tabs Nav -->
+    <div class="drop-tabs-nav">
+      <button type="button" class="drop-tab-btn active" id="tabUploadBtn" onclick="switchDropTab('upload')">
+        <span>🔒 Upload &amp; Encrypt File</span>
+      </button>
+      <button type="button" class="drop-tab-btn" id="tabClaimBtn" onclick="switchDropTab('claim')">
+        <span>🔓 Claim &amp; Decrypt File</span>
+      </button>
+    </div>
+
+    <!-- PANEL 1: UPLOAD & ENCRYPT -->
+    <div class="drop-panel active" id="panelUpload">
+      <div class="dropzone" id="dropzoneElem">
+        <span class="dropzone-icon">📁</span>
+        <div class="dropzone-title">Click to Browse or Drag &amp; Drop File Here</div>
+        <div class="dropzone-sub">Files up to 10MB &bull; 100% Client-Side In-Memory Encryption</div>
+        <input type="file" id="filePickerInput" class="file-input-hidden">
+      </div>
+
+      <!-- Selected File Card -->
+      <div class="selected-file-card" id="selectedFileCard">
+        <div class="file-info-left">
+          <span class="file-icon-badge" id="fileBadgeIcon">📄</span>
+          <div class="file-name-meta">
+            <div class="file-name-display" id="selectedFileName">example.pdf</div>
+            <div class="file-size-display" id="selectedFileSize">0 KB</div>
+          </div>
+        </div>
+        <button type="button" class="btn-remove-file" id="btnRemoveFile" title="Remove File">&times;</button>
+      </div>
+
+      <!-- Controls -->
+      <div class="drop-controls-grid">
+        <div class="control-group">
+          <label class="control-label" for="ttlSelect">LINK EXPIRATION (AUTO-DELETION):</label>
+          <select id="ttlSelect" class="control-select">
+            <option value="3600">1 Hour (Quick Drop)</option>
+            <option value="86400" selected>24 Hours (Standard)</option>
+            <option value="604800">7 Days (Maximum Retention)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">SELF-DESTRUCT OPTION:</label>
+          <label class="checkbox-label" for="burnAfterReadCheck">
+            <input type="checkbox" id="burnAfterReadCheck" class="checkbox-custom">
+            <span>Burn after first download (1-time read)</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="button" class="btn-action-primary" id="btnEncryptUpload" disabled>
+        <span>⚡ ENCRYPT &amp; GENERATE SECURE LINK</span>
+      </button>
+
+      <!-- Result Card -->
+      <div class="result-box" id="uploadResultBox">
+        <div class="result-header">
+          <span>✓ ENCRYPTED &amp; DEPOSITED TO EDGE STORAGE</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--drop-muted); margin-bottom:1rem; line-height:1.5;">
+          Send this link to the recipient. The decryption key is embedded in the URL fragment (<code style="color:var(--drop-cyan);">#key=...</code>) and is mathematically impossible for anyone without this link to decrypt.
+        </p>
+
+        <div class="share-link-group">
+          <input type="text" id="shareLinkInput" class="share-link-input" readonly>
+          <button type="button" class="btn-copy-link" id="btnCopyShareLink">
+            <span>📋 Copy Link</span>
+          </button>
+        </div>
+
+        <div class="qr-container" id="qrContainer">
+          <div id="qrcodeDisplay"></div>
+          <span style="color:#333; font-family:var(--font-mono); font-size:0.7rem; font-weight:700; margin-top:0.6rem;">Scan to Download Securely</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: CLAIM & DECRYPT -->
+    <div class="drop-panel" id="panelClaim">
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size:1.25rem; font-weight:800; color:#fff; margin-bottom:0.5rem;">Claim Your Encrypted File</h3>
+        <p style="font-size:0.88rem; color:var(--drop-muted); line-height:1.5;">
+          Enter the claim code and decryption key below, or open the link directly in your browser. Decryption occurs locally on your device.
+        </p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="control-group">
+          <label class="control-label" for="claimCodeInput">CLAIM CODE:</label>
+          <input type="text" id="claimCodeInput" class="control-input" placeholder="e.g. DROP-AB12CD">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="claimKeyInput">DECRYPTION KEY (AES-256-GCM):</label>
+          <input type="text" id="claimKeyInput" class="control-input" placeholder="e.g. 64-character base64/hex encryption key">
+        </div>
+
+        <button type="button" class="btn-action-primary" id="btnClaimDecrypt">
+          <span>🔓 FETCH &amp; DECRYPT FILE</span>
+        </button>
+      </div>
+
+      <!-- Decryption Status & Download Card -->
+      <div class="result-box" id="claimResultBox">
+        <div class="result-header" id="claimHeaderNotice">
+          <span>✓ FILE DECRYPTED SUCCESSFULLY</span>
+        </div>
+        <div class="selected-file-card" style="display:flex; margin-top:0; margin-bottom:1.5rem;">
+          <div class="file-info-left">
+            <span class="file-icon-badge">📦</span>
+            <div class="file-name-meta">
+              <div class="file-name-display" id="decryptedFileName">document.pdf</div>
+              <div class="file-size-display" id="decryptedFileSize">1.2 MB</div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-action-primary" id="btnDownloadDecrypted" style="margin-top:0; background:var(--drop-green); color:#fff;">
+          <span>💾 SAVE DECRYPTED FILE TO DISK</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Zero Knowledge Security Explainer -->
+    <section class="zk-explainer">
+      <div class="zk-title">
+        <span>🛡️ ZERO-KNOWLEDGE ARCHITECTURAL SPECIFICATION</span>
+      </div>
+      <div class="zk-grid">
+        <div class="zk-card">
+          <h4>1. Client-Side AES-256-GCM</h4>
+          <p>Files are converted into binary buffers and encrypted with native browser cryptography (Web Crypto API) before transmission. The plaintext data never touches the network wire.</p>
+        </div>
+        <div class="zk-card">
+          <h4>2. Zero-Knowledge Key Isolation</h4>
+          <p>The 256-bit symmetric key is appended strictly to the URL fragment (<code style="color:var(--drop-yellow);">#key=...</code>). According to HTTP standards (RFC 3986), fragment identifiers are never transmitted to web servers, reverse proxies, or DNS logs.</p>
+        </div>
+        <div class="zk-card">
+          <h4>3. Automated TTL &amp; Self-Destruct</h4>
+          <p>Payloads are cached directly across Cloudflare's edge network and automatically purged when the TTL expires. When "Burn after reading" is enabled, the edge worker deletes the ciphertext the exact instant it is claimed.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="toastPill">Notification</div>
+
+  <script>
+    // State
+    let chosenFile = null;
+    let decryptedBlobUrl = null;
+    let decryptedFileName = 'download.bin';
+
+    // Elements
+    const dropzone = document.getElementById('dropzoneElem');
+    const filePicker = document.getElementById('filePickerInput');
+    const selectedFileCard = document.getElementById('selectedFileCard');
+    const selectedFileName = document.getElementById('selectedFileName');
+    const selectedFileSize = document.getElementById('selectedFileSize');
+    const btnRemoveFile = document.getElementById('btnRemoveFile');
+    const btnEncryptUpload = document.getElementById('btnEncryptUpload');
+    const uploadResultBox = document.getElementById('uploadResultBox');
+    const shareLinkInput = document.getElementById('shareLinkInput');
+    const btnCopyShareLink = document.getElementById('btnCopyShareLink');
+    const claimCodeInput = document.getElementById('claimCodeInput');
+    const claimKeyInput = document.getElementById('claimKeyInput');
+    const btnClaimDecrypt = document.getElementById('btnClaimDecrypt');
+    const claimResultBox = document.getElementById('claimResultBox');
+    const decryptedFileNameElem = document.getElementById('decryptedFileName');
+    const decryptedFileSizeElem = document.getElementById('decryptedFileSize');
+    const btnDownloadDecrypted = document.getElementById('btnDownloadDecrypted');
+    const toast = document.getElementById('toastPill');
+
+    function showToast(msg) {
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    function switchDropTab(tab) {
+      document.getElementById('tabUploadBtn').classList.toggle('active', tab === 'upload');
+      document.getElementById('tabClaimBtn').classList.toggle('active', tab === 'claim');
+      document.getElementById('panelUpload').classList.toggle('active', tab === 'upload');
+      document.getElementById('panelClaim').classList.toggle('active', tab === 'claim');
+    }
+
+    // Drag and Drop listeners
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) handleFileSelection(files[0]);
+    });
+
+    filePicker.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleFileSelection(e.target.files[0]);
+      }
+    });
+
+    function handleFileSelection(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('File exceeds 10MB edge size limit');
+        return;
+      }
+      chosenFile = file;
+      selectedFileName.innerText = file.name;
+      selectedFileSize.innerText = formatBytes(file.size);
+      selectedFileCard.style.display = 'flex';
+      btnEncryptUpload.disabled = false;
+      uploadResultBox.classList.remove('show');
+    }
+
+    btnRemoveFile.addEventListener('click', () => {
+      chosenFile = null;
+      filePicker.value = '';
+      selectedFileCard.style.display = 'none';
+      btnEncryptUpload.disabled = true;
+      uploadResultBox.classList.remove('show');
+    });
+
+    // Web Crypto Utilities
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+
+    function base64ToArrayBuffer(base64) {
+      const binaryString = window.atob(base64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    // Encrypt & Upload
+    btnEncryptUpload.addEventListener('click', async () => {
+      if (!chosenFile) return;
+
+      btnEncryptUpload.disabled = true;
+      btnEncryptUpload.innerText = '🔒 ENCRYPTING LOCALLY (AES-256-GCM)...';
+
+      try {
+        const fileBuffer = await chosenFile.arrayBuffer();
+
+        // 1. Generate fresh AES-256-GCM key
+        const key = await window.crypto.subtle.generateKey(
+          { name: 'AES-GCM', length: 256 },
+          true,
+          ['encrypt', 'decrypt']
+        );
+
+        // 2. Generate random 12-byte IV
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+        // 3. Encrypt file in browser
+        const encryptedContent = await window.crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv },
+          key,
+          fileBuffer
+        );
+
+        // 4. Export key to raw format & base64
+        const rawKey = await window.crypto.subtle.exportKey('raw', key);
+        const keyBase64 = arrayBufferToBase64(rawKey);
+        const ivBase64 = arrayBufferToBase64(iv);
+        const cipherBase64 = arrayBufferToBase64(encryptedContent);
+
+        btnEncryptUpload.innerText = '☁️ UPLOADING TO EDGE STORAGE...';
+
+        const ttlSeconds = parseInt(document.getElementById('ttlSelect').value, 10) || 86400;
+        const burnAfterRead = document.getElementById('burnAfterReadCheck').checked;
+
+        const res = await fetch('/api/drop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: chosenFile.name,
+            size: chosenFile.size,
+            mimeType: chosenFile.type,
+            ciphertext: cipherBase64,
+            iv: ivBase64,
+            ttlSeconds,
+            burnAfterRead
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Upload failed');
+
+        const shareUrl = `${window.location.origin}/drop#code=${data.code}&key=${encodeURIComponent(keyBase64)}`;
+        shareLinkInput.value = shareUrl;
+
+        // Render QR Code
+        const qrElem = document.getElementById('qrcodeDisplay');
+        qrElem.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(qrElem, {
+            text: shareUrl,
+            width: 140,
+            height: 140,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
+
+        uploadResultBox.classList.add('show');
+        showToast('File encrypted & secure link generated!');
+
+      } catch (err) {
+        console.error('Encryption error:', err);
+        showToast('Encryption failed: ' + err.message);
+      } finally {
+        btnEncryptUpload.disabled = false;
+        btnEncryptUpload.innerText = '⚡ ENCRYPT & GENERATE SECURE LINK';
+      }
+    });
+
+    btnCopyShareLink.addEventListener('click', () => {
+      shareLinkInput.select();
+      navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+        showToast('Encrypted share link copied to clipboard!');
+      });
+    });
+
+    // Decrypt & Download
+    btnClaimDecrypt.addEventListener('click', async () => {
+      const code = claimCodeInput.value.trim();
+      const rawKeyBase64 = claimKeyInput.value.trim();
+
+      if (!code || !rawKeyBase64) {
+        showToast('Please provide both Claim Code and Decryption Key');
+        return;
+      }
+
+      btnClaimDecrypt.disabled = true;
+      btnClaimDecrypt.innerText = '⏳ FETCHING CIPHERTEXT...';
+
+      try {
+        const res = await fetch(`/api/drop?code=${encodeURIComponent(code)}`);
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'File drop not found or expired');
+        }
+
+        btnClaimDecrypt.innerText = '🔓 DECRYPTING IN BROWSER...';
+
+        const rawKey = base64ToArrayBuffer(rawKeyBase64);
+        const iv = base64ToArrayBuffer(data.iv);
+        const ciphertext = base64ToArrayBuffer(data.ciphertext);
+
+        const cryptoKey = await window.crypto.subtle.importKey(
+          'raw',
+          rawKey,
+          { name: 'AES-GCM' },
+          false,
+          ['decrypt']
+        );
+
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv },
+          cryptoKey,
+          ciphertext
+        );
+
+        const blob = new Blob([decryptedBuffer], { type: data.mimeType || 'application/octet-stream' });
+        decryptedBlobUrl = URL.createObjectURL(blob);
+        decryptedFileName = data.filename || 'downloaded-file.bin';
+
+        decryptedFileNameElem.innerText = decryptedFileName;
+        decryptedFileSizeElem.innerText = formatBytes(data.size || blob.size);
+
+        if (data.burned) {
+          document.getElementById('claimHeaderNotice').innerHTML = '<span>🔥 FILE DECRYPTED &amp; BURNED FROM SERVER</span>';
+          document.getElementById('claimHeaderNotice').style.color = 'var(--drop-coral)';
+        }
+
+        claimResultBox.classList.add('show');
+        showToast('File decrypted successfully!');
+
+      } catch (err) {
+        console.error('Decryption error:', err);
+        showToast('Decryption failed: ' + err.message);
+      } finally {
+        btnClaimDecrypt.disabled = false;
+        btnClaimDecrypt.innerText = '🔓 FETCH & DECRYPT FILE';
+      }
+    });
+
+    btnDownloadDecrypted.addEventListener('click', () => {
+      if (!decryptedBlobUrl) return;
+      const a = document.createElement('a');
+      a.href = decryptedBlobUrl;
+      a.download = decryptedFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Download started');
+    });
+
+    // Check URL fragment on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const params = new URLSearchParams(hash);
+        const code = params.get('code');
+        const key = params.get('key');
+        if (code && key) {
+          switchDropTab('claim');
+          claimCodeInput.value = code;
+          claimKeyInput.value = key;
+          showToast('Found encrypted claim parameters in link!');
+        }
+      }
+    });
+  </script>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/drop">Encrypted Secure Drop</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js?v=20261001d" defer></script>
+</body>
+</html>

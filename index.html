@@ -845,97 +845,20 @@
     }
 
     /* ==========================================================================
-       DISTINCT 3D FLIP DYNAMICS FOR EACH INDIVIDUAL CARD
-       Each card executes a mathematically unique 3D spatial transformation
+       UNIFIED HIGH-PERFORMANCE 3D CARD FLIP SYSTEM (Pure Y-Axis Spring Rotation)
+       Eliminates diagonal rotation aspect-ratio swapping and card overlap
        ========================================================================== */
-    
-    /* Card 1: Horizontal Classical Y-Axis Flip (Left-to-Right Spring) */
-    #card-inner-air-01 {
-      transition: transform 0.65s cubic-bezier(0.34, 1.25, 0.64, 1);
-    }
-    #card-inner-air-01.is-flipped {
-      transform: rotateY(180deg);
-    }
-    #card-inner-air-01 .card-back {
-      transform: rotateY(180deg);
-    }
-
-    /* Card 2: Vertical Upward Coin Flip (X-Axis, Bottom-to-Top) */
-    #card-inner-air-02 {
-      transition: transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-    #card-inner-air-02.is-flipped {
-      transform: rotateX(180deg);
-    }
-    #card-inner-air-02 .card-back {
-      transform: rotateX(180deg);
-    }
-
-    /* Card 3: Isometric Diagonal Corner Pivot (1, 1, 0 Axis) */
-    #card-inner-air-03 {
-      transition: transform 0.75s cubic-bezier(0.34, 1.25, 0.64, 1);
-    }
-    #card-inner-air-03.is-flipped {
-      transform: rotate3d(1, 1, 0, 180deg);
-    }
-    #card-inner-air-03 .card-back {
-      transform: rotate3d(1, 1, 0, 180deg);
-    }
-
-    /* Card 4: Counter-Clockwise Inverted Y-Axis Spin (Right-to-Left) */
-    #card-inner-air-04 {
-      transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.2, 1.05);
-    }
-    #card-inner-air-04.is-flipped {
-      transform: rotateY(-180deg);
-    }
-    #card-inner-air-04 .card-back {
-      transform: rotateY(-180deg);
-    }
-
-    /* Card 5: Downward Cascade Roll (Reverse X-Axis, Top-to-Bottom) */
-    #card-inner-air-05 {
-      transition: transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-    #card-inner-air-05.is-flipped {
-      transform: rotateX(-180deg);
-    }
-    #card-inner-air-05 .card-back {
-      transform: rotateX(-180deg);
-    }
-
-    /* Card 6: Reverse Diagonal Gyroscopic Pivot (1, -1, 0 Axis) */
-    #card-inner-air-06 {
-      transition: transform 0.75s cubic-bezier(0.34, 1.25, 0.64, 1);
-    }
-    #card-inner-air-06.is-flipped {
-      transform: rotate3d(1, -1, 0, 180deg);
-    }
-    #card-inner-air-06 .card-back {
-      transform: rotate3d(1, -1, 0, 180deg);
-    }
-
-    /* Card 7: Elastic Spring Overshoot Flip (Custom Mechanical Bounce) */
-    #card-inner-air-07 {
-      transition: transform 0.85s cubic-bezier(0.68, -0.35, 0.27, 1.35);
-    }
-    #card-inner-air-07.is-flipped {
-      transform: rotateY(180deg) scale(1.02);
-    }
-    #card-inner-air-07 .card-back {
-      transform: rotateY(180deg);
-    }
-
-    /* Card 8: High-Depth 3D Z-Burst Vortex Flip */
+    #card-inner-air-01,
+    #card-inner-air-02,
+    #card-inner-air-03,
+    #card-inner-air-04,
+    #card-inner-air-05,
+    #card-inner-air-06,
+    #card-inner-air-07,
     #card-inner-air-08 {
-      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.65s cubic-bezier(0.34, 1.15, 0.64, 1);
     }
-    #card-inner-air-08.is-flipped {
-      transform: rotateY(180deg) translateZ(40px);
-    }
-    #card-inner-air-08 .card-back {
-      transform: rotateY(180deg);
-    }
+
 
     .card-face {
       position: absolute;
@@ -1142,38 +1065,41 @@
     /* Tap anywhere flip hint indicator */
     .flip-hint-strip {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px dashed rgba(255, 255, 255, 0.2);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
       border-radius: 8px;
       color: var(--accent-cyan);
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 10px 14px;
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       transition: all 0.2s ease;
       pointer-events: none; /* Let parent handle card tap */
+      margin-top: 6px;
     }
 
     .matrix-card-flip-wrap:hover .flip-hint-strip {
-      background: rgba(56, 189, 248, 0.18);
+      background: rgba(56, 189, 248, 0.2);
       border-color: var(--accent-cyan);
       border-style: solid;
       color: #ffffff;
     }
 
     .flip-hint-strip.back-hint {
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid var(--accent-cyan);
-      color: var(--accent-cyan);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px dashed rgba(16, 185, 129, 0.3);
+      color: var(--accent-green);
     }
 
     .matrix-card-flip-wrap:hover .flip-hint-strip.back-hint {
-      background: var(--accent-cyan);
-      color: #07080a;
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-green);
+      border-style: solid;
+      color: #ffffff;
     }
 
     /* Layman elements on card back */
@@ -1185,8 +1111,9 @@
     }
 
     .layman-analogy-box {
-      background: rgba(56, 189, 248, 0.1);
-      border-left: 3px solid var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-left: 4px solid var(--accent-cyan);
       padding: 10px 14px;
       border-radius: 0 8px 8px 0;
       display: flex;
@@ -1195,20 +1122,21 @@
     }
 
     .layman-analogy-title {
-      font-size: 16.5px;
+      font-size: 16px;
       font-weight: 700;
       color: #ffffff;
+      line-height: 1.35;
     }
 
     .layman-explanation-text {
-      font-size: 14.5px;
-      color: #f1f5f9;
-      line-height: 1.65;
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.62;
       margin: 0;
     }
 
     .layman-takeaway-box {
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       border: 1px solid rgba(16, 185, 129, 0.4);
       border-radius: 8px;
       padding: 12px 16px;
@@ -1222,8 +1150,164 @@
       display: block;
       margin-bottom: 5px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.06em;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .obs-status-title {
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* ==========================================================================
+       OBSERVATORY THEME OVERRIDES (SELF-CONTAINED TO HOME PAGE)
+       Ensures crisp contrast and prevents 3D flip card overlap in Paper & Amber themes
+       ========================================================================== */
+    html[data-theme="paper"] .matrix-flip-card,
+    html[data-theme="amber"] .matrix-flip-card {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    html[data-theme="paper"] .matrix-card-flip-wrap .card-front {
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.12), inset 0 1px 1px #ffffff !important;
+    }
+    html[data-theme="paper"] .matrix-card-flip-wrap .card-back {
+      background: #f8fafc !important;
+      border: 1px solid #0284c7 !important;
+      box-shadow: 0 16px 36px -8px rgba(2, 132, 199, 0.15) !important;
+    }
+    html[data-theme="paper"] .matrix-title {
+      color: #0f172a !important;
+    }
+    html[data-theme="paper"] .matrix-body {
+      color: #334155 !important;
+    }
+    html[data-theme="paper"] .matrix-citation {
+      color: #64748b !important;
+      border-top-color: #e2e8f0 !important;
+    }
+    html[data-theme="paper"] .matrix-recommendation {
+      background: #f0fdf4 !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="paper"] .layman-analogy-box {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-left: 4px solid #0284c7 !important;
+      color: #0f172a !important;
+    }
+    html[data-theme="paper"] .layman-analogy-box[style*="coral"],
+    html[data-theme="paper"] .layman-analogy-box[style*="de5849"] {
+      border-left-color: #dc2626 !important;
+      background: #fef2f2 !important;
+    }
+    html[data-theme="paper"] .layman-analogy-box[style*="f59e0b"] {
+      border-left-color: #d97706 !important;
+      background: #fffbeb !important;
+    }
+    html[data-theme="paper"] .layman-analogy-box[style*="green"],
+    html[data-theme="paper"] .layman-analogy-box[style*="10b981"] {
+      border-left-color: #059669 !important;
+      background: #f0fdf4 !important;
+    }
+    html[data-theme="paper"] .layman-analogy-title {
+      color: #0f172a !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="paper"] .layman-explanation-text {
+      color: #334155 !important;
+    }
+    html[data-theme="paper"] .layman-takeaway-box {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html[data-theme="paper"] .layman-takeaway-box strong {
+      color: #059669 !important;
+    }
+    html[data-theme="paper"] .obs-status-title {
+      color: #0b0f19 !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="paper"] .flip-hint-strip {
+      background: #f0f9ff !important;
+      border: 1px dashed #7dd3fc !important;
+      color: #0284c7 !important;
+    }
+    html[data-theme="paper"] .matrix-card-flip-wrap:hover .flip-hint-strip {
+      background: #e0f2fe !important;
+      border-color: #0284c7 !important;
+      border-style: solid !important;
+      color: #0284c7 !important;
+    }
+    html[data-theme="paper"] .flip-hint-strip.back-hint {
+      background: #ecfdf5 !important;
+      border: 1px dashed #a7f3d0 !important;
+      color: #059669 !important;
+    }
+    html[data-theme="paper"] .matrix-card-flip-wrap:hover .flip-hint-strip.back-hint {
+      background: #d1fae5 !important;
+      border-color: #059669 !important;
+      border-style: solid !important;
+      color: #047857 !important;
+    }
+
+    /* Amber Theme Observatory Overrides */
+    html[data-theme="amber"] .matrix-card-flip-wrap .card-front {
+      background: #0d0b07 !important;
+      border: 1px solid rgba(245, 158, 11, 0.4) !important;
+    }
+    html[data-theme="amber"] .matrix-card-flip-wrap .card-back {
+      background: #140f08 !important;
+      border: 1px solid #f59e0b !important;
+    }
+    html[data-theme="amber"] .layman-analogy-box {
+      background: rgba(245, 158, 11, 0.1) !important;
+      border: 1px solid rgba(245, 158, 11, 0.3) !important;
+      border-left: 4px solid #f59e0b !important;
+      color: #fbbf24 !important;
+    }
+    html[data-theme="amber"] .layman-analogy-title {
+      color: #fef3c7 !important;
+      font-weight: 700 !important;
+    }
+    html[data-theme="amber"] .layman-takeaway-box {
+      background: #17130b !important;
+      border: 1px solid rgba(245, 158, 11, 0.3) !important;
+      color: #fde68a !important;
+    }
+    html[data-theme="amber"] .layman-takeaway-box strong {
+      color: #fbbf24 !important;
+    }
+    html[data-theme="amber"] .obs-status-title {
+      color: #fef3c7 !important;
+    }
+    html[data-theme="amber"] .flip-hint-strip {
+      background: rgba(245, 158, 11, 0.1) !important;
+      border: 1px dashed rgba(245, 158, 11, 0.3) !important;
+      color: #fbbf24 !important;
+    }
+    html[data-theme="amber"] .matrix-card-flip-wrap:hover .flip-hint-strip {
+      background: rgba(245, 158, 11, 0.22) !important;
+      border-color: #f59e0b !important;
+      border-style: solid !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="amber"] .flip-hint-strip.back-hint {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border: 1px dashed rgba(16, 185, 129, 0.3) !important;
+      color: #34d399 !important;
+    }
+    html[data-theme="amber"] .matrix-card-flip-wrap:hover .flip-hint-strip.back-hint {
+      background: rgba(16, 185, 129, 0.22) !important;
+      border-color: #10b981 !important;
+      border-style: solid !important;
+      color: #ffffff !important;
     }
 
     /* Standard Card (for Q&A) */
@@ -1938,7 +2022,7 @@
           <div class="theme-slider-thumb"></div>
         </div>
         <a href="#ai-realities" class="btn-ticket-action">
-          AI DEVELOPMENT OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
+          FACT DEVELOPMENT OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
         </a>
         <a href="#qa-section" class="btn-ticket-action">
           Q&amp;A <span style="color: var(--accent-coral);">&darr;</span>
@@ -1971,8 +2055,9 @@
       </div>
     </div>
     <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-coral); letter-spacing: 0.1em; padding-bottom: 4px; border-bottom: 1px dashed rgba(255,255,255,0.15);">
-      // BROADBAND &amp; TELEMETRY
+      // OBSERVATORY &amp; BROADBAND
     </div>
+    <a href="#ai-realities" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">🔭</span> Fact Development Observatory</a>
     <a href="/speedtest" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #00f0ff;">⚡</span> Internet Speed Test</a>
     <a href="/stats" class="drawer-link" onclick="toggleDrawerMenu()"><span style="color: #38bdf8;">🌐</span> Speed Leaderboard &amp; Stats</a>
 
@@ -2038,7 +2123,7 @@
     <div class="hero-bottom-wrap">
       <h1 class="hero-massive-title">ALUMUNGANDR&reg;</h1>
       <a href="#ai-realities" class="hero-explore-btn">
-        / EXPLORE AI DEVELOPMENT OBSERVATORY &darr;
+        / EXPLORE FACT DEVELOPMENT OBSERVATORY &darr;
       </a>
     </div>
   </section>
@@ -2072,7 +2157,7 @@
 
     <div class="ticker-wrap">
     <div class="ticker-content">
-      <div class="ticker-item"><span>///</span> AI DEVELOPMENT OBSERVATORY</div>
+      <div class="ticker-item"><span>///</span> FACT DEVELOPMENT OBSERVATORY</div>
       <div class="ticker-item"><span>///</span> 100% PRIVATE IN-BROWSER EXECUTION</div>
       <div class="ticker-item"><span>///</span> 20 FREE STANDALONE UTILITIES</div>
       <div class="ticker-item"><span>///</span> REAL-WORLD FOUNDER TECHNICAL Q&amp;A</div>
@@ -2081,7 +2166,7 @@
       <div class="ticker-item"><span>///</span> INSTANT INVOICE &amp; EXPORT ENGINE</div>
       <div class="ticker-item"><span>///</span> OFFLINE CULINARY &amp; ASTROPHYSICS APPS</div>
       <!-- Loop -->
-      <div class="ticker-item"><span>///</span> AI DEVELOPMENT OBSERVATORY</div>
+      <div class="ticker-item"><span>///</span> FACT DEVELOPMENT OBSERVATORY</div>
       <div class="ticker-item"><span>///</span> 100% PRIVATE IN-BROWSER EXECUTION</div>
       <div class="ticker-item"><span>///</span> 20 FREE STANDALONE UTILITIES</div>
       <div class="ticker-item"><span>///</span> REAL-WORLD FOUNDER TECHNICAL Q&amp;A</div>
@@ -2096,29 +2181,29 @@
         <main class="container">
     
     <!-- ==========================================================================
-         SPECIAL TOOL: AI DEVELOPMENT OBSERVATORY & CAPABILITY INDEX
+         SPECIAL TOOL: FACT DEVELOPMENT OBSERVATORY & CAPABILITY INDEX
          An automated public intelligence tool tracking empirical AI capabilities and limits
          ========================================================================== -->
     <section id="ai-realities" style="padding: 48px 0 32px; scroll-margin-top: 100px;">
       
       <!-- Section Header (Centered) -->
       <div class="section-header-modern reveal-on-scroll">
-        <div class="section-tag">// SPECIAL TOOL &bull; AI DEVELOPMENT OBSERVATORY</div>
-        <h2 class="section-heading-huge">AI Development Observatory &amp; Capability Index</h2>
+        <div class="section-tag">// SPECIAL TOOL &bull; FACT DEVELOPMENT OBSERVATORY</div>
+        <h2 class="section-heading-huge">Fact Development Observatory &amp; Capability Index</h2>
         <p class="section-desc">
-          An automated public observatory documenting empirical model benchmarks, physical compute constraints, context degradation, and verifiable capabilities of modern Artificial Intelligence in the real world. 100% verifiable data, zero hype.
+          An automated public observatory documenting empirical model benchmarks, physical compute constraints, context degradation, and verified development facts in the real world. 100% empirical data, zero hype.
         </p>
       </div>
 
       <!-- Live Observatory Edge Status Bar (Centered) -->
       <div class="obs-status-bar reveal-on-scroll">
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green);"></span>
-          <span style="color: #fff; font-weight: 700;">AI DEVELOPMENT OBSERVATORY LIVE</span>
+          <span class="obs-pulse"></span>
+          <span class="obs-status-title">FACT DEVELOPMENT OBSERVATORY LIVE</span>
           <span>&bull;</span>
           <span id="aiSyncStatus">EDGE API SYNCED: OCTOBER 2026</span>
           <span>&bull;</span>
-          <span style="color: var(--accent-cyan);">8 EMPIRICAL FACTOIDS CATALOGED</span>
+          <span style="color: var(--accent-cyan); font-weight: 700;">8 EMPIRICAL FACTOIDS CATALOGED</span>
         </div>
         <div>
           <button onclick="syncAITelemetry()" class="btn-action-secondary" style="padding: 6px 14px; font-size: 11px; cursor: pointer; border-radius: 4px;">
@@ -2130,7 +2215,7 @@
       <!-- Interactive Category Filter Tabs (Centered) -->
       <div class="ai-controls-bar reveal-on-scroll" style="justify-content: center; margin: 24px auto 36px; max-width: 1100px;">
         <div class="ai-filter-tabs" style="justify-content: center;">
-          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All Realities (<span id="countAIAll">8</span>)</button>
+          <button class="ai-tab active" data-filter="all" onclick="setAITab('all', this)">All Facts (<span id="countAIAll">8</span>)</button>
           <button class="ai-tab" data-filter="coding" onclick="setAITab('coding', this)">⚡ Coding &amp; SWE-bench (<span id="countAICoding">1</span>)</button>
           <button class="ai-tab" data-filter="attention" onclick="setAITab('attention', this)">🧠 Context &amp; Attention (<span id="countAIAttn">2</span>)</button>
           <button class="ai-tab" data-filter="tooling" onclick="setAITab('tooling', this)">⚙️ Agentic Tool Cascades (<span id="countAITools">1</span>)</button>
@@ -2140,7 +2225,7 @@
         </div>
       </div>
 
-      <!-- Live Stream Grid of Verified AI Realities with 3D Flip to Layman Explanation -->
+      <!-- Live Stream Grid of Verified Development Facts with 3D Flip to Practical Perspective -->
       <div id="aiMatrixContainer" class="matrix-grid">
 
         <!-- Fact 1: SWE-bench Reality -->
@@ -2188,6 +2273,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Always pair agentic coding loops with automated unit tests and static AST verifiers before merging diffs.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2211,6 +2301,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 Give AI small, clear, single-file tasks with automated unit tests. Never tell an AI to &ldquo;rewrite the whole codebase&rdquo; in one prompt and assume it works without testing each part.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2258,6 +2353,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Keep critical architectural constraints and operational rules pinned to the start or tail of context buffers; prefer targeted AST chunking over raw million-token dumps.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2281,6 +2381,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 Put your most important rules, passwords, or critical instructions at the very top or very bottom of your message, never buried in the middle.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2344,6 +2449,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Build idempotent recovery loops and reject autonomous agent tool chains that lack intermediate unit validation.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2367,6 +2477,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 Never let an autonomous AI agent execute long multi-step sequences without human checkpoints or programmatic verification at each step.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2423,6 +2538,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Execute sensitive code exploration and data analysis on local GGUF instances; reserve cloud frontier models exclusively for deep architectural planning.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2446,6 +2566,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 For personal privacy, private medical/legal notes, and offline work, running local AI on your own computer costs $0/month and sends zero data to cloud servers.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2496,6 +2621,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Never send raw repetitive repository dumps; enable prompt caching and use lightweight deterministic parsers for AST extraction.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2519,6 +2649,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 Keep system instructions and long reference documents static so prompt caching takes effect, saving huge amounts on API costs.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2569,6 +2704,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Delegate financial calculations, cryptographic hashing, and bounds verification exclusively to compiled code engines like Web Crypto and native binaries.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2592,6 +2732,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 Never trust AI to do taxes, financial balancing, or cryptography in its head. Always make it run actual code or use an external calculator.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2649,6 +2794,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Maintain append-only structured state checkpoints; prune rejected reasoning steps from active conversation history before next turn.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2672,6 +2822,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 If an AI gives an inaccurate answer early on, don't keep arguing in the same chat. Start a fresh conversation to avoid poisoned context.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -2729,6 +2884,11 @@
                 <span style="color: var(--accent-green); font-weight: 700;">ENGINEERING RULE:</span> Pre-crop regions of interest at native 1:1 pixel resolution before submitting to multimodal visual inspect APIs.
               </div>
 
+              <div class="flip-hint-strip">
+                <span>↻ TAP CARD FOR PRACTICAL PERSPECTIVE</span>
+                <span>&rarr;</span>
+              </div>
+
             </article>
 
             <!-- Back Face: Practical Perspective -->
@@ -2752,6 +2912,11 @@
               <div class="layman-takeaway-box">
                 <strong>THE PRACTICAL TAKEAWAY:</strong>
                 If you need an AI to examine fine details or tiny text, crop the image tightly around that exact spot before submitting it.
+              </div>
+
+              <div class="flip-hint-strip back-hint">
+                <span>↺ TAP CARD FOR EMPIRICAL BENCHMARK</span>
+                <span>&larr;</span>
               </div>
 
             </article>
@@ -3488,7 +3653,7 @@
             });
           }
         } else if (statusLabel) {
-          statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date().toLocaleDateString()}</strong> // 8 EMPIRICAL REALITIES`;
+          statusLabel.innerHTML = `EDGE SYNCED: <strong style="color:var(--accent-green);">${new Date().toLocaleDateString()}</strong> // 8 EMPIRICAL FACTS`;
         }
       } catch (err) {
         if (statusLabel) statusLabel.innerText = 'EDGE SYNCED // CACHED OCT 2026';

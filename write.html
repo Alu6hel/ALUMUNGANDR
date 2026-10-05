@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('alu_theme');
+        if (savedTheme === 'paper' || savedTheme === 'amber') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Markdown Editor &amp; Document Vault — Alumungandr</title>
@@ -518,7 +528,17 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     }
 
     function exportHtml() {
-      const docHtml = `<!DOCTYPE html><html><head><title>${currentDocId}</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}</style>  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+      const docHtml = `<!DOCTYPE html><html><head>
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('alu_theme');
+        if (savedTheme === 'paper' || savedTheme === 'amber') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (e) {}
+    })();
+  </script><title>${currentDocId}</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}</style>  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
 </head><body>${previewOut.innerHTML}  <script src="/assets/nav.js?v=20261001d" defer></script>
 </body></html>`;
       const blob = new Blob([docHtml], { type: 'text/html' });

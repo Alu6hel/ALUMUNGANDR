@@ -37,13 +37,13 @@ const ALUMUNGANDR_QA_ARCHIVE = [
     category_label: "Mobile Binaries & SueChef",
     tag: "SUECHEF ARCHITECTURE",
     tag_class: "tag-qa",
-    metric_pill: "Deterministic SQLite",
+    metric_pill: "Zero-Cloud Legal Prep",
     metric_color: "#f59e0b",
-    question: "What is SueChef's deterministic offline culinary planning architecture?",
-    answer: "Unlike modern meal apps that require cloud accounts and monthly subscriptions, SueChef is an offline-first culinary database engine. It packages a relational ingredient matrix, dietary constraint solver, and pantry inventory tracking inside an embedded SQLite/Room store on device. Nutrient calculations and shopping lists compile deterministically with zero latency.",
+    question: "What is SueChef's zero-cloud legal prep kitchen architecture?",
+    answer: "SueChef is a legal prep kitchen—because cooking up a watertight case shouldn't require a law degree. Evaluate claims, structure formal complaints, and track defendant service steps with zero-cloud security. Get serious legal organization with a dash of wit. Prepare your lawsuit, line up your facts, and serve justice with 100% on-device private data encryption.",
     author: "David Anthony Jones ('Alu') • Application Architect",
-    recommendation: "Autonomous meal scheduling with zero network dependency and zero data harvesting.",
-    keywords: ["suechef", "offline", "culinary", "recipes", "dietary", "sqlite", "room", "android", "apk"]
+    recommendation: "Structured legal case evaluation with zero network dependency and zero data harvesting.",
+    keywords: ["suechef", "legal prep", "lawsuit", "complaint", "claims", "evidence", "zero-cloud", "android", "apk"]
   },
   {
     id: "alu-qa-04",
@@ -68,7 +68,7 @@ const ALUMUNGANDR_QA_ARCHIVE = [
     metric_pill: "Independent R&D",
     metric_color: "#10b981",
     question: "How is Alumungandr pioneering high-performance independent technology from Jamaica?",
-    answer: "Alumungandr is proudly founded, operated, and engineered in Jamaica by David Anthony Jones. We prove that world-class, mathematically rigorous systems software—from astrodynamic simulations (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.",
+    answer: "Alumungandr is proudly founded, operated, and engineered in Jamaica by David Anthony Jones. We prove that world-class, mathematically rigorous systems software—from private photo gallery architectures (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.",
     author: "David Anthony Jones ('Alu') • Independent Software Pioneer",
     recommendation: "Direct software distribution and global digital commerce from Jamaica.",
     keywords: ["jamaica", "r&d", "caribbean", "independent", "software", "development", "david anthony jones"]

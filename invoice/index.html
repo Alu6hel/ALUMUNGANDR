@@ -2256,36 +2256,29 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       } catch(e) {}
     }
 
-    // URL parameter loader
-    async function checkUrlInvoiceId() {
+    // URL parameter loader (Local Browser Memory)
+    function checkUrlInvoiceId() {
       const params = new URLSearchParams(window.location.search);
       const invId = params.get('id');
       if (invId) {
         try {
-          const res = await fetch(`/api/invoice/get?id=${encodeURIComponent(invId)}`);
-          if (res.ok) {
-            const data = await res.json();
-            if (data.invoice) {
-              loadInvoiceIntoForm(data.invoice);
-              showToast(`✓ Loaded saved invoice ${invId}`);
-            }
+          const invoices = JSON.parse(localStorage.getItem('alumungandr_invoices') || '[]');
+          const found = invoices.find(inv => inv.id === invId);
+          if (found) {
+            loadInvoiceIntoForm(found);
+            showToast(`✓ Loaded saved invoice ${invId}`);
           }
         } catch(e) {}
       }
     }
 
-    // Backend APIs: Clients
-    async function fetchSavedClients() {
+    // Client Management (100% Local Browser Memory)
+    function fetchSavedClients() {
       try {
-        const res = await fetch('/api/invoice/clients');
-        if (res.ok) {
-          const data = await res.json();
-          STATE.savedClients = data.clients || [];
-        }
-      } catch(e) {
-        // Fallback to localStorage
         const local = localStorage.getItem('alumungandr_invoice_clients');
-        if (local) STATE.savedClients = JSON.parse(local);
+        STATE.savedClients = local ? JSON.parse(local) : [];
+      } catch(e) {
+        STATE.savedClients = [];
       }
       populateClientsDropdown();
     }
@@ -2299,7 +2292,7 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
         opt.textContent = `${c.name} (${c.phone || c.email || 'Saved'})`;
         select.appendChild(opt);
       });
-      document.getElementById('clientCountBadge').textContent = `${STATE.savedClients.length}/20 Saved Clients`;
+      document.getElementById('clientCountBadge').textContent = `${STATE.savedClients.length}/50 Saved Clients`;
     }
 
     function handleSelectSavedClient(cid) {
@@ -2327,13 +2320,14 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       showToast(`⚡ Selected client: ${client.name}`);
     }
 
-    async function saveCurrentClientToMemory() {
+    function saveCurrentClientToMemory() {
       const name = document.getElementById('toName').value.trim();
       if (!name) {
         alert('Please enter a Client Name first.');
         return;
       }
       const clientData = {
+        id: 'cli_' + Date.now(),
         name: name,
         phone: document.getElementById('toPhone').value.trim(),
         email: document.getElementById('toEmail').value.trim(),
@@ -2342,86 +2336,68 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
         discountPct: document.getElementById('repeatPerkType').value === '10pct' ? 10 : 5
       };
 
-      try {
-        const res = await fetch('/api/invoice/clients', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(clientData)
-        });
-        if (res.ok) {
-          const data = await res.json();
-          await fetchSavedClients();
-          showToast(`✓ Client "${name}" saved to memory!`);
-          playBeep(640);
-          return;
-        }
-      } catch(e) {}
-
-      // Fallback local save
       const existing = STATE.savedClients.filter(c => c.name.toLowerCase() !== name.toLowerCase());
-      clientData.id = 'cli_' + Date.now();
       existing.unshift(clientData);
-      STATE.savedClients = existing.slice(0, 20);
-      localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      STATE.savedClients = existing.slice(0, 50);
+      try {
+        localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      } catch(e) {}
       populateClientsDropdown();
       showToast(`✓ Client "${name}" saved to browser memory!`);
+      playBeep(640);
     }
 
-    async function deleteSavedClient(cid) {
-      if (!confirm('Remove this client from memory?')) return;
-      try {
-        await fetch(`/api/invoice/clients?id=${encodeURIComponent(cid)}`, { method: 'DELETE' });
-      } catch(e) {}
+    function deleteSavedClient(cid) {
+      if (!confirm('Remove this client from browser memory?')) return;
       STATE.savedClients = STATE.savedClients.filter(c => c.id !== cid);
-      localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      try {
+        localStorage.setItem('alumungandr_invoice_clients', JSON.stringify(STATE.savedClients));
+      } catch(e) {}
       populateClientsDropdown();
       openClientsModal();
-      showToast('Client removed from memory.');
+      showToast('Client removed from browser memory.');
     }
 
-    // Backend APIs: Trade Catalog
-    async function fetchTradeCatalog() {
+    // Trade Catalog (100% Local Browser Memory)
+    function fetchTradeCatalog() {
+      STATE.tradeCatalog = {
+        "Tech & Systems": [
+          { desc: "Cloud Architecture & Microservices Deployment", rate: 850 },
+          { desc: "High-Performance DB Indexing & Query Tuning", rate: 450 },
+          { desc: "Formal Security Verification & SMT Memory Audit", rate: 600 },
+          { desc: "Automated CI/CD Pipeline & Worker Integration", rate: 250 }
+        ],
+        "Engineering Consulting": [
+          { desc: "Principal Systems Engineering Consulting (Day)", rate: 1200 },
+          { desc: "Full-Stack Technical Architecture Review", rate: 500 },
+          { desc: "Distributed Systems Low-Latency Profiling", rate: 650 },
+          { desc: "Zero-Telemetry Security Hardening Audit", rate: 750 }
+        ],
+        "General Contractor": [
+          { desc: "Diagnostic Site Survey & Mechanical Assessment", rate: 220 },
+          { desc: "Commercial Hardware Installation & Mount", rate: 350 },
+          { desc: "Industrial Electrical Conduit & Breaker Tie-in", rate: 420 },
+          { desc: "Facility Preventative Maintenance Service", rate: 280 }
+        ],
+        "Plumbing": [
+          { desc: "Emergency Diagnostic Scan & Leak Repair", rate: 180 },
+          { desc: "Commercial Backflow Preventer Replacement", rate: 420 },
+          { desc: "High-Pressure Hydro Jetting & Line Flush", rate: 140 },
+          { desc: "Heavy-Duty Schedule 80 Compression Fitting", rate: 45 }
+        ],
+        "Mobile Mechanic": [
+          { desc: "OBD2 Computer Diagnostic Scan", rate: 95 },
+          { desc: "Brake Pad Replacement (Axle)", rate: 160 },
+          { desc: "Full Synthetic Oil & Filter Service", rate: 115 },
+          { desc: "Battery Test & Replacement Labor", rate: 65 }
+        ]
+      };
+
       try {
-        const res = await fetch('/api/invoice/catalog');
-        if (res.ok) {
-          const data = await res.json();
-          STATE.tradeCatalog = data.categories || {};
-          STATE.customCatalog = data.custom || [];
-        }
+        const custom = localStorage.getItem('alumungandr_invoice_custom_catalog');
+        STATE.customCatalog = custom ? JSON.parse(custom) : [];
       } catch(e) {
-        // Fallback trade defaults
-        STATE.tradeCatalog = {
-          "Tech & Systems": [
-            { desc: "Cloud Architecture & Microservices Deployment", rate: 850 },
-            { desc: "High-Performance DB Indexing & Query Tuning", rate: 450 },
-            { desc: "Formal Security Verification & SMT Memory Audit", rate: 600 },
-            { desc: "Automated CI/CD Pipeline & Worker Integration", rate: 250 }
-          ],
-          "Engineering Consulting": [
-            { desc: "Principal Systems Engineering Consulting (Day)", rate: 1200 },
-            { desc: "Full-Stack Technical Architecture Review", rate: 500 },
-            { desc: "Distributed Systems Low-Latency Profiling", rate: 650 },
-            { desc: "Zero-Telemetry Security Hardening Audit", rate: 750 }
-          ],
-          "General Contractor": [
-            { desc: "Diagnostic Site Survey & Mechanical Assessment", rate: 220 },
-            { desc: "Commercial Hardware Installation & Mount", rate: 350 },
-            { desc: "Industrial Electrical Conduit & Breaker Tie-in", rate: 420 },
-            { desc: "Facility Preventative Maintenance Service", rate: 280 }
-          ],
-          "Plumbing": [
-            { desc: "Emergency Diagnostic Scan & Leak Repair", rate: 180 },
-            { desc: "Commercial Backflow Preventer Replacement", rate: 420 },
-            { desc: "High-Pressure Hydro Jetting & Line Flush", rate: 140 },
-            { desc: "Heavy-Duty Schedule 80 Compression Fitting", rate: 45 }
-          ],
-          "Mobile Mechanic": [
-            { desc: "OBD2 Computer Diagnostic Scan", rate: 95 },
-            { desc: "Brake Pad Replacement (Axle)", rate: 160 },
-            { desc: "Full Synthetic Oil & Filter Service", rate: 115 },
-            { desc: "Battery Test & Replacement Labor", rate: 65 }
-          ]
-        };
+        STATE.customCatalog = [];
       }
     }
 
@@ -2461,23 +2437,19 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       });
     }
 
-    async function promptSaveCustomItem() {
+    function promptSaveCustomItem() {
       const desc = prompt('Enter custom item / service description:');
       if (!desc) return;
       const rateStr = prompt('Enter default rate / price ($):', '100');
       const rate = parseFloat(rateStr) || 0;
 
+      STATE.customCatalog.unshift({ desc, rate });
       try {
-        await fetch('/api/invoice/catalog', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ desc, rate, category: 'custom' })
-        });
+        localStorage.setItem('alumungandr_invoice_custom_catalog', JSON.stringify(STATE.customCatalog));
       } catch(e) {}
 
-      STATE.customCatalog.unshift({ desc, rate });
       switchTradeCatalog('Custom', document.querySelector('.trade-tab-pill:last-child'));
-      showToast(`✓ Added "${desc}" to your custom catalog!`);
+      showToast(`✓ Added "${desc}" to your local custom catalog!`);
     }
 
     // Document Type & Theming
@@ -2974,11 +2946,12 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       playBeep(640);
     }
 
-    async function saveAndShareOnline() {
-      const invId = document.getElementById('docNumber').value || ('INV-' + Date.now());
+    function saveAndShareOnline() {
+      const invId = document.getElementById('docNumber').value.trim() || ('INV-' + Date.now());
       const payload = {
         id: invId,
         docType: STATE.docType,
+        clientName: document.getElementById('toName').value.trim() || 'Client',
         from: {
           name: document.getElementById('fromName').value,
           trade: document.getElementById('fromTrade').value,
@@ -2999,27 +2972,34 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
         paymentMethod: document.getElementById('paymentMethod').value,
         paymentHandle: document.getElementById('paymentHandle').value,
         paymentDetails: document.getElementById('paymentDetails').value,
-        dueDate: document.getElementById('docDueDate').value
+        dueDate: document.getElementById('docDueDate').value,
+        savedAt: new Date().toISOString()
       };
 
+      let invoices = [];
       try {
-        const res = await fetch('/api/invoice/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (res.ok) {
-          const shareUrl = `${window.location.origin}/invoice?id=${encodeURIComponent(invId)}`;
-          navigator.clipboard.writeText(shareUrl);
-          showToast(`✓ Invoice saved! Shareable link copied: ${shareUrl}`);
-          playBeep(700);
-          return;
+        invoices = JSON.parse(localStorage.getItem('alumungandr_invoices') || '[]');
+      } catch(e) {}
+
+      // Overwrite existing invoice with same ID or prepend new one
+      invoices = invoices.filter(inv => inv.id !== invId);
+      invoices.unshift(payload);
+      if (invoices.length > 50) invoices.pop();
+
+      try {
+        localStorage.setItem('alumungandr_invoices', JSON.stringify(invoices));
+      } catch(e) {}
+
+      const shareUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(invId)}`;
+      try {
+        window.history.replaceState({ id: invId }, '', shareUrl);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).catch(() => {});
         }
       } catch(e) {}
 
-      // Fallback local save
-      const shareUrl = `${window.location.origin}/invoice?id=${encodeURIComponent(invId)}`;
-      showToast(`✓ Document saved. Link: ${shareUrl}`);
+      showToast(`✓ Document saved in browser memory! ID: ${invId}`);
+      playBeep(700);
     }
 
     // Modal Helpers
@@ -3057,45 +3037,43 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       });
     }
 
-    async function openRecentInvoicesModal() {
+    function openRecentInvoicesModal() {
       const list = document.getElementById('recentInvoicesList');
-      list.innerHTML = '<p style="color:var(--text-subtle);">Loading invoices...</p>';
+      list.innerHTML = '';
       document.getElementById('recentInvoicesModal').classList.add('active');
 
+      let invoices = [];
       try {
-        const res = await fetch('/api/invoice/list');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.invoices && data.invoices.length > 0) {
-            list.innerHTML = '';
-            data.invoices.forEach(inv => {
-              const card = document.createElement('div');
-              card.className = 'client-card-item';
-              card.innerHTML = `
-                <div class="client-card-info" onclick="loadSavedInvoiceById('${inv.id}'); closeModal('recentInvoicesModal');">
-                  <h4>${inv.id} &bull; ${escapeHtml(inv.clientName)}</h4>
-                  <p>${inv.docType} &bull; Due: ${inv.dueDate || '-'} &bull; <strong>${inv.currency}${inv.grandTotal.toFixed(2)}</strong></p>
-                </div>
-                <button class="btn-card-del" onclick="event.stopPropagation(); deleteSavedInvoice('${inv.id}')" title="Delete invoice">&times;</button>
-              `;
-              list.appendChild(card);
-            });
-            return;
-          }
-        }
+        invoices = JSON.parse(localStorage.getItem('alumungandr_invoices') || '[]');
       } catch(e) {}
-      list.innerHTML = '<p style="color:var(--text-subtle); font-size:0.85rem;">No saved invoices on record yet. Save an invoice to see history here.</p>';
+
+      if (invoices && invoices.length > 0) {
+        invoices.forEach(inv => {
+          const card = document.createElement('div');
+          card.className = 'client-card-item';
+          const clientName = (inv.to && inv.to.name) ? inv.to.name : (inv.clientName || 'Client');
+          const grandTotal = typeof inv.grandTotal === 'number' ? inv.grandTotal.toFixed(2) : (inv.grandTotal || '0.00');
+          card.innerHTML = `
+            <div class="client-card-info" onclick="loadSavedInvoiceById('${escapeHtml(inv.id)}'); closeModal('recentInvoicesModal');">
+              <h4>${escapeHtml(inv.id)} &bull; ${escapeHtml(clientName)}</h4>
+              <p>${escapeHtml(inv.docType || 'INVOICE')} &bull; Due: ${escapeHtml(inv.dueDate || '-')} &bull; <strong>${escapeHtml(inv.currency || '$')}${grandTotal}</strong></p>
+            </div>
+            <button class="btn-card-del" onclick="event.stopPropagation(); deleteSavedInvoice('${escapeHtml(inv.id)}')" title="Delete invoice">&times;</button>
+          `;
+          list.appendChild(card);
+        });
+      } else {
+        list.innerHTML = '<p style="color:var(--text-subtle); font-size:0.85rem;">No saved invoices in local storage yet. Save an invoice to see history here.</p>';
+      }
     }
 
-    async function loadSavedInvoiceById(id) {
+    function loadSavedInvoiceById(id) {
       try {
-        const res = await fetch(`/api/invoice/get?id=${encodeURIComponent(id)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.invoice) {
-            loadInvoiceIntoForm(data.invoice);
-            showToast(`✓ Loaded invoice ${id}`);
-          }
+        const invoices = JSON.parse(localStorage.getItem('alumungandr_invoices') || '[]');
+        const found = invoices.find(inv => inv.id === id);
+        if (found) {
+          loadInvoiceIntoForm(found);
+          showToast(`✓ Loaded invoice ${id}`);
         }
       } catch(e) {}
     }
@@ -3128,10 +3106,12 @@ accounts@gedynamics.com &bull; +1 (415) 555-0142</div>
       renderDoc();
     }
 
-    async function deleteSavedInvoice(id) {
-      if (!confirm(`Delete saved invoice ${id}?`)) return;
+    function deleteSavedInvoice(id) {
+      if (!confirm(`Delete saved invoice ${id} from browser storage?`)) return;
       try {
-        await fetch(`/api/invoice/delete?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+        let invoices = JSON.parse(localStorage.getItem('alumungandr_invoices') || '[]');
+        invoices = invoices.filter(inv => inv.id !== id);
+        localStorage.setItem('alumungandr_invoices', JSON.stringify(invoices));
       } catch(e) {}
       openRecentInvoicesModal();
       showToast(`Invoice ${id} deleted.`);

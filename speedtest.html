@@ -3308,14 +3308,7 @@
       renderAuditTable(localLedger);
       updateRoiCalculator();
 
-      // 2. Sync to local backend if available
-      try {
-        await fetch('/api/speedtest/record', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(localEntry)
-        });
-      } catch (e) {}
+      // Saved 100% in local browser memory with zero tracking
     }
 
     // Background Hourly Probe System
@@ -3491,18 +3484,7 @@
       renderAuditTable(samples);
       updateRoiCalculator();
 
-      // Also push to backend if available
-      for (const s of samples) {
-        try {
-          await fetch('/api/speedtest/record', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(s)
-          });
-        } catch (e) {}
-      }
-
-      showSpeedToast('✓ 14-Day Audit Ledger generated. Peak-hour throttling evidence compiled!');
+      showSpeedToast('✓ 14-Day Audit Ledger generated in browser memory with zero tracking!');
     }
 
     function exportAuditCsv() {
@@ -3740,18 +3722,14 @@ if __name__ == "__main__":
       showSpeedToast('📥 Downloaded standalone omnispeed_probe.py daemon.');
     }
 
-    async function clearAuditLedger() {
+    function clearAuditLedger() {
       if (!confirm('Are you sure you want to clear your dispute audit ledger?')) return;
       try {
         localStorage.removeItem('omnispeed_audit_ledger');
       } catch (e) {}
 
-      try {
-        await fetch('/api/speedtest/clear-ledger', { method: 'POST' });
-      } catch (e) {}
-
       loadAuditLedger();
-      showSpeedToast('✓ Audit ledger cleared.');
+      showSpeedToast('✓ Audit ledger cleared from local memory.');
     }
 
     // Legal Demand Letter Modal

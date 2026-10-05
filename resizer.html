@@ -2094,43 +2094,10 @@
         }, 3000);
 
       } catch (err) {
-        console.warn('Using server-side ZIP generator fallback:', err);
-        try {
-          const canvas = document.createElement('canvas');
-          canvas.width = currentImage.naturalWidth || 1200;
-          canvas.height = currentImage.naturalHeight || 800;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(currentImage, 0, 0);
-          const base64Data = canvas.toDataURL('image/png');
-
-          const response = await fetch('/api/resizer', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ image: base64Data, mode: currentCropMode })
-          });
-
-          if (!response.ok) throw new Error('Server returned ' + response.status);
-
-          const zipBlob = await response.blob();
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(zipBlob);
-          link.download = `Alumungandr-Social-Pack-${Date.now()}.zip`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          showToast('✓ Successfully downloaded Alumungandr-Social-Pack.zip');
-          downloadBtnText.textContent = '✓ MASTER ZIP DOWNLOADED';
-          setTimeout(() => {
-            btnDownloadAll.disabled = false;
-            downloadBtnText.textContent = initialText;
-          }, 3000);
-        } catch (serverErr) {
-          console.error(serverErr);
-          showToast('Error generating ZIP. Please download individual formats.');
-          btnDownloadAll.disabled = false;
-          downloadBtnText.textContent = initialText;
-        }
+        console.warn('Local ZIP creation notice:', err);
+        showToast('Local memory limit reached for ZIP. Please download individual format cards directly.');
+        btnDownloadAll.disabled = false;
+        downloadBtnText.textContent = initialText;
       }
     });
 

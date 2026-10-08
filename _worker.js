@@ -52,6 +52,28 @@ export default {
     const url = new URL(request.url);
     const method = request.method;
 
+    // Strict Canonical SEO Enforcement: 301 Permanent Redirects
+    // Eliminates Google Search Console "Duplicate without user-selected canonical"
+    let redirectNeeded = false;
+    let targetHost = url.hostname;
+    let targetPath = url.pathname;
+
+    if (url.hostname === 'www.alumungandr.com') {
+      targetHost = 'alumungandr.com';
+      redirectNeeded = true;
+    }
+    if (targetPath === '/index.html') {
+      targetPath = '/';
+      redirectNeeded = true;
+    } else if (targetPath.length > 1 && targetPath.endsWith('/')) {
+      targetPath = targetPath.slice(0, -1);
+      redirectNeeded = true;
+    }
+
+    if (redirectNeeded && method === 'GET') {
+      return Response.redirect(`https://${targetHost}${targetPath}${url.search}`, 301);
+    }
+
     // Handle CORS preflight
     if (method === 'OPTIONS') {
       const corsHeaders = new Headers({

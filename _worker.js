@@ -10,6 +10,7 @@ import * as timecapsule from './functions/api/timecapsule.js';
 import * as ama from './functions/api/ama.js';
 import * as subscriptions from './functions/api/subscriptions.js';
 import * as drop from './functions/api/drop.js';
+import * as dualmark from './functions/api/dualmark.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -237,6 +238,18 @@ Hiring: https://alumungandr.com/contact
       if (method === 'OPTIONS' && drop.onRequestOptions) return drop.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && drop.onRequestPost) return drop.onRequestPost({ request, env, ctx });
       if (method === 'GET' && drop.onRequestGet) return drop.onRequestGet({ request, env, ctx });
+    }
+
+    // Native GS1 Digital Link URI routing (/01/{gtin}...) for packaging scanners
+    if (url.pathname.startsWith('/01/')) {
+      return dualmark.handleGs1Resolution(request, env, ctx);
+    }
+
+    // Route /api/dualmark (DualMark Studio RFC 9264 GS1 Resolver, FSMA 204 & Licensing Gateway)
+    if (url.pathname === '/api/dualmark' || url.pathname.startsWith('/api/dualmark/')) {
+      if (method === 'OPTIONS' && dualmark.onRequestOptions) return dualmark.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && dualmark.onRequestPost) return dualmark.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && dualmark.onRequestGet) return dualmark.onRequestGet({ request, env, ctx });
     }
 
     // 301 Permanent Redirects for retired pages

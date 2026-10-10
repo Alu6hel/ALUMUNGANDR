@@ -18,6 +18,7 @@ In accordance with institutional technical SEO standards, each tool runs on its 
 | **`/timezone`** | **Timezone Matcher** | Interactive visual slider to match working hours across up to 6 global cities. |
 | **`/invoice`** | **Invoice & Receipt Maker** | Split-screen live invoice generator with client storage and instant PDF downloads. |
 | **`/subscriptions`** | **Subscription Reality Check** | 10-year recurring cost analysis and S&P 500 compound opportunity cost calculator. |
+| **`/dualmark`** | **DualMark Edge Gateway** | Autonomous GS1 Digital Link RFC 9264 resolver, FSMA 204 CTE auditor, and recall kill-switch. |
 
 ---
 

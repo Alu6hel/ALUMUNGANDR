@@ -31,6 +31,7 @@ TOOL_BADGES = {
     'ip': 'NETWORK // DIAGNOSTICS',
     'timezone': 'TEMPORAL // MATCHER',
     'store': 'COMMERCE // VAULT',
+    'dualmark': 'DUALMARK // EDGE GATEWAY',
 }
 
 def get_header_html(badge="TOOL // SUITE"):
@@ -74,6 +75,7 @@ def get_header_html(badge="TOOL // SUITE"):
             <a href="/hash"># Hash Lab</a>
             <a href="/diff">&#8644; Diff Checker</a>
             <a href="/jwt">&#128273; JWT Debugger</a>
+            <a href="/dualmark">&#128269; DualMark Gateway</a>
           </div>
           <div class="dropdown-col">
             <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
@@ -125,6 +127,7 @@ def get_footer_html():
         <a href="/hash">Cryptographic Hash Lab</a>
         <a href="/diff">Code Diff Checker</a>
         <a href="/jwt">JWT Debugger &amp; Builder</a>
+        <a href="/dualmark">DualMark GS1 &amp; FSMA Gateway</a>
       </div>
       <div class="footer-col">
         <div class="footer-heading">Creative &amp; Utilities</div>

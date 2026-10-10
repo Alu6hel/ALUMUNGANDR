@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('alu_theme');
+        if (savedTheme === 'paper' || savedTheme === 'amber') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DualMark Studio — GS1 Digital Link RFC 9264 Edge Gateway &amp; FSMA 204 Hub — Alumungandr</title>
+  <meta name="description" content="Autonomous Cloudflare Edge Worker gateway for DualMark Studio: RFC 9264 GS1 Digital Link resolver, FDA FSMA Rule 204 CTE verification, recall kill-switch routing, and offline licensing.">
+  <link rel="canonical" href="https://alumungandr.com/dualmark">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alumungandr.com/dualmark">
+  <meta property="og:title" content="DualMark Studio — GS1 Digital Link RFC 9264 Edge Gateway &amp; FSMA 204 Hub">
+  <meta property="og:description" content="Autonomous zero-SaaS edge gateway for DualMark Studio. RFC 9264 GS1 Digital Link resolution, FDA FSMA 204 CTE cryptographic verification, and emergency recall routing.">
+  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DualMark Studio Edge Gateway &amp; Operations Hub">
+  <meta name="twitter:description" content="Zero-cost, local-first GS1 Digital Link RFC 9264 resolver, FSMA 204 CTE audit terminal, and edge worker backend.">
+  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://alumungandr.com/#organization",
+        "name": "Alumungandr Systems",
+        "url": "https://alumungandr.com",
+        "logo": "https://alumungandr.com/logo.svg"
+      },
+      {
+        "@type": "WebAPI",
+        "@id": "https://alumungandr.com/dualmark/#api",
+        "name": "DualMark Studio Autonomous Edge Gateway",
+        "url": "https://alumungandr.com/dualmark",
+        "description": "RFC 9264 GS1 Digital Link resolver, FDA FSMA Rule 204 CTE cryptographic verification, and recall kill-switch edge router running on Cloudflare Anycast.",
+        "provider": {
+          "@id": "https://alumungandr.com/#organization"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+
+  <style>
+    :root {
+      --bg-dark: #07080a;
+      --bg-surface: #0e1016;
+      --bg-surface-elevated: #141720;
+      --border-dashed: 1px dashed rgba(255, 255, 255, 0.14);
+      --border-solid: 1px solid rgba(255, 255, 255, 0.08);
+      --text-primary: #f4f5f8;
+      --text-secondary: #9aa0b0;
+      --text-muted: #5f6575;
+      --accent-coral: #de5849;
+      --accent-cyan: #38bdf8;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Operations Header & Status Pill */
+    .ops-header {
+      margin-bottom: 2rem;
+      border-bottom: var(--border-dashed);
+      padding-bottom: 1.5rem;
+    }
+    .ops-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .health-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulseAnim 2s infinite;
+    }
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .ops-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .ops-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+
+    /* Edge Telemetry Banner */
+    .telemetry-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .telemetry-card {
+      background: var(--bg-surface);
+      border: var(--border-solid);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+    }
+    .telemetry-label {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .telemetry-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+    }
+    .telemetry-sub {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    /* Hub Tabs */
+    .hub-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .hub-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hub-tab-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .hub-tab-btn.active {
+      color: var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border-bottom: 2px solid var(--accent-cyan);
+    }
+
+    /* Tab Panes */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Operations Grid */
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .ops-grid { grid-template-columns: 1fr; }
+    }
+
+    .card-box {
+      background: var(--bg-surface);
+      border: var(--border-solid);
+      border-radius: 10px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-caption {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--accent-cyan);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      background: var(--accent-cyan);
+      color: #07080a;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-action:hover {
+      background: #7dd3fc;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Terminal / Output Box */
+    .terminal-box {
+      background: #050608;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #93c5fd;
+      max-height: 480px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Free-Tier Architecture Alert */
+    .alert-free-tier {
+      background: rgba(16, 185, 129, 0.06);
+      border-left: 3px solid var(--accent-green);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 2rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+    .alert-free-tier strong {
+      color: var(--accent-green);
+    }
+
+    /* Endpoint List */
+    .endpoint-item {
+      background: var(--bg-surface-elevated);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .method-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .method-get { background: rgba(56, 189, 248, 0.2); color: var(--accent-cyan); }
+    .method-post { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+    .endpoint-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Navigation -->
+    <header class="site-header">
+    <a href="/" class="brand">
+      <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
+      <span>ALUMUNGANDR</span>
+      <span class="brand-badge">DUALMARK // EDGE GATEWAY</span>
+    </a>
+    <nav class="site-nav">
+      <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
+        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
+          <span class="theme-icon">⚡</span>
+        </button>
+        <div class="theme-slider-thumb"></div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="dropdown-trigger" type="button">All Tools &#9662;</button>
+        <div class="dropdown-panel">
+          <div class="dropdown-col">
+            <div class="dropdown-header">BROADBAND &amp; NETWORK</div>
+            <a href="/speedtest">&#9889; Speed Test</a>
+            <a href="/stats">&#127760; Speed Stats</a>
+            <a href="/call">&#128249; P2P Video Call</a>
+            <a href="/clip">&#128203; Clipboard</a>
+            <a href="/drop">&#128272; Secure Drop</a>
+            <a href="/ip">&#10052;&#65039; What Is My IP</a>
+            <a href="/timezone">&#127757; Timezone</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">DEVELOPER SUITE</div>
+            <a href="/json">{ } JSON Formatter</a>
+            <a href="/uuid">&#127380; UUID Generator</a>
+            <a href="/regex">.* Regex Tester</a>
+            <a href="/hash"># Hash Lab</a>
+            <a href="/diff">&#8644; Diff Checker</a>
+            <a href="/jwt">&#128273; JWT Debugger</a>
+            <a href="/dualmark">&#128269; DualMark Gateway</a>
+          </div>
+          <div class="dropdown-col">
+            <div class="dropdown-header">CREATIVE &amp; UTILITIES</div>
+            <a href="/colors">&#127912; Color Studio</a>
+            <a href="/meme">&#127917; Meme Studio</a>
+            <a href="/draw">&#9999;&#65039; Whiteboard</a>
+            <a href="/write">&#128221; Markdown Vault</a>
+            <a href="/timecapsule">&#9203; Time Capsule</a>
+            <a href="/invoice">&#128196; Invoice Maker</a>
+            <a href="/resizer">&#128444;&#65039; Image Resizer</a>
+            <a href="/subscriptions">&#9762;&#65039; Reality Check</a>
+          </div>
+        </div>
+      </div>
+      <a href="/store" class="nav-item">Store</a>
+      <a href="/about" class="nav-item">About</a>
+      <a href="/contact" class="nav-item">Contact</a>
+    </nav>
+  </header>
+
+  <main class="main-container">
+
+    <!-- Operations Header -->
+    <div class="ops-header">
+      <div class="ops-badge-row">
+        <span class="tag-pill">DUALMARK STUDIO // EDGE WORKSTATION</span>
+        <div class="health-pill" id="edge-health-pill">
+          <div class="pulse-dot"></div>
+          <span id="edge-health-text">EDGE WORKER LIVE (CLOUDFLARE ANYCAST)</span>
+        </div>
+      </div>
+      <h1 class="ops-title">DualMark Studio — Edge Services &amp; Operations Hub</h1>
+      <p class="ops-desc">
+        Operational backend control center for DualMark Studio instances. Handles RFC 9264 GS1 Digital Link content-negotiation, real-time emergency recall kill-switch routing, FDA FSMA Rule 204 CTE WebCrypto audit verification, and offline HMAC licensing.
+      </p>
+    </div>
+
+    <!-- Free-Tier Notice Banner -->
+    <div class="alert-free-tier">
+      <strong>Zero-Cost Edge Architecture:</strong> This operations hub is engineered specifically for Cloudflare Pages &amp; Workers Free Tier. All cryptographic audits (ECDSA P-256, HMAC-SHA256, Merkle proofs) and GS1 resolution routes execute statelessly in sub-millisecond edge compute with zero database subscriptions or SaaS dependencies.
+    </div>
+
+    <!-- Live Telemetry Strip -->
+    <div class="telemetry-strip">
+      <div class="telemetry-card">
+        <div class="telemetry-label">Edge Colocation</div>
+        <div class="telemetry-val" id="tele-colo">ANYCAST</div>
+        <div class="telemetry-sub">Cloudflare Edge Node</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="telemetry-label">Edge Latency</div>
+        <div class="telemetry-val" id="tele-latency">-- ms</div>
+        <div class="telemetry-sub">Sub-millisecond compute</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="telemetry-label">Free Tier Quota</div>
+        <div class="telemetry-val" style="color:var(--accent-green);">100% FREE</div>
+        <div class="telemetry-sub">&lt; 1% of 100k daily requests</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="telemetry-label">Recall Status</div>
+        <div class="telemetry-val" id="tele-recalls" style="color:var(--accent-cyan);">ACTIVE</div>
+        <div class="telemetry-sub">Safety kill-switch armed</div>
+      </div>
+    </div>
+
+    <!-- Hub Tabs Navigation -->
+    <div class="hub-tabs">
+      <button class="hub-tab-btn active" data-tab="tab-resolver">&#128269; GS1 Digital Link Resolver</button>
+      <button class="hub-tab-btn" data-tab="tab-fsma">&#128272; FSMA 204 Cryptographic Audit</button>
+      <button class="hub-tab-btn" data-tab="tab-recall">&#128680; Recall Kill-Switch</button>
+      <button class="hub-tab-btn" data-tab="tab-license">&#128179; Offline License Verifier</button>
+      <button class="hub-tab-btn" data-tab="tab-api">&#128295; Edge Worker API Directory</button>
+      <button class="hub-tab-btn" data-tab="tab-export">&#128190; Standalone Routing Export</button>
+    </div>
+
+    <!-- TAB 1: GS1 DIGITAL LINK RESOLVER -->
+    <div class="tab-pane active" id="tab-resolver">
+      <div class="ops-grid">
+        <div class="card-box">
+          <div class="card-title">
+            <span>RFC 9264 Resolution Simulator</span>
+            <small style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">GS1 DL 1.2</small>
+          </div>
+          <p class="card-caption">
+            Simulate incoming scans from consumer smartphones or POS imagers hitting native GS1 Digital Link URIs (<code>https://alumungandr.com/01/{gtin}</code>).
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">GTIN Primary Key (AI 01)</label>
+            <input type="text" class="form-input" id="res-gtin" value="00812345678901" placeholder="e.g. 00812345678901">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Batch / Lot (AI 10)</label>
+              <input type="text" class="form-input" id="res-lot" value="BATCH-2027A" placeholder="e.g. BATCH-2027A">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Serial Number (AI 21)</label>
+              <input type="text" class="form-input" id="res-serial" value="SN-009182" placeholder="e.g. SN-009182">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Target Link Type (?linkType)</label>
+              <select class="form-select" id="res-linktype">
+                <option value="pip">pip — Product Information Page (HTML)</option>
+                <option value="epcis">epcis — FDA FSMA 204 CTE Event (JSON-LD)</option>
+                <option value="sds">sds — Safety Data Sheet (PDF / Doc)</option>
+                <option value="all">all — RFC 9264 Full Linkset Document</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Simulated Client Country</label>
+              <select class="form-select" id="res-country">
+                <option value="US">🇺🇸 United States (US)</option>
+                <option value="DE">🇩🇪 Germany (DE)</option>
+                <option value="FR">🇫🇷 France (FR)</option>
+                <option value="JP">🇯🇵 Japan (JP)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-action" id="btn-run-resolve">&#9658; Resolve at Edge</button>
+            <button class="btn-secondary" id="btn-load-recall-preset">&#9888; Test Recalled Lot Preset</button>
+            <button class="btn-secondary" id="btn-copy-uri">&#128203; Copy GS1 URI</button>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-title">
+            <span>Edge Worker Resolution Output</span>
+            <span id="res-status-tag" class="tag-pill" style="display:none;">HTTP 200</span>
+          </div>
+          <p class="card-caption">Live response payload, HTTP Link headers, and redirect targets returned by the edge worker.</p>
+          <div class="terminal-box" id="res-output">// Execute a resolution query to inspect edge response payload...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: FSMA 204 & 21 CFR PART 11 AUDIT -->
+    <div class="tab-pane" id="tab-fsma">
+      <div class="ops-grid">
+        <div class="card-box">
+          <div class="card-title">
+            <span>CTE / KDE Cryptographic Ingestion</span>
+            <small style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">21 CFR §11.100</small>
+          </div>
+          <p class="card-caption">
+            Ingest and verify Critical Tracking Event (CTE) dossiers exported from DualMark Studio. Validates ECDSA P-256 digital signatures and Merkle root integrity.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">CTE JSON-LD Payload (EPCIS 2.0 / CBV 2.0)</label>
+            <textarea class="form-textarea" id="fsma-payload" rows="10" placeholder="Paste EPCIS 2.0 TransformationEvent or CTE JSON-LD...">{
+  "cteRecord": {
+    "cteId": "CTE-MV2MTDBB-7491",
+    "eventType": "TransformationEvent",
+    "action": "ADD",
+    "eventTime": "2026-10-10T12:00:00Z",
+    "bizStep": "urn:epcglobal:cbv:bizstep:commissioning",
+    "disposition": "urn:epcglobal:cbv:disp:active",
+    "readPoint": "urn:epc:id:sgln:0081234.00001.0",
+    "inputEPCList": ["urn:epc:id:sgtin:0081234.000010.LOT-FARM-99"],
+    "outputEPCList": ["urn:epc:id:sgtin:0081234.000020.BATCH-2027A"],
+    "kdeTlc": "TLC-99018-FARMWEST"
+  }
+}</textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-action" id="btn-verify-fsma">&#10003; Verify &amp; Notarize at Edge</button>
+            <button class="btn-secondary" id="btn-sample-fsma">Load Sample Transformation CTE</button>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-title">
+            <span>Cryptographic Audit Receipt</span>
+            <span id="fsma-status-badge" class="tag-pill" style="display:none;">VERIFIED</span>
+          </div>
+          <p class="card-caption">FDA 21 CFR Part 11 non-repudiation verification receipt with SHA-256 Merkle root digest.</p>
+          <div class="terminal-box" id="fsma-output">// Awaiting CTE audit submission...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: RECALL KILL-SWITCH -->
+    <div class="tab-pane" id="tab-recall">
+      <div class="ops-grid">
+        <div class="card-box">
+          <div class="card-title">
+            <span>Emergency Recall Kill-Switch Controller</span>
+            <span class="tag-pill" style="background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.3);">SAFETY OVERRIDE</span>
+          </div>
+          <p class="card-caption">
+            Instantly flags specific GTIN + Lot combinations for emergency safety recall. All scans automatically redirect to recall directives with HTTP 410 / 307 precedence.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">GTIN to Flag (AI 01)</label>
+            <input type="text" class="form-input" id="recall-gtin" value="00812345678901">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Lot / Batch ID (AI 10)</label>
+            <input type="text" class="form-input" id="recall-lot" value="RECALL-9021" placeholder="e.g. RECALL-9021 or ALL">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Recall Reason / Hazard Description</label>
+            <input type="text" class="form-input" id="recall-reason" value="Class I Recall: Foreign material cross-contact detected at packaging plant #4.">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Consumer Remedy Directive</label>
+            <input type="text" class="form-input" id="recall-remedy" value="Do not consume. Return packaging to point of sale for instant refund.">
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-danger" id="btn-activate-recall">&#128680; Arm / Activate Recall</button>
+            <button class="btn-secondary" id="btn-check-recall">&#128269; Check Status</button>
+            <button class="btn-secondary" id="btn-clear-recall">&#10006; Disarm Recall</button>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-title">
+            <span>Active Recall Registry Telemetry</span>
+          </div>
+          <p class="card-caption">Edge registry status and verified emergency notices currently enforced.</p>
+          <div class="terminal-box" id="recall-output">// Loading active recall telemetry...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: OFFLINE LICENSE VERIFIER -->
+    <div class="tab-pane" id="tab-license">
+      <div class="ops-grid">
+        <div class="card-box">
+          <div class="card-title">
+            <span>Offline HMAC-SHA256 Token Inspector</span>
+            <small style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">ZERO-TELEMETRY</small>
+          </div>
+          <p class="card-caption">
+            Verifies cryptographic license tokens issued for DualMark Studio instances without storing customer PII or telemetry on the server.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">Cryptographic License Token</label>
+            <textarea class="form-textarea" id="license-token-input" rows="6" placeholder="Paste DualMark license token (payload.signature)...">eyJsaWNlbnNlZSI6IkR1YWxNYXJrIFBhY2thZ2luZyBMYWIgIzQiLCJlZGl0aW9uIjoiQ29tbWVyY2lhbCIsImlhdCI6MTc2MDAwMDAwMCwiZmVhdHVyZXMiOlsicHJlcHJlc3NfcmlwIiwiZnNtYV9wa2kiLCJ6cGxfdGhlcm1hbCIsIjNkX2NsZWFyYW5jZSJdfQ.9a8f1a6c5d9f4eb193903620279d8138deadbeefcafebabe0011223344556677</textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-action" id="btn-verify-license">&#10003; Validate Token at Edge</button>
+            <button class="btn-secondary" id="btn-sample-license">Generate Sample Token</button>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-title">
+            <span>Verified Claims &amp; Entitlements</span>
+            <span id="license-status-badge" class="tag-pill" style="display:none;">VALID</span>
+          </div>
+          <p class="card-caption">Decoded cryptographic claims, edition tier, and feature capabilities.</p>
+          <div class="terminal-box" id="license-output">// Paste a token to inspect cryptographic claims...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: EDGE WORKER API DIRECTORY -->
+    <div class="tab-pane" id="tab-api">
+      <div class="card-box" style="margin-bottom: 1.5rem;">
+        <div class="card-title">Edge Worker Endpoint Directory</div>
+        <p class="card-caption">
+          All endpoints run natively on Cloudflare Pages Functions. You can invoke them headlessly from packaging ERPs, CI/CD pipelines, or DualMark CLI instances.
+        </p>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-get">GET</span>
+            <code>/01/{gtin}[/10/{lot}[/21/{serial}]]</code>
+          </div>
+          <div class="endpoint-desc">
+            Direct RFC 9264 GS1 Digital Link entrypoint. Performs automatic content negotiation based on <code>Accept</code> header and query parameters (<code>?linkType=pip|epcis|sds|all</code>).
+          </div>
+        </div>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-get">GET</span>
+            <code>/api/dualmark/resolve?gtin={gtin}&amp;linkType={type}</code>
+          </div>
+          <div class="endpoint-desc">
+            Headless resolver endpoint returning Linkset JSON-LD or EPCIS 2.0 records with RFC 8288 <code>Link</code> headers.
+          </div>
+        </div>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-post">POST</span>
+            <code>/api/dualmark/fsma</code>
+          </div>
+          <div class="endpoint-desc">
+            Ingests and notarizes FDA FSMA 204 CTE events, verifies WebCrypto ECDSA P-256 signatures, and issues SHA-256 Merkle audit receipts.
+          </div>
+        </div>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-get">GET / POST</span>
+            <code>/api/dualmark/recall</code>
+          </div>
+          <div class="endpoint-desc">
+            Queries or arms the emergency safety recall kill-switch for immediate barcode redirection across global retail POS.
+          </div>
+        </div>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-post">POST</span>
+            <code>/api/dualmark/verify-license</code>
+          </div>
+          <div class="endpoint-desc">
+            Stateless verification of offline HMAC-SHA256 DualMark Studio commercial tokens.
+          </div>
+        </div>
+
+        <div class="endpoint-item">
+          <div class="endpoint-header">
+            <span class="method-badge method-get">GET</span>
+            <code>/api/dualmark/status</code>
+          </div>
+          <div class="endpoint-desc">
+            Health telemetry, active route counters, edge colocation identifier, and free-tier quota status.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: STANDALONE ROUTING EXPORT -->
+    <div class="tab-pane" id="tab-export">
+      <div class="ops-grid">
+        <div class="card-box">
+          <div class="card-title">
+            <span>Zero-SaaS Standalone Routing Compiler</span>
+            <small style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">LOCAL-FIRST</small>
+          </div>
+          <p class="card-caption">
+            Compile the entire GS1 Digital Link routing table into a standalone SQLite or JSON file for air-gapped factory servers without internet access.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">Export Format</label>
+            <select class="form-select" id="export-format">
+              <option value="json">RFC 9264 Linkset Table (.json)</option>
+              <option value="sql">Standard SQLite DDL &amp; Inserts (.sql)</option>
+              <option value="nginx">Nginx Static Map Config (.conf)</option>
+            </select>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-action" id="btn-generate-export">&#128190; Generate Offline Export</button>
+            <button class="btn-secondary" id="btn-download-export">&#11015; Download File</button>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-title">
+            <span>Compiled Routing Manifest</span>
+          </div>
+          <p class="card-caption">Standalone routing rules ready for on-premise air-gapped deployment.</p>
+          <div class="terminal-box" id="export-output">// Select format and generate routing manifest...</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+    <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/logo.svg" alt="Alumungandr Logo" width="22" height="22">
+          <span>ALUMUNGANDR</span>
+        </div>
+        <p class="footer-desc">
+          Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
+        </p>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Broadband &amp; Network</div>
+        <a href="/speedtest">Internet Speed Test</a>
+        <a href="/stats">Global Speed Leaderboard</a>
+        <a href="/call">P2P Encrypted Video Call</a>
+        <a href="/clip">Cross-Device Clipboard</a>
+        <a href="/drop">Encrypted Secure Drop</a>
+        <a href="/ip">What Is My IP?</a>
+        <a href="/timezone">Timezone Matcher</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Developer Suite</div>
+        <a href="/json">JSON Formatter &amp; Tree</a>
+        <a href="/uuid">UUID / GUID Generator</a>
+        <a href="/regex">Regex Tester &amp; Lab</a>
+        <a href="/hash">Cryptographic Hash Lab</a>
+        <a href="/diff">Code Diff Checker</a>
+        <a href="/jwt">JWT Debugger &amp; Builder</a>
+        <a href="/dualmark">DualMark GS1 &amp; FSMA Gateway</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Creative &amp; Utilities</div>
+        <a href="/colors">Color Palette Studio</a>
+        <a href="/meme">Meme Generator Canvas</a>
+        <a href="/draw">Infinite Whiteboard</a>
+        <a href="/write">Markdown Editor &amp; Vault</a>
+        <a href="/timecapsule">Encrypted Time Capsule</a>
+        <a href="/invoice">No-BS Invoice Maker</a>
+        <a href="/resizer">Batch Image Resizer</a>
+        <a href="/subscriptions">Reality Check Calculator</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-heading">Platform &amp; Legal</div>
+        <a href="/store">Digital Storefront</a>
+        <a href="/about">About Alumungandr</a>
+        <a href="/faq">FAQ &amp; Knowledge Base</a>
+        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/assets/nav.js?v=20261001d" defer></script>
+
+  <!-- DualMark Operations Hub Interactive Engine -->
+  <script>
+    (function() {
+      // 1. Tab Switching System
+      const tabBtns = document.querySelectorAll('.hub-tab-btn');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabPanes.forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          const target = document.getElementById(btn.getAttribute('data-tab'));
+          if (target) target.classList.add('active');
+        });
+      });
+
+      // 2. Health & Latency Telemetry Ping
+      async function updateEdgeStatus() {
+        const start = performance.now();
+        try {
+          const res = await fetch('/api/dualmark/status');
+          const elapsed = Math.round(performance.now() - start);
+          document.getElementById('tele-latency').textContent = elapsed + ' ms';
+          if (res.ok) {
+            const data = await res.json();
+            if (data.edgeColo) document.getElementById('tele-colo').textContent = data.edgeColo;
+            document.getElementById('tele-recalls').textContent = data.activeRecalls + ' ACTIVE';
+          }
+        } catch (e) {
+          document.getElementById('tele-latency').textContent = 'LOCAL';
+        }
+      }
+      updateEdgeStatus();
+
+      // 3. Tab 1: GS1 Resolver Execution
+      const btnResolve = document.getElementById('btn-run-resolve');
+      const resOutput = document.getElementById('res-output');
+      const resStatusTag = document.getElementById('res-status-tag');
+
+      btnResolve.addEventListener('click', async () => {
+        const gtin = document.getElementById('res-gtin').value.trim();
+        const lot = document.getElementById('res-lot').value.trim();
+        const serial = document.getElementById('res-serial').value.trim();
+        const linkType = document.getElementById('res-linktype').value;
+        const country = document.getElementById('res-country').value;
+
+        resOutput.textContent = '// Querying Cloudflare Edge Anycast resolver...';
+        resStatusTag.style.display = 'none';
+
+        try {
+          let url = `/api/dualmark/resolve?gtin=${encodeURIComponent(gtin)}&linkType=${encodeURIComponent(linkType)}&country=${encodeURIComponent(country)}`;
+          if (lot) url += `&lot=${encodeURIComponent(lot)}`;
+          if (serial) url += `&serial=${encodeURIComponent(serial)}`;
+
+          const res = await fetch(url, {
+            headers: { 'Accept': linkType === 'all' ? 'application/linkset+json' : 'application/json' }
+          });
+
+          resStatusTag.textContent = `HTTP ${res.status}`;
+          resStatusTag.style.display = 'inline-block';
+          if (res.status === 410) {
+            resStatusTag.style.background = 'rgba(239, 68, 68, 0.2)';
+            resStatusTag.style.color = '#f87171';
+          } else {
+            resStatusTag.style.background = 'rgba(16, 185, 129, 0.2)';
+            resStatusTag.style.color = 'var(--accent-green)';
+          }
+
+          const linkHeader = res.headers.get('Link') || 'None';
+          const recallHeader = res.headers.get('X-GS1-Recall-Status') || 'NONE';
+          const contentType = res.headers.get('Content-Type') || '';
+
+          let bodyText;
+          if (contentType.includes('application/json') || contentType.includes('application/linkset+json') || contentType.includes('application/ld+json')) {
+            const json = await res.json();
+            bodyText = JSON.stringify(json, null, 2);
+          } else {
+            bodyText = await res.text();
+          }
+
+          resOutput.textContent = `// HTTP STATUS: ${res.status} ${res.statusText}
+// X-GS1-RECALL-STATUS: ${recallHeader}
+// LINK HEADERS (RFC 8288):
+// ${linkHeader}
+
+${bodyText}`;
+        } catch (err) {
+          resOutput.textContent = `// Error executing edge resolution: ${err.message}`;
+        }
+      });
+
+      // Preset: Recalled Lot
+      document.getElementById('btn-load-recall-preset').addEventListener('click', () => {
+        document.getElementById('res-gtin').value = '00812345678901';
+        document.getElementById('res-lot').value = 'RECALL-9021';
+        document.getElementById('res-linktype').value = 'pip';
+        btnResolve.click();
+      });
+
+      // Copy URI
+      document.getElementById('btn-copy-uri').addEventListener('click', () => {
+        const gtin = document.getElementById('res-gtin').value.trim();
+        const lot = document.getElementById('res-lot').value.trim();
+        const serial = document.getElementById('res-serial').value.trim();
+        let uri = `https://alumungandr.com/01/${gtin}`;
+        if (lot) uri += `/10/${encodeURIComponent(lot)}`;
+        if (serial) uri += `/21/${encodeURIComponent(serial)}`;
+        navigator.clipboard.writeText(uri).then(() => {
+          alert(`Copied GS1 Digital Link URI to clipboard:\n${uri}`);
+        });
+      });
+
+      // 4. Tab 2: FSMA 204 CTE Verification
+      const btnVerifyFsma = document.getElementById('btn-verify-fsma');
+      const fsmaOutput = document.getElementById('fsma-output');
+      const fsmaStatusBadge = document.getElementById('fsma-status-badge');
+
+      btnVerifyFsma.addEventListener('click', async () => {
+        fsmaOutput.textContent = '// Validating CTE event schema and computing Merkle root digest...';
+        fsmaStatusBadge.style.display = 'none';
+
+        try {
+          const raw = document.getElementById('fsma-payload').value.trim();
+          const parsed = JSON.parse(raw);
+
+          const res = await fetch('/api/dualmark/fsma', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(parsed)
+          });
+
+          const data = await res.json();
+          fsmaStatusBadge.textContent = data.status || 'VERIFIED';
+          fsmaStatusBadge.style.display = 'inline-block';
+
+          fsmaOutput.textContent = `// FDA 21 CFR §11.100 AUDIT CONFIRMATION
+// MERKLE RECEIPT HASH (SHA-256): ${data.receiptHash}
+// NOTARIZED TIMESTAMP: ${data.timestamp}
+// SIGNATURE VERIFIED: ${data.signatureVerified ? 'YES (P-256)' : 'UNSIGNED / DIGEST_ONLY'}
+
+${JSON.stringify(data, null, 2)}`;
+        } catch (e) {
+          fsmaOutput.textContent = `// Error during CTE verification: ${e.message}`;
+        }
+      });
+
+      // 5. Tab 3: Recall Kill-Switch Controller
+      const btnActivateRecall = document.getElementById('btn-activate-recall');
+      const btnCheckRecall = document.getElementById('btn-check-recall');
+      const btnClearRecall = document.getElementById('btn-clear-recall');
+      const recallOutput = document.getElementById('recall-output');
+
+      async function refreshRecallList() {
+        try {
+          const res = await fetch('/api/dualmark/recall');
+          const data = await res.json();
+          recallOutput.textContent = `// ACTIVE RECALL REGISTRY (EDGE MEMORY):
+${JSON.stringify(data, null, 2)}`;
+        } catch (e) {
+          recallOutput.textContent = `// Failed to load recall list: ${e.message}`;
+        }
+      }
+      refreshRecallList();
+
+      btnActivateRecall.addEventListener('click', async () => {
+        const gtin = document.getElementById('recall-gtin').value.trim();
+        const lot = document.getElementById('recall-lot').value.trim();
+        const reason = document.getElementById('recall-reason').value.trim();
+        const remedy = document.getElementById('recall-remedy').value.trim();
+
+        try {
+          const res = await fetch('/api/dualmark/recall', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ gtin, lot, reason, remedy, active: true })
+          });
+          const data = await res.json();
+          recallOutput.textContent = `// RECALL ARMED AT ANYCAST EDGE:
+${JSON.stringify(data, null, 2)}`;
+          updateEdgeStatus();
+        } catch (e) {
+          recallOutput.textContent = `// Error activating recall: ${e.message}`;
+        }
+      });
+
+      btnClearRecall.addEventListener('click', async () => {
+        const gtin = document.getElementById('recall-gtin').value.trim();
+        const lot = document.getElementById('recall-lot').value.trim();
+
+        try {
+          const res = await fetch('/api/dualmark/recall', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ gtin, lot, active: false })
+          });
+          const data = await res.json();
+          recallOutput.textContent = `// RECALL DISARMED:
+${JSON.stringify(data, null, 2)}`;
+          updateEdgeStatus();
+        } catch (e) {
+          recallOutput.textContent = `// Error clearing recall: ${e.message}`;
+        }
+      });
+
+      btnCheckRecall.addEventListener('click', refreshRecallList);
+
+      // 6. Tab 4: License Verification
+      const btnVerifyLic = document.getElementById('btn-verify-license');
+      const licOutput = document.getElementById('license-output');
+      const licBadge = document.getElementById('license-status-badge');
+
+      btnVerifyLic.addEventListener('click', async () => {
+        const token = document.getElementById('license-token-input').value.trim();
+        licOutput.textContent = '// Validating HMAC token signature at edge...';
+        licBadge.style.display = 'none';
+
+        try {
+          const res = await fetch('/api/dualmark/verify-license', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          });
+          const data = await res.json();
+          licBadge.textContent = data.valid ? 'VALID TOKEN' : 'INVALID';
+          licBadge.style.display = 'inline-block';
+          licBadge.style.background = data.valid ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+          licBadge.style.color = data.valid ? 'var(--accent-green)' : '#f87171';
+
+          licOutput.textContent = `// CRYPTOGRAPHIC CLAIMS:
+${JSON.stringify(data, null, 2)}`;
+        } catch (e) {
+          licOutput.textContent = `// License verification failed: ${e.message}`;
+        }
+      });
+
+      // 7. Tab 6: Standalone Export Compiler
+      const btnExport = document.getElementById('btn-generate-export');
+      const exportOutput = document.getElementById('export-output');
+      let currentExportContent = '';
+
+      btnExport.addEventListener('click', () => {
+        const fmt = document.getElementById('export-format').value;
+        if (fmt === 'json') {
+          currentExportContent = JSON.stringify({
+            "version": "1.2",
+            "schema": "GS1 Digital Link RFC 9264",
+            "compiledAt": new Date().toISOString(),
+            "routes": [
+              {
+                "gtin": "00812345678901",
+                "name": "Heritage Cold-Pressed Organic Orange Juice",
+                "pip": "https://alumungandr.com/dualmark?gtin=00812345678901&view=pip",
+                "epcis": "https://alumungandr.com/api/dualmark/resolve?gtin=00812345678901&linkType=epcis",
+                "sds": "https://alumungandr.com/dualmark?gtin=00812345678901&view=sds"
+              }
+            ]
+          }, null, 2);
+        } else if (fmt === 'sql') {
+          currentExportContent = `-- DualMark Studio Offline SQLite Routing Database
+CREATE TABLE IF NOT EXISTS gs1_routes (
+  gtin TEXT PRIMARY KEY,
+  name TEXT,
+  pip_url TEXT,
+  epcis_url TEXT,
+  sds_url TEXT
+);
+
+INSERT OR REPLACE INTO gs1_routes VALUES (
+  '00812345678901',
+  'Heritage Cold-Pressed Organic Orange Juice',
+  'https://alumungandr.com/dualmark?gtin=00812345678901&view=pip',
+  'https://alumungandr.com/api/dualmark/resolve?gtin=00812345678901&linkType=epcis',
+  'https://alumungandr.com/dualmark?gtin=00812345678901&view=sds'
+);
+`;
+        } else {
+          currentExportContent = `# Nginx Zero-SaaS GS1 Link Map
+map $uri $target_gs1 {
+  ~^/01/00812345678901 https://alumungandr.com/dualmark?gtin=00812345678901&view=pip;
+}
+`;
+        }
+
+        exportOutput.textContent = currentExportContent;
+      });
+
+      document.getElementById('btn-download-export').addEventListener('click', () => {
+        if (!currentExportContent) btnExport.click();
+        const fmt = document.getElementById('export-format').value;
+        const blob = new Blob([currentExportContent], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `dualmark_offline_routing.${fmt === 'json' ? 'json' : fmt === 'sql' ? 'sql' : 'conf'}`;
+        a.click();
+      });
+
+    })();
+  </script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import * as ama from './functions/api/ama.js';
 import * as subscriptions from './functions/api/subscriptions.js';
 import * as drop from './functions/api/drop.js';
 import * as dualmark from './functions/api/dualmark.js';
+import * as world from './functions/api/world.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -218,6 +219,12 @@ Hiring: https://alumungandr.com/contact
     if (url.pathname === '/api/timecapsule') {
       if (method === 'POST' && timecapsule.onRequestPost) return timecapsule.onRequestPost({ request, env, ctx });
       if (method === 'GET' && timecapsule.onRequestGet) return timecapsule.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/world (Aether-Core Map-as-Coin Verification & Genesis Vault)
+    if (url.pathname === '/api/world' || url.pathname.startsWith('/api/world/')) {
+      if (method === 'POST' && world.onRequestPost) return world.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && world.onRequestGet) return world.onRequestGet({ request, env, ctx });
     }
 
     // Route /api/ama (Legacy fallback)

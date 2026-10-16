@@ -33,3 +33,5 @@
 /drop.html /drop 301
 /dualmark.html /dualmark 301
 /security.txt /.well-known/security.txt 301
+/world / 301
+/world.html / 301

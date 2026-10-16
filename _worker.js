@@ -223,6 +223,7 @@ Hiring: https://alumungandr.com/contact
 
     // Route /api/world (Aether-Core Map-as-Coin Verification & Genesis Vault)
     if (url.pathname === '/api/world' || url.pathname.startsWith('/api/world/')) {
+      if (method === 'OPTIONS' && world.onRequestOptions) return world.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && world.onRequestPost) return world.onRequestPost({ request, env, ctx });
       if (method === 'GET' && world.onRequestGet) return world.onRequestGet({ request, env, ctx });
     }
@@ -259,8 +260,8 @@ Hiring: https://alumungandr.com/contact
       if (method === 'GET' && dualmark.onRequestGet) return dualmark.onRequestGet({ request, env, ctx });
     }
 
-    // 301 Permanent Redirects for retired pages
-    if (url.pathname === '/uses' || url.pathname === '/uses.html' || url.pathname === '/ama' || url.pathname === '/ama.html') {
+    // 301 Permanent Redirects for retired pages (Web game removed; game is now an APK app with low-latency edge backend)
+    if (url.pathname === '/uses' || url.pathname === '/uses.html' || url.pathname === '/ama' || url.pathname === '/ama.html' || url.pathname === '/world' || url.pathname === '/world.html') {
       return Response.redirect(new URL('/', request.url).toString(), 301);
     }
 

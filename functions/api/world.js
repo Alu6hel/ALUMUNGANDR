@@ -32,10 +32,40 @@ function generatePalette(seed) {
 
 const GLOBAL_WORLDS_CACHE = new Map();
 
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
+}
+
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   const parts = url.pathname.split('/').filter(Boolean);
   const seedParam = parts[parts.length - 1];
+
+  // Ping / Health endpoint: /api/world/ping (Ultra-low latency Edge check)
+  if (seedParam === 'ping') {
+    return new Response(JSON.stringify({
+      status: "ONLINE",
+      edge: true,
+      service: "Aether-Core Edge Gateway",
+      latency: "ultra-low",
+      timestamp: Date.now()
+    }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-store, no-cache, must-revalidate'
+      }
+    });
+  }
 
   // Leaderboard endpoint: /api/world/leaderboard
   if (seedParam === 'leaderboard') {

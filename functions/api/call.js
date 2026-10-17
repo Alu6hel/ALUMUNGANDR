@@ -17,13 +17,24 @@ function cleanupOldSignals() {
   }
 }
 
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Cache-Control'
+    }
+  });
+}
+
 export async function onRequestPost({ request, env }) {
   cleanupOldSignals();
   try {
     const body = await request.json();
     const room = (body.room || '').trim().toLowerCase();
     const sender = (body.sender || '').trim();
-    const type = body.type; // 'peer-ready', 'offer', 'answer', 'ice-candidate', 'call-mode', 'chat'
+    const type = body.type; // 'peer-ready', 'heartbeat', 'offer', 'answer', 'ice-candidate', 'call-mode', 'chat', 'peer-leave'
 
     if (!room || !sender || !type) {
       return new Response(JSON.stringify({ error: 'room, sender, and type are required' }), {
@@ -33,14 +44,20 @@ export async function onRequestPost({ request, env }) {
     }
 
     let roomQueue = ROOM_SIGNALS.get(room) || [];
-    
-    // Check KV if local memory doesn't have it
-    if (roomQueue.length === 0 && env && env.OBSERVATORY_KV) {
+
+    // Pull from KV if local isolate memory is empty
+    if (env && env.OBSERVATORY_KV) {
       try {
         const kvQueue = await env.OBSERVATORY_KV.get('call:' + room, { type: 'json' });
         if (Array.isArray(kvQueue)) {
           const now = Date.now();
-          roomQueue = kvQueue.filter(s => (now - s.timestamp) < SIGNAL_TTL_MS);
+          const seen = new Set(roomQueue.map(s => s.id));
+          for (const s of kvQueue) {
+            if (!seen.has(s.id) && (now - s.timestamp) < SIGNAL_TTL_MS) {
+              roomQueue.push(s);
+            }
+          }
+          roomQueue.sort((a, b) => a.timestamp - b.timestamp);
         }
       } catch (e) {
         console.warn('KV read signal err:', e);
@@ -48,19 +65,25 @@ export async function onRequestPost({ request, env }) {
     }
 
     const signalItem = {
-      id: 'sig_' + Math.random().toString(36).substring(2, 9),
+      id: body.id || ('sig_' + Math.random().toString(36).substring(2, 9)),
       type,
       sender,
       payload: body.payload || null,
       mode: body.mode || 'video', // 'video' or 'audio'
+      senderName: (body.senderName || 'Peer').slice(0, 40),
       timestamp: Date.now()
     };
+
+    // If it's a heartbeat, replace previous heartbeat from this sender to keep queue compact
+    if (type === 'heartbeat') {
+      roomQueue = roomQueue.filter(s => !(s.sender === sender && s.type === 'heartbeat'));
+    }
 
     roomQueue.push(signalItem);
 
     // Limit room queue length to prevent unbounded growth
-    if (roomQueue.length > 60) {
-      roomQueue = roomQueue.slice(-60);
+    if (roomQueue.length > 80) {
+      roomQueue = roomQueue.slice(-80);
     }
 
     ROOM_SIGNALS.set(room, roomQueue);
@@ -76,7 +99,11 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
-    return new Response(JSON.stringify({ success: true, signalId: signalItem.id }), {
+    return new Response(JSON.stringify({
+      success: true,
+      signalId: signalItem.id,
+      serverTime: signalItem.timestamp
+    }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -109,7 +136,7 @@ export async function onRequestGet({ request, env }) {
 
   let signals = ROOM_SIGNALS.get(room) || [];
 
-  // If local memory has few/no signals, pull from KV to bridge across global edges
+  // Sync with KV to bridge across global edges
   if (env && env.OBSERVATORY_KV) {
     try {
       const kvSignals = await env.OBSERVATORY_KV.get('call:' + room, { type: 'json' });
@@ -128,30 +155,43 @@ export async function onRequestGet({ request, env }) {
     }
   }
 
-  // Return signals intended for other peers, created strictly after 'since'
-  const newSignals = signals.filter(s => s.sender !== client && s.timestamp > since);
+  const now = Date.now();
+  // If since is 0, give signals from the last 45 seconds so newly joined peer sees active state
+  const cutoffTime = since > 0 ? since : (now - 45000);
+  const newSignals = signals.filter(s => s.sender !== client && s.timestamp > cutoffTime);
+
+  // Active peers discovery (any participant with signal or heartbeat in last 18 seconds)
+  const peerMap = new Map();
+  for (const s of signals) {
+    if (s.sender && s.type !== 'peer-leave' && (now - s.timestamp) < 18000) {
+      const existing = peerMap.get(s.sender);
+      if (!existing || s.timestamp > existing.lastSeen) {
+        peerMap.set(s.sender, {
+          id: s.sender,
+          name: s.senderName || 'Peer',
+          mode: s.mode || 'video',
+          lastSeen: s.timestamp
+        });
+      }
+    }
+  }
+
+  const activePeers = Array.from(peerMap.values());
+  const otherPeers = activePeers.filter(p => p.id !== client);
 
   return new Response(JSON.stringify({
     room,
     signals: newSignals,
-    serverTime: Date.now()
+    activePeers,
+    otherPeers,
+    peerCount: activePeers.length,
+    serverTime: now
   }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Cache-Control': 'no-store, no-cache, must-revalidate'
-    }
-  });
-}
-
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
     }
   });
 }

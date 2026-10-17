@@ -3,6 +3,21 @@
 
 const inMemoryCapsules = new Map();
 
+function getKV(env) {
+  return env?.OBSERVATORY_KV || env?.TIMECAPSULE_KV || null;
+}
+
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    }
+  });
+}
+
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
@@ -16,24 +31,28 @@ export async function onRequestPost({ request, env }) {
     }
 
     const capsuleRecord = {
-      id,
-      encryptedPayload,
+      id: String(id).slice(0, 64),
+      encryptedPayload: String(encryptedPayload),
       unlockDate: Number(unlockDate),
       createdAt: Number(createdAt) || Date.now(),
-      hint: hint ? String(hint).slice(0, 120) : ""
+      hint: hint ? String(hint).slice(0, 140) : ""
     };
 
-    // Attempt to store in Cloudflare KV if bound
-    if (env && env.TIMECAPSULE_KV) {
-      await env.TIMECAPSULE_KV.put(`capsule:${id}`, JSON.stringify(capsuleRecord));
+    const kv = getKV(env);
+    if (kv) {
+      // Calculate TTL: keep capsule until unlockDate + 365 days (1 year retention)
+      const now = Date.now();
+      const ttlSeconds = Math.max(86400, Math.ceil((capsuleRecord.unlockDate - now) / 1000) + (365 * 86400));
+      await kv.put(`capsule:${capsuleRecord.id}`, JSON.stringify(capsuleRecord), {
+        expirationTtl: Math.min(ttlSeconds, 10 * 365 * 86400) // max 10 years
+      });
     } else {
-      // In-memory fallback
-      inMemoryCapsules.set(id, capsuleRecord);
+      inMemoryCapsules.set(capsuleRecord.id, capsuleRecord);
     }
 
     return new Response(JSON.stringify({
       success: true,
-      id,
+      id: capsuleRecord.id,
       unlockDate: capsuleRecord.unlockDate,
       message: "Encrypted capsule sealed into spacetime."
     }), {
@@ -60,10 +79,14 @@ export async function onRequestGet({ request, env }) {
   }
 
   let capsule = null;
-  if (env && env.TIMECAPSULE_KV) {
-    const raw = await env.TIMECAPSULE_KV.get(`capsule:${id}`);
-    if (raw) capsule = JSON.parse(raw);
-  } else {
+  const kv = getKV(env);
+  if (kv) {
+    const raw = await kv.get(`capsule:${id}`);
+    if (raw) {
+      try { capsule = JSON.parse(raw); } catch (e) {}
+    }
+  }
+  if (!capsule) {
     capsule = inMemoryCapsules.get(id);
   }
 
@@ -83,7 +106,7 @@ export async function onRequestGet({ request, env }) {
     createdAt: capsule.createdAt,
     hint: capsule.hint,
     isUnlocked,
-    // Only return encrypted payload if unlocked or for client-side timer verification
+    // Return encrypted payload if unlocked
     encryptedPayload: isUnlocked ? capsule.encryptedPayload : null,
     serverTime: now
   }), {

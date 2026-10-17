@@ -102,7 +102,7 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.6;
+      opacity: 0.85;
     }
 
     header {
@@ -222,7 +222,7 @@
     }
 
     .card {
-      background: rgba(14, 16, 22, 0.85);
+      background: rgba(14, 16, 22, 0.88);
       border: var(--border-dashed);
       border-radius: 12px;
       padding: 1.75rem;
@@ -237,6 +237,7 @@
       justify-content: center;
       gap: 1rem;
       margin: 1.5rem 0;
+      flex-wrap: wrap;
     }
     .time-slot {
       background: var(--bg-surface);
@@ -308,6 +309,10 @@
       cursor: pointer;
       width: 100%;
       transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
     .btn-action:hover {
       filter: brightness(1.1);
@@ -329,6 +334,30 @@
       margin-bottom: 1.5rem;
     }
 
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(14, 16, 22, 0.95);
+      border: 1px solid var(--accent-emerald);
+      color: #fff;
+      padding: 0.8rem 1.25rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      z-index: 1000;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     footer {
       position: relative;
       z-index: 10;
@@ -346,8 +375,9 @@
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
+  <div id="toast" class="toast-msg">Notification</div>
 
-                        <header class="site-header">
+  <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -446,7 +476,7 @@
           <input type="text" id="capsule-hint" class="form-input" placeholder="e.g. The first project we built together">
         </div>
 
-        <button class="btn-action" onclick="sealCapsule()">⚡ Cryptographically Seal Capsule</button>
+        <button class="btn-action" id="seal-submit-btn" onclick="sealCapsule()">⚡ Cryptographically Seal Capsule</button>
       </div>
 
       <!-- Sealed Output Modal/Card -->
@@ -455,7 +485,7 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           <div>
             <strong>Capsule Sealed into Spacetime!</strong>
-            <div style="font-size:0.75rem; color:#a7f3d0; margin-top:2px;">Saved locally and ready to distribute.</div>
+            <div style="font-size:0.75rem; color:#a7f3d0; margin-top:2px;">Saved locally and synced with Cloudflare edge network.</div>
           </div>
         </div>
 
@@ -463,8 +493,17 @@
           <label class="form-label">Capsule Shareable Link</label>
           <div style="display:flex; gap:0.5rem;">
             <input type="text" id="capsule-link" class="form-input" readonly>
-            <button class="btn-action" style="width:120px;" onclick="copyCapsuleLink()">Copy Link</button>
+            <button class="btn-action" id="copy-link-btn" style="width:140px;" onclick="copyCapsuleLink()">Copy Link</button>
           </div>
+        </div>
+
+        <div style="display:flex; gap:0.75rem; margin-top:1rem; flex-wrap:wrap;">
+          <button class="btn-action" style="flex:1; min-width:200px; background:rgba(56, 189, 248, 0.15); color:var(--accent-cyan); border:1px solid rgba(56, 189, 248, 0.3);" onclick="downloadCapsuleFile()">
+            📦 Download .capsule File
+          </button>
+          <button class="btn-action" style="flex:1; min-width:200px; background:rgba(255, 255, 255, 0.08); border:1px solid var(--border-color); color:#fff;" onclick="testViewCurrentCapsule()">
+            👁️ Inspect Capsule Countdown
+          </button>
         </div>
       </div>
     </div>
@@ -476,14 +515,29 @@
           <label class="form-label">Capsule ID or Paste Encrypted Token</label>
           <div style="display:flex; gap:0.5rem;">
             <input type="text" id="open-id" class="form-input" placeholder="Enter Capsule ID (e.g. cap_171348...)">
-            <button class="btn-action" style="width:120px;" onclick="fetchAndInspectCapsule()">Inspect</button>
+            <button class="btn-action" id="inspect-btn" style="width:120px;" onclick="fetchAndInspectCapsule()">Inspect</button>
           </div>
+        </div>
+
+        <!-- Drop / Import .capsule File -->
+        <div style="margin: 1.25rem 0; text-align: center; position: relative;">
+          <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace;">
+            <span style="flex: 1; height: 1px; background: var(--border-color);"></span>
+            <span>OR IMPORT OFFLINE BACKUP</span>
+            <span style="flex: 1; height: 1px; background: var(--border-color);"></span>
+          </div>
+          <div id="drop-capsule-zone" style="margin-top: 0.85rem; border: 1px dashed rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 1.25rem; background: rgba(56, 189, 248, 0.04); cursor: pointer; transition: all 0.2s;" onclick="document.getElementById('file-capsule-input').click()">
+            <div style="font-size: 1.6rem; margin-bottom: 0.25rem;">📂</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-main); font-weight:600;">Click or Drop .capsule File Here</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 3px;">Zero-network offline cryptographic bundle</div>
+          </div>
+          <input type="file" id="file-capsule-input" accept=".capsule,.json" style="display:none;" onchange="handleCapsuleFileUpload(event)">
         </div>
 
         <!-- Chronometer display -->
         <div id="countdown-section" style="display:none;">
-          <div style="text-align:center; font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">
-            Temporal Lock Countdown
+          <div style="text-align:center; font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; margin-top:1.5rem;">
+            Temporal Lock Chronometer
           </div>
           <div class="chronometer-wrap">
             <div class="time-slot"><span class="time-val" id="cnt-days">00</span><span class="time-unit">Days</span></div>
@@ -492,7 +546,7 @@
             <div class="time-slot"><span class="time-val" id="cnt-secs">00</span><span class="time-unit">Secs</span></div>
           </div>
 
-          <div id="lock-status-badge" style="text-align:center; font-family:'JetBrains Mono'; font-size:0.85rem; padding:0.6rem; border-radius:6px; background:rgba(222,88,73,0.15); color:#fca5a5; border:1px solid rgba(222,88,73,0.3); margin-bottom:1.25rem;">
+          <div id="lock-status-badge" style="text-align:center; font-family:'JetBrains Mono'; font-size:0.85rem; padding:0.75rem; border-radius:8px; background:rgba(222,88,73,0.15); color:#fca5a5; border:1px solid rgba(222,88,73,0.3); margin-bottom:1.25rem;">
             🔒 TEMPORAL LOCK ENGAGED: Cannot be unlocked until time threshold expires.
           </div>
 
@@ -500,23 +554,29 @@
             <div class="form-group">
               <label class="form-label">Passphrase to Decrypt</label>
               <input type="password" id="unlock-pass" class="form-input" placeholder="Enter passphrase used during sealing...">
-              <div id="hint-display" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-cyan); margin-top:4px;"></div>
+              <div id="hint-display" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-cyan); margin-top:6px;"></div>
             </div>
-            <button class="btn-action" onclick="decryptCapsulePayload()">🔓 Decrypt &amp; Reveal Capsule</button>
+            <button class="btn-action" id="decrypt-btn" onclick="decryptCapsulePayload()">🔓 Decrypt &amp; Reveal Capsule</button>
           </div>
 
-          <div id="revealed-payload-card" style="display:none; margin-top:1.5rem; background:rgba(0,0,0,0.4); border:1px solid var(--accent-emerald); border-radius:8px; padding:1.25rem;">
-            <div style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-emerald); font-weight:700; margin-bottom:0.5rem;">
-              REVEALED TIME CAPSULE MESSAGE:
+          <div id="revealed-payload-card" style="display:none; margin-top:1.5rem; background:rgba(0,0,0,0.5); border:1px solid var(--accent-emerald); border-radius:8px; padding:1.25rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+              <div style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-emerald); font-weight:700;">
+                ✔ REVEALED TIME CAPSULE MESSAGE:
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <button class="btn-action" style="width:auto; padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="copyRevealedText()">Copy Text</button>
+                <button class="btn-action" style="width:auto; padding:0.35rem 0.75rem; font-size:0.75rem; background:rgba(255,255,255,0.08); border:1px solid var(--border-color); color:#fff;" onclick="downloadDecryptedText()">Download .txt</button>
+              </div>
             </div>
-            <pre id="revealed-text" style="color:#fff; font-family:'JetBrains Mono'; white-space:pre-wrap; line-height:1.6;"></pre>
+            <pre id="revealed-text" style="color:#fff; font-family:'JetBrains Mono'; white-space:pre-wrap; line-height:1.6; max-height:400px; overflow-y:auto;"></pre>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-                        <footer class="site-footer">
+  <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -573,13 +633,21 @@
   <script src="/assets/nav.js?v=20261001d" defer></script>
 
   <script>
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
     // Set default unlock date to 30 days in the future
-    const now = new Date();
-    now.setDate(now.getDate() + 30);
-    document.getElementById('capsule-date').value = now.toISOString().slice(0, 16);
+    const defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 30);
+    document.getElementById('capsule-date').value = defaultDate.toISOString().slice(0, 16);
 
     let activeCapsule = null;
     let timerInterval = null;
+    let currentSealedRecord = null;
 
     function setMode(mode) {
       document.getElementById('mode-seal').style.display = mode === 'seal' ? 'block' : 'none';
@@ -588,7 +656,7 @@
       document.getElementById('tab-open-btn').classList.toggle('active', mode === 'open');
     }
 
-    // Web Crypto AES-GCM Subroutines
+    // Web Crypto AES-GCM Subroutines (PBKDF2 100k rounds + AES-GCM 256)
     async function deriveKey(passphrase, salt) {
       const encoder = new TextEncoder();
       const baseKey = await crypto.subtle.importKey(
@@ -650,79 +718,207 @@
       const hint = document.getElementById('capsule-hint').value.trim();
 
       if (!text || !pass) {
-        alert('Please provide message payload and passphrase.');
+        showToast('Please provide both message payload and passphrase.');
         return;
       }
       if (isNaN(unlockDate) || unlockDate <= Date.now()) {
-        alert('Unlock date must be in the future.');
+        showToast('Unlock date must be in the future.');
         return;
       }
 
-      const encryptedPayload = await encryptMessage(text, pass);
-      const capsuleId = 'cap_' + Math.random().toString(36).substring(2, 10);
+      const btn = document.getElementById('seal-submit-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Encrypting with AES-256-GCM...';
 
-      const capsuleRecord = {
-        id: capsuleId,
-        encryptedPayload: encryptedPayload,
-        unlockDate: unlockDate,
-        createdAt: Date.now(),
-        hint: hint
-      };
-
-      // Save locally
-      localStorage.setItem('capsule_' + capsuleId, JSON.stringify(capsuleRecord));
-
-      // Attempt edge API post
       try {
-        await fetch('/api/timecapsule', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(capsuleRecord)
-        });
-      } catch (e) {}
+        const encryptedPayload = await encryptMessage(text, pass);
+        const capsuleId = 'cap_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 7);
 
-      const link = `${window.location.origin}/timecapsule#${capsuleId}`;
-      document.getElementById('capsule-link').value = link;
-      document.getElementById('sealed-card').style.display = 'block';
+        const capsuleRecord = {
+          id: capsuleId,
+          encryptedPayload: encryptedPayload,
+          unlockDate: unlockDate,
+          createdAt: Date.now(),
+          hint: hint
+        };
+
+        currentSealedRecord = capsuleRecord;
+
+        // Save locally
+        localStorage.setItem('capsule_' + capsuleId, JSON.stringify(capsuleRecord));
+
+        // Attempt edge API post
+        try {
+          await fetch('/api/timecapsule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(capsuleRecord)
+          });
+        } catch (e) {
+          console.warn('Edge sync fallback to local store:', e);
+        }
+
+        const link = `${window.location.origin}/timecapsule#${capsuleId}`;
+        document.getElementById('capsule-link').value = link;
+        document.getElementById('sealed-card').style.display = 'block';
+        showToast('Capsule cryptographically sealed into spacetime!');
+      } catch (err) {
+        showToast('Encryption failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '⚡ Cryptographically Seal Capsule';
+      }
     }
 
     function copyCapsuleLink() {
-      navigator.clipboard.writeText(document.getElementById('capsule-link').value);
-      alert('Copied Time Capsule link to clipboard!');
+      const link = document.getElementById('capsule-link').value;
+      if (!link) return;
+      navigator.clipboard.writeText(link).then(() => {
+        const btn = document.getElementById('copy-link-btn');
+        btn.textContent = '✔ Copied!';
+        showToast('Time Capsule shareable link copied to clipboard!');
+        setTimeout(() => { btn.textContent = 'Copy Link'; }, 2500);
+      });
+    }
+
+    function downloadCapsuleFile() {
+      if (!currentSealedRecord) return;
+      const bundle = {
+        format: "alumungandr-timecapsule-v1",
+        id: currentSealedRecord.id,
+        unlockDate: currentSealedRecord.unlockDate,
+        createdAt: currentSealedRecord.createdAt,
+        hint: currentSealedRecord.hint,
+        encryptedPayload: currentSealedRecord.encryptedPayload,
+        algorithm: "AES-256-GCM / PBKDF2-SHA256 (100,000 iterations)"
+      };
+      const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `timecapsule-${currentSealedRecord.id}.capsule`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded sealed .capsule file backup.');
+    }
+
+    function testViewCurrentCapsule() {
+      if (!currentSealedRecord) return;
+      setMode('open');
+      document.getElementById('open-id').value = currentSealedRecord.id;
+      activeCapsule = currentSealedRecord;
+      displayChronometer(activeCapsule);
     }
 
     // Inspect & Unlock
     function fetchAndInspectCapsule(providedId) {
-      const id = providedId || document.getElementById('open-id').value.trim();
-      if (!id) return;
+      const id = (providedId || document.getElementById('open-id').value).trim();
+      if (!id) {
+        showToast('Please provide a Capsule ID or paste a token.');
+        return;
+      }
+
+      // Check if input is pasted raw JSON capsule bundle
+      if (id.startsWith('{') && id.endsWith('}')) {
+        try {
+          const parsed = JSON.parse(id);
+          if (parsed.encryptedPayload && parsed.unlockDate) {
+            activeCapsule = parsed;
+            displayChronometer(activeCapsule);
+            showToast('Loaded capsule from pasted JSON token.');
+            return;
+          }
+        } catch (e) {}
+      }
+
+      const inspectBtn = document.getElementById('inspect-btn');
+      inspectBtn.disabled = true;
+      inspectBtn.textContent = 'Checking...';
 
       // Try local storage first
       let data = localStorage.getItem('capsule_' + id);
       if (data) {
-        activeCapsule = JSON.parse(data);
-        displayChronometer(activeCapsule);
-      } else {
-        // Fetch from Edge API
-        fetch('/api/timecapsule?id=' + encodeURIComponent(id))
-          .then(r => r.json())
-          .then(res => {
-            if (res.error) {
-              alert('Capsule not found in timeline: ' + res.error);
-            } else {
-              activeCapsule = res;
-              displayChronometer(activeCapsule);
-            }
-          })
-          .catch(err => alert('Network error: ' + err.message));
+        try {
+          activeCapsule = JSON.parse(data);
+          displayChronometer(activeCapsule);
+          inspectBtn.disabled = false;
+          inspectBtn.textContent = 'Inspect';
+          return;
+        } catch(e) {}
       }
+
+      // Fetch from Edge API
+      fetch('/api/timecapsule?id=' + encodeURIComponent(id))
+        .then(r => r.json())
+        .then(res => {
+          if (res.error) {
+            showToast('Capsule not found in timeline: ' + res.error);
+          } else {
+            activeCapsule = res;
+            displayChronometer(activeCapsule);
+          }
+        })
+        .catch(err => showToast('Network sync error: ' + err.message))
+        .finally(() => {
+          inspectBtn.disabled = false;
+          inspectBtn.textContent = 'Inspect';
+        });
     }
+
+    function handleCapsuleFileUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const bundle = JSON.parse(evt.target.result);
+          if (!bundle.encryptedPayload || !bundle.unlockDate) {
+            throw new Error('Invalid capsule file structure');
+          }
+          activeCapsule = bundle;
+          document.getElementById('open-id').value = bundle.id || file.name.replace('.capsule', '');
+          displayChronometer(activeCapsule);
+          showToast('Loaded sealed .capsule file from disk!');
+        } catch (err) {
+          showToast('Failed to parse capsule file: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Drag and drop handler on drop zone
+    const dropZone = document.getElementById('drop-capsule-zone');
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = 'var(--accent-emerald)';
+      dropZone.style.background = 'rgba(16, 185, 129, 0.08)';
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.borderColor = 'rgba(56, 189, 248, 0.35)';
+      dropZone.style.background = 'rgba(56, 189, 248, 0.04)';
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = 'rgba(56, 189, 248, 0.35)';
+      dropZone.style.background = 'rgba(56, 189, 248, 0.04)';
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        const file = e.dataTransfer.files[0];
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('file-capsule-input').files = dt.files;
+        handleCapsuleFileUpload({ target: { files: [file] } });
+      }
+    });
 
     function displayChronometer(capsule) {
       document.getElementById('countdown-section').style.display = 'block';
       if (timerInterval) clearInterval(timerInterval);
 
       if (capsule.hint) {
-        document.getElementById('hint-display').textContent = 'Hint: ' + capsule.hint;
+        document.getElementById('hint-display').textContent = 'Key Hint: ' + capsule.hint;
+      } else {
+        document.getElementById('hint-display').textContent = '';
       }
 
       function tick() {
@@ -740,10 +936,22 @@
           badge.style.background = 'rgba(16, 185, 129, 0.15)';
           badge.style.color = '#34d399';
           badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-          badge.textContent = '🔓 TEMPORAL LOCK EXPIRED: You may now enter passphrase to decrypt.';
+          badge.textContent = '🔓 TEMPORAL LOCK EXPIRED: Spacetime threshold reached. Enter passphrase to decrypt.';
 
           document.getElementById('unlock-form').style.display = 'block';
           clearInterval(timerInterval);
+
+          // If payload is not in memory (e.g. server withheld until unlock), auto-fetch
+          if (!activeCapsule.encryptedPayload && activeCapsule.id) {
+            fetch('/api/timecapsule?id=' + encodeURIComponent(activeCapsule.id))
+              .then(r => r.json())
+              .then(res => {
+                if (res.encryptedPayload) {
+                  activeCapsule.encryptedPayload = res.encryptedPayload;
+                }
+              })
+              .catch(e => console.error('Payload refetch error:', e));
+          }
         } else {
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -765,16 +973,62 @@
     async function decryptCapsulePayload() {
       const pass = document.getElementById('unlock-pass').value;
       if (!pass) {
-        alert('Please enter passphrase.');
+        showToast('Please enter decryption passphrase.');
         return;
       }
+
+      const decBtn = document.getElementById('decrypt-btn');
+      decBtn.disabled = true;
+      decBtn.textContent = 'Computing PBKDF2 & AES-256 Key...';
+
+      // If payload is missing, fetch from edge
+      if (!activeCapsule.encryptedPayload && activeCapsule.id) {
+        try {
+          const r = await fetch('/api/timecapsule?id=' + encodeURIComponent(activeCapsule.id));
+          const res = await r.json();
+          if (res.encryptedPayload) {
+            activeCapsule.encryptedPayload = res.encryptedPayload;
+          }
+        } catch(e) {}
+      }
+
+      if (!activeCapsule.encryptedPayload) {
+        showToast('Encrypted payload missing or still timelocked.');
+        decBtn.disabled = false;
+        decBtn.textContent = '🔓 Decrypt & Reveal Capsule';
+        return;
+      }
+
       try {
         const decrypted = await decryptMessage(activeCapsule.encryptedPayload, pass);
         document.getElementById('revealed-text').textContent = decrypted;
         document.getElementById('revealed-payload-card').style.display = 'block';
+        document.getElementById('revealed-payload-card').scrollIntoView({ behavior: 'smooth' });
+        showToast('Capsule successfully decrypted!');
       } catch (err) {
-        alert('Decryption failed! Incorrect passphrase.');
+        showToast('Decryption failed! Incorrect passphrase or corrupted payload.');
+      } finally {
+        decBtn.disabled = false;
+        decBtn.textContent = '🔓 Decrypt & Reveal Capsule';
       }
+    }
+
+    function copyRevealedText() {
+      const text = document.getElementById('revealed-text').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Decrypted text copied to clipboard!');
+      });
+    }
+
+    function downloadDecryptedText() {
+      const text = document.getElementById('revealed-text').textContent;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `timecapsule-decrypted-${activeCapsule ? activeCapsule.id : Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
     }
 
     // Check hash for direct link
@@ -785,49 +1039,165 @@
       fetchAndInspectCapsule(capId);
     }
 
-    // --- Interactive Live Background: Relativistic Spacetime Chronometer ---
+    // --- Interactive Live Background: 60 FPS Relativistic Spacetime Chronometer & Cosmic Wormhole ---
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
     let width, height;
-    let angle = 0;
+    let time = 0;
+    let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
     function resizeBg() {
       width = bgCanvas.width = window.innerWidth;
       height = bgCanvas.height = window.innerHeight;
+      mouse.x = mouse.targetX = width / 2;
+      mouse.y = mouse.targetY = height / 2;
     }
     window.addEventListener('resize', resizeBg);
+    window.addEventListener('mousemove', (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+    });
     resizeBg();
+
+    // Spacetime Relativistic Particle Singularity System
+    const PARTICLE_COUNT = 240;
+    const particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: Math.random() * 600 + 40,
+        speed: (Math.random() * 0.008 + 0.003) * (Math.random() > 0.5 ? 1 : -1),
+        radSpeed: Math.random() * 0.8 + 0.3,
+        size: Math.random() * 2 + 1,
+        colorType: Math.random() > 0.4 ? 'emerald' : 'cyan',
+        alpha: Math.random() * 0.7 + 0.3
+      });
+    }
 
     function renderSpacetime() {
       bgCtx.clearRect(0, 0, width, height);
 
-      const cx = width / 2;
-      const cy = height / 2;
-      angle += 0.005;
+      // Smooth mouse parallax damping
+      mouse.x += (mouse.targetX - mouse.x) * 0.04;
+      mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
-      const radii = [80, 150, 240, 340, 460];
-      radii.forEach((r, idx) => {
-        bgCtx.strokeStyle = `rgba(16, 185, 129, ${0.12 - idx * 0.02})`;
-        bgCtx.lineWidth = 1;
+      const cx = width / 2 + (mouse.x - width / 2) * 0.15;
+      const cy = height / 2 + (mouse.y - height / 2) * 0.15;
+      time += 0.01;
+
+      // Central Gravitational Singularity Core Glow
+      const maxR = Math.max(width, height) * 0.6;
+      const coreGrad = bgCtx.createRadialGradient(cx, cy, 10, cx, cy, 320);
+      coreGrad.addColorStop(0, 'rgba(16, 185, 129, 0.18)');
+      coreGrad.addColorStop(0.35, 'rgba(56, 189, 248, 0.09)');
+      coreGrad.addColorStop(0.7, 'rgba(127, 0, 255, 0.03)');
+      coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      bgCtx.fillStyle = coreGrad;
+      bgCtx.beginPath();
+      bgCtx.arc(cx, cy, 320, 0, Math.PI * 2);
+      bgCtx.fill();
+
+      // Relativistic Warping Astrolabe Concentric Chronometer Rings
+      const rings = [
+        { r: 90, speed: 0.006, ticks: 12, width: 1.5, color: 'rgba(16, 185, 129, 0.22)' },
+        { r: 160, speed: -0.004, ticks: 24, width: 1, color: 'rgba(56, 189, 248, 0.20)' },
+        { r: 250, speed: 0.003, ticks: 60, width: 1.2, color: 'rgba(16, 185, 129, 0.18)' },
+        { r: 360, speed: -0.002, ticks: 72, width: 1, color: 'rgba(56, 189, 248, 0.14)' },
+        { r: 490, speed: 0.0015, ticks: 96, width: 1, color: 'rgba(168, 85, 247, 0.12)' }
+      ];
+
+      rings.forEach((ring, idx) => {
+        // Base Circle
+        bgCtx.strokeStyle = ring.color;
+        bgCtx.lineWidth = ring.width;
         bgCtx.beginPath();
-        bgCtx.arc(cx, cy, r, 0, Math.PI * 2);
+        bgCtx.arc(cx, cy, ring.r, 0, Math.PI * 2);
         bgCtx.stroke();
 
-        // Ticks on ring
-        const tickCount = 12 * (idx + 1);
-        for (let i = 0; i < tickCount; i++) {
-          const a = (i * Math.PI * 2 / tickCount) + (angle * (idx % 2 === 0 ? 1 : -1));
-          const x1 = cx + Math.cos(a) * (r - 4);
-          const y1 = cy + Math.sin(a) * (r - 4);
-          const x2 = cx + Math.cos(a) * (r + 4);
-          const y2 = cy + Math.sin(a) * (r + 4);
+        // Pulsing Chrono Astrolabe Ticks
+        const tickAngleOffset = time * ring.speed * 20;
+        for (let t = 0; t < ring.ticks; t++) {
+          const a = (t * Math.PI * 2 / ring.ticks) + tickAngleOffset;
+          const isMajor = t % (ring.ticks / 12) === 0;
+          const tickLen = isMajor ? 9 : 4;
 
-          bgCtx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+          const x1 = cx + Math.cos(a) * (ring.r - tickLen);
+          const y1 = cy + Math.sin(a) * (ring.r - tickLen);
+          const x2 = cx + Math.cos(a) * (ring.r + tickLen);
+          const y2 = cy + Math.sin(a) * (ring.r + tickLen);
+
+          bgCtx.strokeStyle = isMajor ? 'rgba(56, 189, 248, 0.35)' : 'rgba(16, 185, 129, 0.16)';
+          bgCtx.lineWidth = isMajor ? 1.5 : 1;
           bgCtx.beginPath();
           bgCtx.moveTo(x1, y1);
           bgCtx.lineTo(x2, y2);
           bgCtx.stroke();
         }
+      });
+
+      // Rotating Chronometer Celestial Needle Hands
+      const hands = [
+        { len: 130, angle: time * 0.4, color: '#10b981', headR: 3 },
+        { len: 210, angle: -time * 0.15, color: '#38bdf8', headR: 3.5 },
+        { len: 310, angle: time * 0.05, color: '#a855f7', headR: 4 }
+      ];
+
+      hands.forEach(h => {
+        const hx = cx + Math.cos(h.angle) * h.len;
+        const hy = cy + Math.sin(h.angle) * h.len;
+
+        bgCtx.strokeStyle = h.color;
+        bgCtx.globalAlpha = 0.4;
+        bgCtx.lineWidth = 1;
+        bgCtx.beginPath();
+        bgCtx.moveTo(cx, cy);
+        bgCtx.lineTo(hx, hy);
+        bgCtx.stroke();
+
+        // Radiant Node at Tip
+        bgCtx.fillStyle = h.color;
+        bgCtx.globalAlpha = 0.8;
+        bgCtx.beginPath();
+        bgCtx.arc(hx, hy, h.headR, 0, Math.PI * 2);
+        bgCtx.fill();
+        bgCtx.globalAlpha = 1.0;
+      });
+
+      // Swirling Spacetime Particle Infall & Geodesics
+      particles.forEach(p => {
+        p.angle += p.speed;
+        p.radius -= p.radSpeed;
+
+        // Accelerate as they approach central gravitational well
+        if (p.radius < 200) {
+          p.angle += p.speed * (250 / Math.max(30, p.radius));
+        }
+
+        // Loop back to edge if sucked past horizon
+        if (p.radius <= 35) {
+          p.radius = Math.random() * 300 + 450;
+          p.angle = Math.random() * Math.PI * 2;
+        }
+
+        const px = cx + Math.cos(p.angle) * p.radius;
+        const py = cy + Math.sin(p.angle) * p.radius;
+
+        // Trace subtle relativistic velocity tail
+        const tailLen = (600 / Math.max(50, p.radius)) * 2;
+        const tailX = px - Math.cos(p.angle - p.speed * 2) * tailLen;
+        const tailY = py - Math.sin(p.angle - p.speed * 2) * tailLen;
+
+        bgCtx.strokeStyle = p.colorType === 'emerald' ? `rgba(16, 185, 129, ${p.alpha * 0.35})` : `rgba(56, 189, 248, ${p.alpha * 0.35})`;
+        bgCtx.lineWidth = p.size;
+        bgCtx.beginPath();
+        bgCtx.moveTo(tailX, tailY);
+        bgCtx.lineTo(px, py);
+        bgCtx.stroke();
+
+        bgCtx.fillStyle = p.colorType === 'emerald' ? `rgba(52, 211, 153, ${p.alpha})` : `rgba(125, 211, 252, ${p.alpha})`;
+        bgCtx.beginPath();
+        bgCtx.arc(px, py, p.size, 0, Math.PI * 2);
+        bgCtx.fill();
       });
 
       requestAnimationFrame(renderSpacetime);

@@ -988,6 +988,21 @@
       return rstr2hex(binl2rstr(binlMD5(rstr2binl(utf8), utf8.length * 8)));
     }
 
+    function md5Bytes(bytes) {
+      const output = new Int32Array(Math.ceil((bytes.length + 8) / 64) * 16);
+      for (let i = 0; i < bytes.length; i++) {
+        output[i >> 2] |= (bytes[i] & 0xff) << ((i % 4) * 8);
+      }
+      const hexTab = '0123456789abcdef';
+      const result = binlMD5(output, bytes.length * 8);
+      let hex = '';
+      for (let i = 0; i < result.length * 4; i++) {
+        const byte = (result[i >> 2] >>> ((i % 4) * 8)) & 0xff;
+        hex += hexTab.charAt((byte >>> 4) & 0x0f) + hexTab.charAt(byte & 0x0f);
+      }
+      return hex;
+    }
+
     // CRC-32 Implementation
     function crc32(str) {
       let c;
@@ -1189,9 +1204,8 @@
           crypto.subtle.digest('SHA-512', arrayBuf)
         ]);
 
-        // MD5 on binary
-        const binaryStr = new Uint8Array(arrayBuf).reduce((data, byte) => data + String.fromCharCode(byte), '');
-        const md5File = md5(binaryStr);
+        // Fast direct binary MD5 without string memory allocations
+        const md5File = md5Bytes(new Uint8Array(arrayBuf));
 
         pBar.style.width = '100%';
         document.getElementById('file-status').textContent = 'Verification Complete';

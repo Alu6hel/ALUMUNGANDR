@@ -102,7 +102,7 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.5;
+      opacity: 0.65;
     }
 
     header {
@@ -198,7 +198,7 @@
     /* Studio Layout */
     .studio-grid {
       display: grid;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 390px;
       gap: 1.5rem;
     }
     @media (max-width: 1000px) {
@@ -206,7 +206,7 @@
     }
 
     .card {
-      background: rgba(14, 16, 22, 0.85);
+      background: rgba(14, 16, 22, 0.88);
       border: var(--border-dashed);
       border-radius: 12px;
       padding: 1.5rem;
@@ -220,7 +220,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 1.5rem;
@@ -233,6 +233,7 @@
       border-radius: 6px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8);
       background: #111;
+      cursor: crosshair;
     }
 
     /* Template Bar */
@@ -270,7 +271,7 @@
     .controls-col {
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
+      gap: 1.1rem;
     }
     .form-group {
       display: flex;
@@ -306,6 +307,31 @@
       accent-color: var(--accent-amber);
     }
 
+    .sticker-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+    .sticker-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1.25rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sticker-btn:hover {
+      border-color: var(--accent-amber);
+      transform: scale(1.1);
+      background: rgba(245, 158, 11, 0.15);
+    }
+
     .btn-row {
       display: flex;
       gap: 0.5rem;
@@ -318,7 +344,7 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.8rem;
       font-weight: 600;
-      padding: 0.65rem;
+      padding: 0.75rem;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
@@ -360,7 +386,7 @@
 <body>
   <canvas id="bg-canvas"></canvas>
 
-                        <header class="site-header">
+  <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -455,6 +481,10 @@
             <span style="font-size:1.5rem;">🔴</span>
             <span>TWO BUTTONS</span>
           </div>
+          <div class="template-card" onclick="loadMemePreset('matrix')">
+            <span style="font-size:1.5rem;">🕶️</span>
+            <span>MATRIX</span>
+          </div>
           <div class="template-card" onclick="document.getElementById('file-upload').click()">
             <span style="font-size:1.5rem;">📁</span>
             <span>UPLOAD...</span>
@@ -476,6 +506,21 @@
         </div>
 
         <div class="form-group">
+          <label class="form-label">Font Family &amp; Styling</label>
+          <div style="display:flex; gap:0.5rem;">
+            <select id="font-family" class="form-input" style="flex:1;" onchange="renderMeme()">
+              <option value="Impact" selected>Impact (Classic Meme)</option>
+              <option value="'JetBrains Mono', monospace">JetBrains Mono (Hacker)</option>
+              <option value="'Inter', sans-serif">Inter (Modern Clean)</option>
+              <option value="'Arial Black', sans-serif">Arial Black (Heavy Bold)</option>
+            </select>
+            <label style="display:flex; align-items:center; gap:0.35rem; font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted); cursor:pointer;">
+              <input type="checkbox" id="all-caps" checked onchange="renderMeme()"> CAPS
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
           <div style="display:flex; justify-content:space-between;">
             <label class="form-label">Font Size</label>
             <span id="font-size-val" style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--accent-amber);">42px</span>
@@ -486,17 +531,45 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">Text Color</label>
-          <div style="display:flex; gap:0.5rem;">
-            <input type="color" id="text-color" value="#ffffff" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
-            <input type="color" id="stroke-color" value="#000000" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
-            <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted); align-self:center;">Fill &amp; Outline</span>
+          <label class="form-label">Text Colors (Fill &amp; Stroke)</label>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="color" id="text-color" value="#ffffff" title="Text Fill" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
+            <input type="color" id="stroke-color" value="#000000" title="Text Outline" style="width:40px; height:36px; border:none; border-radius:6px; cursor:pointer;" onchange="renderMeme()">
+            <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:var(--text-muted);">Fill &amp; Outline</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Canvas Color Filter</label>
+          <select id="image-filter" class="form-input" onchange="renderMeme()">
+            <option value="none" selected>Normal (Original)</option>
+            <option value="deep-fried">Deep Fried (High Saturation &amp; Contrast)</option>
+            <option value="grayscale">Grayscale (Noir Classic)</option>
+            <option value="sepia">Cyber Sepia (Vintage Bronze)</option>
+            <option value="cyberpunk">Neon Cyberpunk Overlay</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <label class="form-label">Sticker Stamps</label>
+            <button type="button" onclick="clearStickers()" style="background:none; border:none; color:var(--accent-coral); font-family:'JetBrains Mono'; font-size:0.7rem; cursor:pointer;">Clear Stickers</button>
+          </div>
+          <div class="sticker-grid">
+            <button type="button" class="sticker-btn" onclick="addSticker('🔥')">🔥</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('💀')">💀</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('🚀')">🚀</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('🤡')">🤡</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('👑')">👑</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('💯')">💯</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('⚡')">⚡</button>
+            <button type="button" class="sticker-btn" onclick="addSticker('🎯')">🎯</button>
           </div>
         </div>
 
         <div class="form-group" style="margin-top:auto;">
           <div class="btn-row">
-            <button class="btn-action" onclick="copyMemeImage()">
+            <button class="btn-action" id="copy-btn" onclick="copyMemeImage()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               Copy Image
             </button>
@@ -510,7 +583,7 @@
     </div>
   </main>
 
-                        <footer class="site-footer">
+  <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -571,11 +644,59 @@
     const ctx = canvas.getContext('2d');
     let loadedImage = null;
     let currentPreset = 'cyberpunk';
+    let stickers = [];
 
     function updateFontSize(val) {
       document.getElementById('font-size-val').textContent = val + 'px';
       renderMeme();
     }
+
+    function addSticker(emoji) {
+      stickers.push({
+        emoji: emoji,
+        x: canvas.width / 2 + (Math.random() - 0.5) * 160,
+        y: canvas.height / 2 + (Math.random() - 0.5) * 160,
+        size: 54
+      });
+      renderMeme();
+    }
+
+    function clearStickers() {
+      stickers = [];
+      renderMeme();
+    }
+
+    // Support dragging stickers
+    let draggingSticker = null;
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const mouseX = (e.clientX - rect.left) * scaleX;
+      const mouseY = (e.clientY - rect.top) * scaleY;
+
+      for (let i = stickers.length - 1; i >= 0; i--) {
+        const s = stickers[i];
+        if (Math.hypot(s.x - mouseX, s.y - mouseY) < s.size) {
+          draggingSticker = s;
+          break;
+        }
+      }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!draggingSticker) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      draggingSticker.x = (e.clientX - rect.left) * scaleX;
+      draggingSticker.y = (e.clientY - rect.top) * scaleY;
+      renderMeme();
+    });
+
+    window.addEventListener('mouseup', () => {
+      draggingSticker = null;
+    });
 
     function drawPresetBackground(name) {
       ctx.fillStyle = '#0f172a';
@@ -598,7 +719,6 @@
           ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
         }
       } else if (name === 'drake') {
-        // Two horizontal split panels
         ctx.fillStyle = '#fde047';
         ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
         ctx.fillStyle = '#38bdf8';
@@ -613,7 +733,6 @@
       } else if (name === 'buttons') {
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // Red buttons
         ctx.fillStyle = '#ef4444';
         ctx.beginPath();
         ctx.arc(canvas.width * 0.35, canvas.height * 0.45, 60, 0, Math.PI * 2);
@@ -621,6 +740,16 @@
         ctx.beginPath();
         ctx.arc(canvas.width * 0.65, canvas.height * 0.45, 60, 0, Math.PI * 2);
         ctx.fill();
+      } else if (name === 'matrix') {
+        ctx.fillStyle = '#020e06';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
+        ctx.font = '14px monospace';
+        for (let x = 20; x < canvas.width; x += 24) {
+          for (let y = 30; y < canvas.height; y += 28) {
+            ctx.fillText(String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96)), x, y);
+          }
+        }
       } else {
         // Success
         const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 50, canvas.width/2, canvas.height/2, 350);
@@ -631,8 +760,52 @@
       }
     }
 
+    function drawWrappedText(context, text, x, y, maxWidth, lineHeight, isTop) {
+      if (!text) return;
+      const words = text.split(' ');
+      const lines = [];
+      let currentLine = '';
+
+      for (let i = 0; i < words.length; i++) {
+        const testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+        const metrics = context.measureText(testLine);
+        if (metrics.width > maxWidth && i > 0) {
+          lines.push(currentLine);
+          currentLine = words[i];
+        } else {
+          currentLine = testLine;
+        }
+      }
+      if (currentLine) lines.push(currentLine);
+
+      let startY = y;
+      if (!isTop) {
+        startY = y - ((lines.length - 1) * lineHeight);
+      }
+
+      lines.forEach((line, index) => {
+        const lineY = startY + (index * lineHeight);
+        context.strokeText(line, x, lineY);
+        context.fillText(line, x, lineY);
+      });
+    }
+
     function renderMeme() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Filters
+      const filterMode = document.getElementById('image-filter').value;
+      if (filterMode === 'deep-fried') {
+        ctx.filter = 'contrast(200%) saturate(220%)';
+      } else if (filterMode === 'grayscale') {
+        ctx.filter = 'grayscale(100%) contrast(120%)';
+      } else if (filterMode === 'sepia') {
+        ctx.filter = 'sepia(90%) contrast(110%)';
+      } else if (filterMode === 'cyberpunk') {
+        ctx.filter = 'hue-rotate(280deg) saturate(180%)';
+      } else {
+        ctx.filter = 'none';
+      }
 
       if (loadedImage) {
         ctx.drawImage(loadedImage, 0, 0, canvas.width, canvas.height);
@@ -640,31 +813,49 @@
         drawPresetBackground(currentPreset);
       }
 
-      const topText = document.getElementById('top-text').value;
-      const bottomText = document.getElementById('bottom-text').value;
+      ctx.filter = 'none';
+
+      // Stickers
+      stickers.forEach(s => {
+        ctx.font = `${s.size}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(s.emoji, s.x, s.y);
+      });
+
+      // Text settings
+      let topText = document.getElementById('top-text').value;
+      let bottomText = document.getElementById('bottom-text').value;
+      const allCaps = document.getElementById('all-caps').checked;
+      if (allCaps) {
+        topText = topText.toUpperCase();
+        bottomText = bottomText.toUpperCase();
+      }
+
+      const fontFamily = document.getElementById('font-family').value;
       const fontSize = parseInt(document.getElementById('font-size').value, 10);
       const fillColor = document.getElementById('text-color').value;
       const strokeColor = document.getElementById('stroke-color').value;
 
-      ctx.font = `bold ${fontSize}px Impact, "Arial Black", sans-serif`;
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
       ctx.fillStyle = fillColor;
       ctx.strokeStyle = strokeColor;
-      ctx.lineWidth = Math.max(3, fontSize / 9);
+      ctx.lineWidth = Math.max(3.5, fontSize / 8);
       ctx.lineJoin = 'round';
 
-      // Draw Top Text
+      const maxWidth = canvas.width - 40;
+      const lineHeight = fontSize * 1.15;
+
+      // Draw Top Wrapped Text
       if (topText) {
-        const topY = fontSize + 25;
-        ctx.strokeText(topText.toUpperCase(), canvas.width / 2, topY);
-        ctx.fillText(topText.toUpperCase(), canvas.width / 2, topY);
+        drawWrappedText(ctx, topText, canvas.width / 2, fontSize + 25, maxWidth, lineHeight, true);
       }
 
-      // Draw Bottom Text
+      // Draw Bottom Wrapped Text
       if (bottomText) {
-        const bottomY = canvas.height - 25;
-        ctx.strokeText(bottomText.toUpperCase(), canvas.width / 2, bottomY);
-        ctx.fillText(bottomText.toUpperCase(), canvas.width / 2, bottomY);
+        drawWrappedText(ctx, bottomText, canvas.width / 2, canvas.height - 30, maxWidth, lineHeight, false);
       }
     }
 
@@ -703,10 +894,17 @@
       try {
         canvas.toBlob(async blob => {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-          alert('Meme copied to clipboard as PNG!');
+          const btn = document.getElementById('copy-btn');
+          btn.textContent = '✔ Copied PNG!';
+          setTimeout(() => {
+            btn.innerHTML = `
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy Image
+            `;
+          }, 2500);
         });
       } catch (err) {
-        alert('Could not copy image to clipboard: ' + err.message);
+        alert('Could not copy image directly: ' + err.message);
       }
     }
 
@@ -715,11 +913,12 @@
 
     renderMeme();
 
-    // --- Interactive Live Background: Pop-Art Halftone Mesh ---
+    // --- Interactive Live Background: 60 FPS Kinetic Pop-Art Halftone Wave ---
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
     let width, height;
-    let mouse = { x: -1000, y: -1000 };
+    let animTime = 0;
+    let mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
 
     function resizeBg() {
       width = bgCanvas.width = window.innerWidth;
@@ -727,28 +926,43 @@
     }
     window.addEventListener('resize', resizeBg);
     window.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
     });
     resizeBg();
 
     function renderPopHalftone() {
       bgCtx.clearRect(0, 0, width, height);
+      animTime += 0.025;
 
-      const spacing = 36;
+      mouse.x += (mouse.targetX - mouse.x) * 0.08;
+      mouse.y += (mouse.targetY - mouse.y) * 0.08;
+
+      const spacing = 38;
       for (let x = spacing / 2; x < width; x += spacing) {
         for (let y = spacing / 2; y < height; y += spacing) {
           const dx = mouse.x - x;
           const dy = mouse.y - y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          const maxDist = 200;
-          let r = 1.5;
+          // Kinetic undulating diagonal ripple wave
+          const wave = Math.sin((x * 0.008) + (y * 0.008) + animTime) * 1.8;
+          let r = Math.max(1.2, 2.2 + wave);
+
+          const maxDist = 220;
+          let isHotspot = false;
           if (dist < maxDist) {
-            r = 1.5 + (1 - dist / maxDist) * 7;
+            r += (1 - dist / maxDist) * 7.5;
+            isHotspot = true;
           }
 
-          bgCtx.fillStyle = dist < maxDist ? 'rgba(245, 158, 11, 0.4)' : 'rgba(255, 255, 255, 0.04)';
+          if (isHotspot) {
+            bgCtx.fillStyle = 'rgba(245, 158, 11, 0.5)';
+          } else {
+            const alpha = Math.max(0.04, 0.06 + wave * 0.02);
+            bgCtx.fillStyle = `rgba(236, 72, 153, ${alpha})`;
+          }
+
           bgCtx.beginPath();
           bgCtx.arc(x, y, r, 0, Math.PI * 2);
           bgCtx.fill();

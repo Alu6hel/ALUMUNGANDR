@@ -17,6 +17,7 @@ import * as knowledge from './functions/api/knowledge.js';
 import * as consultation from './functions/api/consultation.js';
 import * as speedtestApi from './functions/api/speedtest.js';
 import * as callApi from './functions/api/call.js';
+import * as contactApi from './functions/api/contact.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -222,7 +223,8 @@ Hiring: https://alumungandr.com/contact
     }
 
     // Route /api/timecapsule (Encrypted time capsule)
-    if (url.pathname === '/api/timecapsule') {
+    if (url.pathname === '/api/timecapsule' || url.pathname === '/api/timecapsule/') {
+      if (method === 'OPTIONS' && timecapsule.onRequestOptions) return timecapsule.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && timecapsule.onRequestPost) return timecapsule.onRequestPost({ request, env, ctx });
       if (method === 'GET' && timecapsule.onRequestGet) return timecapsule.onRequestGet({ request, env, ctx });
     }
@@ -296,6 +298,13 @@ Hiring: https://alumungandr.com/contact
     if (url.pathname === '/api/consultation' || url.pathname === '/api/consultation/') {
       if (method === 'OPTIONS' && consultation.onRequestOptions) return consultation.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && consultation.onRequestPost) return consultation.onRequestPost({ request, env, ctx });
+    }
+
+    // Route /api/contact (Secure Communications Uplink & Dispatch Receipt System)
+    if (url.pathname === '/api/contact' || url.pathname === '/api/contact/') {
+      if (method === 'OPTIONS' && contactApi.onRequestOptions) return contactApi.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && contactApi.onRequestPost) return contactApi.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && contactApi.onRequestGet) return contactApi.onRequestGet({ request, env, ctx });
     }
 
     // Route /llms.txt & /llms-full.txt (2027 AI Agent & Search Overview Index)

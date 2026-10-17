@@ -537,7 +537,10 @@
       <!-- Left Raw Editor -->
       <div class="pane-card">
         <div class="pane-header">
-          <span>Input JSON Raw</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>Input JSON Raw</span>
+            <span id="charCount" style="color:var(--text-muted); font-size:0.72rem;">0 chars</span>
+          </div>
           <div class="status-indicator">
             <span class="status-dot" id="statusDot"></span>
             <span id="statusText">Valid</span>
@@ -545,18 +548,29 @@
         </div>
         <textarea id="rawInput" class="raw-textarea" placeholder="Paste messy or unformatted JSON here..." autofocus></textarea>
         <div class="error-strip" id="errorStrip">
-          <span>&#x26A0;&#xFE0F;</span>
-          <span id="errorMessage">Syntax Error</span>
+          <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
+            <span>&#x26A0;&#xFE0F;</span>
+            <span id="errorMessage" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Syntax Error</span>
+          </div>
+          <button id="btnAutoFix" style="padding:3px 10px; font-size:0.72rem; font-family:var(--font-mono); font-weight:700; background:rgba(239, 68, 68, 0.25); border:1px solid #ef4444; color:#fca5a5; border-radius:4px; cursor:pointer; flex-shrink:0;" title="Auto-fix quotes, trailing commas, and unquoted keys">Quick Fix</button>
         </div>
       </div>
 
       <!-- Right Formatted & Tree Inspector -->
       <div class="pane-card">
         <div class="pane-header">
-          <span>Formatted Inspector &amp; Tree</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="outputPaneTitle">Inspector</span>
+            <div id="treeControls" style="display:flex; gap:4px;">
+              <button id="btnExpandAll" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary); font-size:0.68rem; padding:2px 6px; border-radius:3px; cursor:pointer;" title="Expand all nodes">Expand All</button>
+              <button id="btnCollapseAll" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary); font-size:0.68rem; padding:2px 6px; border-radius:3px; cursor:pointer;" title="Collapse all nodes">Collapse All</button>
+            </div>
+          </div>
           <div class="view-mode-tabs">
             <button class="view-tab active" id="tabTree">Tree View</button>
-            <button class="view-tab" id="tabCode">Code View</button>
+            <button class="view-tab" id="tabCode">Formatted JSON</button>
+            <button class="view-tab" id="tabTS">TypeScript</button>
+            <button class="view-tab" id="tabYAML">YAML</button>
           </div>
         </div>
         <div class="tree-scroll-container" id="treeOutput">
@@ -627,66 +641,209 @@
 
   <script>
     /* =========================================================
-       1. LIVE DATA-LATTICE CANVAS BACKGROUND
+       1. SMOOTH LIVE DATA-CONSTELLATION CANVAS BACKGROUND
        ========================================================= */
     const canvas = document.getElementById('latticeCanvas');
     const ctx = canvas.getContext('2d');
-    let width, height;
-    const gridNodes = [];
+    let width = 0, height = 0;
+    const particles = [];
+    const pulses = [];
+    const mouse = { x: -9999, y: -9999, active: false };
+    let animationId = null;
+    let lastTime = performance.now();
 
-    function initLattice() {
+    function getThemePalette() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'amber') {
+        return {
+          nodeFill: 'rgba(245, 158, 11, 0.75)',
+          nodeDim: 'rgba(245, 158, 11, 0.2)',
+          lineRgb: '245, 158, 11',
+          pulseColor: '#f59e0b',
+          glow: 'rgba(245, 158, 11, 0.35)',
+          bgFade: 'rgba(7, 8, 10, 0.22)'
+        };
+      }
+      if (theme === 'paper') {
+        return {
+          nodeFill: 'rgba(71, 85, 105, 0.65)',
+          nodeDim: 'rgba(100, 116, 139, 0.2)',
+          lineRgb: '71, 85, 105',
+          pulseColor: '#0f172a',
+          glow: 'rgba(15, 23, 42, 0.2)',
+          bgFade: 'rgba(248, 250, 252, 0.22)'
+        };
+      }
+      return {
+        nodeFill: 'rgba(56, 189, 248, 0.85)',
+        nodeDim: 'rgba(168, 85, 247, 0.35)',
+        lineRgb: '56, 189, 248',
+        pulseColor: '#38bdf8',
+        glow: 'rgba(56, 189, 248, 0.4)',
+        bgFade: 'rgba(7, 8, 10, 0.22)'
+      };
+    }
+
+    function initConstellation() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      gridNodes.length = 0;
+      particles.length = 0;
+      pulses.length = 0;
 
-      const spacing = 60;
-      for (let x = 0; x < width; x += spacing) {
-        for (let y = 0; y < height; y += spacing) {
-          if (Math.random() > 0.4) {
-            gridNodes.push({
-              x: x + (Math.random() - 0.5) * 15,
-              y: y + (Math.random() - 0.5) * 15,
-              pulse: Math.random() * Math.PI,
-              active: Math.random() > 0.8
-            });
+      const count = Math.min(65, Math.max(25, Math.floor((width * height) / 22000)));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: 1.4 + Math.random() * 2.0,
+          phase: Math.random() * Math.PI * 2,
+          isHub: Math.random() > 0.82
+        });
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      initConstellation();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.active = false;
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    function renderConstellation(now) {
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+
+      const pal = getThemePalette();
+
+      ctx.fillStyle = pal.bgFade;
+      ctx.fillRect(0, 0, width, height);
+
+      const maxDist = 135;
+      const maxDistSq = maxDist * maxDist;
+
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx * (dt * 60);
+        p.y += p.vy * (dt * 60);
+        p.phase += 0.02;
+
+        if (p.x < 0) { p.x = 0; p.vx *= -1; }
+        else if (p.x > width) { p.x = width; p.vx *= -1; }
+        if (p.y < 0) { p.y = 0; p.vy *= -1; }
+        else if (p.y > height) { p.y = height; p.vy *= -1; }
+
+        // Subtle mouse pull
+        if (mouse.active) {
+          const mdx = mouse.x - p.x;
+          const mdy = mouse.y - p.y;
+          const mDist = Math.hypot(mdx, mdy);
+          if (mDist < 140 && mDist > 5) {
+            const force = (1 - mDist / 140) * 0.08;
+            p.x += (mdx / mDist) * force * 5;
+            p.y += (mdy / mDist) * force * 5;
+          }
+        }
+
+        // Draw particle node
+        const size = p.isHub ? p.radius * 1.5 : p.radius;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = p.isHub ? pal.nodeFill : pal.nodeDim;
+        ctx.fill();
+
+        // Connect nearby nodes
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
+            const alpha = 0.18 * (1 - dist / maxDist);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(${pal.lineRgb}, ${alpha})`;
+            ctx.lineWidth = p.isHub || p2.isHub ? 1.2 : 0.8;
+            ctx.stroke();
+
+            // Spawn occasional pulse between connected nodes
+            if (Math.random() < 0.0007 && pulses.length < 18) {
+              pulses.push({
+                x: p.x, y: p.y,
+                tx: p2.x, ty: p2.y,
+                t: 0,
+                speed: 0.016 + Math.random() * 0.015
+              });
+            }
+          }
+        }
+
+        // Connect to mouse if nearby
+        if (mouse.active) {
+          const mdx = mouse.x - p.x;
+          const mdy = mouse.y - p.y;
+          const mDist = Math.hypot(mdx, mdy);
+          if (mDist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(${pal.lineRgb}, ${0.28 * (1 - mDist / 120)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
           }
         }
       }
-    }
-    window.addEventListener('resize', initLattice);
-    initLattice();
 
-    function drawLattice() {
-      ctx.fillStyle = 'rgba(7, 8, 10, 0.2)';
-      ctx.fillRect(0, 0, width, height);
+      // Render transit pulses
+      for (let k = pulses.length - 1; k >= 0; k--) {
+        const pulse = pulses[k];
+        pulse.t += pulse.speed;
+        const curX = pulse.x + (pulse.tx - pulse.x) * pulse.t;
+        const curY = pulse.y + (pulse.ty - pulse.y) * pulse.t;
 
-      for (let i = 0; i < gridNodes.length; i++) {
-        const n = gridNodes[i];
-        n.pulse += 0.02;
-
-        const size = n.active ? 2.5 : 1.5;
         ctx.beginPath();
-        ctx.arc(n.x, n.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = n.active ? 'rgba(56, 189, 248, 0.8)' : 'rgba(255, 255, 255, 0.12)';
+        ctx.arc(curX, curY, 2, 0, Math.PI * 2);
+        ctx.fillStyle = pal.pulseColor;
+        ctx.shadowColor = pal.pulseColor;
+        ctx.shadowBlur = 6;
         ctx.fill();
+        ctx.shadowBlur = 0;
 
-        // Draw sparse tree connections
-        if (i % 3 === 0 && i + 1 < gridNodes.length) {
-          const next = gridNodes[i + 1];
-          ctx.beginPath();
-          ctx.moveTo(n.x, n.y);
-          ctx.lineTo(next.x, next.y);
-          ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)';
-          ctx.stroke();
-        }
+        if (pulse.t >= 1) pulses.splice(k, 1);
       }
-      requestAnimationFrame(drawLattice);
+
+      animationId = requestAnimationFrame(renderConstellation);
     }
-    requestAnimationFrame(drawLattice);
+
+    initConstellation();
+    animationId = requestAnimationFrame(renderConstellation);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (animationId) cancelAnimationFrame(animationId);
+      } else {
+        lastTime = performance.now();
+        animationId = requestAnimationFrame(renderConstellation);
+      }
+    });
 
 
     /* =========================================================
-       2. JSON PARSER, VALIDATOR, BEAUTIFIER & TREE RENDERER
+       2. ROBUST JSON PARSER, VALIDATOR, REPAIR & MULTI-VIEW ENGINE
        ========================================================= */
     const rawInput = document.getElementById('rawInput');
     const treeOutput = document.getElementById('treeOutput');
@@ -694,6 +851,12 @@
     const statusText = document.getElementById('statusText');
     const errorStrip = document.getElementById('errorStrip');
     const errorMessage = document.getElementById('errorMessage');
+    const btnAutoFix = document.getElementById('btnAutoFix');
+    const charCount = document.getElementById('charCount');
+    const outputPaneTitle = document.getElementById('outputPaneTitle');
+    const treeControls = document.getElementById('treeControls');
+    const btnExpandAll = document.getElementById('btnExpandAll');
+    const btnCollapseAll = document.getElementById('btnCollapseAll');
     const btnFormat = document.getElementById('btnFormat');
     const btnMinify = document.getElementById('btnMinify');
     const btnCopyResult = document.getElementById('btnCopyResult');
@@ -704,10 +867,13 @@
     const sampleSelect = document.getElementById('sampleSelect');
     const tabTree = document.getElementById('tabTree');
     const tabCode = document.getElementById('tabCode');
+    const tabTS = document.getElementById('tabTS');
+    const tabYAML = document.getElementById('tabYAML');
     const toast = document.getElementById('toast');
 
     let currentParsedData = null;
-    let activeViewMode = 'tree'; // 'tree' or 'code'
+    let activeViewMode = 'tree'; // 'tree', 'code', 'ts', 'yaml'
+    let currentGeneratedCode = '';
 
     const SAMPLES = {
       user: {
@@ -740,14 +906,24 @@
       }
     };
 
+    function updateMetrics() {
+      const val = rawInput.value;
+      const chars = val.length;
+      const lines = val ? val.split('\n').length : 0;
+      charCount.textContent = `${lines} ${lines === 1 ? 'line' : 'lines'}, ${chars.toLocaleString()} chars`;
+    }
+
     function parseAndRender() {
+      updateMetrics();
       const raw = rawInput.value.trim();
+
       if (!raw) {
-        treeOutput.innerHTML = '<span style="color:var(--text-muted);">Paste JSON on the left to inspect tree and validate syntax.</span>';
+        treeOutput.innerHTML = '<span style="color:var(--text-muted);">Paste or type JSON on the left to inspect tree, validate syntax, or convert format.</span>';
         statusDot.className = 'status-dot';
         statusText.textContent = 'Empty';
         errorStrip.classList.remove('show');
         currentParsedData = null;
+        currentGeneratedCode = '';
         return;
       }
 
@@ -757,31 +933,80 @@
         statusText.textContent = 'Valid JSON';
         errorStrip.classList.remove('show');
 
-        if (activeViewMode === 'tree') {
-          renderTreeView(currentParsedData);
-        } else {
-          renderCodeView(currentParsedData);
-        }
+        renderActiveView();
       } catch (err) {
         statusDot.className = 'status-dot error';
         statusText.textContent = 'Invalid JSON';
-        errorMessage.textContent = err.message;
+        
+        // Pinpoint line/col from error message
+        let extraInfo = '';
+        const posMatch = err.message.match(/position\s+(\d+)/i);
+        if (posMatch) {
+          const pos = parseInt(posMatch[1], 10);
+          const linesUpTo = raw.substring(0, pos).split('\n');
+          const lineNum = linesUpTo.length;
+          const colNum = linesUpTo[linesUpTo.length - 1].length + 1;
+          extraInfo = ` (Line ${lineNum}, Col ${colNum})`;
+        }
+        
+        errorMessage.textContent = `${err.message}${extraInfo}`;
         errorStrip.classList.add('show');
-        treeOutput.innerHTML = `<span style="color:#ef4444; font-family:var(--font-mono);">${escapeHtml(err.message)}</span>`;
+        treeOutput.innerHTML = `
+          <div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:1.25rem;">
+            <div style="color:#ef4444; font-weight:700; margin-bottom:0.5rem; font-family:var(--font-mono);">Syntax Error Detected</div>
+            <div style="color:#fca5a5; font-family:var(--font-mono); font-size:0.85rem; line-height:1.5;">${escapeHtml(err.message)}${escapeHtml(extraInfo)}</div>
+            <div style="margin-top:1rem; font-size:0.8rem; color:var(--text-secondary);">Click <strong>Quick Fix</strong> in the left pane to auto-correct trailing commas, unquoted keys, or single quotes.</div>
+          </div>
+        `;
         currentParsedData = null;
+        currentGeneratedCode = '';
+      }
+    }
+
+    function renderActiveView() {
+      if (!currentParsedData) return;
+
+      treeControls.style.display = activeViewMode === 'tree' ? 'flex' : 'none';
+
+      if (activeViewMode === 'tree') {
+        outputPaneTitle.textContent = 'Interactive Tree';
+        renderTreeView(currentParsedData);
+      } else if (activeViewMode === 'code') {
+        outputPaneTitle.textContent = 'Formatted JSON';
+        renderCodeView(currentParsedData);
+      } else if (activeViewMode === 'ts') {
+        outputPaneTitle.textContent = 'TypeScript Models';
+        renderTypeScriptView(currentParsedData);
+      } else if (activeViewMode === 'yaml') {
+        outputPaneTitle.textContent = 'YAML Representation';
+        renderYAMLView(currentParsedData);
       }
     }
 
     function renderCodeView(data) {
-      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value);
+      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value, 10);
       const str = JSON.stringify(data, null, indent);
-      treeOutput.innerHTML = `<pre style="color:var(--accent-cyan); white-space:pre-wrap;">${escapeHtml(str)}</pre>`;
+      currentGeneratedCode = str;
+      treeOutput.innerHTML = `<pre style="color:var(--accent-cyan); white-space:pre-wrap; font-family:var(--font-mono); font-size:0.88rem; line-height:1.6;">${escapeHtml(str)}</pre>`;
+    }
+
+    function renderTypeScriptView(data) {
+      const ts = generateTypeScript(data, 'RootPayload');
+      currentGeneratedCode = ts;
+      treeOutput.innerHTML = `<pre style="color:#c084fc; white-space:pre-wrap; font-family:var(--font-mono); font-size:0.88rem; line-height:1.6;">${escapeHtml(ts)}</pre>`;
+    }
+
+    function renderYAMLView(data) {
+      const yaml = jsonToYaml(data);
+      currentGeneratedCode = yaml;
+      treeOutput.innerHTML = `<pre style="color:#f59e0b; white-space:pre-wrap; font-family:var(--font-mono); font-size:0.88rem; line-height:1.6;">${escapeHtml(yaml)}</pre>`;
     }
 
     function renderTreeView(data) {
       treeOutput.innerHTML = '';
       const root = createTreeNode('root', data, '', true);
       treeOutput.appendChild(root);
+      currentGeneratedCode = JSON.stringify(data, null, 2);
     }
 
     function createTreeNode(key, val, currentPath, isRoot = false) {
@@ -791,22 +1016,23 @@
       const path = isRoot ? '' : (currentPath ? `${currentPath}.${key}` : key);
 
       if (val === null) {
-        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-null">null</span>`;
+        node.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-null">null</span>`;
       } else if (typeof val === 'boolean') {
-        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-boolean">${val}</span>`;
+        node.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-boolean">${val}</span>`;
       } else if (typeof val === 'number') {
-        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-number">${val}</span>`;
+        node.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-number">${val}</span>`;
       } else if (typeof val === 'string') {
-        node.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-string">"${escapeHtml(val)}"</span>`;
+        node.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: <span class="tree-string">"${escapeHtml(val)}"</span>`;
       } else if (Array.isArray(val)) {
         const toggle = document.createElement('span');
         toggle.className = 'tree-toggle';
         toggle.textContent = '▼ ';
         
         const header = document.createElement('span');
-        header.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: [ <span class="tree-badge">${val.length} items</span>`;
+        header.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: [ <span class="tree-badge">${val.length} ${val.length === 1 ? 'item' : 'items'}</span>`;
 
         const children = document.createElement('div');
+        children.className = 'tree-children';
         val.forEach((item, idx) => {
           children.appendChild(createTreeNode(`[${idx}]`, item, `${path}[${idx}]`));
         });
@@ -831,9 +1057,10 @@
 
         const keys = Object.keys(val);
         const header = document.createElement('span');
-        header.innerHTML = `<span class="tree-key" title="Copy Path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: { <span class="tree-badge">${keys.length} keys</span>`;
+        header.innerHTML = `<span class="tree-key" title="Click to copy path: ${path}" onclick="copyPath('${path}')">${escapeHtml(key)}</span>: { <span class="tree-badge">${keys.length} ${keys.length === 1 ? 'key' : 'keys'}</span>`;
 
         const children = document.createElement('div');
+        children.className = 'tree-children';
         keys.forEach(k => {
           children.appendChild(createTreeNode(k, val[k], path));
         });
@@ -863,11 +1090,84 @@
       });
     };
 
+    /* Expand / Collapse All Tree Nodes */
+    btnExpandAll.addEventListener('click', () => {
+      document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.tree-toggle').forEach(el => el.textContent = '▼ ');
+      showToast('All nodes expanded');
+    });
+
+    btnCollapseAll.addEventListener('click', () => {
+      document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tree-toggle').forEach(el => el.textContent = '▶ ');
+      showToast('All nodes collapsed');
+    });
+
+    /* Quick Fix Common Syntax Errors */
+    btnAutoFix.addEventListener('click', () => {
+      let str = rawInput.value;
+      if (!str.trim()) return;
+
+      // 1. Remove JS style comments
+      str = str.replace(/\/\/[^\n]*/g, '');
+      str = str.replace(/\/\*[\s\S]*?\*\//g, '');
+      
+      // 2. Normalize Python constants
+      str = str.replace(/:\s*True\b/g, ': true')
+               .replace(/:\s*False\b/g, ': false')
+               .replace(/:\s*None\b/g, ': null');
+
+      // 3. Single quotes to double quotes for string values
+      str = str.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (match, p1) => {
+        return '"' + p1.replace(/"/g, '\\"') + '"';
+      });
+
+      // 4. Wrap unquoted object keys
+      str = str.replace(/([{,]\s*)([a-zA-Z0-9_$-]+)(\s*:)/g, '$1"$2"$3');
+
+      // 5. Remove trailing commas before } or ]
+      str = str.replace(/,(\s*[}\]])/g, '$1');
+
+      rawInput.value = str;
+      parseAndRender();
+      showToast('Applied automated syntax repairs!');
+    });
+
+    /* View Switchers */
+    function setViewTab(tabName) {
+      activeViewMode = tabName;
+      [tabTree, tabCode, tabTS, tabYAML].forEach(t => t.classList.remove('active'));
+      if (tabName === 'tree') tabTree.classList.add('active');
+      else if (tabName === 'code') tabCode.classList.add('active');
+      else if (tabName === 'ts') tabTS.classList.add('active');
+      else if (tabName === 'yaml') tabYAML.classList.add('active');
+      renderActiveView();
+    }
+
+    tabTree.addEventListener('click', () => setViewTab('tree'));
+    tabCode.addEventListener('click', () => setViewTab('code'));
+    tabTS.addEventListener('click', () => setViewTab('ts'));
+    tabYAML.addEventListener('click', () => setViewTab('yaml'));
+
+    btnToTS.addEventListener('click', () => {
+      if (!currentParsedData) parseAndRender();
+      if (!currentParsedData) return;
+      setViewTab('ts');
+      showToast('Generated TypeScript Interfaces!');
+    });
+
+    btnToYAML.addEventListener('click', () => {
+      if (!currentParsedData) parseAndRender();
+      if (!currentParsedData) return;
+      setViewTab('yaml');
+      showToast('Converted to YAML!');
+    });
+
     /* Actions */
     btnFormat.addEventListener('click', () => {
       if (!currentParsedData) parseAndRender();
       if (!currentParsedData) return;
-      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value);
+      const indent = indentSelect.value === 'tab' ? '\t' : parseInt(indentSelect.value, 10);
       rawInput.value = JSON.stringify(currentParsedData, null, indent);
       parseAndRender();
       showToast('JSON Beautified!');
@@ -882,16 +1182,22 @@
     });
 
     btnCopyResult.addEventListener('click', () => {
-      if (!rawInput.value) return;
-      navigator.clipboard.writeText(rawInput.value).then(() => {
-        showToast('JSON copied to clipboard!');
+      let textToCopy = currentGeneratedCode;
+      if (!textToCopy && rawInput.value) {
+        textToCopy = rawInput.value;
+      }
+      if (!textToCopy) return;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const modeLabel = activeViewMode === 'ts' ? 'TypeScript' : activeViewMode === 'yaml' ? 'YAML' : 'JSON';
+        showToast(`Copied ${modeLabel} to clipboard!`);
       });
     });
 
     btnClear.addEventListener('click', () => {
       rawInput.value = '';
       parseAndRender();
-      showToast('Editor cleared.');
+      showToast('Editor cleared');
     });
 
     sampleSelect.addEventListener('change', () => {
@@ -899,95 +1205,175 @@
       if (key && SAMPLES[key]) {
         rawInput.value = JSON.stringify(SAMPLES[key], null, 2);
         parseAndRender();
+        sampleSelect.value = '';
       }
     });
 
-    tabTree.addEventListener('click', () => {
-      tabTree.classList.add('active');
-      tabCode.classList.remove('active');
-      activeViewMode = 'tree';
-      parseAndRender();
-    });
+    /* TypeScript Generator with Optional Field and Union Analysis */
+    function generateTypeScript(obj, rootName = 'RootPayload') {
+      const interfaces = new Map();
 
-    tabCode.addEventListener('click', () => {
-      tabCode.classList.add('active');
-      tabTree.classList.remove('active');
-      activeViewMode = 'code';
-      parseAndRender();
-    });
+      function sanitizeKey(k) {
+        if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k)) return k;
+        return JSON.stringify(k);
+      }
 
-    /* TypeScript Generator */
-    btnToTS.addEventListener('click', () => {
-      if (!currentParsedData) return;
-      const tsCode = generateTypeScript(currentParsedData, 'RootPayload');
-      rawInput.value = tsCode;
-      activeViewMode = 'code';
-      tabCode.click();
-      treeOutput.innerHTML = `<pre style="color:#a855f7; white-space:pre-wrap;">${escapeHtml(tsCode)}</pre>`;
-      showToast('Generated TypeScript Interface!');
-    });
+      function capitalize(s) {
+        const cleaned = s.replace(/[^a-zA-Z0-9_]/g, '_');
+        return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+      }
 
-    function generateTypeScript(obj, rootName = 'Root') {
-      let interfaces = [];
-      function infer(name, val) {
+      function inferType(key, val, depth = 0) {
         if (val === null) return 'null | any';
+        if (val === undefined) return 'undefined';
+        if (typeof val === 'boolean') return 'boolean';
+        if (typeof val === 'number') return 'number';
+        if (typeof val === 'string') return 'string';
+
         if (Array.isArray(val)) {
           if (val.length === 0) return 'any[]';
-          return `${infer(name + 'Item', val[0])}[]`;
+          const sample = val[0];
+          if (typeof sample === 'object' && sample !== null && !Array.isArray(sample)) {
+            const mergedObj = {};
+            const keyPresence = {};
+            for (const item of val) {
+              if (typeof item === 'object' && item !== null) {
+                for (const k of Object.keys(item)) {
+                  if (!(k in mergedObj)) mergedObj[k] = item[k];
+                  keyPresence[k] = (keyPresence[k] || 0) + 1;
+                }
+              }
+            }
+            const itemTypeName = capitalize(key.replace(/s$|List$|Array$/i, '') || 'Item');
+            createInterface(itemTypeName, mergedObj, keyPresence, val.length);
+            return `${itemTypeName}[]`;
+          }
+          return `${inferType(key + 'Item', sample, depth + 1)}[]`;
         }
+
         if (typeof val === 'object') {
-          let lines = [`export interface ${name} {`];
-          for (let k of Object.keys(val)) {
-            const childTypeName = capitalize(k);
-            lines.push(`  ${k}: ${infer(childTypeName, val[k])};`);
-          }
-          lines.push('}');
-          interfaces.push(lines.join('\n'));
-          return name;
+          const typeName = capitalize(key || 'SubModel');
+          createInterface(typeName, val, null, 1);
+          return typeName;
         }
-        return typeof val;
+
+        return 'any';
       }
-      infer(rootName, obj);
-      return interfaces.reverse().join('\n\n');
+
+      function createInterface(name, obj, keyPresence = null, totalItems = 1) {
+        let uniqueName = name;
+        let counter = 2;
+        while (interfaces.has(uniqueName) && JSON.stringify(interfaces.get(uniqueName).raw) !== JSON.stringify(obj)) {
+          uniqueName = `${name}_${counter++}`;
+        }
+
+        const fields = [];
+        const keys = Object.keys(obj);
+        for (const k of keys) {
+          const isOptional = keyPresence && keyPresence[k] < totalItems;
+          const typeStr = inferType(k, obj[k]);
+          const safeKey = sanitizeKey(k);
+          fields.push(`  ${safeKey}${isOptional ? '?' : ''}: ${typeStr};`);
+        }
+
+        interfaces.set(uniqueName, {
+          code: `export interface ${uniqueName} {\n${fields.join('\n')}\n}`,
+          raw: obj
+        });
+        return uniqueName;
+      }
+
+      createInterface(rootName, obj);
+
+      const result = [];
+      for (const [name, meta] of interfaces.entries()) {
+        result.push(meta.code);
+      }
+      return result.reverse().join('\n\n');
     }
 
-    function capitalize(s) {
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    }
+    /* RFC-Compliant Clean YAML Serializer */
+    function jsonToYaml(obj, indentLevel = 0) {
+      const indent = '  '.repeat(indentLevel);
 
-    /* YAML Converter */
-    btnToYAML.addEventListener('click', () => {
-      if (!currentParsedData) return;
-      const yaml = jsonToYaml(currentParsedData);
-      treeOutput.innerHTML = `<pre style="color:#f59e0b; white-space:pre-wrap;">${escapeHtml(yaml)}</pre>`;
-      tabCode.click();
-      showToast('Converted to YAML!');
-    });
+      function formatScalar(val) {
+        if (val === null) return 'null';
+        if (val === undefined) return '~';
+        if (typeof val === 'boolean') return val ? 'true' : 'false';
+        if (typeof val === 'number') return String(val);
+        if (typeof val === 'string') {
+          if (val.includes('\n')) {
+            const lines = val.split('\n').map(l => indent + '  ' + l).join('\n');
+            return `|\n${lines}`;
+          }
+          if (/[:#\[\]{},&*?|<>=!%@`-]/.test(val) || val === '' || val === 'true' || val === 'false' || val === 'null' || !isNaN(val)) {
+            return JSON.stringify(val);
+          }
+          return val;
+        }
+        return JSON.stringify(val);
+      }
 
-    function jsonToYaml(obj, depth = 0) {
-      const indent = '  '.repeat(depth);
-      let out = '';
+      if (obj === null || typeof obj !== 'object') {
+        return indent + formatScalar(obj) + '\n';
+      }
+
       if (Array.isArray(obj)) {
-        for (let item of obj) {
-          if (typeof item === 'object' && item !== null) {
-            out += `${indent}- \n${jsonToYaml(item, depth + 1)}`;
+        if (obj.length === 0) return indent + '[]\n';
+        let str = '';
+        for (let i = 0; i < obj.length; i++) {
+          const item = obj[i];
+          if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+            const keys = Object.keys(item);
+            if (keys.length === 0) {
+              str += `${indent}- {}\n`;
+            } else {
+              const firstKey = keys[0];
+              const firstVal = item[firstKey];
+              if (typeof firstVal === 'object' && firstVal !== null) {
+                str += `${indent}- ${firstKey}:\n${jsonToYaml(firstVal, indentLevel + 2)}`;
+              } else {
+                str += `${indent}- ${firstKey}: ${formatScalar(firstVal)}\n`;
+              }
+              for (let k = 1; k < keys.length; k++) {
+                const nextKey = keys[k];
+                const nextVal = item[nextKey];
+                if (typeof nextVal === 'object' && nextVal !== null) {
+                  str += `${indent}  ${nextKey}:\n${jsonToYaml(nextVal, indentLevel + 2)}`;
+                } else {
+                  str += `${indent}  ${nextKey}: ${formatScalar(nextVal)}\n`;
+                }
+              }
+            }
+          } else if (Array.isArray(item)) {
+            str += `${indent}-\n${jsonToYaml(item, indentLevel + 1)}`;
           } else {
-            out += `${indent}- ${JSON.stringify(item)}\n`;
+            str += `${indent}- ${formatScalar(item)}\n`;
           }
         }
-      } else if (typeof obj === 'object' && obj !== null) {
-        for (let k of Object.keys(obj)) {
-          const v = obj[k];
-          if (typeof v === 'object' && v !== null) {
-            out += `${indent}${k}:\n${jsonToYaml(v, depth + 1)}`;
-          } else {
-            out += `${indent}${k}: ${JSON.stringify(v)}\n`;
-          }
-        }
-      } else {
-        out += `${indent}${JSON.stringify(obj)}\n`;
+        return str;
       }
-      return out;
+
+      // Object
+      const keys = Object.keys(obj);
+      if (keys.length === 0) return indent + '{}\n';
+      let str = '';
+      for (const k of keys) {
+        const safeKey = /[:#\[\]{},&*?|<>=!%@` -]/.test(k) ? JSON.stringify(k) : k;
+        const v = obj[k];
+        if (typeof v === 'object' && v !== null) {
+          if (Array.isArray(v) && v.length === 0) {
+            str += `${indent}${safeKey}: []\n`;
+          } else if (!Array.isArray(v) && Object.keys(v).length === 0) {
+            str += `${indent}${safeKey}: {}\n`;
+          } else {
+            str += `${indent}${safeKey}:\n${jsonToYaml(v, indentLevel + 1)}`;
+          }
+        } else {
+          str += `${indent}${safeKey}: ${formatScalar(v)}\n`;
+        }
+      }
+      return str;
     }
 
     rawInput.addEventListener('input', parseAndRender);

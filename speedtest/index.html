@@ -116,6 +116,18 @@
       overflow-x: hidden;
     }
 
+    /* Live Cybernetic Telemetry Canvas */
+    #speedBackgroundCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
     /* Top Navigation Bar */
     header.speed-nav {
       border-bottom: 1px solid var(--bg-card-border);
@@ -201,6 +213,8 @@
 
     /* Main Container */
     main.speed-container {
+      position: relative;
+      z-index: 10;
       flex: 1;
       max-width: 1140px;
       margin: 0 auto;
@@ -1775,6 +1789,9 @@
 </head>
 <body>
 
+  <!-- Live Cybernetic Telemetry Canvas Background -->
+  <canvas id="speedBackgroundCanvas"></canvas>
+
   <!-- Top Navigation Bar -->
                       <header class="site-header">
     <a href="/" class="brand">
@@ -2463,26 +2480,222 @@
   <script src="/assets/nav.js?v=20261001d" defer></script>
 
   <script>
-    // State management
+    /* =========================================================
+       1. SMOOTH LIVE CYBERNETIC WAN TELEMETRY CANVAS BACKGROUND
+       ========================================================= */
+    const speedBgCanvas = document.getElementById('speedBackgroundCanvas');
+    const bgCtx = speedBgCanvas.getContext('2d');
+    let bgWidth = 0, bgHeight = 0;
+    const bgNodes = [];
+    const bgPackets = [];
+    const bgMouse = { x: -9999, y: -9999, active: false };
+    let bgLastTime = performance.now();
+    let bgAnimId = null;
+
+    function getSpeedBgTheme() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'amber') {
+        return {
+          node: 'rgba(245, 158, 11, 0.75)',
+          nodeDim: 'rgba(245, 158, 11, 0.22)',
+          line: '245, 158, 11',
+          packet: '#f59e0b',
+          packetTest: '#10b981',
+          bgClear: 'rgba(8, 12, 21, 0.22)'
+        };
+      }
+      if (theme === 'paper') {
+        return {
+          node: 'rgba(71, 85, 105, 0.65)',
+          nodeDim: 'rgba(100, 116, 139, 0.2)',
+          line: '71, 85, 105',
+          packet: '#0f172a',
+          packetTest: '#2563eb',
+          bgClear: 'rgba(248, 250, 252, 0.22)'
+        };
+      }
+      return {
+        node: 'rgba(0, 242, 254, 0.85)',
+        nodeDim: 'rgba(59, 130, 246, 0.35)',
+        line: '0, 242, 254',
+        packet: '#00f2fe',
+        packetTest: '#10b981',
+        bgClear: 'rgba(8, 12, 21, 0.22)'
+      };
+    }
+
+    function initSpeedBackground() {
+      bgWidth = speedBgCanvas.width = window.innerWidth;
+      bgHeight = speedBgCanvas.height = window.innerHeight;
+      bgNodes.length = 0;
+      bgPackets.length = 0;
+
+      const count = Math.min(65, Math.max(25, Math.floor((bgWidth * bgHeight) / 24000)));
+      for (let i = 0; i < count; i++) {
+        bgNodes.push({
+          x: Math.random() * bgWidth,
+          y: Math.random() * bgHeight,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          radius: 1.5 + Math.random() * 2.2,
+          isTransitHub: Math.random() > 0.82
+        });
+      }
+    }
+
+    window.addEventListener('resize', initSpeedBackground);
+
+    window.addEventListener('mousemove', (e) => {
+      bgMouse.x = e.clientX;
+      bgMouse.y = e.clientY;
+      bgMouse.active = true;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      bgMouse.active = false;
+      bgMouse.x = -9999;
+      bgMouse.y = -9999;
+    });
+
+    function renderSpeedBackground(now) {
+      const dt = Math.min(0.1, (now - bgLastTime) / 1000);
+      bgLastTime = now;
+
+      const pal = getSpeedBgTheme();
+      bgCtx.fillStyle = pal.bgClear;
+      bgCtx.fillRect(0, 0, bgWidth, bgHeight);
+
+      const isAccelerated = typeof STATE !== 'undefined' && STATE && STATE.isTesting;
+      const speedMultiplier = isAccelerated ? 2.4 : 1.0;
+      const maxDist = isAccelerated ? 160 : 135;
+      const maxDistSq = maxDist * maxDist;
+
+      for (let i = 0; i < bgNodes.length; i++) {
+        const n = bgNodes[i];
+        n.x += n.vx * (dt * 60) * speedMultiplier;
+        n.y += n.vy * (dt * 60) * speedMultiplier;
+
+        if (n.x < 0) { n.x = 0; n.vx *= -1; }
+        else if (n.x > bgWidth) { n.x = bgWidth; n.vx *= -1; }
+        if (n.y < 0) { n.y = 0; n.vy *= -1; }
+        else if (n.y > bgHeight) { n.y = bgHeight; n.vy *= -1; }
+
+        if (bgMouse.active) {
+          const mdx = bgMouse.x - n.x;
+          const mdy = bgMouse.y - n.y;
+          const mDist = Math.hypot(mdx, mdy);
+          if (mDist < 140 && mDist > 5) {
+            const pull = (1 - mDist / 140) * 0.06;
+            n.x += (mdx / mDist) * pull * 4;
+            n.y += (mdy / mDist) * pull * 4;
+          }
+        }
+
+        const nodeSize = n.isTransitHub ? n.radius * 1.5 : n.radius;
+        bgCtx.beginPath();
+        bgCtx.arc(n.x, n.y, nodeSize, 0, Math.PI * 2);
+        bgCtx.fillStyle = n.isTransitHub ? pal.node : pal.nodeDim;
+        bgCtx.fill();
+
+        for (let j = i + 1; j < bgNodes.length; j++) {
+          const n2 = bgNodes[j];
+          const dx = n.x - n2.x;
+          const dy = n.y - n2.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
+            const lineAlpha = (isAccelerated ? 0.35 : 0.16) * (1 - dist / maxDist);
+            bgCtx.beginPath();
+            bgCtx.moveTo(n.x, n.y);
+            bgCtx.lineTo(n2.x, n2.y);
+            bgCtx.strokeStyle = `rgba(${pal.line}, ${lineAlpha})`;
+            bgCtx.lineWidth = n.isTransitHub || n2.isTransitHub ? 1.4 : 0.8;
+            bgCtx.stroke();
+
+            const spawnChance = isAccelerated ? 0.008 : 0.0008;
+            if (Math.random() < spawnChance && bgPackets.length < (isAccelerated ? 45 : 20)) {
+              bgPackets.push({
+                x: n.x, y: n.y,
+                tx: n2.x, ty: n2.y,
+                t: 0,
+                speed: (0.018 + Math.random() * 0.02) * (isAccelerated ? 2.4 : 1.0),
+                isTestPacket: isAccelerated
+              });
+            }
+          }
+        }
+
+        if (bgMouse.active) {
+          const mdx = bgMouse.x - n.x;
+          const mdy = bgMouse.y - n.y;
+          const mDist = Math.hypot(mdx, mdy);
+          if (mDist < 120) {
+            bgCtx.beginPath();
+            bgCtx.moveTo(n.x, n.y);
+            bgCtx.lineTo(bgMouse.x, bgMouse.y);
+            bgCtx.strokeStyle = `rgba(${pal.line}, ${0.25 * (1 - mDist / 120)})`;
+            bgCtx.lineWidth = 1;
+            bgCtx.stroke();
+          }
+        }
+      }
+
+      for (let k = bgPackets.length - 1; k >= 0; k--) {
+        const pkt = bgPackets[k];
+        pkt.t += pkt.speed;
+        const curX = pkt.x + (pkt.tx - pkt.x) * pkt.t;
+        const curY = pkt.y + (pkt.ty - pkt.y) * pkt.t;
+
+        bgCtx.beginPath();
+        bgCtx.arc(curX, curY, pkt.isTestPacket ? 2.8 : 2.0, 0, Math.PI * 2);
+        const col = pkt.isTestPacket ? pal.packetTest : pal.packet;
+        bgCtx.fillStyle = col;
+        bgCtx.shadowColor = col;
+        bgCtx.shadowBlur = pkt.isTestPacket ? 8 : 4;
+        bgCtx.fill();
+        bgCtx.shadowBlur = 0;
+
+        if (pkt.t >= 1) bgPackets.splice(k, 1);
+      }
+
+      bgAnimId = requestAnimationFrame(renderSpeedBackground);
+    }
+
+    initSpeedBackground();
+    bgAnimId = requestAnimationFrame(renderSpeedBackground);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (bgAnimId) cancelAnimationFrame(bgAnimId);
+      } else {
+        bgLastTime = performance.now();
+        bgAnimId = requestAnimationFrame(renderSpeedBackground);
+      }
+    });
+
+    /* =========================================================
+       2. TELEMETRY STATE & HIGH-SPEED DUAL-ENGINE LOGIC
+       ========================================================= */
     const STATE = {
       isTesting: false,
       mode: 'multi', // 'multi' (default) or 'single'
-      clientIp: '104.28.19.44',
-      isp: 'Fiber / High-Speed Broadband',
+      clientIp: 'Detecting...',
+      isp: 'Detecting Carrier...',
       selectedServer: {
-        id: 'alu-edge-us',
-        name: 'Cloudflare / Edge CDN',
-        location: 'Ashburn / Dallas (US)',
+        id: 'alu-edge',
+        name: 'Cloudflare Edge Anycast',
+        location: 'Local Edge Exchange',
         basePing: 12,
         baseDown: 240.50,
         baseUp: 85.20
       },
       availableServers: [
-        { id: 'alu-edge-us', name: 'Cloudflare / Edge CDN (US East)', location: 'Ashburn, VA (US)', basePing: 12, baseDown: 240.50, baseUp: 85.20 },
-        { id: 'alu-edge-usw', name: 'Cloudflare / Edge CDN (US West)', location: 'San Jose, CA (US)', basePing: 16, baseDown: 225.10, baseUp: 78.40 },
-        { id: 'alu-edge-eu', name: 'Global Edge Transit', location: 'London / Frankfurt (EU)', basePing: 28, baseDown: 195.40, baseUp: 65.10 },
-        { id: 'flow-mobay', name: 'FLOW / Cable & Wireless', location: 'Montego Bay (JM)', basePing: 34, baseDown: 51.01, baseUp: 20.43 },
-        { id: 'flow-kingston', name: 'FLOW / Cable & Wireless', location: 'Kingston (JM)', basePing: 38, baseDown: 48.50, baseUp: 19.80 }
+        { id: 'alu-edge', name: 'Alumungandr Edge Gateway (Anycast)', location: 'Global / Local POP', basePing: 12, baseDown: 240.50, baseUp: 85.20 },
+        { id: 'cf-ashburn', name: 'Cloudflare Edge CDN (US East)', location: 'Ashburn, VA (US)', basePing: 14, baseDown: 220.00, baseUp: 80.00 },
+        { id: 'cf-sanjose', name: 'Cloudflare Edge CDN (US West)', location: 'San Jose, CA (US)', basePing: 18, baseDown: 210.00, baseUp: 75.00 },
+        { id: 'cf-london', name: 'Global Edge Transit (EU)', location: 'London / Frankfurt', basePing: 28, baseDown: 195.00, baseUp: 65.00 },
+        { id: 'flow-mobay', name: 'FLOW / Cable & Wireless (JM)', location: 'Montego Bay, JM', basePing: 32, baseDown: 50.00, baseUp: 20.00 }
       ]
     };
 
@@ -2551,13 +2764,13 @@
       if (annualEl) annualEl.textContent = `+${curr}${annualRecovery.toFixed(2)}/yr`;
     }
 
-    // Initialize client info with dual-mode detection
+    // Initialize client info with genuine edge detection
     async function initClientInfo() {
-      // 1. First probe local backend API
+      // 1. First probe local edge API (/api/speedtest/info)
       try {
         const res = await Promise.race([
           fetch('/api/speedtest/info'),
-          timeoutPromise(1200)
+          timeoutPromise(2000)
         ]);
         if (res && res.ok) {
           BACKEND_TYPE = 'local';
@@ -2584,53 +2797,51 @@
           return;
         }
       } catch (err) {
-        // Fall through to Cloudflare Edge Anycast
+        console.warn('Local speedtest probe error, falling back:', err);
       }
 
-      // 2. Cloudflare Global Anycast Edge Engine (for alumungandr.com / static hosting)
-      BACKEND_TYPE = 'cloudflare';
-      STATE.selectedServer.name = 'Cloudflare Edge Anycast';
-      STATE.selectedServer.location = 'Global / Local POP';
-      el.serverNameLabel.textContent = 'Cloudflare Edge Anycast';
-      el.serverLocationLabel.textContent = 'Local Edge Exchange';
+      // 2. Second fallback: /api/ip
+      try {
+        const ipRes = await Promise.race([
+          fetch('/api/ip'),
+          timeoutPromise(2000)
+        ]);
+        if (ipRes && ipRes.ok) {
+          BACKEND_TYPE = 'local';
+          const data = await ipRes.json();
+          if (data.ip) {
+            STATE.clientIp = data.ip;
+            el.clientIpLabel.textContent = data.ip;
+          }
+          if (data.isp) {
+            STATE.isp = data.isp;
+            el.ispNameLabel.textContent = data.isp;
+            el.surveyIspName.textContent = data.isp;
+          }
+          if (data.city || data.countryName) {
+            STATE.selectedServer.location = `${data.city && data.city !== 'Unknown' ? data.city + ', ' : ''}${data.countryName || data.countryCode || ''}`;
+            el.serverLocationLabel.textContent = STATE.selectedServer.location;
+          }
+          if (data.edgeColo) {
+            STATE.selectedServer.name = `Cloudflare Edge Anycast (${data.edgeColo})`;
+            el.serverNameLabel.textContent = STATE.selectedServer.name;
+          }
+          renderServerList();
+          updateRoiCalculator();
+          return;
+        }
+      } catch (e) {}
 
+      // 3. Fallback: Cloudflare speed probe
+      BACKEND_TYPE = 'cloudflare';
       try {
         const probe = await fetch('https://speed.cloudflare.com/__down?bytes=0', { cache: 'no-store' });
         const ip = probe.headers.get('cf-meta-ip');
-        const city = probe.headers.get('city') || probe.headers.get('cf-meta-city');
-        const country = probe.headers.get('country') || probe.headers.get('cf-meta-country');
-        const colo = probe.headers.get('colo') || probe.headers.get('cf-meta-colo');
-        const asn = probe.headers.get('asn') || probe.headers.get('cf-meta-asn');
-
         if (ip) {
           STATE.clientIp = ip;
           el.clientIpLabel.textContent = ip;
         }
-        if (city || country || colo) {
-          STATE.selectedServer.location = `${city || colo || 'Local POP'}, ${country || ''}`;
-          el.serverLocationLabel.textContent = STATE.selectedServer.location;
-        }
-        if (asn) {
-          STATE.isp = `AS${asn} Network`;
-          el.ispNameLabel.textContent = STATE.isp;
-          el.surveyIspName.textContent = STATE.isp;
-        }
-      } catch (e) {
-        console.warn('Edge meta probe fallback:', e);
-      }
-
-      // Try ipapi for consumer-friendly carrier name (FLOW, Digicel, Comcast, Spectrum)
-      try {
-        const ipRes = await Promise.race([fetch('https://ipapi.co/json/'), timeoutPromise(1500)]);
-        if (ipRes && ipRes.ok) {
-          const ipData = await ipRes.json();
-          if (ipData.org) {
-            STATE.isp = ipData.org.replace(/^AS\d+\s+/, '');
-            el.ispNameLabel.textContent = STATE.isp;
-            el.surveyIspName.textContent = STATE.isp;
-          }
-        }
-      } catch (err) {}
+      } catch (e) {}
 
       renderServerList();
       updateRoiCalculator();

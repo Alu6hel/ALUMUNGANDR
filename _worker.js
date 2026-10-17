@@ -15,6 +15,7 @@ import * as world from './functions/api/world.js';
 import * as ipApi from './functions/api/ip.js';
 import * as knowledge from './functions/api/knowledge.js';
 import * as consultation from './functions/api/consultation.js';
+import * as speedtestApi from './functions/api/speedtest.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -268,6 +269,13 @@ Hiring: https://alumungandr.com/contact
     if (url.pathname === '/api/ip' || url.pathname === '/api/ip/') {
       if (method === 'OPTIONS' && ipApi.onRequestOptions) return ipApi.onRequestOptions({ request, env, ctx });
       if (method === 'GET' && ipApi.onRequestGet) return ipApi.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/speedtest (Real-Time Edge Speedtest Probes & Dossier Engine)
+    if (url.pathname.startsWith('/api/speedtest')) {
+      if (method === 'OPTIONS' && speedtestApi.onRequestOptions) return speedtestApi.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && speedtestApi.onRequestPost) return speedtestApi.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && speedtestApi.onRequestGet) return speedtestApi.onRequestGet({ request, env, ctx });
     }
 
     // Route /api/knowledge & /knowledge-catalog.json (Verified AI Knowledge Catalog & Transparent Pricing)

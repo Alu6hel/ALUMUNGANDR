@@ -13,6 +13,8 @@ import * as drop from './functions/api/drop.js';
 import * as dualmark from './functions/api/dualmark.js';
 import * as world from './functions/api/world.js';
 import * as ipApi from './functions/api/ip.js';
+import * as knowledge from './functions/api/knowledge.js';
+import * as consultation from './functions/api/consultation.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -47,6 +49,7 @@ function applySecurityHeaders(headers) {
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   headers.set('Permissions-Policy', 'geolocation=(self), microphone=(self), camera=(self), payment=(self)');
   headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https: wss:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';");
   return headers;
 }
 
@@ -265,6 +268,50 @@ Hiring: https://alumungandr.com/contact
     if (url.pathname === '/api/ip' || url.pathname === '/api/ip/') {
       if (method === 'OPTIONS' && ipApi.onRequestOptions) return ipApi.onRequestOptions({ request, env, ctx });
       if (method === 'GET' && ipApi.onRequestGet) return ipApi.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/knowledge & /knowledge-catalog.json (Verified AI Knowledge Catalog & Transparent Pricing)
+    if (url.pathname === '/api/knowledge' || url.pathname === '/api/knowledge/' || url.pathname === '/knowledge-catalog.json' || url.pathname === '/.well-known/knowledge-catalog.json') {
+      if (method === 'OPTIONS' && knowledge.onRequestOptions) return knowledge.onRequestOptions({ request, env, ctx });
+      if (method === 'GET' && knowledge.onRequestGet) return knowledge.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/consultation (Agent-to-Agent Automated Intake & Consultation Booking)
+    if (url.pathname === '/api/consultation' || url.pathname === '/api/consultation/') {
+      if (method === 'OPTIONS' && consultation.onRequestOptions) return consultation.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && consultation.onRequestPost) return consultation.onRequestPost({ request, env, ctx });
+    }
+
+    // Route /llms.txt & /llms-full.txt (2027 AI Agent & Search Overview Index)
+    if (url.pathname === '/llms.txt' || url.pathname === '/llms-full.txt') {
+      const assetRes = await env.ASSETS.fetch(request);
+      const headers = new Headers(assetRes.headers);
+      headers.set('Content-Type', 'text/markdown; charset=utf-8');
+      headers.set('Cache-Control', 'public, max-age=3600');
+      applySecurityHeaders(headers);
+      return new Response(assetRes.body, { status: assetRes.status, headers });
+    }
+
+    // Route /openapi.json & /.well-known/openapi.json
+    if (url.pathname === '/openapi.json' || url.pathname === '/.well-known/openapi.json') {
+      const assetRes = await env.ASSETS.fetch(request);
+      const headers = new Headers(assetRes.headers);
+      headers.set('Content-Type', 'application/json; charset=utf-8');
+      headers.set('Cache-Control', 'public, max-age=3600');
+      headers.set('Access-Control-Allow-Origin', '*');
+      applySecurityHeaders(headers);
+      return new Response(assetRes.body, { status: assetRes.status, headers });
+    }
+
+    // Route /.well-known/ai-plugin.json
+    if (url.pathname === '/.well-known/ai-plugin.json') {
+      const assetRes = await env.ASSETS.fetch(request);
+      const headers = new Headers(assetRes.headers);
+      headers.set('Content-Type', 'application/json; charset=utf-8');
+      headers.set('Cache-Control', 'public, max-age=3600');
+      headers.set('Access-Control-Allow-Origin', '*');
+      applySecurityHeaders(headers);
+      return new Response(assetRes.body, { status: assetRes.status, headers });
     }
 
     // 301 Permanent Redirects for retired pages (Web game removed; game is now an APK app with low-latency edge backend)

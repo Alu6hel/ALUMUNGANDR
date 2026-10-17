@@ -1,4 +1,4 @@
-# Alumungandr Robots.txt — privacy-first & AI-Ready
+# Alumungandr Robots.txt — Privacy-First & 2027 AI Agent Ready
 User-agent: *
 Allow: /
 Allow: /store
@@ -14,8 +14,12 @@ Allow: /faq
 Allow: /privacy
 Allow: /terms
 Allow: /downloads/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /knowledge-catalog.json
+Allow: /openapi.json
 
-# Explicitly Allow Major AI Crawlers & Assistants for Citations
+# Explicitly Allow Major AI Crawlers & Citation Overviews
 User-agent: GPTBot
 Allow: /
 
@@ -43,4 +47,19 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+# Canonical Sitemaps & Knowledge Indexes for AI Agents
 Sitemap: https://alumungandr.com/sitemap.xml
+# LLM Knowledge Index
+# https://alumungandr.com/llms.txt
+# https://alumungandr.com/llms-full.txt
+# https://alumungandr.com/knowledge-catalog.json
+# https://alumungandr.com/openapi.json

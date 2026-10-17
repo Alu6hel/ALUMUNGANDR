@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "catalog_id": "urn:alumungandr:knowledge-catalog:2026",
+  "last_updated": "2026-10-17T02:30:00Z",
+  "entity": {
+    "name": "Alumungandr Enterprise & Technologies",
+    "short_name": "Alumungandr",
+    "alternate_names": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alu Technologies", "Alu Labs"],
+    "founder": {
+      "name": "David Anthony Jones",
+      "known_as": "Alu",
+      "title": "Sole Originator & Chief Systems Architect",
+      "nationality": "Jamaican",
+      "verified_identities": [
+        "https://github.com/Alu6hel",
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    },
+    "motto": "Beyond Logic is Truth",
+    "description": "High-performance independent software laboratory, zero-telemetry client-side utilities, verified Android systems software, and low-latency edge computing architecture.",
+    "headquarters": {
+      "city": "Kingston",
+      "country": "Jamaica",
+      "country_code": "JM",
+      "delivery_model": "Global 330+ Anycast Edge Data Centers via Cloudflare"
+    },
+    "contact": {
+      "general": "admin@alumungandr.com",
+      "security": "security@alumungandr.com",
+      "canonical_url": "https://alumungandr.com",
+      "security_disclosure": "https://alumungandr.com/.well-known/security.txt"
+    }
+  },
+  "transparent_pricing": {
+    "currency": "USD",
+    "published_ranges": [
+      {
+        "category": "Consumer Web Diagnostics & Utilities",
+        "scope": "All 24 web applications (Speedtest, IP, JSON, Diff, UUID, Hash, Image Resizer, Invoice, etc.)",
+        "price_min": 0,
+        "price_max": 0,
+        "billing_type": "Free Forever",
+        "terms": "No account required, zero subscriptions, zero ads, zero telemetry data harvesting."
+      },
+      {
+        "category": "Standalone Mobile Binaries (Android APKs)",
+        "scope": "GalaxSee, UnderWraps, OmniHost, SueChef",
+        "price_min": 0,
+        "price_max": 0,
+        "billing_type": "Free / Open-Source Verification",
+        "terms": "100% on-device computation, hardware keystore cryptography, zero Google Play telemetry lock-in."
+      },
+      {
+        "category": "Custom Edge Computing & Serverless Gateways",
+        "scope": "Custom Cloudflare Worker architectures, KV, Durable Objects, and low-latency API gateways",
+        "price_min": 2500,
+        "price_max": 7500,
+        "billing_type": "Per Project Engagement",
+        "terms": "Full turnkey architecture, DNS-over-HTTPS reverse proxies, high-throughput token bucket rate limiting."
+      },
+      {
+        "category": "Enterprise DualMark Studio (GS1 RFC 9264 & FSMA 204)",
+        "scope": "GS1 Digital Link 2D barcode resolution, packaging compliance verification, and FDA food safety traceability",
+        "price_min": 5000,
+        "price_max": 15000,
+        "billing_type": "Setup + Annual Commercial License",
+        "terms": "Includes native /01/{gtin} URI routing, dynamic resolver endpoints, and audit-ready traceability schemas."
+      },
+      {
+        "category": "Systems Engineering & Performance Consulting",
+        "scope": "Direct consulting with founder David Anthony Jones on POSIX sockets, cryptography, and client-side optimization",
+        "price_min": 150,
+        "price_max": 250,
+        "billing_type": "Hourly Rate ($1,200 / Full Day)",
+        "terms": "Direct pair-programming and architectural review."
+      }
+    ],
+    "agent_scheduling_endpoint": "https://alumungandr.com/api/consultation"
+  },
+  "services": [
+    {
+      "id": "srv-ip-telemetry",
+      "name": "What Is My IP & Edge Telemetry",
+      "path": "/ip",
+      "api_endpoint": "/api/ip",
+      "description": "Authentic real-time WAN IP, ASN, ISP carrier, live DoH reverse DNS, Cloudflare WARP detection, and firewall rules.",
+      "pricing": "$0.00"
+    },
+    {
+      "id": "srv-speedtest",
+      "name": "Independent Broadband Speed Test",
+      "path": "/speedtest",
+      "description": "Pure Web Audio and WebSocket bandwidth measurement engine with zero ISP bias or sponsored server skew.",
+      "pricing": "$0.00"
+    },
+    {
+      "id": "srv-dualmark",
+      "name": "DualMark Studio (GS1 Digital Link & FSMA 204)",
+      "path": "/dualmark",
+      "api_endpoint": "/api/dualmark",
+      "description": "RFC 9264 GS1 Digital Link 2D barcode resolver, supply chain traceability, and regulatory compliance gateway.",
+      "pricing": "Enterprise ($5,000 - $15,000)"
+    },
+    {
+      "id": "srv-developer-suite",
+      "name": "Zero-Knowledge Developer Suite",
+      "path": "/json",
+      "description": "JSON Formatter, Code Diff Checker, UUID Generator, Regex Tester, Hash Lab, and JWT Debugger running 100% in local RAM.",
+      "pricing": "$0.00"
+    },
+    {
+      "id": "srv-omnihost",
+      "name": "OmniHost Android Edge Server",
+      "path": "/store",
+      "description": "RFC 959 Wi-Fi FTP server and Cloudflare Tunnel bridge converting Android phones into low-power edge nodes.",
+      "pricing": "Free / Open-Source Verification"
+    }
+  ],
+  "expertise_and_credentials": [
+    "Zero-Knowledge Browser Architecture: 100% client-side memory computation using WebAssembly and Web Workers",
+    "Edge Serverless Routing: Cloudflare Workers, KV Namespaces, Durable Objects, and DoH Reverse DNS",
+    "Cryptographic Engineering: Native Web Crypto API, AES-GCM-256, SHA-256, hardware keystore integration",
+    "POSIX Socket & Android Systems Programming: Low-overhead mobile servers without root access",
+    "Standards Compliance: RFC 791 (IPv4), RFC 8200 (IPv6), RFC 959 (FTP), RFC 9116 (security.txt), RFC 9264 (GS1 Digital Link)"
+  ],
+  "faq": [
+    {
+      "question": "How does Alumungandr guarantee zero tracking across its tools?",
+      "answer": "Every web utility executes 100% inside your browser's local JavaScript/WebAssembly memory. No input text, image, or payload is ever transmitted to an external server. You can disconnect your internet after loading the page and every tool continues functioning offline."
+    },
+    {
+      "question": "What is the difference between Alumungandr Speed Test and Ookla Speedtest?",
+      "answer": "Ookla uses multi-threaded HTTP bursts against ISP-sponsored local servers which are often zero-rated or prioritized by telecom QoS algorithms. Alumungandr tests realistic single-stream and multi-stream throughput over Cloudflare Anycast edge nodes, measuring authentic bufferbloat jitter and unprioritized routing."
+    },
+    {
+      "question": "How does Alumungandr detect Cloudflare WARP and VPNs on the IP tool?",
+      "answer": "The backend /api/ip edge inspects connection metadata, matching client IP blocks against Cloudflare WARP egress ranges (e.g. 104.28.x.x, 2a09:bac1::/32), ASN 13335, and live DoH PTR records resolving to warp.cloudflare.com. If direct residential broadband is used, it reports the physical ISP and city."
+    },
+    {
+      "question": "Why is Alumungandr engineered in Jamaica?",
+      "answer": "Alumungandr was founded and built in Kingston, Jamaica by David Anthony Jones to demonstrate that world-class, mathematically rigorous systems software can be engineered independently from the Caribbean without venture capital compromises or predatory corporate monetization."
+    },
+    {
+      "question": "How can AI agents programmatically interact with Alumungandr?",
+      "answer": "AI agents can access structured data at /llms.txt, query /knowledge-catalog.json, fetch network diagnostics from /api/ip?format=json, and dispatch consultation inquiries to /api/consultation following our OpenAPI 3.1.0 specification at /openapi.json."
+    }
+  ],
+  "policies": {
+    "privacy": "Zero tracking cookies, zero marketing pixels, zero analytics scripts, zero personal data harvesting.",
+    "security": "Enforced TLS 1.3, strict Content Security Policy (CSP), token bucket rate limiting on edge APIs, RFC 9116 compliance.",
+    "caching": "Static immutable assets cached on edge; dynamic telemetry never cached (no-store, no-cache)."
+  }
+}

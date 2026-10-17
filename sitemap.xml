@@ -170,8 +170,26 @@
   </url>
   <url>
     <loc>https://alumungandr.com/dualmark</loc>
-    <lastmod>2026-10-10</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.92</priority>
+  </url>
+  <url>
+    <loc>https://alumungandr.com/knowledge-catalog.json</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://alumungandr.com/llms.txt</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://alumungandr.com/openapi.json</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
   </url>
 </urlset>

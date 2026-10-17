@@ -1,0 +1,187 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Alumungandr Edge Gateway & Network Intelligence API",
+    "version": "1.0.0",
+    "description": "High-performance, zero-telemetry edge API providing authentic real-time IP diagnostics, DoH reverse DNS, technical knowledge catalog, and Agent-to-Agent (A2A) consultation dispatch. Engineered by David Anthony Jones in Kingston, Jamaica.",
+    "contact": {
+      "name": "Alumungandr Enterprise & Technologies",
+      "url": "https://alumungandr.com/about",
+      "email": "admin@alumungandr.com"
+    },
+    "license": {
+      "name": "MIT License / Proprietary Enterprise Licensing",
+      "url": "https://alumungandr.com/terms"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://alumungandr.com",
+      "description": "Production Global Anycast Edge Network"
+    }
+  ],
+  "paths": {
+    "/api/ip": {
+      "get": {
+        "summary": "Real-Time Public IP & Network Intelligence",
+        "description": "Returns verified real-time public WAN IP (IPv4/IPv6), ASN carrier, DoH reverse DNS (PTR), Cloudflare WARP detection, datacenter classification, and pre-compiled firewall directives.",
+        "operationId": "getIpTelemetry",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Output format: 'json', 'text', or 'raw'. Defaults to raw IP string for CLI tools (curl, wget) and JSON for browser clients.",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "text", "raw"]
+            }
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "required": false,
+            "description": "Optional single property to extract (e.g. 'ip', 'isp', 'city', 'asn', 'hostname').",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful network telemetry lookup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ip": { "type": "string", "example": "2a09:bac1:3a00::501:3d" },
+                    "ip_version": { "type": "string", "example": "IPv6" },
+                    "city": { "type": "string", "example": "Kingston" },
+                    "country": { "type": "string", "example": "Jamaica" },
+                    "country_code": { "type": "string", "example": "JM" },
+                    "isp": { "type": "string", "example": "Cloudflare WARP Protocol" },
+                    "asn": { "type": "string", "example": "AS13335" },
+                    "hostname": { "type": "string", "example": "2a09-bac1-3a00--501-3d.warp.cloudflare.com" },
+                    "proxy_vpn": { "type": "string", "example": "Cloudflare WARP (Active)" },
+                    "is_cloudflare": { "type": "boolean", "example": true },
+                    "is_datacenter": { "type": "boolean", "example": false },
+                    "threat_score": { "type": "integer", "example": 0 },
+                    "bogon": { "type": "string", "example": "Valid Public (Routable)" }
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "2a09:bac1:3a00::501:3d\n"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/knowledge": {
+      "get": {
+        "summary": "Verified Business Knowledge Catalog",
+        "description": "Returns the complete machine-readable Knowledge Catalog of Alumungandr Enterprise: credentials, service areas, non-commodity FAQs, and published transparent pricing ranges.",
+        "operationId": "getKnowledgeCatalog",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Response format: 'json' (default) or 'markdown'.",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "markdown"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Structured knowledge catalog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/consultation": {
+      "post": {
+        "summary": "Agent-Ready Consultation & Project Booking",
+        "description": "Programmatic intake for autonomous AI agents or enterprise representatives seeking technical consulting, custom edge architectures, or DualMark licensing.",
+        "operationId": "bookConsultation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["client_name", "contact_email", "project_brief"],
+                "properties": {
+                  "agent_id": { "type": "string", "example": "agent-gpt4o-procurement-09" },
+                  "client_name": { "type": "string", "example": "Acme Technologies" },
+                  "contact_email": { "type": "string", "example": "procurement@acme.example.com" },
+                  "inquiry_type": { "type": "string", "enum": ["consulting", "enterprise_dualmark", "custom_edge", "general"], "example": "custom_edge" },
+                  "budget_range": { "type": "string", "example": "$2,500 - $7,500" },
+                  "project_brief": { "type": "string", "example": "Requesting edge worker deployment for real-time telemetry." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consultation request accepted and queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "booking_id": { "type": "string" },
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/qa": {
+      "get": {
+        "summary": "Search Founder Q&A Knowledge Base",
+        "description": "Query authentic technical answers and architectural doctrine authored by David Anthony Jones.",
+        "operationId": "searchQa",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Search keyword or intent query.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching Q&A items"
+          }
+        }
+      }
+    }
+  }
+}

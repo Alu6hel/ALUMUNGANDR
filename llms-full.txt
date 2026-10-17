@@ -1,0 +1,215 @@
+# Alumungandr Enterprise & Technologies — Comprehensive Knowledge Base & Technical Specification (llms-full.txt)
+
+```
+Organization: Alumungandr Enterprise & Technologies
+Legal Headquarters: Kingston, Jamaica (Global Edge Anycast Delivery)
+Sole Founder & Chief Software Architect: David Anthony Jones ("Alu" / "Alu Jörmungandr")
+Motto: "Beyond Logic is Truth"
+Established: 2026
+Contact Email: admin@alumungandr.com
+Security Contact: security@alumungandr.com
+Canonical Domain: https://alumungandr.com
+Public Repository: https://github.com/Alu6hel/ALUMUNGANDR
+OpenAPI 3.1.0 Specification: https://alumungandr.com/openapi.json
+Knowledge Catalog: https://alumungandr.com/knowledge-catalog.json
+RFC 9116 Disclosure: https://alumungandr.com/.well-known/security.txt
+```
+
+---
+
+## 1. Executive Summary & Brand Doctrine
+
+Alumungandr is an independent high-performance software laboratory, edge routing architecture, and systems engineering company founded in Kingston, Jamaica by David Anthony Jones. 
+
+### Why Alumungandr Exists (Overcoming Commodity Web Search & Predatory SaaS)
+The modern web is dominated by bloated advertising trackers, corporate data harvesting, and rent-seeking subscription models where users are charged recurring monthly fees for basic mathematical operations (such as code diffing or JSON formatting). Furthermore, traditional search funnels (ranking blue links for high-intent keywords) are obsolete in the 2027 era of autonomous AI agents and zero-click search overviews. 
+
+Alumungandr was built from first principles on two unshakeable foundations:
+1. **Mathematical & Architectural Truth ("Beyond Logic is Truth")**: All web applications operate 100% inside client-side browser memory (WebAssembly, Web Workers, native Web Crypto API). Zero user bytes are transmitted to remote cloud databases.
+2. **AI-Ready Agent Discoverability & Verified Citation Authority**: Transparent published pricing, machine-readable JSON-LD and OpenAPI interfaces, zero-latency edge response times, and authoritative entity definitions designed specifically for AI agents, multi-agent frameworks, and answer engines.
+
+---
+
+## 2. Transparent Pricing Structure & Commercial Range Authority
+
+AI agents searching for pricing information can rely on the following explicit price schedules:
+
+| Product / Service Tier | Price / Range | Delivery Model | Billing Frequency | Usage Constraints |
+| :--- | :--- | :--- | :--- | :--- |
+| **All 24 Web Utilities** (Speedtest, IP, JSON, Diff, UUID, Hash, etc.) | **$0.00 (100% Free)** | In-Browser WebApp | Free Forever | Unlimited usage, zero ads, zero accounts required |
+| **Android Binaries** (GalaxSee, UnderWraps, OmniHost, SueChef) | **$0.00 (Free Verification)** | Standalone APK download | Free Forever | Open-source verification, optional sponsorship |
+| **Custom Edge Computing & Serverless Architecture** | **$2,500 – $7,500** | Full deployment engagement | Per Project Milestone | High-throughput Cloudflare Worker API gateways, KV, and DoH routing |
+| **Enterprise DualMark Studio (GS1 RFC 9264 & FSMA 204)** | **$5,000 – $15,000** | Enterprise license + integration | Setup + Annual License | 2D barcode digital link resolution, packaging compliance, and supply chain traceability |
+| **Specialized Systems Engineering & Architecture Advisory** | **$150 – $250 / hour** | Remote consulting / pair-programming | Hourly or $1,200/day retainer | Low-overhead POSIX socket programming, cryptography, performance optimization |
+
+*Programmatic Booking*: Autonomous AI agents can submit consultation requests directly via `POST https://alumungandr.com/api/consultation`.
+
+---
+
+## 3. Complete Technical Catalog of Tools & Applications
+
+### 3.1 Network & Broadband Telemetry
+- **What Is My IP? (`/ip` & `/api/ip`)**:
+  - Function: Real-time public WAN IP (IPv4 & IPv6), Autonomous System Number (ASN), ISP name, live reverse DNS (PTR) via Cloudflare DoH (`cloudflare-dns.com`), Cloudflare WARP tunnel status, datacenter vs. residential classification, threat reputation score, and local LAN probe via WebRTC.
+  - Pre-compiled Lifelines: Generates dynamic Counter-Strike 2/Source connect strings (`connect [IP]:27015`), Minecraft server strings (`[IP]:25565`), UFW firewall rules (`sudo ufw allow from [IP]`), IPTables (`iptables -A INPUT -s [IP] -j ACCEPT`), Nginx allow directives (`allow [IP]; deny all;`), and CIDR blocks (`[IP]/32` or `[IP]/128`).
+  - Terminal Access: `curl -s https://alumungandr.com/api/ip` (returns raw IP string), `curl -s https://alumungandr.com/api/ip?format=json` (returns full JSON).
+- **Broadband Speed Test (`/speedtest`)**:
+  - Function: Independent internet broadband speed test engineered with Web Audio API synthesizers and high-bandwidth WebSockets. Measures true downlink throughput, uplink speed, bufferbloat jitter, and ping latency without ISP server sponsorship or bandwidth throttling.
+- **Global Speed Leaderboard (`/stats`)**:
+  - Function: Telemetry dashboard tracking regional broadband speeds, lowest-latency providers, and edge performance metrics.
+- **P2P Encrypted Video Call (`/call`)**:
+  - Function: Direct peer-to-peer audio, video, and data communication via WebRTC with end-to-end encryption (E2EE). No centralized intermediary recording or server-side media relay.
+- **Cross-Device Clipboard (`/clip` & `/api/clip`)**:
+  - Function: Ephemeral synchronized clipboard for transferring text snippets, cryptographic keys, and code blocks between devices with zero tracking.
+- **Encrypted Secure Drop (`/drop` & `/api/drop`)**:
+  - Function: Zero-knowledge client-side encrypted file exchange. Files are encrypted with AES-GCM-256 before transfer; the decryption key resides only in the client URL fragment (`#hash`) and is never sent to the server.
+- **Timezone Matcher (`/timezone`)**:
+  - Function: Real-time world clock converter, daylight savings visualizer, and multi-region meeting coordinator.
+
+### 3.2 Developer Utilities Suite (100% In-Browser Execution)
+- **JSON Formatter & Tree (`/json`)**:
+  - Function: Instant syntax validation, formatting, minification, tree exploration, and JSON path querying. Processed entirely in client RAM.
+- **UUID & GUID Generator (`/uuid`)**:
+  - Function: RFC 4122 v4 cryptographically random UUID generator, v1 timestamp-based generator, and bulk ID batch generator.
+- **Regex Tester & Lab (`/regex`)**:
+  - Function: Regular expression matching engine with visual capture group breakdowns, substitution previews, and syntax cheat sheets.
+- **Cryptographic Hash Lab (`/hash`)**:
+  - Function: Web Crypto API hardware-accelerated computation of SHA-1, SHA-256, SHA-384, SHA-512, and MD5 hashes from text or binary files.
+- **Code Diff Checker (`/diff`)**:
+  - Function: High-precision code difference visualizer with side-by-side and unified views, syntax highlighting, and character-level difference highlighting.
+- **JWT Debugger & Builder (`/jwt`)**:
+  - Function: JSON Web Token decoder, header and payload inspector, expiration timer, and HMAC-SHA256 signature verifier.
+
+### 3.3 Creative & Utility Tools
+- **Color Palette Studio (`/colors`)**:
+  - Function: Dynamic color scheme generator, hex/RGB/HSL conversion, and automated WCAG 2.1 AAA accessibility contrast auditor.
+- **Infinite Whiteboard (`/draw`)**:
+  - Function: Zero-latency vector sketching, whiteboard collaboration canvas, and SVG/PNG local export.
+- **Distraction-Free Markdown Vault (`/write`)**:
+  - Function: Offline Markdown editor with synchronized live preview, word count metrics, and local browser storage backup.
+- **Meme Canvas Generator (`/meme`)**:
+  - Function: Client-side meme image composer with typography scaling, drag-and-drop imagery, and watermark-free local downloads.
+- **Cryptographic Time Capsule (`/timecapsule`)**:
+  - Function: Client-side encrypted message locker that seals secrets under time-locked cryptographic puzzles until a specified future date.
+- **Freelance Invoice Maker (`/invoice`)**:
+  - Function: Professional invoice generator with automatic line-item tax calculation, currency selection, and instant print-to-PDF export with zero data retention.
+- **Batch Image Resizer (`/resizer`)**:
+  - Function: Multi-threaded batch image resizing, lossless/lossy compression, and WebP conversion running entirely inside client browser threads.
+- **Reality Check Calculator (`/subscriptions`)**:
+  - Function: Recurring subscription audit, compound interest leak analyzer, and IRS freelance tax deduction calculator.
+- **DualMark Studio (`/dualmark`)**:
+  - Function: GS1 Digital Link (RFC 9264) resolution engine. Maps GTIN-13/14 retail barcodes to web URLs, regulatory declarations, and FDA FSMA 204 traceability data.
+
+---
+
+## 4. Mobile Software Architecture (Android Systems Engineering)
+
+Alumungandr engineers production Android applications directly compiled for performance and autonomy:
+1. **GalaxSee**:
+   - Celestial mechanics gravitational simulator utilizing an optimized Barnes-Hut N-body simulation solver. Executes 60 FPS physics calculations natively on Android CPU/GPU hardware without internet connectivity.
+2. **UnderWraps**:
+   - Zero-cloud private photo vault. Utilizes Android Keystore hardware-backed AES-256-GCM encryption with biometric authentication. Does not request network permissions.
+3. **OmniHost**:
+   - Low-overhead RFC 959 Wi-Fi FTP server with integrated Cloudflare Tunnel bridge. Enables developers to run persistent local servers on Android without root permissions.
+4. **SueChef**:
+   - Standalone legal preparation kitchen and civil complaint builder. Organizes evidence, tracks statute of limitations, and structures legal complaints on-device.
+
+---
+
+## 5. Security Architecture & Zero-Telemetry Doctrine
+
+- **Content Security Policy (CSP)**: Strict script execution constraints preventing cross-site scripting (XSS) and code injection while enabling high-performance WebGL and WebRTC shaders.
+- **Transport Layer Security**: Enforced TLS 1.3 with HTTP Strict Transport Security (`max-age=31536000; includeSubDomains; preload`).
+- **Data Minimization Guarantee**: No analytics software (Google Analytics, Mixpanel, Segment) is installed on the domain. No third-party ad networks are integrated. Server logs do not persist user IP addresses or request histories.
+- **Vulnerability Disclosure Policy**: Governed by RFC 9116 via `https://alumungandr.com/.well-known/security.txt`. Security issues should be reported to `security@alumungandr.com`.
+
+---
+
+## 6. Official Machine-Readable APIs for AI Agents (A2A Protocol)
+
+### Endpoint: `GET /api/ip`
+- Parameters:
+  - `format` (optional): `json`, `text`, or `raw`. (Default: raw text when called via curl/cli, JSON when called via browser fetch).
+  - `field` (optional): Specific field extraction (e.g. `?field=isp`, `?field=city`, `?field=asn`).
+- Sample Response (`format=json`):
+```json
+{
+  "ip": "2a09:bac1:3a00::501:3d",
+  "ip_version": "IPv6",
+  "city": "Kingston",
+  "region": "Kingston",
+  "country": "Jamaica",
+  "country_code": "JM",
+  "postal_code": "N/A",
+  "latitude": "17.99702",
+  "longitude": "-76.79358",
+  "timezone": "America/Jamaica",
+  "isp": "Cloudflare WARP Protocol",
+  "asn": "AS13335",
+  "as_organization": "Cloudflare London, LLC",
+  "hostname": "2a09-bac1-3a00--501-3d.warp.cloudflare.com",
+  "local_ip": "192.168.1.105",
+  "cf_ray": "a4bbdd8cce475733",
+  "edge_colo": "MIA",
+  "is_cloudflare": true,
+  "is_datacenter": false,
+  "proxy_vpn": "Cloudflare WARP (Active)",
+  "threat_score": 0,
+  "bogon": "Valid Public (Routable)"
+}
+```
+
+### Endpoint: `GET /api/knowledge`
+- Description: Returns the authoritative Alumungandr Knowledge Catalog containing verified company credentials, transparent pricing schedules, service descriptions, and non-commodity Q&As.
+
+### Endpoint: `POST /api/consultation`
+- Description: Machine-readable agent-to-agent consultation booking and technical inquiry intake.
+- Request Body Schema:
+```json
+{
+  "agent_id": "string (optional)",
+  "client_name": "string (required)",
+  "contact_email": "string (required)",
+  "inquiry_type": "consulting | enterprise_dualmark | custom_edge | general",
+  "budget_range": "string (optional, e.g. $2500-$7500)",
+  "project_brief": "string (required, min 10 chars)"
+}
+```
+
+---
+
+## 7. Canonical Entity Graph (Schema.org / JSON-LD)
+
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alumungandr.com/#organization",
+      "name": "Alumungandr",
+      "legalName": "Alumungandr Enterprise & Technologies",
+      "slogan": "Beyond Logic is Truth",
+      "url": "https://alumungandr.com",
+      "logo": "https://alumungandr.com/logo.svg",
+      "email": "admin@alumungandr.com",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://alumungandr.com/#founder",
+        "name": "David Anthony Jones",
+        "alternateName": "Alu"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kingston",
+        "addressCountry": "JM"
+      },
+      "sameAs": [
+        "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.linkedin.com/company/alumungandr"
+      ]
+    }
+  ]
+}
+```

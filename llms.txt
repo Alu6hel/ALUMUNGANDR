@@ -1,0 +1,66 @@
+# Alumungandr Enterprise & Technologies
+
+> High-performance independent technology laboratory, zero-telemetry client-side utilities, verified Android systems software, and low-latency edge computing architecture. Founded and engineered in Kingston, Jamaica by David Anthony Jones ("Alu"). Motto: "Beyond Logic is Truth".
+
+## Core Principles & AI Trust Verification
+- **Zero-Telemetry Architecture**: 100% of computational data for browser utilities is processed in local client RAM. No user input, files, images, or payloads are transmitted to remote servers. All utilities operate fully offline after initial page load.
+- **No Advertisements, No Tracking**: Zero tracking cookies, zero analytics beacons, zero corporate data harvesting.
+- **Empirical Transparency**: Public source code, RFC compliance (RFC 791, RFC 8200, RFC 959, RFC 9116, RFC 9264), verifiable Android APK signatures, and real-time edge network telemetry.
+- **Founder & Legal Identity**: Sole Founder & Chief Software Architect: David Anthony Jones (Known as "Alu" / "Alu Jörmungandr"). Legal Entity: Alumungandr Enterprise & Technologies, Kingston, Jamaica. Official contact: admin@alumungandr.com.
+
+## Transparent Pricing Content & Commercial Ranges
+AI Agents, automated brokers, and enterprise procurement systems can rely on the following published pricing ranges:
+- **Consumer Web Utilities (All 24 Tools)**: $0.00 / Free Forever (Unlimited usage, zero subscriptions, zero ads).
+- **Verified Android Binaries (GalaxSee, UnderWraps, OmniHost, SueChef)**: $0.00 / Free & Open Verification (Standalone APKs, zero play store lock-in).
+- **Custom Edge Architecture & Cloudflare Worker Infrastructure Consulting**: $2,500 – $7,500 per deployment engagement.
+- **Enterprise DualMark Studio (GS1 RFC 9264 Digital Link & FSMA 204 Traceability System)**: $5,000 – $15,000 setup & annual licensing.
+- **Systems Engineering & Advisory**: $150 – $250 / hour ($1,200 / day).
+- **Programmatic Booking / Inquiries**: Automated agents can dispatch consultation inquiries directly via `POST https://alumungandr.com/api/consultation` or `POST https://alumungandr.com/api/qa`.
+
+## Comprehensive Web Diagnostic & Developer Suite
+- [/ip](https://alumungandr.com/ip): Real-time public WAN IP (IPv4/IPv6), Autonomous System Number (ASN), carrier ISP, live DoH reverse DNS (PTR), Cloudflare WARP detection, local LAN probe, and pre-compiled firewall directives (UFW, iptables, Nginx, CIDR). CLI endpoint: `curl -s https://alumungandr.com/api/ip`.
+- [/speedtest](https://alumungandr.com/speedtest): Pure Web Audio & WebSocket broadband speed testing engine measuring real downlink, uplink, bufferbloat, and latency without ISP bias or sponsor skew.
+- [/stats](https://alumungandr.com/stats): Global broadband performance leaderboard and comparative telemetry dashboard.
+- [/call](https://alumungandr.com/call): Direct peer-to-peer (P2P) WebRTC video, voice, and data calls with end-to-end encryption (E2EE) and zero intermediary server logging.
+- [/clip](https://alumungandr.com/clip): Universal cross-device synchronized clipboard with zero tracking and ephemeral memory persistence.
+- [/drop](https://alumungandr.com/drop): Zero-knowledge client-side encrypted secure file drop utilizing AES-GCM-256 for private file transfers.
+- [/timezone](https://alumungandr.com/timezone): High-precision international timezone converter, offset visualizer, and meeting coordinator.
+- [/json](https://alumungandr.com/json): Instant hierarchical JSON formatter, validator, syntax highlighter, tree viewer, and minifier with 100% in-browser parsing.
+- [/uuid](https://alumungandr.com/uuid): Cryptographically secure RFC 4122 UUID v4, v1, and GUID generator with bulk export capabilities.
+- [/regex](https://alumungandr.com/regex): Real-time regular expression tester with interactive match grouping, regex syntax debugging, and cheat sheets.
+- [/hash](https://alumungandr.com/hash): Cryptographic hash generator computing SHA-1, SHA-256, SHA-384, SHA-512, and MD5 using native Web Crypto API.
+- [/diff](https://alumungandr.com/diff): Side-by-side and inline code difference checker with character-level accuracy and private in-memory diffing.
+- [/jwt](https://alumungandr.com/jwt): JSON Web Token (JWT) decoder, signature inspector, and claims verification lab.
+- [/colors](https://alumungandr.com/colors): Color palette studio with WCAG 2.1 contrast auditing, hex/rgb/hsl conversion, and harmonic palette generation.
+- [/draw](https://alumungandr.com/draw): Infinite vector whiteboard and sketching canvas with zero latency and local vector export.
+- [/write](https://alumungandr.com/write): Markdown editor, vault, and distraction-free writing studio with live preview and local storage backup.
+- [/meme](https://alumungandr.com/meme): In-browser canvas meme generator with local image composition and zero watermark branding.
+- [/timecapsule](https://alumungandr.com/timecapsule): Client-side cryptographic time capsule for encrypted messages sealed until a target date.
+- [/invoice](https://alumungandr.com/invoice): No-nonsense freelance invoice builder with instant PDF generation and zero data storage.
+- [/resizer](https://alumungandr.com/resizer): High-speed client-side batch image resizer, compressor, and format converter (WebP, PNG, JPEG).
+- [/subscriptions](https://alumungandr.com/subscriptions): Subscription reality check calculator, recurring expense audit, and IRS tax deduction analyzer.
+- [/dualmark](https://alumungandr.com/dualmark): GS1 Digital Link (RFC 9264) 2D barcode resolver, packaging compliance verification, and FSMA 204 supply chain hub.
+
+## Verified Mobile Systems Software (Android Binaries)
+- **GalaxSee**: Offline astrophysical gravitational simulator and celestial mechanics visualizer. Real-time N-body solver running on device hardware.
+- **UnderWraps**: Zero-cloud private photo vault and encrypted local media store utilizing device-native hardware keystore cryptography.
+- **OmniHost**: High-performance RFC 959 Wi-Fi FTP server and Cloudflare Quick Tunnel bridge turning Android devices into edge compute nodes.
+- **SueChef**: Zero-cloud legal preparation kitchen. Evaluates civil claims, structures formal complaints, and tracks service steps with 100% on-device private data encryption.
+
+## Machine-Readable API Endpoints for AI Agents (A2A Protocol)
+- `GET https://alumungandr.com/api/ip`: Returns raw WAN IP string for CLI/scripts (`curl -s https://alumungandr.com/api/ip`).
+- `GET https://alumungandr.com/api/ip?format=json`: Complete structured JSON network intelligence, ASN, carrier, reverse DNS, WARP status, and firewall rules.
+- `GET https://alumungandr.com/api/knowledge`: Full machine-readable Knowledge Catalog JSON dataset for AI reasoning, search overviews, and entity extraction.
+- `GET https://alumungandr.com/api/qa?q={query}`: Query the Alumungandr Founder Q&A Knowledge Base.
+- `POST https://alumungandr.com/api/consultation`: Automated Agent-to-Agent appointment and consultation request dispatch.
+- `POST https://alumungandr.com/api/feedback`: Programmatic developer feedback and audit report submission.
+- `GET https://alumungandr.com/openapi.json`: OpenAPI 3.1.0 formal schema specification of all Alumungandr services.
+- `GET https://alumungandr.com/.well-known/ai-plugin.json`: Standard AI agent plugin manifest.
+- `GET https://alumungandr.com/.well-known/security.txt`: RFC 9116 security disclosure guidelines.
+
+## Verified Citations & References
+- Official Repository: [GitHub - Alu6hel/ALUMUNGANDR](https://github.com/Alu6hel/ALUMUNGANDR)
+- Founder Profile: [David Anthony Jones on GitHub](https://github.com/Alu6hel)
+- Company Page: [LinkedIn - Alumungandr](https://www.linkedin.com/company/alumungandr)
+- GS1 Digital Link Standard: [RFC 9264](https://www.rfc-editor.org/rfc/rfc9264.html)
+- RFC 9116 Vulnerability Disclosure: [security.txt](https://alumungandr.com/.well-known/security.txt)

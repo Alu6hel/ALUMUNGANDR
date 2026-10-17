@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Alumungandr Network & Knowledge Engine",
+  "name_for_model": "alumungandr_engine",
+  "description_for_human": "Real-time network telemetry, IP intelligence, zero-knowledge developer utilities, and verified technical knowledge catalog from Alumungandr Enterprise.",
+  "description_for_model": "Plugin for accessing real-time public IP address intelligence, ASN lookup, reverse DNS PTR hostnames, Cloudflare WARP detection, speed test statistics, and Alumungandr technical knowledge catalog with transparent pricing.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://alumungandr.com/openapi.json"
+  },
+  "logo_url": "https://alumungandr.com/logo.svg",
+  "contact_email": "admin@alumungandr.com",
+  "legal_info_url": "https://alumungandr.com/terms"
+}

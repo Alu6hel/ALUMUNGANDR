@@ -19,13 +19,13 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alumungandr.com/subscriptions">
   <meta property="og:title" content="Subscription Reality Check | Silent Cash Bleed &amp; Tax Audit | Alumungandr™">
-  <meta property="og:description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding cost, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
+  <meta property="og:description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding drain, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
   <meta property="og:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Subscription Reality Check | Silent Cash Bleed &amp; Tax Audit | Alumungandr™">
-  <meta name="twitter:description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding cost, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
+  <meta name="twitter:description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding drain, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
   <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
 
   <!-- Structured Data (JSON-LD) -->
@@ -66,7 +66,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subscription Reality Check | Silent Cash Bleed &amp; Tax Audit | Alumungandr™</title>
-  <meta name="description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding cost, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
+  <meta name="description" content="Audit, edit, and eliminate recurring software spend. Calculate 10-year compounding drain, foreign exchange fees, and IRS § 162 tax deductions. 100% private in-browser computation.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -83,7 +83,6 @@
       --orano-card: #10162a;
       --orano-card-active: #162444;
       --orano-yellow: #facc15;
-      --orano-yellow-glow: rgba(250, 204, 21, 0.35);
       --orano-border: rgba(255, 255, 255, 0.12);
       --orano-grid: rgba(255, 255, 255, 0.04);
       --orano-muted: #94a3b8;
@@ -145,20 +144,20 @@
       padding: 6.2rem 1.5rem 5rem;
     }
 
-    /* PRIVACY NOTICE BANNER */
+    /* PRIVACY NOTICE BANNER (Clean, understated) */
     .privacy-sandbox-banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.28);
+      background: rgba(16, 22, 42, 0.75);
+      border: 1px solid var(--orano-border);
       border-radius: 10px;
       padding: 0.75rem 1.25rem;
       margin-bottom: 1.5rem;
       font-family: var(--font-mono);
       font-size: 0.78rem;
-      color: #a7f3d0;
+      color: #94a3b8;
       backdrop-filter: blur(10px);
       flex-wrap: wrap;
     }
@@ -170,8 +169,8 @@
     }
 
     .privacy-sandbox-banner .p-badge {
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
       padding: 2px 7px;
       border-radius: 4px;
       font-weight: 700;
@@ -186,9 +185,9 @@
     }
 
     .btn-privacy-action {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
       font-family: var(--font-mono);
       font-size: 0.72rem;
       padding: 0.35rem 0.75rem;
@@ -198,8 +197,9 @@
     }
 
     .btn-privacy-action:hover {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
     /* HERO SCANNER SECTION */
@@ -213,39 +213,37 @@
       align-items: center;
       gap: 0.5rem;
       font-family: var(--font-mono);
-      font-size: 0.76rem;
-      color: var(--orano-yellow);
-      letter-spacing: 0.16em;
+      font-size: 0.74rem;
+      color: #94a3b8;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-bottom: 0.6rem;
-      background: rgba(250, 204, 21, 0.1);
-      border: 1px solid rgba(250, 204, 21, 0.25);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 4px 12px;
       border-radius: 20px;
     }
 
     .scanner-title {
       font-family: var(--font-display);
-      font-size: 2.8rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
+      font-size: 2.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
       line-height: 1.15;
       margin-bottom: 0.75rem;
-      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
     }
 
     .scanner-desc {
-      font-size: 1.02rem;
+      font-size: 1rem;
       color: var(--orano-muted);
-      max-width: 780px;
+      max-width: 740px;
       margin: 0 auto;
       line-height: 1.55;
     }
 
-    /* COMPACT INSIGHT ACCORDION PILLS */
+    /* COMPACT INSIGHT ACCORDION PILLS (Tone down colorfulness) */
     .compact-insights-strip {
       display: flex;
       justify-content: center;
@@ -255,26 +253,26 @@
     }
 
     .btn-insight-pill {
-      background: rgba(16, 22, 42, 0.85);
-      border: 1px solid var(--orano-border);
-      border-radius: 24px;
-      padding: 0.55rem 1.1rem;
-      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      color: #cbd5e1;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       transition: all 0.2s ease;
       backdrop-filter: blur(8px);
     }
 
     .btn-insight-pill:hover,
     .btn-insight-pill.active {
-      border-color: var(--orano-yellow);
-      background: rgba(250, 204, 21, 0.12);
-      color: var(--orano-yellow);
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.09);
+      color: #ffffff;
       transform: translateY(-1px);
     }
 
@@ -305,9 +303,9 @@
 
     .insight-drawer-title {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      color: var(--orano-yellow);
+      color: #ffffff;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -339,7 +337,7 @@
       color: #fff;
     }
 
-    /* 5-CARD KPI EXECUTIVE DOCK */
+    /* 5-CARD KPI EXECUTIVE DOCK (Unified, clean crisp values without rainbow text) */
     .metrics-dock {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -365,8 +363,8 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 3px;
-      background: transparent;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
       transition: background 0.2s;
     }
 
@@ -374,12 +372,6 @@
       transform: translateY(-2px);
       border-color: rgba(255, 255, 255, 0.25);
     }
-
-    .metric-card.card-monthly::before { background: var(--orano-red); }
-    .metric-card.card-annual::before { background: var(--orano-yellow); }
-    .metric-card.card-tenyear::before { background: var(--orano-coral); }
-    .metric-card.card-sp::before { background: var(--orano-green); }
-    .metric-card.card-tax::before { background: var(--orano-cyan); }
 
     .metric-label {
       display: flex;
@@ -389,7 +381,7 @@
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.06em;
-      color: var(--orano-muted);
+      color: #94a3b8;
       margin-bottom: 0.5rem;
     }
 
@@ -399,17 +391,12 @@
       font-weight: 800;
       line-height: 1.1;
       margin-bottom: 0.35rem;
-      color: #fff;
+      color: #ffffff; /* Unified clean white numbers, no garish rainbow colors */
     }
 
-    .metric-value.highlight-bleed { color: var(--orano-red); }
-    .metric-value.highlight-annual { color: var(--orano-yellow); }
-    .metric-value.highlight-opportunity { color: var(--orano-green); }
-    .metric-value.highlight-tax { color: var(--orano-cyan); }
-
     .metric-sub {
-      font-size: 0.75rem;
-      color: var(--orano-dim);
+      font-size: 0.74rem;
+      color: #64748b;
       line-height: 1.35;
     }
 
@@ -430,12 +417,12 @@
       margin-bottom: 0.6rem;
       font-family: var(--font-mono);
       font-size: 0.74rem;
-      color: var(--orano-muted);
+      color: #94a3b8;
     }
 
     .spend-bar-track {
       width: 100%;
-      height: 8px;
+      height: 7px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 4px;
       overflow: hidden;
@@ -452,19 +439,25 @@
       display: flex;
       gap: 1.25rem;
       flex-wrap: wrap;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-family: var(--font-mono);
+      color: #94a3b8; /* Muted slate text instead of rainbow */
+    }
+
+    .spend-legend-row strong {
+      color: #f1f5f9;
+      font-weight: 600;
     }
 
     .spend-legend-item {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
     }
 
     .spend-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       display: inline-block;
     }
@@ -496,8 +489,8 @@
     .search-input-wrap {
       position: relative;
       flex: 1;
-      min-width: 200px;
-      max-width: 320px;
+      min-width: 180px;
+      max-width: 280px;
     }
 
     .search-input-wrap input {
@@ -514,8 +507,8 @@
     }
 
     .search-input-wrap input:focus {
-      border-color: var(--orano-yellow);
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
     }
 
     .search-icon {
@@ -535,26 +528,26 @@
     }
 
     .btn-cat-tab {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--orano-border);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--orano-muted);
       font-family: var(--font-mono);
       font-size: 0.74rem;
-      padding: 0.42rem 0.75rem;
+      padding: 0.45rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .btn-cat-tab:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
     }
 
     .btn-cat-tab.active {
-      background: var(--orano-yellow);
+      background: #ffffff;
       color: #070911;
-      border-color: var(--orano-yellow);
+      border-color: #ffffff;
       font-weight: 700;
     }
 
@@ -566,13 +559,13 @@
     }
 
     .btn-primary-add {
-      background: var(--orano-yellow);
-      border: 1px solid var(--orano-yellow);
+      background: #ffffff;
+      border: 1px solid #ffffff;
       color: #070911;
       font-family: var(--font-mono);
       font-size: 0.78rem;
-      font-weight: 800;
-      padding: 0.55rem 1.1rem;
+      font-weight: 700;
+      padding: 0.52rem 1.05rem;
       border-radius: 8px;
       cursor: pointer;
       display: flex;
@@ -582,9 +575,9 @@
     }
 
     .btn-primary-add:hover {
-      background: #fde047;
-      box-shadow: 0 0 16px rgba(250, 204, 21, 0.4);
+      background: #f1f5f9;
       transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
     }
 
     .dropdown-btn-wrap {
@@ -594,7 +587,7 @@
     .btn-toolbar-secondary {
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--orano-border);
-      color: #fff;
+      color: #cbd5e1;
       font-family: var(--font-mono);
       font-size: 0.74rem;
       padding: 0.5rem 0.85rem;
@@ -609,6 +602,7 @@
     .btn-toolbar-secondary:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
     }
 
     .popover-menu {
@@ -649,7 +643,7 @@
 
     .popover-item:hover {
       background: rgba(255, 255, 255, 0.08);
-      color: var(--orano-yellow);
+      color: #fff;
     }
 
     .popover-divider {
@@ -669,12 +663,13 @@
       padding: 0.25rem 0.6rem;
       font-family: var(--font-mono);
       font-size: 0.72rem;
+      color: #94a3b8;
     }
 
     .currency-quick-strip select {
       background: transparent;
       border: none;
-      color: var(--orano-cyan);
+      color: #ffffff;
       font-family: var(--font-mono);
       font-size: 0.75rem;
       font-weight: 700;
@@ -725,15 +720,15 @@
     }
 
     .sub-card:hover {
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.25);
       transform: translateY(-2px);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
     }
 
     .sub-card.active {
       background: rgba(22, 36, 68, 0.85);
-      border-color: var(--orano-yellow);
-      box-shadow: 0 0 20px rgba(250, 204, 21, 0.15), inset 0 0 12px rgba(250, 204, 21, 0.05);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
     }
 
     .card-top {
@@ -765,8 +760,8 @@
     }
 
     .sub-card.active .service-icon-box {
-      background: rgba(250, 204, 21, 0.15);
-      border-color: var(--orano-yellow);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
     }
 
     .service-meta-block {
@@ -775,9 +770,9 @@
     }
 
     .service-name {
-      font-weight: 700;
+      font-weight: 600;
       font-size: 0.95rem;
-      color: #fff;
+      color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -791,8 +786,8 @@
       text-transform: uppercase;
       padding: 1px 6px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--orano-muted);
+      background: rgba(255, 255, 255, 0.04);
+      color: #64748b;
     }
 
     /* Custom Toggle Switch on Card */
@@ -838,11 +833,12 @@
     }
 
     .switch-toggle input:checked + .switch-slider {
-      background-color: var(--orano-green);
+      background-color: #ffffff;
     }
 
     .switch-toggle input:checked + .switch-slider:before {
       transform: translateX(18px);
+      background-color: #070911;
     }
 
     .card-middle {
@@ -862,12 +858,12 @@
       font-family: var(--font-display);
       font-size: 1.45rem;
       font-weight: 800;
-      color: var(--orano-yellow);
+      color: #ffffff; /* Clean white price */
     }
 
     .service-cycle {
       font-size: 0.74rem;
-      color: var(--orano-dim);
+      color: #64748b;
       font-family: var(--font-mono);
     }
 
@@ -876,15 +872,15 @@
       font-size: 0.65rem;
       padding: 2px 6px;
       border-radius: 4px;
-      background: rgba(6, 182, 212, 0.1);
-      color: var(--orano-cyan);
-      border: 1px solid rgba(6, 182, 212, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .tax-tag-badge.non-deductible {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--orano-dim);
-      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: #475569;
+      border-color: rgba(255, 255, 255, 0.06);
     }
 
     .card-actions-strip {
@@ -897,9 +893,9 @@
     }
 
     .btn-card-action {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--orano-muted);
+      color: #94a3b8;
       font-family: var(--font-mono);
       font-size: 0.68rem;
       padding: 0.3rem 0.55rem;
@@ -912,20 +908,15 @@
     }
 
     .btn-card-action:hover {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
       color: #fff;
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-card-action.btn-cancel-guide:hover {
-      background: rgba(239, 68, 68, 0.15);
-      color: #fca5a5;
-      border-color: var(--orano-red);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
     .btn-card-action.btn-delete-card:hover {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
       color: var(--orano-red);
+      border-color: rgba(239, 68, 68, 0.3);
     }
 
     /* RIGHT COLUMN: STICKY RECEIPT DOCK */
@@ -1012,19 +1003,12 @@
       justify-content: space-between;
       font-size: 0.82rem;
       padding: 0.25rem 0;
+      color: #111111; /* Clean monochrome on thermal receipt */
     }
 
     .receipt-row.bold {
       font-weight: 900;
       font-size: 0.92rem;
-    }
-
-    .receipt-row.drain {
-      color: #b91c1c;
-    }
-
-    .receipt-row.opportunity {
-      color: #15803d;
     }
 
     .receipt-roast-quote {
@@ -1056,7 +1040,7 @@
     .btn-receipt-action {
       background: rgba(16, 22, 42, 0.85);
       border: 1px solid var(--orano-border);
-      color: #fff;
+      color: #cbd5e1;
       font-family: var(--font-mono);
       font-size: 0.76rem;
       padding: 0.6rem 1rem;
@@ -1073,22 +1057,23 @@
     .btn-receipt-action:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
       transform: translateY(-1px);
     }
 
     .btn-receipt-action.primary-btn {
-      background: var(--orano-yellow);
+      background: #ffffff;
       color: #070911;
-      border-color: var(--orano-yellow);
-      font-weight: 800;
+      border-color: #ffffff;
+      font-weight: 700;
     }
 
     .btn-receipt-action.primary-btn:hover {
-      background: #fde047;
-      box-shadow: 0 0 16px rgba(250, 204, 21, 0.3);
+      background: #f1f5f9;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
     }
 
-    /* KILL-SWITCH QUICK DRAWER MODAL */
+    /* MODAL OVERLAY & CONTAINERS */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -1142,9 +1127,9 @@
 
     .modal-title {
       font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--orano-yellow);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -1190,7 +1175,7 @@
     }
 
     .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--orano-yellow);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .form-row-2 {
@@ -1220,12 +1205,12 @@
     }
 
     .btn-form-submit {
-      background: var(--orano-yellow);
-      border: 1px solid var(--orano-yellow);
+      background: #ffffff;
+      border: 1px solid #ffffff;
       color: #070911;
       font-family: var(--font-mono);
       font-size: 0.8rem;
-      font-weight: 800;
+      font-weight: 700;
       padding: 0.55rem 1.25rem;
       border-radius: 8px;
       cursor: pointer;
@@ -1264,7 +1249,7 @@
       --orano-bg: #f8fafc;
       --orano-surface: #ffffff;
       --orano-card: #ffffff;
-      --orano-card-active: #f0fdf4;
+      --orano-card-active: #f1f5f9;
       --orano-border: rgba(0, 0, 0, 0.12);
       --orano-muted: #475569;
       --orano-dim: #64748b;
@@ -1275,20 +1260,11 @@
       color: #0f172a;
     }
 
-    html[data-theme="paper"] .screen-vignette {
-      background: radial-gradient(circle at 50% 40%, transparent 60%, rgba(241, 245, 249, 0.7) 100%);
-    }
-
-    html[data-theme="paper"] .scanner-title {
-      background: linear-gradient(135deg, #0f172a 40%, #334155 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    html[data-theme="paper"] .privacy-sandbox-banner {
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.4);
-      color: #065f46;
+    html[data-theme="paper"] .scanner-title,
+    html[data-theme="paper"] .metric-value,
+    html[data-theme="paper"] .service-name,
+    html[data-theme="paper"] .service-price {
+      color: #0f172a !important;
     }
 
     html[data-theme="paper"] .metric-card,
@@ -1302,27 +1278,20 @@
       color: #0f172a;
     }
 
-    html[data-theme="paper"] .service-name,
-    html[data-theme="paper"] .metric-value {
-      color: #0f172a;
+    html[data-theme="paper"] .btn-cat-tab.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
     }
 
-    html[data-theme="paper"] .sub-card.active {
-      background: #f0fdf4;
-      border-color: #10b981;
+    html[data-theme="paper"] .btn-primary-add {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
     }
 
     html[data-theme="paper"] .modal-container {
       background: #ffffff;
-      color: #0f172a;
-      border-color: #cbd5e1;
-    }
-
-    html[data-theme="paper"] .form-input,
-    html[data-theme="paper"] .form-select,
-    html[data-theme="paper"] .form-textarea,
-    html[data-theme="paper"] .search-input-wrap input {
-      background: #f8fafc;
       color: #0f172a;
       border-color: #cbd5e1;
     }
@@ -1333,7 +1302,6 @@
       --orano-surface: #191200;
       --orano-card: #201700;
       --orano-card-active: #332400;
-      --orano-yellow: #f59e0b;
       --orano-border: rgba(245, 158, 11, 0.25);
       --orano-muted: #d97706;
       --orano-dim: #92400e;
@@ -1456,8 +1424,8 @@
     <!-- Privacy Sandbox Guarantee Banner -->
     <div class="privacy-sandbox-banner">
       <div class="p-left">
-        <span class="p-badge">🔒 ZERO DATA LEAKAGE</span>
-        <span>100% In-Browser Computation &bull; Your data stays strictly in your browser and never touches a server</span>
+        <span class="p-badge">🔒 100% PRIVATE</span>
+        <span>Client-side local sandbox &bull; Your data stays strictly in your browser and never touches a server</span>
       </div>
       <div class="p-right">
         <button type="button" class="btn-privacy-action" onclick="openBackupModal()">
@@ -1469,10 +1437,10 @@
       </div>
     </div>
 
-    <!-- Hero Title & Subtitle (Concise & Punchy) -->
+    <!-- Hero Title & Subtitle -->
     <section class="hero-scanner">
       <div class="scanner-pre">
-        <span>⚡ SUBSCRIPTION REALITY CHECK &bull; CASH FLOW TRACKER</span>
+        <span>SUBSCRIPTION REALITY CHECK &bull; CASH FLOW TRACKER</span>
       </div>
       <h1 class="scanner-title">
         SUBSCRIPTION INTELLIGENCE &amp; AUDIT
@@ -1482,7 +1450,7 @@
       </p>
     </section>
 
-    <!-- Compact Expandable Insights (Replaces the massive wall of text) -->
+    <!-- Compact Expandable Insights Strip -->
     <div class="compact-insights-strip">
       <button type="button" class="btn-insight-pill" onclick="toggleInsightDrawer('tax')">
         <span>💡 Tax Write-Offs (IRS § 162)</span>
@@ -1505,7 +1473,7 @@
     <!-- Collapsible Insight Panels -->
     <div class="insight-drawer-panel" id="drawerTax">
       <div class="insight-drawer-header">
-        <div class="insight-drawer-title">💡 IRS § 162 vs. § 262 Deductibility Rules</div>
+        <div class="insight-drawer-title">IRS § 162 vs. § 262 Deductibility Rules</div>
         <button type="button" class="insight-drawer-close" onclick="closeAllDrawers()">&times;</button>
       </div>
       <div class="insight-drawer-body">
@@ -1517,11 +1485,11 @@
 
     <div class="insight-drawer-panel" id="drawerDarkpatterns">
       <div class="insight-drawer-header">
-        <div class="insight-drawer-title">⚡ Deceptive Retention &amp; Dark Patterns</div>
+        <div class="insight-drawer-title">Deceptive Retention &amp; Dark Patterns</div>
         <button type="button" class="insight-drawer-close" onclick="closeAllDrawers()">&times;</button>
       </div>
       <div class="insight-drawer-body">
-        <p><strong>The Pause Trap:</strong> Services like Canva and Audible promote "Pause for 3 Months" in bright contrast while burying cancellation. When 90 days elapse, billing silently resumes without notification.</p>
+        <p><strong>The Pause Trap:</strong> Services like Canva and Audible promote "Pause for 3 Months" while burying cancellation. When 90 days elapse, billing silently resumes without notification.</p>
         <p><strong>Early Termination Penalties:</strong> Adobe contracts often levy a 50% remainder fee ($100–$300). <em>Bypass:</em> Switching to a cheaper plan resets the statutory 14-day cooling-off period, allowing cancellation with $0 penalty.</p>
         <p><strong>Ghost Seat Invoices:</strong> Deleting an employee in Google Workspace or Slack does not cancel their paid seat license until explicitly downgraded.</p>
       </div>
@@ -1529,7 +1497,7 @@
 
     <div class="insight-drawer-panel" id="drawerFx">
       <div class="insight-drawer-header">
-        <div class="insight-drawer-title">🌐 Cross-Border Currency &amp; Credit Card Spreads</div>
+        <div class="insight-drawer-title">Cross-Border Currency &amp; Credit Card Spreads</div>
         <button type="button" class="insight-drawer-close" onclick="closeAllDrawers()">&times;</button>
       </div>
       <div class="insight-drawer-body">
@@ -1538,14 +1506,14 @@
       </div>
     </div>
 
-    <!-- 5-Card KPI Executive Metrics Dock -->
+    <!-- 5-Card KPI Executive Metrics Dock (Clean Unified Text) -->
     <section class="metrics-dock">
       <div class="metric-card card-monthly">
         <div class="metric-label">
           <span>MONTHLY SPEND</span>
           <span>01</span>
         </div>
-        <div class="metric-value highlight-bleed" id="valMonthly">$0.00</div>
+        <div class="metric-value" id="valMonthly">$0.00</div>
         <div class="metric-sub" id="valMonthlySub">Direct card charge (USD)</div>
       </div>
 
@@ -1554,7 +1522,7 @@
           <span>ANNUAL OUTFLOW</span>
           <span>02</span>
         </div>
-        <div class="metric-value highlight-annual" id="valAnnual">$0.00</div>
+        <div class="metric-value" id="valAnnual">$0.00</div>
         <div class="metric-sub">12-Month recurring total</div>
       </div>
 
@@ -1563,7 +1531,7 @@
           <span>10-YR BLEED (+3.5%)</span>
           <span>03</span>
         </div>
-        <div class="metric-value highlight-bleed" id="valTenYear">$0.00</div>
+        <div class="metric-value" id="valTenYear">$0.00</div>
         <div class="metric-sub">Compounded SaaS inflation</div>
       </div>
 
@@ -1572,7 +1540,7 @@
           <span>S&amp;P 500 OPPORTUNITY</span>
           <span>04</span>
         </div>
-        <div class="metric-value highlight-opportunity" id="valSpOpp">$0.00</div>
+        <div class="metric-value" id="valSpOpp">$0.00</div>
         <div class="metric-sub">8% Annual return over 10 yrs</div>
       </div>
 
@@ -1581,7 +1549,7 @@
           <span>EST. TAX CASH SAVED</span>
           <span>05</span>
         </div>
-        <div class="metric-value highlight-tax" id="valTaxSaved">$0.00</div>
+        <div class="metric-value" id="valTaxSaved">$0.00</div>
         <div class="metric-sub" id="valTaxSub">At 25% tax bracket</div>
       </div>
     </section>
@@ -1593,23 +1561,22 @@
         <span id="spendActiveCount">0 Active Subscriptions</span>
       </div>
       <div class="spend-bar-track" id="spendBarTrack">
-        <div class="spend-bar-seg" id="segBusiness" style="background:#facc15; width:0%;"></div>
-        <div class="spend-bar-seg" id="segAi" style="background:#06b6d4; width:0%;"></div>
-        <div class="spend-bar-seg" id="segStreaming" style="background:#ef4444; width:0%;"></div>
-        <div class="spend-bar-seg" id="segLifestyle" style="background:#10b981; width:0%;"></div>
-        <div class="spend-bar-seg" id="segGaming" style="background:#8b5cf6; width:0%;"></div>
-        <div class="spend-bar-seg" id="segCustom" style="background:#ec4899; width:0%;"></div>
+        <div class="spend-bar-seg" id="segBusiness" style="background:#cbd5e1; width:0%;"></div>
+        <div class="spend-bar-seg" id="segAi" style="background:#94a3b8; width:0%;"></div>
+        <div class="spend-bar-seg" id="segStreaming" style="background:#64748b; width:0%;"></div>
+        <div class="spend-bar-seg" id="segLifestyle" style="background:#475569; width:0%;"></div>
+        <div class="spend-bar-seg" id="segGaming" style="background:#334155; width:0%;"></div>
       </div>
       <div class="spend-legend-row">
-        <div class="spend-legend-item"><span class="spend-dot" style="background:#facc15;"></span> 💼 SaaS &amp; Dev: <strong id="legBusiness">$0</strong></div>
-        <div class="spend-legend-item"><span class="spend-dot" style="background:#06b6d4;"></span> 🤖 AI &amp; Tools: <strong id="legAi">$0</strong></div>
-        <div class="spend-legend-item"><span class="spend-dot" style="background:#ef4444;"></span> 🍿 Media: <strong id="legStreaming">$0</strong></div>
-        <div class="spend-legend-item"><span class="spend-dot" style="background:#10b981;"></span> 🏋️ Lifestyle: <strong id="legLifestyle">$0</strong></div>
-        <div class="spend-legend-item"><span class="spend-dot" style="background:#8b5cf6;"></span> 🎮 Storage: <strong id="legGaming">$0</strong></div>
+        <div class="spend-legend-item"><span class="spend-dot" style="background:#cbd5e1;"></span> SaaS: <strong id="legBusiness">$0</strong></div>
+        <div class="spend-legend-item"><span class="spend-dot" style="background:#94a3b8;"></span> AI: <strong id="legAi">$0</strong></div>
+        <div class="spend-legend-item"><span class="spend-dot" style="background:#64748b;"></span> Media: <strong id="legStreaming">$0</strong></div>
+        <div class="spend-legend-item"><span class="spend-dot" style="background:#475569;"></span> Lifestyle: <strong id="legLifestyle">$0</strong></div>
+        <div class="spend-legend-item"><span class="spend-dot" style="background:#334155;"></span> Storage: <strong id="legGaming">$0</strong></div>
       </div>
     </div>
 
-    <!-- Toolbar: Search, Filters, Currency, Presets & Add -->
+    <!-- Toolbar: Active Only is the FIRST Tab and default selected! -->
     <div class="subscriptions-toolbar">
       <div class="toolbar-left">
         <div class="search-input-wrap">
@@ -1618,13 +1585,14 @@
         </div>
 
         <div class="category-filter-tabs">
-          <button type="button" class="btn-cat-tab active" onclick="setCategoryFilter('all', this)">All</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('business', this)">💼 SaaS</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('ai', this)">🤖 AI</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('streaming', this)">🍿 Media</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('lifestyle', this)">🏋️ Lifestyle</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('gaming', this)">🎮 Gaming</button>
-          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('active', this)">Active Only</button>
+          <!-- Active Only is FIRST tab -->
+          <button type="button" class="btn-cat-tab active" id="tabActiveOnly" onclick="setCategoryFilter('active', this)">Active Only (<span id="tabActiveCount">0</span>)</button>
+          <button type="button" class="btn-cat-tab" id="tabAll" onclick="setCategoryFilter('all', this)">All Catalog (30+)</button>
+          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('business', this)">SaaS &amp; Dev</button>
+          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('ai', this)">AI &amp; Tech</button>
+          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('streaming', this)">Media</button>
+          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('lifestyle', this)">Lifestyle</button>
+          <button type="button" class="btn-cat-tab" onclick="setCategoryFilter('gaming', this)">Gaming &amp; Cloud</button>
         </div>
       </div>
 
@@ -1706,19 +1674,19 @@
             <span>ANNUAL TOTAL:</span>
             <span id="rcptAnnual">$0.00</span>
           </div>
-          <div class="receipt-row drain">
+          <div class="receipt-row">
             <span>10-YR INFLATION BLEED:</span>
             <span id="rcptTenYear">$0.00</span>
           </div>
-          <div class="receipt-row opportunity">
+          <div class="receipt-row">
             <span>S&amp;P 500 OPPORTUNITY:</span>
             <span id="rcptSpOpp">$0.00</span>
           </div>
-          <div class="receipt-row" style="color:#0284c7;">
+          <div class="receipt-row">
             <span>LOCAL CURRENCY SETTLEMENT:</span>
             <span id="rcptFxVal">$0.00</span>
           </div>
-          <div class="receipt-row" style="color:#7c3aed;">
+          <div class="receipt-row">
             <span>TAX WRITE-OFF AMOUNT:</span>
             <span id="rcptTaxDeduction">$0.00 / yr</span>
           </div>
@@ -1758,7 +1726,7 @@
   <div class="modal-overlay" id="editModalOverlay">
     <div class="modal-container">
       <div class="modal-header">
-        <div class="modal-title" id="editModalTitle">✏️ EDIT SUBSCRIPTION</div>
+        <div class="modal-title" id="editModalTitle">EDIT SUBSCRIPTION</div>
         <button type="button" class="btn-modal-close" onclick="closeEditModal()">&times;</button>
       </div>
       
@@ -1795,11 +1763,11 @@
           <div class="form-group">
             <label class="form-label" for="editSubCat">Category</label>
             <select id="editSubCat" class="form-select">
-              <option value="business">💼 SaaS &amp; Dev Tools</option>
-              <option value="ai">🤖 AI &amp; Computational</option>
-              <option value="streaming">🍿 Media &amp; Streaming</option>
-              <option value="lifestyle">🏋️ Lifestyle &amp; Health</option>
-              <option value="gaming">🎮 Cloud &amp; Gaming</option>
+              <option value="business">SaaS &amp; Dev Tools</option>
+              <option value="ai">AI &amp; Computational</option>
+              <option value="streaming">Media &amp; Streaming</option>
+              <option value="lifestyle">Lifestyle &amp; Health</option>
+              <option value="gaming">Cloud &amp; Gaming</option>
             </select>
           </div>
           <div class="form-group">
@@ -1836,7 +1804,7 @@
   <div class="modal-overlay" id="cancelModalOverlay">
     <div class="modal-container">
       <div class="modal-header">
-        <div class="modal-title" id="cancelModalTitle">⚡ HOW TO CANCEL</div>
+        <div class="modal-title" id="cancelModalTitle">HOW TO CANCEL</div>
         <button type="button" class="btn-modal-close" onclick="closeCancelModal()">&times;</button>
       </div>
       <div id="cancelModalBody" style="font-size:0.9rem; line-height:1.6; color:var(--orano-muted);">
@@ -1849,7 +1817,7 @@
   <div class="modal-overlay" id="backupModalOverlay">
     <div class="modal-container">
       <div class="modal-header">
-        <div class="modal-title">💾 DATA SOVEREIGNTY &amp; BACKUP</div>
+        <div class="modal-title">DATA SOVEREIGNTY &amp; BACKUP</div>
         <button type="button" class="btn-modal-close" onclick="closeBackupModal()">&times;</button>
       </div>
       <div style="font-size:0.88rem; color:var(--orano-muted); line-height:1.6; margin-bottom:1.25rem;">
@@ -1961,8 +1929,7 @@
           vx: (Math.random() - 0.5) * 0.45,
           vy: (Math.random() - 0.5) * 0.45,
           radius: Math.random() * 2 + 1.2,
-          baseRadius: Math.random() * 2 + 1.2,
-          hue: Math.random() > 0.6 ? 45 : (Math.random() > 0.3 ? 185 : 155) // Gold, Cyan, Green
+          baseRadius: Math.random() * 2 + 1.2
         });
       }
     }
@@ -1971,15 +1938,15 @@
       ctx.clearRect(0, 0, width, height);
 
       const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      let nodeAlpha = 0.5;
-      let lineAlpha = 0.08;
+      let nodeAlpha = 0.4;
+      let lineAlpha = 0.07;
 
       if (theme === 'paper') {
-        nodeAlpha = 0.35;
-        lineAlpha = 0.06;
+        nodeAlpha = 0.3;
+        lineAlpha = 0.05;
       } else if (theme === 'amber') {
-        nodeAlpha = 0.7;
-        lineAlpha = 0.12;
+        nodeAlpha = 0.6;
+        lineAlpha = 0.1;
       }
 
       // Draw particle connections
@@ -2020,11 +1987,11 @@
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
             if (theme === 'amber') {
-              ctx.strokeStyle = `rgba(245, 158, 11, ${opacity * 1.8})`;
+              ctx.strokeStyle = `rgba(245, 158, 11, ${opacity * 1.5})`;
             } else if (theme === 'paper') {
               ctx.strokeStyle = `rgba(15, 23, 42, ${opacity * 1.5})`;
             } else {
-              ctx.strokeStyle = `rgba(6, 182, 212, ${opacity})`;
+              ctx.strokeStyle = `rgba(148, 163, 184, ${opacity})`;
             }
             ctx.lineWidth = 1;
             ctx.stroke();
@@ -2039,7 +2006,7 @@
         } else if (theme === 'paper') {
           ctx.fillStyle = `rgba(51, 65, 85, ${nodeAlpha})`;
         } else {
-          ctx.fillStyle = p1.hue === 45 ? `rgba(250, 204, 21, ${nodeAlpha})` : `rgba(6, 182, 212, ${nodeAlpha})`;
+          ctx.fillStyle = `rgba(203, 213, 225, ${nodeAlpha})`;
         }
         ctx.fill();
       }
@@ -2064,11 +2031,11 @@
     /* =========================================================================
        2. MASTER CATALOG & USER LOCAL SANDBOX DATA STORE
        ========================================================================= */
-    const STORAGE_KEY = 'alu_subscriptions_v3';
+    const STORAGE_KEY = 'alu_subscriptions_v5'; // Bumped so new users cleanly start at 0
 
     const DEFAULT_CATALOG = [
-      // 💼 Solopreneur, Dev & Business SaaS
-      { id: 'canva', name: 'Canva Pro / Teams', price: 12.99, cat: 'business', icon: '🎨', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://www.canva.com/settings/billing-and-teams', darkPattern: 'Buries full cancellation behind "Pause for 3 Months". If you ever sent team invites, revoking licenses requires manual seat cleanup or fees continue.' },
+      // SaaS & Dev
+      { id: 'canva', name: 'Canva Pro / Teams', price: 12.99, cat: 'business', icon: '🎨', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://www.canva.com/settings/billing-and-teams', darkPattern: 'Buries full cancellation behind "Pause for 3 Months". Revoking team licenses requires manual seat cleanup or fees continue.' },
       { id: 'zoom', name: 'Zoom Workplace Pro', price: 15.99, cat: 'business', icon: '📹', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://zoom.us/billing/plan', darkPattern: 'Auto-renews with silent price creep. Prevents primary cancellation if cloud storage add-ons remain active.' },
       { id: 'adobe', name: 'Adobe Creative Cloud', price: 59.99, cat: 'business', icon: '🖌️', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://account.adobe.com/plans', darkPattern: 'Enforces a 50% early termination fee ($100–$300). BYPASS: Switch plan to a $9.99 tier; wait 15 min; cancel within 14-day statutory window for $0 penalty.' },
       { id: 'aws', name: 'AWS Cloud Infrastructure', price: 45.00, cat: 'business', icon: '☁️', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://console.aws.amazon.com/billing', darkPattern: 'Closing an account leaves orphaned Elastic IPs ($3.60/mo) and unattached EBS disks ($0.08/GB) charging your credit card.' },
@@ -2084,7 +2051,7 @@
       { id: 'openai', name: 'OpenAI / Claude API Spend', price: 30.00, cat: 'business', icon: '🧠', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://platform.openai.com/account/billing/overview', darkPattern: 'Auto-recharge triggers silently whenever credit dips below $5.' },
       { id: 'onepassword', name: '1Password Teams', price: 7.99, cat: 'business', icon: '🔑', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://my.1password.com', darkPattern: 'Requires account recovery kit to terminate billing if primary admin lost.' },
 
-      // 🤖 AI & Productivity
+      // AI & Tools
       { id: 'chatgpt', name: 'ChatGPT Plus', price: 20.00, cat: 'ai', icon: '🤖', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://chat.openai.com/#settings', darkPattern: 'Cancellation must be confirmed 24h prior to renewal date.' },
       { id: 'claude', name: 'Claude Pro', price: 20.00, cat: 'ai', icon: '🧠', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://claude.ai/settings/billing', darkPattern: 'Billed monthly via Stripe with immediate auto-renewal.' },
       { id: 'midjourney', name: 'Midjourney Standard', price: 30.00, cat: 'ai', icon: '🌌', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://www.midjourney.com/account', darkPattern: 'Tier locks GPU hours; unused hours do not carry over.' },
@@ -2092,7 +2059,7 @@
       { id: 'perplexity', name: 'Perplexity Pro', price: 20.00, cat: 'ai', icon: '🔍', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://www.perplexity.ai/settings', darkPattern: 'Annual billing default; must actively select monthly.' },
       { id: 'cursor', name: 'Cursor Pro AI', price: 20.00, cat: 'ai', icon: '⚡', taxUse: 100, cycle: 'monthly', cancelUrl: 'https://www.cursor.com/settings', darkPattern: 'Fast-pool usage overages bill to payment card on file.' },
 
-      // 🍿 Streaming & Entertainment (Personal)
+      // Media & Streaming
       { id: 'netflix', name: 'Netflix Premium', price: 22.99, cat: 'streaming', icon: '🍿', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://www.netflix.com/youraccount', darkPattern: 'Extra member slots ($7.99) persist on invoice even after members stop streaming.' },
       { id: 'spotify', name: 'Spotify Duo / Family', price: 16.99, cat: 'streaming', icon: '🎧', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://www.spotify.com/account/overview', darkPattern: 'Presents 3 consecutive confirmation dialogs before completing cancellation.' },
       { id: 'youtube', name: 'YouTube Premium', price: 13.99, cat: 'streaming', icon: '📺', taxUse: 25, cycle: 'monthly', cancelUrl: 'https://www.youtube.com/paid_memberships', darkPattern: 'Pausing membership selected by default over cancellation.' },
@@ -2100,14 +2067,14 @@
       { id: 'appletv', name: 'Apple One / TV+', price: 19.95, cat: 'streaming', icon: '🍏', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://apple.co/manage-subscriptions', darkPattern: 'Cloud storage downgrade deletes excess photos after 30 days.' },
       { id: 'prime', name: 'Amazon Prime', price: 14.99, cat: 'streaming', icon: '📦', taxUse: 50, cycle: 'monthly', cancelUrl: 'https://www.amazon.com/mc/manage', darkPattern: 'Infamous 6-step cancellation maze requiring multiple "Keep My Benefits" refusals.' },
 
-      // 🏋️ Lifestyle & Fitness (Personal)
+      // Lifestyle & Health
       { id: 'gym', name: 'Gym / Fitness Club', price: 65.00, cat: 'lifestyle', icon: '🏋️', taxUse: 0, cycle: 'monthly', cancelUrl: '#', darkPattern: 'Often requires in-person registered certified letter or 30-day advance notice penalty.' },
       { id: 'uber', name: 'Uber One', price: 9.99, cat: 'lifestyle', icon: '🚗', taxUse: 50, cycle: 'monthly', cancelUrl: 'https://m.uber.com', darkPattern: 'Offers $2 discount coupons to prevent cancellation.' },
       { id: 'doordash', name: 'DoorDash DashPass', price: 9.99, cat: 'lifestyle', icon: '🍔', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://www.doordash.com', darkPattern: 'Auto-reactivates if you use an account-linked payment method on order.' },
       { id: 'whoop', name: 'WHOOP 4.0 Membership', price: 30.00, cat: 'lifestyle', icon: '⚡', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://app.whoop.com/membership', darkPattern: 'Locks user into 12-month hardware commitment contract.' },
       { id: 'peloton', name: 'Peloton App+', price: 24.00, cat: 'lifestyle', icon: '🚴', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://members.onepeloton.com', darkPattern: 'Hardware owners cannot downgrade to mobile-only tier.' },
 
-      // 🎮 Gaming & Cloud Storage
+      // Gaming & Cloud Storage
       { id: 'gamepass', name: 'Xbox Game Pass Ultimate', price: 19.99, cat: 'gaming', icon: '🎮', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://account.microsoft.com/services', darkPattern: 'Recurring billing slider re-enables whenever redeeming gift codes.' },
       { id: 'psplus', name: 'PlayStation Plus Premium', price: 17.99, cat: 'gaming', icon: '🕹️', taxUse: 0, cycle: 'monthly', cancelUrl: 'https://store.playstation.com', darkPattern: 'Auto-renews at full price even if purchased originally on promo.' },
       { id: 'icloud', name: 'Apple iCloud+ (2TB)', price: 9.99, cat: 'gaming', icon: '☁️', taxUse: 75, cycle: 'monthly', cancelUrl: 'https://apple.co/manage-subscriptions', darkPattern: 'Silent family sharing charges to primary organizer card.' },
@@ -2128,10 +2095,10 @@
       PHP: { symbol: '₱', name: 'Philippine Peso', rate: 56.2 }
     };
 
-    // Application State (Client-Side Local Sandbox)
+    // Application State: STARTS AT 0 FOR ALL NEW USERS & ACTIVE ONLY IS DEFAULT TAB
     let userCatalog = [];
-    let activeSubIds = new Set();
-    let currentCategoryFilter = 'all';
+    let activeSubIds = new Set(); // Default: 0 active!
+    let currentCategoryFilter = 'active'; // Default: Active Only is the first tab users see!
     let currentSearchTerm = '';
     let selectedCurrency = 'USD';
     let isAudioEnabled = false;
@@ -2151,7 +2118,7 @@
           if (Array.isArray(parsed.activeIds)) {
             activeSubIds = new Set(parsed.activeIds);
           } else {
-            activeSubIds = new Set(['chatgpt', 'netflix', 'spotify']);
+            activeSubIds = new Set(); // Default 0
           }
           if (parsed.currency && FX_RATES[parsed.currency]) {
             selectedCurrency = parsed.currency;
@@ -2162,16 +2129,16 @@
       } catch (err) {
         console.warn('Local storage load issue:', err);
       }
-      // Fresh user defaults
+      // Fresh user defaults: 100% 0 start
       userCatalog = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-      activeSubIds = new Set(['chatgpt', 'netflix', 'spotify']);
+      activeSubIds = new Set(); // 0 active default!
     }
 
     // Save user state strictly to client's local storage (0 network transmission)
     function saveUserData() {
       try {
         const payload = {
-          version: '3.0',
+          version: '5.0',
           updatedAt: new Date().toISOString(),
           currency: selectedCurrency,
           activeIds: Array.from(activeSubIds),
@@ -2239,8 +2206,7 @@
         ai: 0,
         streaming: 0,
         lifestyle: 0,
-        gaming: 0,
-        custom: 0
+        gaming: 0
       };
 
       userCatalog.forEach(sub => {
@@ -2288,12 +2254,16 @@
       document.getElementById('valMonthly').innerText = `$${monthlyTotalUsd.toFixed(2)}`;
       document.getElementById('valMonthlySub').innerText = selectedCurrency === 'USD' 
         ? 'Direct card charge (USD)' 
-        : `≈ ${fxInfo.symbol}${localMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${selectedCurrency}/mo (incl. FX fee)`;
+        : `≈ ${fxInfo.symbol}${localMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${selectedCurrency}/mo`;
 
       document.getElementById('valAnnual').innerText = `$${annualTotalUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       document.getElementById('valTenYear').innerText = `$${tenYearInflationDrain.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       document.getElementById('valSpOpp').innerText = `$${spOppUsd.toLocaleString('en-US')}`;
       document.getElementById('valTaxSaved').innerText = `$${estimatedTaxSaved.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // Update Tab Counter
+      const tabActiveCount = document.getElementById('tabActiveCount');
+      if (tabActiveCount) tabActiveCount.innerText = activeSubIds.size;
 
       // Update Category Progress Distribution Bar
       document.getElementById('spendActiveCount').innerText = `${selectedItems.length} Active Subscription${selectedItems.length === 1 ? '' : 's'}`;
@@ -2331,7 +2301,6 @@
       if (items.length === 0) {
         box.innerHTML = '<div style="text-align:center; color:#888; font-size:0.78rem; padding:1.5rem 0;">No subscriptions active.<br>Toggle tools on the left to track spend.</div>';
         badge.innerText = 'SUBSCRIPTION FREE';
-        badge.style.background = '#10b981';
         quote.innerText = '"You are completely subscription-free and operating lean."';
       } else {
         items.forEach(it => {
@@ -2343,19 +2312,15 @@
 
         if (monthly < 50) {
           badge.innerText = 'DISCIPLINED & LEAN';
-          badge.style.background = '#10b981';
           quote.innerText = '"Disciplined cash flow. You only maintain software you genuinely utilize."';
         } else if (monthly < 150) {
           badge.innerText = 'ACTIVE PROFESSIONAL';
-          badge.style.background = '#f59e0b';
           quote.innerText = '"Moderate recurring overhead. An annual audit will trim $30–$50/month in dormant licenses."';
         } else if (monthly < 300) {
           badge.innerText = 'HIGH SOFTWARE OVERHEAD';
-          badge.style.background = '#ea580c';
           quote.innerText = '"High software drain. You are spending thousands yearly on overlapping productivity tools."';
         } else {
           badge.innerText = 'CRITICAL PROFIT BLEED';
-          badge.style.background = '#ef4444';
           quote.innerText = '"Severe cash bleed! Over $3,600/yr leaving your account. Immediate cancellations recommended."';
         }
       }
@@ -2396,6 +2361,25 @@
       });
 
       if (filtered.length === 0) {
+        // Welcoming clean zero-state for new users or empty active tab!
+        if (currentCategoryFilter === 'active' && activeSubIds.size === 0 && !search) {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; background: rgba(16, 22, 42, 0.6); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 14px; padding: 3rem 1.5rem; text-align: center; max-width: 600px; margin: 1rem auto; width: 100%;">
+              <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🌱</div>
+              <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem;">Clean Slate — $0.00 / month</div>
+              <p style="font-size: 0.86rem; color: var(--orano-muted); line-height: 1.6; max-width: 440px; margin: 0 auto 1.5rem;">
+                You currently have 0 active subscriptions. Choose from the catalog to audit your tools, or load a quick stack to get started.
+              </p>
+              <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                <button type="button" class="btn-primary-add" onclick="setCategoryFilter('all', document.getElementById('tabAll'))">Browse All Subscriptions (30+)</button>
+                <button type="button" class="btn-toolbar-secondary" onclick="applyPreset('solopreneur')">💼 Load Solopreneur Stack</button>
+                <button type="button" class="btn-toolbar-secondary" onclick="openAddSubscriptionModal()">+ Add Custom Tool</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
         grid.innerHTML = `
           <div style="grid-column: 1 / -1; text-align:center; padding: 3rem 1rem; color: var(--orano-muted); font-family: var(--font-mono);">
             <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
@@ -2447,7 +2431,7 @@
           <div class="card-actions-strip">
             ${sub.darkPattern ? `
               <button type="button" class="btn-card-action btn-cancel-guide" title="View verified cancellation runbook" onclick="openCancelGuide('${sub.id}', event)">
-                <span>⚡ How to Cancel</span>
+                <span>⚡ Cancel Guide</span>
               </button>
             ` : (sub.cancelUrl ? `
               <a href="${sub.cancelUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-action" onclick="event.stopPropagation()">
@@ -2535,13 +2519,13 @@
     }
 
     function resetToFactoryDefaults() {
-      if (confirm('Reset all subscriptions, prices, and categories to factory defaults? Your custom additions will be restored.')) {
+      if (confirm('Reset all subscriptions, prices, and categories to factory defaults?')) {
         userCatalog = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
-        activeSubIds = new Set(['chatgpt', 'netflix', 'spotify']);
+        activeSubIds = new Set(); // START FROM 0!
         saveUserData();
         renderCards();
         recalculate();
-        showToast('Factory catalog restored');
+        showToast('Factory catalog restored (0 active)');
       }
     }
 
@@ -2550,7 +2534,7 @@
        7. ADD & EDIT SUBSCRIPTIONS (100% PRIVATE)
        ========================================================================= */
     function openAddSubscriptionModal() {
-      document.getElementById('editModalTitle').innerText = '➕ ADD NEW SUBSCRIPTION';
+      document.getElementById('editModalTitle').innerText = 'ADD NEW SUBSCRIPTION';
       document.getElementById('editSubId').value = '';
       document.getElementById('editSubName').value = '';
       document.getElementById('editSubIcon').value = '⭐';
@@ -2569,7 +2553,7 @@
       const sub = userCatalog.find(s => s.id === subId);
       if (!sub) return;
 
-      document.getElementById('editModalTitle').innerText = `✏️ EDIT // ${sub.name}`;
+      document.getElementById('editModalTitle').innerText = `EDIT // ${sub.name}`;
       document.getElementById('editSubId').value = sub.id;
       document.getElementById('editSubName').value = sub.name;
       document.getElementById('editSubIcon').value = sub.icon || '💳';
@@ -2665,13 +2649,13 @@
       const sub = userCatalog.find(s => s.id === subId);
       if (!sub) return;
 
-      document.getElementById('cancelModalTitle').innerText = `⚡ HOW TO CANCEL // ${sub.name.toUpperCase()}`;
+      document.getElementById('cancelModalTitle').innerText = `HOW TO CANCEL // ${sub.name.toUpperCase()}`;
       const body = document.getElementById('cancelModalBody');
 
       let html = '';
       if (sub.darkPattern) {
-        html += `<div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:0.9rem; margin-bottom:1rem; color:#fca5a5;">
-          <strong>⚠️ Retention Trap / Dark Pattern Warning:</strong><br>${sub.darkPattern}
+        html += `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:0.9rem; margin-bottom:1rem; color:#cbd5e1;">
+          <strong>Retention Trap / Dark Pattern:</strong><br>${sub.darkPattern}
         </div>`;
       }
 
@@ -2687,7 +2671,7 @@
       const legalText = `To: ${sub.name} Billing & Compliance Support\nSubject: Formal Cancellation of Subscription & Revocation of Billing Authorization\n\nPlease immediately terminate my subscription for ${sub.name} associated with my account. Pursuant to 16 CFR Part 425 (FTC Negative Option Enforcement) and state consumer protection statutes, recurring subscriptions must provide simple, friction-free cancellation. Any subsequent auto-renewal charges will be disputed with my bank as unauthorized. Please confirm cancellation with $0 balance.`;
 
       html += `<div style="margin-top:1rem;">
-        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--orano-muted); font-weight:700;">⚖️ FTC COMPLIANT LEGAL NOTICE:</span>
+        <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--orano-muted); font-weight:700;">FTC COMPLIANT LEGAL NOTICE:</span>
         <pre style="background:rgba(0,0,0,0.4); border:1px solid var(--orano-border); border-radius:8px; padding:0.85rem; font-family:var(--font-mono); font-size:0.75rem; color:#cbd5e1; white-space:pre-wrap; margin-top:0.4rem;">${legalText}</pre>
         <button type="button" class="btn-privacy-action" style="margin-top:0.5rem;" onclick="copyLegalText(\`${legalText.replace(/`/g, '\\`')}\`)">
           📋 Copy Legal Notice
@@ -2818,12 +2802,12 @@
       ctx2.stroke();
 
       y += 26;
-      function drawRow(lbl, val, color = '#111111') {
+      function drawRow(lbl, val) {
         ctx2.fillStyle = '#111111';
         ctx2.font = 'bold 13px "Courier New", Courier, monospace';
         ctx2.fillText(lbl, 32, y);
         ctx2.textAlign = 'right';
-        ctx2.fillStyle = color;
+        ctx2.fillStyle = '#111111';
         ctx2.fillText(val, w - 32, y);
         ctx2.textAlign = 'left';
         y += 24;
@@ -2831,9 +2815,9 @@
 
       drawRow('MONTHLY DRAIN:', document.getElementById('rcptMonthly').innerText);
       drawRow('ANNUAL TOTAL:', document.getElementById('rcptAnnual').innerText);
-      drawRow('10-YR BLEED (+3.5%):', document.getElementById('rcptTenYear').innerText, '#b91c1c');
-      drawRow('S&P 500 OPPORTUNITY:', document.getElementById('rcptSpOpp').innerText, '#15803d');
-      drawRow('TAX WRITE-OFF AMOUNT:', document.getElementById('rcptTaxDeduction').innerText, '#7c3aed');
+      drawRow('10-YR BLEED (+3.5%):', document.getElementById('rcptTenYear').innerText);
+      drawRow('S&P 500 OPPORTUNITY:', document.getElementById('rcptSpOpp').innerText);
+      drawRow('TAX WRITE-OFF AMOUNT:', document.getElementById('rcptTaxDeduction').innerText);
 
       // Barcode
       y += 15;
@@ -2900,7 +2884,7 @@
       const annual = document.getElementById('rcptAnnual').innerText;
       const tenYear = document.getElementById('rcptTenYear').innerText;
       const spOpp = document.getElementById('rcptSpOpp').innerText;
-      const badge = document.getElementById('rcptRoastBadge').innerText;
+      const badge = document.getElementById('receiptRoastBadge').innerText;
       const quote = document.getElementById('rcptRoastQuote').innerText;
 
       const summary = `🧾 SUBSCRIPTION REALITY CHECK\nMonthly: ${monthly} | Annual: ${annual} | 10-Yr Compounded: ${tenYear}\nS&P 500 Opportunity Cost: ${spOpp}\nStatus: ${badge}\n${quote}\nAudited privately via Alumungandr`;
@@ -2923,7 +2907,7 @@
 
     function exportDataJson() {
       const data = {
-        version: '3.0',
+        version: '5.0',
         exportedAt: new Date().toISOString(),
         currency: selectedCurrency,
         activeIds: Array.from(activeSubIds),

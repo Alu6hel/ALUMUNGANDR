@@ -1625,6 +1625,34 @@
     }
 
     async function fetchNetworkIntelligence() {
+      // 1. Check if device has an active internet connection truthfully
+      if (!navigator.onLine) {
+        document.getElementById('displayIp').textContent = 'OFFLINE (NO INTERNET)';
+        document.getElementById('pillProtocol').textContent = 'DISCONNECTED';
+        document.getElementById('pillIsp').textContent = 'NO ACTIVE CARRIER';
+        document.getElementById('pillLocation').textContent = 'NETWORK DISCONNECTED';
+        document.getElementById('pillEncapsulation').textContent = 'UNREACHABLE';
+        const edgeLatElem = document.getElementById('edgeLatency');
+        if (edgeLatElem) edgeLatElem.textContent = 'OFFLINE';
+
+        document.getElementById('valCity').textContent = 'Offline';
+        document.getElementById('valRegion').textContent = 'Offline';
+        document.getElementById('valCountry').textContent = 'Disconnected';
+        document.getElementById('valPostal').textContent = 'N/A';
+        document.getElementById('valCoords').textContent = '0.0000° N, 0.0000° W';
+        document.getElementById('valTz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+        document.getElementById('valIsp').textContent = 'Disconnected';
+        document.getElementById('valAsn').textContent = 'AS0';
+        document.getElementById('valOrg').textContent = 'Offline Network';
+        document.getElementById('valPtr').textContent = 'None';
+        document.getElementById('valClass').textContent = 'Offline';
+        const rawIp = document.getElementById('termRawIp');
+        if (rawIp) rawIp.textContent = 'OFFLINE';
+        const rawIsp = document.getElementById('termRawIsp');
+        if (rawIsp) rawIsp.textContent = '"Disconnected"';
+        return;
+      }
+
       const t0 = performance.now();
       let localLanIp = null;
       try {
@@ -1937,8 +1965,15 @@ Certified by Alumungandr Edge Engine • David Anthony Jones ("Alu")
       document.getElementById('btnCopyIp').addEventListener('click', copyIp);
       document.getElementById('btnCopyItSummary').addEventListener('click', copyItSummary);
       document.getElementById('displayIp').addEventListener('click', copyIp);
-      document.getElementById('btnAudioToggle').addEventListener('click', toggleAudio);
       document.getElementById('btnDownloadPassport').addEventListener('click', downloadPassport);
+
+      window.addEventListener('online', () => {
+        showToast('Internet restored — updating public IP...');
+        fetchNetworkIntelligence();
+      });
+      window.addEventListener('offline', () => {
+        fetchNetworkIntelligence();
+      });
     });
   </script>
 </body>

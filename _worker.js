@@ -16,6 +16,7 @@ import * as ipApi from './functions/api/ip.js';
 import * as knowledge from './functions/api/knowledge.js';
 import * as consultation from './functions/api/consultation.js';
 import * as speedtestApi from './functions/api/speedtest.js';
+import * as callApi from './functions/api/call.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -50,7 +51,7 @@ function applySecurityHeaders(headers) {
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   headers.set('Permissions-Policy', 'geolocation=(self), microphone=(self), camera=(self), payment=(self)');
   headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https: wss:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';");
+  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https: wss: stun: turn:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';");
   return headers;
 }
 
@@ -244,6 +245,13 @@ Hiring: https://alumungandr.com/contact
       if (method === 'OPTIONS' && subscriptions.onRequestOptions) return subscriptions.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && subscriptions.onRequestPost) return subscriptions.onRequestPost({ request, env, ctx });
       if (method === 'GET' && subscriptions.onRequestGet) return subscriptions.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/call (Ephemeral WebRTC Signaling Gateway for P2P Voice & HD Video Calls)
+    if (url.pathname === '/api/call' || url.pathname.startsWith('/api/call/')) {
+      if (method === 'OPTIONS' && callApi.onRequestOptions) return callApi.onRequestOptions({ request, env, ctx });
+      if (method === 'POST' && callApi.onRequestPost) return callApi.onRequestPost({ request, env, ctx });
+      if (method === 'GET' && callApi.onRequestGet) return callApi.onRequestGet({ request, env, ctx });
     }
 
     // Route /api/drop (Zero-Knowledge Encrypted Secure File Drop)

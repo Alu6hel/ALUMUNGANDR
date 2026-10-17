@@ -1,9 +1,9 @@
 // Cloudflare Pages Function: /api/clip
-// In-Memory Edge Cache & D1/KV storage fallback for cross-device universal clipboard
+// Cross-device universal clipboard with KV global synchronization and in-memory edge cache
 
 const CLIP_MEMORY = new Map();
 
-export async function onRequestGet({ request }) {
+export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   const code = (url.searchParams.get('code') || '').toUpperCase().trim();
 
@@ -14,7 +14,22 @@ export async function onRequestGet({ request }) {
     });
   }
 
-  const record = CLIP_MEMORY.get(code);
+  let record = null;
+
+  // 1. Try reading from KV for cross-colo global sync
+  if (env && env.OBSERVATORY_KV) {
+    try {
+      record = await env.OBSERVATORY_KV.get('clip:' + code, { type: 'json' });
+    } catch (e) {
+      console.warn('KV read clip err:', e);
+    }
+  }
+
+  // 2. Fall back to in-memory map
+  if (!record) {
+    record = CLIP_MEMORY.get(code);
+  }
+
   if (!record) {
     return new Response(JSON.stringify({ notFound: true }), {
       status: 404,
@@ -25,6 +40,9 @@ export async function onRequestGet({ request }) {
   // Check Expiration
   if (record.expiresAt && Date.now() > record.expiresAt) {
     CLIP_MEMORY.delete(code);
+    if (env && env.OBSERVATORY_KV) {
+      try { await env.OBSERVATORY_KV.delete('clip:' + code); } catch (_) {}
+    }
     return new Response(JSON.stringify({ expired: true }), {
       status: 410,
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
@@ -34,15 +52,22 @@ export async function onRequestGet({ request }) {
   // Burn after reading
   if (record.burn) {
     CLIP_MEMORY.delete(code);
+    if (env && env.OBSERVATORY_KV) {
+      try { await env.OBSERVATORY_KV.delete('clip:' + code); } catch (_) {}
+    }
   }
 
   return new Response(JSON.stringify(record), {
     status: 200,
-    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-store, no-cache'
+    }
   });
 }
 
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
     const code = (body.room || '').toUpperCase().trim();
@@ -54,14 +79,28 @@ export async function onRequestPost({ request }) {
       });
     }
 
+    const ttlMs = 3600 * 1000 * 24; // 24 hours
+    const expiresAt = body.expiresAt || (Date.now() + ttlMs);
+
     const entry = {
       room: code,
       text: body.text,
       encrypted: Boolean(body.encrypted),
       burn: Boolean(body.burn),
-      expiresAt: body.expiresAt || (Date.now() + 3600000),
+      expiresAt: expiresAt,
       timestamp: Date.now()
     };
+
+    // Store in KV
+    if (env && env.OBSERVATORY_KV) {
+      try {
+        await env.OBSERVATORY_KV.put('clip:' + code, JSON.stringify(entry), {
+          expirationTtl: Math.floor(ttlMs / 1000)
+        });
+      } catch (kvErr) {
+        console.warn('KV write clip err:', kvErr);
+      }
+    }
 
     CLIP_MEMORY.set(code, entry);
 

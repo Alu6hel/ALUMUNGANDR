@@ -128,6 +128,17 @@
       pointer-events: none;
     }
 
+    /* Live Moving Celestial Chronometer & Meridian Globe Background Canvas */
+    #timezoneLiveCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
     /* Shockwave Canvas Layer for Golden Window Cosmic Explosions */
     #shockwaveCanvas {
       position: fixed;
@@ -1306,6 +1317,7 @@
 
   <!-- Editorial Background & Symmetrical Silhouette Framing -->
   <div class="editorial-bg"></div>
+  <canvas id="timezoneLiveCanvas"></canvas>
   <canvas id="shockwaveCanvas"></canvas>
   <div class="silhouette-frame">
     <div class="silhouette-left" id="silLeft"></div>
@@ -1827,6 +1839,139 @@
       if (window._addShockwave) {
         window._addShockwave(originX, originY);
       }
+    }
+
+    // --- 2.5 Live Moving Celestial Meridian & Planetary Background Engine ---
+    function initTimezoneLiveCanvas() {
+      const cv = document.getElementById('timezoneLiveCanvas');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      let w = cv.width = window.innerWidth;
+      let h = cv.height = window.innerHeight;
+      let time = 0;
+      let mouseX = 0, mouseY = 0;
+
+      function resize() {
+        w = cv.width = window.innerWidth;
+        h = cv.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / w - 0.5) * 40;
+        mouseY = (e.clientY / h - 0.5) * 30;
+      });
+
+      // Starlight Starfield Particles
+      const stars = [];
+      const numStars = 65;
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          baseRadius: 0.8 + Math.random() * 1.5,
+          speed: 0.05 + Math.random() * 0.15,
+          alpha: 0.2 + Math.random() * 0.6,
+          pulseSpeed: 0.02 + Math.random() * 0.03,
+          color: Math.random() > 0.4 ? 'rgba(253, 245, 240, ' : (Math.random() > 0.5 ? 'rgba(255, 209, 102, ' : 'rgba(56, 189, 248, ')
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+
+        const centerX = w / 2 + mouseX * 0.4;
+        const centerY = h / 2 + mouseY * 0.4;
+
+        // 1. Planetary Celestial Globe & Longitude Meridians
+        const globeRadius = Math.max(w * 0.42, 420);
+        const meridianOffset = ((currentUtcHour / 24) * Math.PI * 2) + (time * 0.0004);
+
+        // Ambient Solar / Night Radial Underglow
+        const globeGrad = ctx.createRadialGradient(centerX, centerY, 50, centerX, centerY, globeRadius * 1.1);
+        globeGrad.addColorStop(0, 'rgba(222, 68, 59, 0.22)');
+        globeGrad.addColorStop(0.55, 'rgba(186, 43, 35, 0.15)');
+        globeGrad.addColorStop(1, 'rgba(22, 18, 38, 0.0)');
+        ctx.fillStyle = globeGrad;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, globeRadius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 2. Twinkling Astronomical Starfield
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.y -= s.speed;
+          if (s.y < 0) { s.y = h; s.x = Math.random() * w; }
+          const curAlpha = s.alpha * (0.65 + Math.sin(time * s.pulseSpeed + i) * 0.35);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.baseRadius, 0, Math.PI * 2);
+          ctx.fillStyle = s.color + curAlpha + ')';
+          ctx.fill();
+        }
+
+        // 3. Orbiting Global Longitude Meridians (12 Meridian Arcs)
+        const numMeridians = 12;
+        ctx.lineWidth = 1.2;
+
+        for (let m = 0; m < numMeridians; m++) {
+          const angle = meridianOffset + (m * (Math.PI / 6));
+          const cosAngle = Math.cos(angle);
+          const sinAngle = Math.sin(angle);
+
+          // Only render visible curves with depth opacity
+          const arcAlpha = Math.max(0.04, (sinAngle + 1.2) * 0.07);
+          ctx.strokeStyle = `rgba(253, 245, 240, ${arcAlpha})`;
+
+          ctx.beginPath();
+          ctx.ellipse(centerX, centerY, Math.abs(cosAngle) * globeRadius * 0.85, globeRadius * 0.75, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Meridian Coordinate Tick / Indicator at Horizon
+          if (m % 3 === 0) {
+            const tickX = centerX + cosAngle * (globeRadius * 0.85);
+            const tickY = centerY + globeRadius * 0.75;
+            ctx.fillStyle = `rgba(248, 168, 150, ${arcAlpha * 1.5})`;
+            ctx.beginPath();
+            ctx.arc(tickX, tickY, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        // 4. Flowing Solar Terminator Wave (Luminous Day / Night Boundary Wave)
+        ctx.beginPath();
+        ctx.moveTo(0, centerY);
+        const waveFreq = 0.0022;
+        const waveAmp = h * 0.16;
+        const solarWavePhase = meridianOffset * 1.5;
+
+        for (let x = 0; x <= w; x += 18) {
+          const y = centerY + Math.sin(x * waveFreq + solarWavePhase) * waveAmp
+                            + Math.cos(x * 0.001 - solarWavePhase * 0.5) * (waveAmp * 0.35);
+          ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(255, 209, 102, 0.18)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 5. Celestial Golden Window Amplification Pulse
+        const golden = typeof computeGoldenWindows === 'function' ? computeGoldenWindows() : null;
+        if (golden && golden.type === 'business') {
+          ctx.save();
+          const goldenGlow = ctx.createRadialGradient(centerX, centerY, 80, centerX, centerY, globeRadius);
+          const pulse = (Math.sin(time * 0.04) + 1) * 0.5;
+          goldenGlow.addColorStop(0, `rgba(6, 214, 160, ${0.12 * pulse})`);
+          goldenGlow.addColorStop(0.7, `rgba(255, 209, 102, ${0.08 * pulse})`);
+          goldenGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          ctx.fillStyle = goldenGlow;
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, globeRadius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        time++;
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
     }
 
     // --- 3. Shockwave Canvas Particles on Snap ---
@@ -2537,6 +2682,7 @@ END:VCALENDAR`;
     // --- 13. Initialization & Listeners ---
     document.addEventListener('DOMContentLoaded', () => {
       initWordRipples();
+      initTimezoneLiveCanvas();
       initShockwaveCanvas();
       initCelestialGraphic();
       renderCityLanes();

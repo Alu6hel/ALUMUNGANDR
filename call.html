@@ -273,6 +273,80 @@
       border-color: var(--accent-cyan);
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
     }
+    .btn-random-quick {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: var(--border-solid);
+      border-radius: 10px;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-random-quick:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-cyan);
+    }
+    .call-choice-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn-call-choice {
+      padding: 1.15rem 1.25rem;
+      border-radius: 12px;
+      border: var(--border-solid);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-call-video {
+      background: linear-gradient(135deg, rgba(222, 88, 73, 0.95), rgba(168, 85, 247, 0.85));
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-coral-glow);
+    }
+    .btn-call-video:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(222, 88, 73, 0.5);
+    }
+    .btn-call-audio {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #fff;
+    }
+    .btn-call-audio:hover {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: var(--accent-green);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.25);
+    }
+    .choice-icon {
+      font-size: 1.8rem;
+    }
+    .choice-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .choice-main {
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
+    }
+    .choice-sub {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.75);
+      margin-top: 2px;
+    }
+    @media (max-width: 640px) {
+      .call-choice-actions { grid-template-columns: 1fr; }
+    }
     .btn-create-room {
       padding: 0.85rem 1.75rem;
       background: var(--accent-coral);
@@ -754,13 +828,25 @@
 
       <div class="room-input-group">
         <input type="text" id="roomInput" class="room-input" placeholder="Enter or generate room code..." autocomplete="off">
-        <button id="btnJoin" class="btn-create-room">
-          <span>Start Call</span>
-          <span>&rarr;</span>
-        </button>
+        <button type="button" id="btnRandomRoom" class="btn-random-quick" title="Generate Random Room">&#x21bb; Random Room</button>
       </div>
 
-      <button id="btnRandomRoom" class="btn-random-room">&#x21bb; Generate Random Secure Room Name</button>
+      <div class="call-choice-actions">
+        <button type="button" id="btnStartVideo" class="btn-call-choice btn-call-video">
+          <span class="choice-icon">📹</span>
+          <div class="choice-text">
+            <span class="choice-main">Start HD Video Call</span>
+            <span class="choice-sub">Camera + Microphone &bull; 1080p P2P Encrypted</span>
+          </div>
+        </button>
+        <button type="button" id="btnStartAudio" class="btn-call-choice btn-call-audio">
+          <span class="choice-icon">🎙️</span>
+          <div class="choice-text">
+            <span class="choice-main">Start Voice / Audio Call</span>
+            <span class="choice-sub">Mic Only &bull; Camera Off &bull; Low Latency</span>
+          </div>
+        </button>
+      </div>
 
       <div class="features-grid">
         <div class="feat-box">
@@ -803,7 +889,7 @@
             <video id="localVideo" autoplay playsinline muted></video>
             <div class="video-fallback" id="localFallback">
               <div class="fallback-avatar">YOU</div>
-              <span style="font-size:0.8rem; color:var(--text-muted);">Camera Paused</span>
+              <span style="font-size:0.8rem; color:var(--text-muted);" id="localFallbackText">Camera Paused</span>
             </div>
             <div class="video-overlay-tag">
               <span class="lobby-tag-pulse"></span>
@@ -819,7 +905,7 @@
           <div class="video-tile" id="remoteTile">
             <video id="remoteVideo" autoplay playsinline></video>
             <div class="video-fallback show" id="remoteFallback">
-              <div class="fallback-avatar" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));">?</div>
+              <div class="fallback-avatar" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));" id="remoteAvatar">?</div>
               <span style="font-size:0.85rem; color:var(--text-secondary);" id="remoteStatusText">Waiting for peer to join...</span>
               <button class="btn-copy-link" onclick="copyInviteLink()" style="margin-top:8px;">Send Invite Link</button>
             </div>
@@ -1021,14 +1107,17 @@
     const lobbySection = document.getElementById('lobbySection');
     const callSection = document.getElementById('callSection');
     const roomInput = document.getElementById('roomInput');
-    const btnJoin = document.getElementById('btnJoin');
+    const btnStartVideo = document.getElementById('btnStartVideo');
+    const btnStartAudio = document.getElementById('btnStartAudio');
     const btnRandomRoom = document.getElementById('btnRandomRoom');
     const activeRoomLabel = document.getElementById('activeRoomLabel');
     const localVideo = document.getElementById('localVideo');
     const remoteVideo = document.getElementById('remoteVideo');
     const localFallback = document.getElementById('localFallback');
+    const localFallbackText = document.getElementById('localFallbackText');
     const remoteFallback = document.getElementById('remoteFallback');
     const remoteStatusText = document.getElementById('remoteStatusText');
+    const remoteAvatar = document.getElementById('remoteAvatar');
     const btnToggleMic = document.getElementById('btnToggleMic');
     const btnToggleCam = document.getElementById('btnToggleCam');
     const btnShareScreen = document.getElementById('btnShareScreen');
@@ -1042,6 +1131,11 @@
     const chatMessages = document.getElementById('chatMessages');
     const toast = document.getElementById('toast');
 
+    let currentCallMode = 'video'; // 'video' or 'audio'
+    const processedSignals = new Set();
+    let lastSignalTimestamp = 0;
+    let signalingPollInterval = null;
+
     // Random Room Names
     function generateSecureRoomName() {
       const adjectives = ['quantum', 'autonomous', 'hyper', 'nexus', 'spectral', 'crypto', 'zenith', 'stellar'];
@@ -1052,76 +1146,206 @@
       return `${randAdj}-${randNoun}-${num}`;
     }
 
-    btnRandomRoom.addEventListener('click', () => {
-      roomInput.value = generateSecureRoomName();
-    });
+    if (btnRandomRoom) {
+      btnRandomRoom.addEventListener('click', () => {
+        roomInput.value = generateSecureRoomName();
+      });
+    }
 
-    // Auto-detect URL parameter ?room=...
+    // Auto-detect URL parameters ?room=... &mode=...
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const room = urlParams.get('room');
+      const mode = urlParams.get('mode') || 'video';
       if (room) {
         roomInput.value = room;
-        joinRoom(room);
+        joinRoom(room, mode);
       } else {
         roomInput.value = generateSecureRoomName();
       }
     });
 
-    btnJoin.addEventListener('click', () => {
-      const room = (roomInput.value || '').trim() || generateSecureRoomName();
-      joinRoom(room);
-    });
+    if (btnStartVideo) {
+      btnStartVideo.addEventListener('click', () => {
+        const room = (roomInput.value || '').trim() || generateSecureRoomName();
+        joinRoom(room, 'video');
+      });
+    }
 
-    async function joinRoom(room) {
+    if (btnStartAudio) {
+      btnStartAudio.addEventListener('click', () => {
+        const room = (roomInput.value || '').trim() || generateSecureRoomName();
+        joinRoom(room, 'audio');
+      });
+    }
+
+    async function joinRoom(room, mode = 'video') {
       activeRoomId = room;
-      window.history.replaceState({}, '', `/call?room=${encodeURIComponent(room)}`);
+      currentCallMode = mode;
+      window.history.replaceState({}, '', `/call?room=${encodeURIComponent(room)}&mode=${mode}`);
 
       lobbySection.style.display = 'none';
       callSection.classList.add('active');
-      activeRoomLabel.textContent = room;
+      activeRoomLabel.textContent = mode === 'audio' ? `${room} [VOICE CALL]` : room;
 
       startCallTimer();
 
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: { ideal: 1280 }, height: { ideal: 720 } },
-          audio: true
-        });
-        localVideo.srcObject = localStream;
-        setupAudioAnalyzer(localStream);
-      } catch (err) {
-        console.warn('Could not access camera/mic:', err);
-        showToast('Camera/Mic permission needed. Running in receiver mode.');
+      if (mode === 'audio') {
+        // Voice call: ONLY request microphone, camera completely off
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+          isCamPaused = true;
+          localFallback.classList.add('show');
+          if (localFallbackText) localFallbackText.textContent = 'Voice Call Mode (Mic Active)';
+          document.getElementById('localCamBadge').classList.add('off');
+          btnToggleCam.classList.add('off');
+          btnToggleCam.innerHTML = '&#x1F6AB;';
+          setupAudioAnalyzer(localStream);
+          showToast('Voice Call connected (Mic Active, Camera Off)');
+        } catch (err) {
+          console.warn('Microphone permission error:', err);
+          showToast('Microphone permission needed. Running in listen-only mode.');
+        }
+      } else {
+        // Video call: request camera & microphone
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+            audio: true
+          });
+          localVideo.srcObject = localStream;
+          localFallback.classList.remove('show');
+          setupAudioAnalyzer(localStream);
+        } catch (err) {
+          console.warn('Could not access camera/mic:', err);
+          // Fallback to audio if camera fails
+          try {
+            localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            isCamPaused = true;
+            localFallback.classList.add('show');
+            if (localFallbackText) localFallbackText.textContent = 'Voice Call (Camera Unavailable)';
+            document.getElementById('localCamBadge').classList.add('off');
+            setupAudioAnalyzer(localStream);
+            showToast('Camera unavailable. Switched to voice call.');
+          } catch (err2) {
+            showToast('Camera/Mic permission needed. Running in receiver mode.');
+          }
+        }
       }
 
-      setupSignaling(room);
+      setupSignaling(room, mode);
     }
 
-    /* Cross-Tab / Cross-Device Signaling via BroadcastChannel + Cloudflare WebRTC Polling */
-    function setupSignaling(room) {
-      roomChannel = new BroadcastChannel(`alumungandr_call_${room}`);
+    /* Cross-Tab (BroadcastChannel) + Cross-Device (/api/call/signal) Dual Signaling Gateway */
+    function setupSignaling(room, mode) {
+      // 1. BroadcastChannel for instant local multi-tab testing
+      try {
+        roomChannel = new BroadcastChannel(`alumungandr_call_${room}`);
+        roomChannel.onmessage = async (event) => {
+          const data = event.data;
+          if (!data || data.sender === getClientId() || (data.id && processedSignals.has(data.id))) return;
+          if (data.id) processedSignals.add(data.id);
+          handleSignal(data);
+        };
+      } catch (e) {
+        console.warn('BroadcastChannel not supported:', e);
+      }
 
-      roomChannel.onmessage = async (event) => {
-        const data = event.data;
-        if (!data || data.sender === getClientId()) return;
+      // 2. Announce presence to peers worldwide
+      sendSignal('peer-ready', { mode: mode || currentCallMode });
 
-        if (data.type === 'peer-ready') {
-          initiateCall(true);
-        } else if (data.type === 'offer') {
-          handleOffer(data.offer);
-        } else if (data.type === 'answer') {
-          handleAnswer(data.answer);
-        } else if (data.type === 'ice-candidate') {
-          handleCandidate(data.candidate);
-        } else if (data.type === 'chat') {
-          appendChatMessage(data.senderName || 'Peer', data.text, false);
-        }
+      // 3. Initiate periodic HTTP signal polling for cross-device & cross-network calling
+      lastSignalTimestamp = Date.now() - 5000;
+      if (signalingPollInterval) clearInterval(signalingPollInterval);
+      signalingPollInterval = setInterval(pollSignals, 1200);
+
+      // Trigger initial call setup as potential client
+      initiateCall(false);
+    }
+
+    async function sendSignal(type, payload) {
+      const sigId = 'sig_' + Math.random().toString(36).substring(2, 9);
+      processedSignals.add(sigId);
+
+      const packet = {
+        id: sigId,
+        room: activeRoomId,
+        sender: getClientId(),
+        type,
+        payload,
+        mode: currentCallMode,
+        timestamp: Date.now()
       };
 
-      // Announce presence
-      roomChannel.postMessage({ type: 'peer-ready', sender: getClientId() });
-      initiateCall(false);
+      // BroadcastChannel
+      if (roomChannel) {
+        try { roomChannel.postMessage(packet); } catch (_) {}
+      }
+
+      // Edge API Signaling
+      try {
+        await fetch('/api/call/signal', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(packet)
+        });
+      } catch (e) {
+        console.warn('Signaling POST error:', e);
+      }
+    }
+
+    async function pollSignals() {
+      if (!activeRoomId) return;
+      try {
+        const res = await fetch(`/api/call/signal?room=${encodeURIComponent(activeRoomId)}&client=${encodeURIComponent(getClientId())}&since=${lastSignalTimestamp}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.signals)) {
+          for (const sig of data.signals) {
+            if (processedSignals.has(sig.id)) continue;
+            processedSignals.add(sig.id);
+            if (sig.timestamp > lastSignalTimestamp) {
+              lastSignalTimestamp = sig.timestamp;
+            }
+            handleSignal(sig);
+          }
+        }
+      } catch (e) {
+        console.warn('Signaling poll error:', e);
+      }
+    }
+
+    function handleSignal(sig) {
+      if (!sig || sig.sender === getClientId()) return;
+
+      if (sig.type === 'peer-ready') {
+        const peerMode = (sig.payload && sig.payload.mode) || sig.mode || 'video';
+        if (peerMode === 'audio') {
+          if (remoteStatusText) remoteStatusText.textContent = 'Peer Joined (Voice Call)';
+          if (remoteAvatar) remoteAvatar.textContent = '🎙️';
+        }
+        initiateCall(true);
+      } else if (sig.type === 'call-mode') {
+        const newMode = (sig.payload && sig.payload.mode) || 'video';
+        if (newMode === 'audio') {
+          remoteFallback.classList.add('show');
+          if (remoteStatusText) remoteStatusText.textContent = 'Peer in Voice Call (Camera Off)';
+          if (remoteAvatar) remoteAvatar.textContent = '🎙️';
+        } else {
+          remoteFallback.classList.remove('show');
+          if (remoteAvatar) remoteAvatar.textContent = '👤';
+        }
+      } else if (sig.type === 'offer') {
+        handleOffer(sig.payload || sig.offer);
+      } else if (sig.type === 'answer') {
+        handleAnswer(sig.payload || sig.answer);
+      } else if (sig.type === 'ice-candidate') {
+        handleCandidate(sig.payload || sig.candidate);
+      } else if (sig.type === 'chat') {
+        const text = sig.payload ? sig.payload.text : sig.text;
+        const senderName = (sig.payload && sig.payload.senderName) || sig.senderName || 'Peer';
+        appendChatMessage(senderName, text, false);
+      }
     }
 
     let clientId = null;
@@ -1146,26 +1370,31 @@
       peerConnection.ontrack = (event) => {
         if (event.streams && event.streams[0]) {
           remoteVideo.srcObject = event.streams[0];
-          remoteFallback.classList.remove('show');
+          // If track has video, show video tile
+          const hasVideo = event.streams[0].getVideoTracks().length > 0;
+          if (hasVideo && currentCallMode !== 'audio') {
+            remoteFallback.classList.remove('show');
+          }
         }
       };
 
       peerConnection.onicecandidate = (event) => {
-        if (event.candidate && roomChannel) {
-          roomChannel.postMessage({
-            type: 'ice-candidate',
-            candidate: event.candidate,
-            sender: getClientId()
-          });
+        if (event.candidate) {
+          sendSignal('ice-candidate', event.candidate);
         }
       };
 
       peerConnection.onconnectionstatechange = () => {
         if (peerConnection.connectionState === 'connected') {
-          remoteStatusText.textContent = 'Peer Connected!';
-          remoteFallback.classList.remove('show');
+          if (remoteStatusText) {
+            remoteStatusText.textContent = currentCallMode === 'audio' ? 'Peer Connected (Voice Only)' : 'Peer Connected!';
+          }
+          if (currentCallMode !== 'audio') {
+            remoteFallback.classList.remove('show');
+          }
+          showToast('Peer connected securely via WebRTC DTLS/SRTP!');
         } else if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
-          remoteStatusText.textContent = 'Peer disconnected.';
+          if (remoteStatusText) remoteStatusText.textContent = 'Peer disconnected.';
           remoteFallback.classList.add('show');
         }
       };
@@ -1199,11 +1428,7 @@
         try {
           const offer = await pc.createOffer();
           await pc.setLocalDescription(offer);
-          roomChannel.postMessage({
-            type: 'offer',
-            offer: offer,
-            sender: getClientId()
-          });
+          sendSignal('offer', offer);
         } catch (e) {
           console.error('Failed to create offer:', e);
         }
@@ -1211,23 +1436,20 @@
     }
 
     async function handleOffer(offer) {
+      if (!offer) return;
       const pc = createPeerConnection();
       try {
         await pc.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await pc.createAnswer();
         await pc.setLocalDescription(answer);
-        roomChannel.postMessage({
-          type: 'answer',
-          answer: answer,
-          sender: getClientId()
-        });
+        sendSignal('answer', answer);
       } catch (e) {
         console.error('Failed to handle offer:', e);
       }
     }
 
     async function handleAnswer(answer) {
-      if (!peerConnection) return;
+      if (!peerConnection || !answer) return;
       try {
         await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
       } catch (e) {
@@ -1236,7 +1458,7 @@
     }
 
     async function handleCandidate(candidate) {
-      if (!peerConnection) return;
+      if (!peerConnection || !candidate) return;
       try {
         await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
       } catch (e) {
@@ -1279,14 +1501,53 @@
       showToast(isMicMuted ? 'Microphone Muted' : 'Microphone Active');
     });
 
-    btnToggleCam.addEventListener('click', () => {
-      if (!localStream) return;
+    btnToggleCam.addEventListener('click', async () => {
+      // If started as audio call without camera tracks: request camera now
+      if (!localStream || localStream.getVideoTracks().length === 0) {
+        try {
+          const videoStream = await navigator.mediaDevices.getUserMedia({
+            video: { width: { ideal: 1280 }, height: { ideal: 720 } }
+          });
+          const newVideoTrack = videoStream.getVideoTracks()[0];
+          
+          if (!localStream) {
+            localStream = videoStream;
+          } else {
+            localStream.addTrack(newVideoTrack);
+          }
+
+          localVideo.srcObject = localStream;
+          isCamPaused = false;
+          localFallback.classList.remove('show');
+          btnToggleCam.classList.remove('off');
+          btnToggleCam.innerHTML = '&#x1F4F9;';
+          document.getElementById('localCamBadge').classList.remove('off');
+
+          if (peerConnection) {
+            peerConnection.addTrack(newVideoTrack, localStream);
+            initiateCall(true); // Renegotiate with remote peer
+          }
+
+          sendSignal('call-mode', { mode: 'video' });
+          showToast('Camera enabled & streaming in HD');
+          return;
+        } catch (e) {
+          showToast('Could not access camera: ' + e.message);
+          return;
+        }
+      }
+
+      // Existing video track: toggle pause/play
       isCamPaused = !isCamPaused;
       localStream.getVideoTracks().forEach(t => t.enabled = !isCamPaused);
       btnToggleCam.classList.toggle('off', isCamPaused);
       btnToggleCam.innerHTML = isCamPaused ? '&#x1F6AB;' : '&#x1F4F9;';
       localFallback.classList.toggle('show', isCamPaused);
+      if (localFallbackText) {
+        localFallbackText.textContent = isCamPaused ? 'Camera Paused' : 'Camera Active';
+      }
       document.getElementById('localCamBadge').classList.toggle('off', isCamPaused);
+      sendSignal('call-mode', { mode: isCamPaused ? 'audio' : 'video' });
       showToast(isCamPaused ? 'Camera Paused' : 'Camera Active');
     });
 
@@ -1349,11 +1610,11 @@
 
       appendChatMessage('You', text, true);
 
-      // Send via DataChannel or Broadcast fallback
+      // Send via DataChannel or Broadcast/Signal fallback
       if (dataChannel && dataChannel.readyState === 'open') {
         dataChannel.send(JSON.stringify({ sender: 'Peer', text }));
-      } else if (roomChannel) {
-        roomChannel.postMessage({ type: 'chat', senderName: 'Peer', text, sender: getClientId() });
+      } else {
+        sendSignal('chat', { senderName: 'Peer', text });
       }
 
       chatInput.value = '';
@@ -1386,6 +1647,7 @@
       if (screenStream) screenStream.getTracks().forEach(t => t.stop());
       if (peerConnection) peerConnection.close();
       if (roomChannel) roomChannel.close();
+      if (signalingPollInterval) clearInterval(signalingPollInterval);
       clearInterval(callTimerInterval);
     }
 
@@ -1401,7 +1663,7 @@
     }
 
     function copyInviteLink() {
-      const url = `${window.location.origin}/call?room=${encodeURIComponent(activeRoomId)}`;
+      const url = `${window.location.origin}/call?room=${encodeURIComponent(activeRoomId)}&mode=${currentCallMode}`;
       navigator.clipboard.writeText(url).then(() => {
         showToast('Invite link copied! Share it with your peer.');
       });

@@ -710,37 +710,168 @@
       border: 1px solid rgba(0, 255, 136, 0.3);
     }
 
-    /* Live Server Telemetry Monitor */
-    .live-monitor {
-      background: rgba(4, 8, 20, 0.85);
+    /* Real Gateway & Edge Connectivity Telemetry */
+    .indicator-dot.offline {
+      background: #ef4444 !important;
+      box-shadow: 0 0 10px #ef4444 !important;
+      animation: none !important;
+    }
+
+    .gateway-telemetry-card {
+      background: rgba(4, 8, 20, 0.9);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.25rem;
-      margin-top: 1rem;
+      margin-top: 1.25rem;
       font-family: var(--mono);
+      position: relative;
+      overflow: hidden;
     }
 
-    .monitor-title {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
+    .telemetry-header {
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .monitor-bars {
+    .telemetry-title {
       display: flex;
-      align-items: flex-end;
-      gap: 4px;
-      height: 48px;
-      margin-bottom: 0.5rem;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
     }
 
-    .bar {
-      flex: 1;
-      background: linear-gradient(to top, rgba(0, 242, 254, 0.2), var(--neon-cyan));
-      border-radius: 2px 2px 0 0;
-      transition: height 0.4s ease;
+    .telemetry-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    .telemetry-dot.offline {
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+    }
+
+    .telemetry-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .telemetry-badge.online {
+      background: rgba(0, 255, 136, 0.12);
+      color: #00ff88;
+      border: 1px solid rgba(0, 255, 136, 0.35);
+    }
+
+    .telemetry-badge.checking {
+      background: rgba(0, 242, 254, 0.12);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+    }
+
+    .telemetry-badge.offline {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .telemetry-item {
+      background: rgba(6, 12, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .telemetry-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .telemetry-val {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .telemetry-notice {
+      background: rgba(0, 242, 254, 0.04);
+      border-left: 2px solid var(--neon-cyan);
+      padding: 0.6rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.74rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      transition: all 0.25s ease;
+    }
+
+    .telemetry-notice.offline {
+      background: rgba(239, 68, 68, 0.06);
+      border-left-color: #ef4444;
+      color: #fca5a5;
+    }
+
+    .telemetry-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .telemetry-time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .btn-probe-ping {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--neon-cyan);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-probe-ping:hover {
+      background: rgba(0, 242, 254, 0.2);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    }
+
+    .btn-probe-ping:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     /* Footer */
@@ -867,16 +998,16 @@
     <div class="hud-bar">
       <div class="hud-items">
         <div class="hud-item">
-          <div class="indicator-dot"></div>
-          <span>UPLINK FREQUENCY:</span>
-          <span class="hud-val">8090-PROD // SECURE</span>
+          <div class="indicator-dot" id="hudStatusDot"></div>
+          <span>GATEWAY:</span>
+          <span class="hud-val" id="hudGateway">PROBING...</span>
         </div>
         <div class="hud-item">
-          <span>CIPHER:</span>
-          <span class="hud-val">RSA-4096 / ECC</span>
+          <span>EDGE NODE:</span>
+          <span class="hud-val" id="hudNode">LOCATING...</span>
         </div>
         <div class="hud-item">
-          <span>EST. LATENCY:</span>
+          <span>LATENCY:</span>
           <span class="hud-val" id="hudPing">-- ms</span>
         </div>
       </div>
@@ -1052,18 +1183,45 @@
             </a>
           </div>
 
-          <!-- Live Heartbeat Visualizer -->
-          <div class="live-monitor">
-            <div class="monitor-title">
-              <span>LIVE CORE HEARTBEAT (OMNIHOST TELEMETRY)</span>
-              <span id="monitorReqs">REQ/S: 1.8</span>
+          <!-- Real Edge Connectivity Telemetry -->
+          <div class="gateway-telemetry-card" id="telemetryCard">
+            <div class="telemetry-header">
+              <div class="telemetry-title">
+                <span class="telemetry-dot" id="telemetryDot"></span>
+                <span>REAL-TIME GATEWAY TELEMETRY</span>
+              </div>
+              <span class="telemetry-badge checking" id="telemetryBadge">PROBING EDGE</span>
             </div>
-            <div class="monitor-bars" id="monitorBars">
-              <!-- Dynamically populated bars -->
+            
+            <div class="telemetry-grid">
+              <div class="telemetry-item">
+                <div class="telemetry-label">CLIENT NETWORK</div>
+                <div class="telemetry-val" id="clientNetStatus">Detecting...</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">CLOUDFLARE EDGE NODE</div>
+                <div class="telemetry-val" id="edgeColo">--</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">ROUND-TRIP LATENCY</div>
+                <div class="telemetry-val" id="edgeLatency">-- ms</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">SECURE PROTOCOL</div>
+                <div class="telemetry-val" id="edgeProtocol">TLS 1.3 / HTTP/2</div>
+              </div>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted);">
-              <span>BUFFER: 4MB ZERO-COPY</span>
-              <span>STATE: SYNCHRONIZED</span>
+
+            <div class="telemetry-notice" id="telemetryNotice">
+              Probing live round-trip latency to Alumungandr Edge Gateway...
+            </div>
+
+            <div class="telemetry-footer-bar">
+              <span class="telemetry-time" id="lastVerifiedTime">Last Checked: --:--:--</span>
+              <button type="button" class="btn-probe-ping" id="btnProbePing" onclick="probeRealGateway(true)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                <span>Ping Edge Gateway</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1289,38 +1447,205 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Estimate live ping to server
-    async function checkServerPing() {
+    // --- 2. Real-Time Edge Gateway Probing & Offline/Online Telemetry ---
+    const hudStatusDot = document.getElementById('hudStatusDot');
+    const hudGateway = document.getElementById('hudGateway');
+    const hudNode = document.getElementById('hudNode');
+    const hudPing = document.getElementById('hudPing');
+
+    const telemetryDot = document.getElementById('telemetryDot');
+    const telemetryBadge = document.getElementById('telemetryBadge');
+    const clientNetStatus = document.getElementById('clientNetStatus');
+    const edgeColo = document.getElementById('edgeColo');
+    const edgeLatency = document.getElementById('edgeLatency');
+    const edgeProtocol = document.getElementById('edgeProtocol');
+    const telemetryNotice = document.getElementById('telemetryNotice');
+    const lastVerifiedTime = document.getElementById('lastVerifiedTime');
+    const btnProbePing = document.getElementById('btnProbePing');
+
+    let isProbing = false;
+
+    async function probeRealGateway(isManual = false) {
+      if (isProbing) return;
+      isProbing = true;
+
+      if (btnProbePing) {
+        btnProbePing.disabled = true;
+        btnProbePing.querySelector('span').textContent = 'Pinging Edge...';
+      }
+
+      // 1. Check local network connectivity truthfully
+      if (!navigator.onLine) {
+        setOfflineState('No active internet connection detected on this device.');
+        isProbing = false;
+        if (btnProbePing) {
+          btnProbePing.disabled = false;
+          btnProbePing.querySelector('span').textContent = 'Ping Edge Gateway';
+        }
+        return;
+      }
+
+      // 2. Measure true round-trip HTTP ping to /api/contact
       const t0 = performance.now();
       try {
-        await fetch('/api/stats', { cache: 'no-store' });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+        const res = await fetch('/api/contact', {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
         const latency = Math.round(performance.now() - t0);
-        document.getElementById('hudPing').textContent = `${latency} ms`;
+
+        if (res.ok) {
+          const data = await res.json();
+          setOnlineState(data, latency);
+        } else {
+          setGatewayErrorState(`Gateway responded with HTTP ${res.status}`);
+        }
       } catch (err) {
-        document.getElementById('hudPing').textContent = `14 ms`;
+        if (!navigator.onLine) {
+          setOfflineState('Network disconnected during gateway probe.');
+        } else {
+          setGatewayErrorState('Failed to reach Alumungandr edge gateway. (Timeout / Firewall)');
+        }
+      } finally {
+        isProbing = false;
+        if (btnProbePing) {
+          btnProbePing.disabled = false;
+          btnProbePing.querySelector('span').textContent = 'Ping Edge Gateway';
+        }
       }
     }
-    checkServerPing();
-    setInterval(checkServerPing, 8000);
 
-    // Live Heartbeat Audio-Wave Monitor Bars
-    const monitorContainer = document.getElementById('monitorBars');
-    const BAR_COUNT = 24;
-    const bars = [];
-    for (let i = 0; i < BAR_COUNT; i++) {
-      const b = document.createElement('div');
-      b.className = 'bar';
-      b.style.height = `${Math.floor(Math.random() * 35 + 10)}%`;
-      monitorContainer.appendChild(b);
-      bars.push(b);
+    function setOnlineState(data, latency) {
+      // HUD Update
+      if (hudStatusDot) hudStatusDot.className = 'indicator-dot';
+      if (hudGateway) hudGateway.textContent = 'CLOUDFLARE EDGE';
+      if (hudNode) hudNode.textContent = data.colo || 'GLOBAL';
+      if (hudPing) hudPing.textContent = `${latency} ms`;
+
+      // Telemetry Card Update
+      if (telemetryDot) telemetryDot.className = 'telemetry-dot';
+      if (telemetryBadge) {
+        telemetryBadge.className = 'telemetry-badge online';
+        telemetryBadge.textContent = 'GATEWAY ACTIVE';
+      }
+      if (clientNetStatus) {
+        clientNetStatus.textContent = 'ONLINE (ACTIVE)';
+        clientNetStatus.style.color = '#00ff88';
+      }
+      if (edgeColo) {
+        edgeColo.textContent = `${data.colo || 'EDGE'} (${data.city || data.country || 'GLOBAL'})`;
+        edgeColo.style.color = 'var(--neon-cyan)';
+      }
+      if (edgeLatency) {
+        edgeLatency.textContent = `${latency} ms`;
+        edgeLatency.style.color = latency < 80 ? '#00ff88' : (latency < 180 ? '#f59e0b' : '#ff3860');
+      }
+      if (edgeProtocol) {
+        edgeProtocol.textContent = `${data.tlsVersion || 'TLS 1.3'} • ${data.httpProtocol || 'HTTP/2'}`;
+      }
+      if (telemetryNotice) {
+        telemetryNotice.className = 'telemetry-notice';
+        telemetryNotice.innerHTML = `<strong>Edge Uplink Verified:</strong> Connected to Cloudflare Anycast node <code>${data.colo || 'EDGE'}</code> with <strong>${latency}ms</strong> round-trip response time.`;
+      }
+      if (lastVerifiedTime) {
+        lastVerifiedTime.textContent = 'Last Ping: ' + new Date().toLocaleTimeString();
+      }
+
+      // Ensure submit button is enabled for transmissions
+      if (submitBtn && submitBtn.getAttribute('data-offline') === 'true') {
+        submitBtn.removeAttribute('data-offline');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span>TRANSMIT DISPATCH PACKET</span>
+        `;
+      }
     }
 
+    function setOfflineState(msg) {
+      // HUD Update
+      if (hudStatusDot) hudStatusDot.className = 'indicator-dot offline';
+      if (hudGateway) hudGateway.textContent = 'OFFLINE';
+      if (hudNode) hudNode.textContent = 'DISCONNECTED';
+      if (hudPing) hudPing.textContent = 'UNREACHABLE';
+
+      // Telemetry Card Update
+      if (telemetryDot) telemetryDot.className = 'telemetry-dot offline';
+      if (telemetryBadge) {
+        telemetryBadge.className = 'telemetry-badge offline';
+        telemetryBadge.textContent = 'OFFLINE';
+      }
+      if (clientNetStatus) {
+        clientNetStatus.textContent = 'OFFLINE (NO INTERNET)';
+        clientNetStatus.style.color = '#ef4444';
+      }
+      if (edgeColo) {
+        edgeColo.textContent = 'UNREACHABLE';
+        edgeColo.style.color = '#ef4444';
+      }
+      if (edgeLatency) {
+        edgeLatency.textContent = 'DISCONNECTED';
+        edgeLatency.style.color = '#ef4444';
+      }
+      if (edgeProtocol) {
+        edgeProtocol.textContent = 'DISCONNECTED';
+      }
+      if (telemetryNotice) {
+        telemetryNotice.className = 'telemetry-notice offline';
+        telemetryNotice.innerHTML = `<strong>⚠️ Offline Status:</strong> ${msg} Encrypted edge dispatches and real-time telemetry will automatically resume when network connectivity is restored.`;
+      }
+      if (lastVerifiedTime) {
+        lastVerifiedTime.textContent = 'Offline at: ' + new Date().toLocaleTimeString();
+      }
+
+      // Mark submit button as offline disabled
+      if (submitBtn) {
+        submitBtn.setAttribute('data-offline', 'true');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          <span>OFFLINE — RECONNECT TO TRANSMIT</span>
+        `;
+      }
+    }
+
+    function setGatewayErrorState(msg) {
+      if (hudStatusDot) hudStatusDot.className = 'indicator-dot offline';
+      if (hudGateway) hudGateway.textContent = 'EDGE UNREACHABLE';
+      if (hudNode) hudNode.textContent = 'TIMEOUT';
+      if (hudPing) hudPing.textContent = 'FAILED';
+
+      if (telemetryBadge) {
+        telemetryBadge.className = 'telemetry-badge offline';
+        telemetryBadge.textContent = 'EDGE TIMEOUT';
+      }
+      if (edgeLatency) {
+        edgeLatency.textContent = 'FAILED';
+        edgeLatency.style.color = '#ef4444';
+      }
+      if (telemetryNotice) {
+        telemetryNotice.className = 'telemetry-notice offline';
+        telemetryNotice.innerHTML = `<strong>⚠️ Edge Warning:</strong> ${msg}`;
+      }
+    }
+
+    // Auto-probe on initial load and setup event hooks
+    probeRealGateway();
+    window.addEventListener('online', () => probeRealGateway(true));
+    window.addEventListener('offline', () => setOfflineState('Internet connection was lost.'));
+    
+    // Heartbeat check every 25s only when tab is visible
     setInterval(() => {
-      bars.forEach(b => {
-        b.style.height = `${Math.floor(Math.random() * 75 + 15)}%`;
-      });
-      document.getElementById('monitorReqs').textContent = `REQ/S: ${(Math.random() * 2 + 1.2).toFixed(1)}`;
-    }, 600);
+      if (document.visibilityState === 'visible') {
+        probeRealGateway();
+      }
+    }, 25000);
 
     // --- 3. Live AJAX Form Submission to POST /api/contact ---
     const contactForm = document.getElementById('contactForm');

@@ -182,72 +182,7 @@
       font-family: var(--font-mono);
     }
 
-    /* Mana-Style Floating Organic Vectors & Sparkles */
-    .bg-stickers {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-      opacity: 0.85;
-    }
 
-    .sticker {
-      position: absolute;
-      animation: floatSticker 8s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatSticker {
-      0% { transform: translateY(0px) rotate(0deg) scale(1); }
-      50% { transform: translateY(-18px) rotate(6deg) scale(1.04); }
-      100% { transform: translateY(12px) rotate(-6deg) scale(0.98); }
-    }
-
-    .st-flower {
-      top: 12%;
-      left: 3%;
-      width: 90px;
-      height: 90px;
-      animation-duration: 9s;
-    }
-
-    .st-berry {
-      bottom: 15%;
-      left: 4%;
-      width: 80px;
-      height: 80px;
-      animation-duration: 11s;
-      animation-delay: -3s;
-    }
-
-    .st-rocket {
-      top: 15%;
-      right: 4%;
-      width: 85px;
-      height: 85px;
-      animation-duration: 10s;
-      animation-delay: -1s;
-    }
-
-    .st-sparkle-1 {
-      top: 35%;
-      right: 12%;
-      width: 45px;
-      height: 45px;
-      animation-duration: 7s;
-      animation-delay: -2s;
-    }
-
-    .st-sparkle-2 {
-      bottom: 25%;
-      right: 6%;
-      width: 55px;
-      height: 55px;
-      animation-duration: 8.5s;
-    }
 
     /* Navigation Bar */
     nav {
@@ -1197,43 +1132,7 @@
     <p class="shield-subtitle">Instantly crops into all 16 social media presets</p>
   </div>
 
-  <!-- Mana-Style Organic Floating Vector Stickers -->
-  <div class="bg-stickers">
-    <!-- Tropical Hibiscus Blossom -->
-    <svg class="sticker st-flower" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="18" fill="#fbc531" />
-      <path d="M50 15 C40 15 35 30 50 35 C65 30 60 15 50 15 Z" fill="#ff3860" />
-      <path d="M85 50 C85 40 70 35 65 50 C70 65 85 60 85 50 Z" fill="#ff3860" />
-      <path d="M50 85 C60 85 65 70 50 65 C35 70 40 85 50 85 Z" fill="#ff3860" />
-      <path d="M15 50 C15 60 30 65 35 50 C30 35 15 40 15 50 Z" fill="#ff3860" />
-    </svg>
 
-    <!-- Berry Cluster -->
-    <svg class="sticker st-berry" viewBox="0 0 100 100" fill="none">
-      <circle cx="45" cy="40" r="14" fill="#4facfe" />
-      <circle cx="60" cy="45" r="13" fill="#00f2fe" />
-      <circle cx="50" cy="60" r="15" fill="#7f00ff" />
-      <circle cx="35" cy="55" r="12" fill="#4facfe" />
-    </svg>
-
-    <!-- Energy Sparkle 1 -->
-    <svg class="sticker st-sparkle-1" viewBox="0 0 60 60" fill="none">
-      <path d="M30 0 L35 25 L60 30 L35 35 L30 60 L25 35 L0 30 L25 25 Z" fill="#fbc531" />
-    </svg>
-
-    <!-- Energy Sparkle 2 -->
-    <svg class="sticker st-sparkle-2" viewBox="0 0 60 60" fill="none">
-      <path d="M30 0 L36 24 L60 30 L36 36 L30 60 L24 36 L0 30 L24 24 Z" fill="#00f2fe" />
-    </svg>
-
-    <!-- Joyful Rocket Capsule -->
-    <svg class="sticker st-rocket" viewBox="0 0 100 100" fill="none">
-      <path d="M50 10 C35 30 30 65 50 80 C70 65 65 30 50 10 Z" fill="#1e293b" stroke="#00f2fe" stroke-width="3"/>
-      <circle cx="50" cy="45" r="10" fill="#00f2fe"/>
-      <path d="M35 70 L20 85 L35 80 Z" fill="#ff3860"/>
-      <path d="M65 70 L80 85 L65 80 Z" fill="#ff3860"/>
-    </svg>
-  </div>
 
   <!-- Global Brand Navigation -->
                       <header class="site-header">
@@ -1381,6 +1280,21 @@
           </select>
           <div class="color-input-wrap" id="colorInputWrap">
             <input type="color" id="customBgColor" value="#0a1026" title="Choose canvas padding color">
+          </div>
+        </div>
+
+        <!-- Export Format Selector -->
+        <div class="crop-mode-select">
+          <label for="formatSelect">Format:</label>
+          <select id="formatSelect">
+            <option value="image/png">PNG (Lossless)</option>
+            <option value="image/webp">WebP (Modern)</option>
+            <option value="image/jpeg">JPEG (Compressed)</option>
+          </select>
+          <div id="qualityWrap" style="display: none; align-items: center; gap: 0.4rem;">
+            <label for="qualitySlider" style="font-size: 0.72rem; color: var(--editorial-muted);">Quality:</label>
+            <input type="range" id="qualitySlider" min="0.5" max="1.0" step="0.05" value="0.92" style="width: 65px;">
+            <span id="qualityVal" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--mana-blue);">92%</span>
           </div>
         </div>
       </div>
@@ -1635,7 +1549,73 @@
         tableBody.appendChild(tr);
       });
     }
+
+    // Render sleek blueprint aspect-ratio wireframes on initial 0 state
+    function renderPresetPlaceholders() {
+      PRESETS.forEach(p => {
+        const canvas = document.getElementById(`canvas_${p.id}`);
+        if (!canvas) return;
+
+        canvas.width = p.w;
+        canvas.height = p.h;
+        const ctx = canvas.getContext('2d');
+
+        // Dark cybernetic blueprint grid
+        ctx.fillStyle = '#060a16';
+        ctx.fillRect(0, 0, p.w, p.h);
+
+        // Grid pattern
+        ctx.strokeStyle = 'rgba(0, 242, 254, 0.08)';
+        ctx.lineWidth = Math.max(1, Math.round(p.w / 600));
+        const gridStep = Math.max(36, Math.round(p.w / 20));
+        for (let x = 0; x < p.w; x += gridStep) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, p.h);
+          ctx.stroke();
+        }
+        for (let y = 0; y < p.h; y += gridStep) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(p.w, y);
+          ctx.stroke();
+        }
+
+        // Dotted crop outline
+        const pad = Math.max(10, Math.round(p.w * 0.02));
+        ctx.strokeStyle = 'rgba(0, 242, 254, 0.35)';
+        ctx.lineWidth = Math.max(2, Math.round(p.w / 400));
+        ctx.setLineDash([Math.max(6, Math.round(p.w / 140)), Math.max(4, Math.round(p.w / 200))]);
+        ctx.strokeRect(pad, pad, p.w - pad * 2, p.h - pad * 2);
+        ctx.setLineDash([]);
+
+        // Informative blueprint typography
+        const fontSize = Math.min(p.w * 0.065, p.h * 0.16, 52);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.font = `700 ${Math.round(fontSize)}px Space Grotesk, -apple-system, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(p.group.toUpperCase(), p.w / 2, p.h / 2 - fontSize * 0.65);
+
+        ctx.font = `600 ${Math.round(fontSize * 0.72)}px JetBrains Mono, monospace`;
+        ctx.fillStyle = '#00f2fe';
+        ctx.fillText(`${p.w} × ${p.h} px  •  [${p.aspect}]`, p.w / 2, p.h / 2 + fontSize * 0.55);
+
+        // Copy to table view thumbnail
+        const tableCanvas = document.getElementById(`table_canvas_${p.id}`);
+        if (tableCanvas) {
+          tableCanvas.width = 60;
+          tableCanvas.height = 60;
+          const tCtx = tableCanvas.getContext('2d');
+          tCtx.imageSmoothingEnabled = true;
+          tCtx.drawImage(canvas, 0, 0, 60, 60);
+        }
+      });
+    }
+
     buildUI();
+    renderPresetPlaceholders();
 
     // Toggle circular guide overlay on cards
     function toggleCircleGuide(presetId, event) {
@@ -2029,25 +2009,64 @@
       }, 3500);
     }
 
-    // --- 8. Master ZIP & Single Downloads ---
+    // --- 8. Format & Quality Controls ---
+    const formatSelect = document.getElementById('formatSelect');
+    const qualityWrap = document.getElementById('qualityWrap');
+    const qualitySlider = document.getElementById('qualitySlider');
+    const qualityVal = document.getElementById('qualityVal');
+
+    if (formatSelect) {
+      formatSelect.addEventListener('change', () => {
+        const fmt = formatSelect.value;
+        if (qualityWrap) {
+          qualityWrap.style.display = (fmt === 'image/jpeg' || fmt === 'image/webp') ? 'inline-flex' : 'none';
+        }
+        // Update download button labels
+        const ext = fmt === 'image/webp' ? 'WEBP' : (fmt === 'image/jpeg' ? 'JPG' : 'PNG');
+        document.querySelectorAll('.btn-download-single span').forEach(el => {
+          el.textContent = `Download ${ext}`;
+        });
+      });
+    }
+
+    if (qualitySlider && qualityVal) {
+      qualitySlider.addEventListener('input', () => {
+        qualityVal.textContent = Math.round(qualitySlider.value * 100) + '%';
+      });
+    }
+
+    // --- 9. Master ZIP & Single Downloads ---
+    function getExportFormat() {
+      const fmt = formatSelect ? formatSelect.value : 'image/png';
+      const q = qualitySlider ? parseFloat(qualitySlider.value) : 0.92;
+      let ext = '.png';
+      if (fmt === 'image/webp') ext = '.webp';
+      else if (fmt === 'image/jpeg') ext = '.jpg';
+      return { format: fmt, quality: q, ext: ext };
+    }
+
     function downloadSingle(presetId) {
       const preset = PRESETS.find(p => p.id === presetId);
       const canvas = document.getElementById(`canvas_${presetId}`);
       if (!canvas || !currentImage) {
-        showToast('Please load an image first.');
+        showToast('Please load an image first (Drag & drop or Try Sample).');
         return;
       }
 
+      const { format, quality, ext } = getExportFormat();
+      const baseName = preset.filename.replace(/\.png$/, '');
+      const outFilename = `${baseName}${ext}`;
+
       canvas.toBlob((blob) => {
         const link = document.createElement('a');
-        link.download = preset.filename;
+        link.download = outFilename;
         link.href = URL.createObjectURL(blob);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
-        showToast(`✓ Downloaded ${preset.filename}`);
-      }, 'image/png');
+        showToast(`✓ Downloaded ${outFilename}`);
+      }, format, quality);
     }
 
     btnDownloadAll.addEventListener('click', async () => {
@@ -2059,6 +2078,8 @@
       btnDownloadAll.disabled = true;
       const initialText = downloadBtnText.textContent;
       downloadBtnText.textContent = 'COMPRESSING CROPS...';
+
+      const { format, quality, ext } = getExportFormat();
 
       // Decide which presets to package based on current active filter
       const presetsToZip = currentFilter === 'all' 
@@ -2080,8 +2101,9 @@
           const p = presetsToZip[i];
           const canvas = document.getElementById(`canvas_${p.id}`);
           if (canvas) {
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-            folder.file(p.filename, blob);
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, format, quality));
+            const baseName = p.filename.replace(/\.png$/, '');
+            folder.file(`${baseName}${ext}`, blob);
           }
         }
 
@@ -2113,10 +2135,7 @@
       }
     });
 
-    // Auto-load high-res sample on initial load so the user immediately sees all 16 presets working!
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('loadSampleBtn').click();
-    });
+    // Starts cleanly from 0 with blueprint wireframes. Ready for user drop!
   </script>
 </body>
 </html>

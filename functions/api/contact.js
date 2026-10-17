@@ -126,13 +126,27 @@ export async function onRequestGet({ request, env }) {
     });
   }
 
+  const cf = request.cf || {};
   return new Response(JSON.stringify({
     status: "online",
     gateway: "Alumungandr Secure Communications Uplink",
-    version: "2.4.0",
-    service: "Cloudflare Edge KV Dispatch Engine"
+    version: "2.5.0",
+    service: "Cloudflare Edge KV Dispatch Engine",
+    colo: cf.colo || "EDGE-LOCAL",
+    country: cf.country || "US",
+    city: cf.city || "Local",
+    region: cf.region || null,
+    asn: cf.asn || null,
+    asOrganization: cf.asOrganization || null,
+    httpProtocol: cf.httpProtocol || "HTTP/2",
+    tlsVersion: cf.tlsVersion || "TLSv1.3",
+    timestamp: new Date().toISOString()
   }), {
     status: 200,
-    headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "no-store, no-cache, must-revalidate"
+    }
   });
 }

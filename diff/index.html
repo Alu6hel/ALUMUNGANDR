@@ -748,14 +748,16 @@
       const linesA = origText.split('\n');
       const linesB = modText.split('\n');
 
-      document.getElementById('orig-lines-count').textContent = `${linesA.length} lines`;
-      document.getElementById('mod-lines-count').textContent = `${linesB.length} lines`;
-
       if (!origText && !modText) {
-        diffContainer.innerHTML = '<div style="padding:2.5rem; text-align:center; color:var(--text-muted); font-style:italic;">Enter text above or click "Sample Diff" to inspect comparisons.</div>';
+        document.getElementById('orig-lines-count').textContent = '0 lines';
+        document.getElementById('mod-lines-count').textContent = '0 lines';
+        diffContainer.innerHTML = '<div style="padding:2.5rem; text-align:center; color:var(--text-muted); font-style:italic;">Enter or paste text above or click "Sample Diff" to inspect comparisons.</div>';
         updateStats(0, 0, 0, 100);
         return;
       }
+
+      document.getElementById('orig-lines-count').textContent = `${linesA.length} lines`;
+      document.getElementById('mod-lines-count').textContent = `${linesB.length} lines`;
 
       const ignoreWs = document.getElementById('opt-whitespace').checked;
       const ignoreCase = document.getElementById('opt-case').checked;
@@ -956,8 +958,8 @@
     textOriginal.addEventListener('input', computeDiff);
     textModified.addEventListener('input', computeDiff);
 
-    // Initial load with sample
-    loadSampleDiff();
+    // Initial load: start cleanly from 0
+    computeDiff();
 
     // --- Interactive Live Background: Dual-Polarity Particle Stream ---
     const canvas = document.getElementById('bg-canvas');

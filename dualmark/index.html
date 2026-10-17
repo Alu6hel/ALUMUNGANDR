@@ -527,9 +527,9 @@
         <div class="telemetry-sub">Sub-millisecond compute</div>
       </div>
       <div class="telemetry-card">
-        <div class="telemetry-label">Free Tier Quota</div>
-        <div class="telemetry-val" style="color:var(--accent-green);">100% FREE</div>
-        <div class="telemetry-sub">&lt; 1% of 100k daily requests</div>
+        <div class="telemetry-label">Edge Gateway</div>
+        <div class="telemetry-val" id="tele-network" style="color:var(--accent-green);">ONLINE</div>
+        <div class="telemetry-sub" id="tele-network-sub">Zero-SaaS Cloudflare Edge</div>
       </div>
       <div class="telemetry-card">
         <div class="telemetry-label">Recall Status</div>
@@ -930,21 +930,81 @@
 
       // 2. Health & Latency Telemetry Ping
       async function updateEdgeStatus() {
+        if (!navigator.onLine) {
+          const pill = document.getElementById('edge-health-pill');
+          if (pill) {
+            pill.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            pill.style.background = 'rgba(239, 68, 68, 0.1)';
+            pill.style.color = '#ef4444';
+          }
+          const text = document.getElementById('edge-health-text');
+          if (text) text.textContent = 'OFFLINE (NO INTERNET)';
+          const coloEl = document.getElementById('tele-colo');
+          if (coloEl) coloEl.textContent = 'OFFLINE';
+          const latEl = document.getElementById('tele-latency');
+          if (latEl) {
+            latEl.textContent = 'DISCONNECTED';
+            latEl.style.color = '#ef4444';
+          }
+          const recEl = document.getElementById('tele-recalls');
+          if (recEl) recEl.textContent = 'OFFLINE CACHE';
+          const net = document.getElementById('tele-network');
+          if (net) {
+            net.textContent = 'DISCONNECTED';
+            net.style.color = '#ef4444';
+          }
+          return;
+        }
+
         const start = performance.now();
         try {
-          const res = await fetch('/api/dualmark/status');
+          const res = await fetch('/api/dualmark/status', { cache: 'no-store' });
           const elapsed = Math.round(performance.now() - start);
-          document.getElementById('tele-latency').textContent = elapsed + ' ms';
+          const latEl = document.getElementById('tele-latency');
+          if (latEl) {
+            latEl.textContent = elapsed + ' ms';
+            latEl.style.color = elapsed < 80 ? 'var(--accent-green)' : 'var(--accent-amber)';
+          }
           if (res.ok) {
             const data = await res.json();
-            if (data.edgeColo) document.getElementById('tele-colo').textContent = data.edgeColo;
-            document.getElementById('tele-recalls').textContent = data.activeRecalls + ' ACTIVE';
+            const coloEl = document.getElementById('tele-colo');
+            if (coloEl && data.edgeColo) coloEl.textContent = data.edgeColo;
+            const recEl = document.getElementById('tele-recalls');
+            if (recEl) recEl.textContent = (data.activeRecalls || 0) + ' ARMED';
+            const net = document.getElementById('tele-network');
+            if (net) {
+              net.textContent = 'ONLINE';
+              net.style.color = 'var(--accent-green)';
+            }
+            const pill = document.getElementById('edge-health-pill');
+            if (pill) {
+              pill.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+              pill.style.background = 'rgba(16, 185, 129, 0.1)';
+              pill.style.color = 'var(--accent-green)';
+            }
+            const text = document.getElementById('edge-health-text');
+            if (text) text.textContent = `EDGE WORKER LIVE (${data.edgeColo || 'ANYCAST'})`;
+          } else {
+            throw new Error('HTTP ' + res.status);
           }
         } catch (e) {
-          document.getElementById('tele-latency').textContent = 'LOCAL';
+          const latEl = document.getElementById('tele-latency');
+          const coloEl = document.getElementById('tele-colo');
+          const net = document.getElementById('tele-network');
+          if (!navigator.onLine) {
+            if (latEl) { latEl.textContent = 'DISCONNECTED'; latEl.style.color = '#ef4444'; }
+            if (coloEl) coloEl.textContent = 'OFFLINE';
+            if (net) { net.textContent = 'DISCONNECTED'; net.style.color = '#ef4444'; }
+          } else {
+            if (latEl) { latEl.textContent = 'UNREACHABLE'; latEl.style.color = '#ef4444'; }
+            if (coloEl) coloEl.textContent = 'GATEWAY ERROR';
+            if (net) { net.textContent = 'ERROR'; net.style.color = '#ef4444'; }
+          }
         }
       }
       updateEdgeStatus();
+      window.addEventListener('online', updateEdgeStatus);
+      window.addEventListener('offline', updateEdgeStatus);
 
       // 3. Tab 1: GS1 Resolver Execution
       const btnResolve = document.getElementById('btn-run-resolve');

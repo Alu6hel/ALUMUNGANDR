@@ -12,6 +12,7 @@ import * as subscriptions from './functions/api/subscriptions.js';
 import * as drop from './functions/api/drop.js';
 import * as dualmark from './functions/api/dualmark.js';
 import * as world from './functions/api/world.js';
+import * as ipApi from './functions/api/ip.js';
 
 // Edge Rate Limiter (Token bucket / sliding window per IP)
 const RATE_LIMIT_MAP = new Map();
@@ -258,6 +259,12 @@ Hiring: https://alumungandr.com/contact
       if (method === 'OPTIONS' && dualmark.onRequestOptions) return dualmark.onRequestOptions({ request, env, ctx });
       if (method === 'POST' && dualmark.onRequestPost) return dualmark.onRequestPost({ request, env, ctx });
       if (method === 'GET' && dualmark.onRequestGet) return dualmark.onRequestGet({ request, env, ctx });
+    }
+
+    // Route /api/ip (Real-Time Edge Network & Geolocation Telemetry)
+    if (url.pathname === '/api/ip' || url.pathname === '/api/ip/') {
+      if (method === 'OPTIONS' && ipApi.onRequestOptions) return ipApi.onRequestOptions({ request, env, ctx });
+      if (method === 'GET' && ipApi.onRequestGet) return ipApi.onRequestGet({ request, env, ctx });
     }
 
     // 301 Permanent Redirects for retired pages (Web game removed; game is now an APK app with low-latency edge backend)

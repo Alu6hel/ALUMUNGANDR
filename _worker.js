@@ -50,9 +50,9 @@ function applySecurityHeaders(headers) {
   headers.set('X-Content-Type-Options', 'nosniff');
   headers.set('X-Frame-Options', 'SAMEORIGIN');
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  headers.set('Permissions-Policy', 'geolocation=(self), microphone=(self), camera=(self), payment=(self)');
+  headers.set('Permissions-Policy', 'geolocation=(self), microphone=(self), camera=(self), payment=*');
   headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https: wss: stun: turn:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self';");
+  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.paypal.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: https://www.paypal.com https://*.paypalobjects.com; media-src 'self' blob: data:; connect-src 'self' https: wss: stun: turn: https://www.paypal.com https://*.paypal.com; frame-src 'self' https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; object-src 'none'; base-uri 'self'; form-action 'self' https://www.paypal.com https://*.paypal.com; frame-ancestors 'self';");
   return headers;
 }
 

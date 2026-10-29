@@ -28,8 +28,8 @@
   let currentProduct = {
     name: 'OmniHost Pro (Professional Edition)',
     tier: 'Commercial License',
-    priceUsd: 49.00,
-    priceJmd: Math.round(49.00 * CONFIG.usdToJmdRate),
+    priceUsd: 4.99,
+    priceJmd: Math.round(4.99 * CONFIG.usdToJmdRate),
     lsUrl: '',
     paypalUrl: '',
     lynkInfo: ''
@@ -63,8 +63,8 @@
             <div class="alu-prod-license" id="aluSummaryProdTier">Commercial License &bull; Instant Digital Delivery</div>
           </div>
           <div class="alu-prod-pricing">
-            <div class="alu-price-usd" id="aluSummaryPriceUsd">$49.00 USD</div>
-            <div class="alu-price-jmd" id="aluSummaryPriceJmd">~JA$ 7,670 JMD</div>
+            <div class="alu-price-usd" id="aluSummaryPriceUsd">$49.99 USD</div>
+            <div class="alu-price-jmd" id="aluSummaryPriceJmd">~JA$ 780 JMD</div>
           </div>
         </div>
 

@@ -119,6 +119,8 @@
             <input type="hidden" name="currency_code" value="USD">
             <input type="hidden" name="no_shipping" value="1">
             <input type="hidden" name="no_note" value="0">
+            <input type="hidden" name="landing_page" value="Billing">
+            <input type="hidden" name="solution_type" value="Sole">
             <input type="hidden" name="cn" value="Optional license notes or specific contact email">
             <input type="hidden" name="return" value="${CONFIG.siteUrl}/store?payment=success">
             <input type="hidden" name="cancel_return" value="${CONFIG.siteUrl}/store?payment=cancel">

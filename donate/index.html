@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="paper">
 <head>
   <script>
     (function() {
       try {
-        var savedTheme = localStorage.getItem('alu_theme');
+        var savedTheme = localStorage.getItem('alu_theme') || 'paper';
         if (savedTheme === 'paper' || savedTheme === 'amber') {
           document.documentElement.setAttribute('data-theme', savedTheme);
+        } else {
+          document.documentElement.removeAttribute('data-theme');
         }
-      } catch (e) {}
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'paper');
+      }
     })();
   </script>
   <meta charset="UTF-8">
@@ -474,11 +478,11 @@
       font-size: 0.85rem;
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101b">
 </head>
 <body>
 
-      <header class="site-header">
+        <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -486,10 +490,10 @@
     </a>
     <nav class="site-nav">
       <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
-        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+        <button type="button" class="theme-toggle-btn" data-theme="dark" title="Obsidian Core" aria-label="Dark Theme" aria-checked="false">
           <span class="theme-icon">🌙</span>
         </button>
-        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+        <button type="button" class="theme-toggle-btn active" data-theme="paper" title="Paper Monochrome &amp; Negative (Default)" aria-label="Paper Theme" aria-checked="true">
           <span class="theme-icon">☀️</span>
         </button>
         <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
@@ -534,7 +538,7 @@
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
-      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
+      <a href="/donate" class="nav-item nav-donate-link">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -702,7 +706,7 @@
     </section>
   </main>
 
-      <footer class="site-footer">
+        <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -758,7 +762,7 @@
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261101a" defer></script>
+  <script src="/assets/nav.js?v=20261101b" defer></script>
   <script src="/assets/checkout.js"></script>
   <script>
     // 1. Seamless State Transition Observer
@@ -872,7 +876,7 @@
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-      camera.position.z = 5.4;
+      camera.position.z = 6.0;
 
       const group = new THREE.Group();
       scene.add(group);
@@ -880,7 +884,7 @@
       const matOuter = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.78 });
       const matInner = new THREE.MeshBasicMaterial({ color: 0xfbbf24, wireframe: true, transparent: true, opacity: 0.65 });
 
-      let outerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.55, 1), matOuter);
+      let outerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.35, 1), matOuter);
       let innerMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.85, 0), matInner);
       group.add(outerMesh);
       group.add(innerMesh);
@@ -922,13 +926,13 @@
         outerMesh.geometry.dispose();
         const tel = document.getElementById('holoTelemetry');
         if (mode === 'torus') {
-          outerMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1.1, 0.32, 64, 12), matOuter);
+          outerMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(0.78, 0.22, 64, 12), matOuter);
           if (tel) tel.textContent = 'MODE: TORUS KNOT • 60 FPS';
         } else if (mode === 'lattice') {
-          outerMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.6, 1), matOuter);
+          outerMesh = new THREE.Mesh(new THREE.DodecahedronGeometry(1.35, 1), matOuter);
           if (tel) tel.textContent = 'MODE: ORBITAL LATTICE • 60 FPS';
         } else {
-          outerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.55, 1), matOuter);
+          outerMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.35, 1), matOuter);
           if (tel) tel.textContent = 'MODE: ICOSAHEDRON • 60 FPS';
         }
         group.add(outerMesh);

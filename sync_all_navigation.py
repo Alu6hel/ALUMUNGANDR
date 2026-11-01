@@ -44,10 +44,10 @@ def get_header_html(badge="TOOL // SUITE"):
     </a>
     <nav class="site-nav">
       <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
-        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+        <button type="button" class="theme-toggle-btn" data-theme="dark" title="Obsidian Core" aria-label="Dark Theme" aria-checked="false">
           <span class="theme-icon">🌙</span>
         </button>
-        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+        <button type="button" class="theme-toggle-btn active" data-theme="paper" title="Paper Monochrome &amp; Negative (Default)" aria-label="Paper Theme" aria-checked="true">
           <span class="theme-icon">☀️</span>
         </button>
         <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
@@ -92,7 +92,7 @@ def get_header_html(badge="TOOL // SUITE"):
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
-      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
+      <a href="/donate" class="nav-item nav-donate-link">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -155,7 +155,7 @@ def get_footer_html():
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261101a" defer></script>'''
+  <script src="/assets/nav.js?v=20261101b" defer></script>'''
 
 def update_page(filename, badge):
     if not os.path.exists(filename):
@@ -167,9 +167,9 @@ def update_page(filename, badge):
 
     # 1. Ensure nav.css is included in <head> with cache-buster
     if '/assets/nav.css' not in html:
-        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">\n</head>')
+        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261101b">\n</head>')
     else:
-        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261101a', html)
+        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261101b', html)
 
     # 2. Update Header / Nav
     header_html = get_header_html(badge)
@@ -202,12 +202,12 @@ def update_page(filename, badge):
             html = html.replace('</body>', footer_html + '\n</body>')
     else:
         if '/assets/nav.js' not in html:
-            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261101a" defer></script>\n</body>')
+            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261101b" defer></script>\n</body>')
         else:
-            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101a', html)
+            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101b', html)
 
     # Also clean up any lingering old nav.js tags
-    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101a', html)
+    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101b', html)
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html)

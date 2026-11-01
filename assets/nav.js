@@ -1,12 +1,16 @@
 // Alumungandr Unified Navigation & Touch Controller
 (function() {
-  // 0. Early Theme Bootstrap (Zero Flash)
+  // 0. Early Theme Bootstrap (Zero Flash - Default: 'paper' Light Theme)
   try {
-    const savedTheme = localStorage.getItem('alu_theme');
+    const savedTheme = localStorage.getItem('alu_theme') || 'paper';
     if (savedTheme === 'paper' || savedTheme === 'amber') {
       document.documentElement.setAttribute('data-theme', savedTheme);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
     }
-  } catch (e) {}
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'paper');
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
     // Current pathname matching for active link highlight
@@ -220,7 +224,7 @@
       });
 
       // Read initial theme and set active position
-      const initialTheme = localStorage.getItem('alu_theme') || document.documentElement.getAttribute('data-theme') || 'dark';
+      const initialTheme = localStorage.getItem('alu_theme') || document.documentElement.getAttribute('data-theme') || 'paper';
       applyTheme(initialTheme, false);
 
       // Re-align slider on window resize / orientation change / fonts ready

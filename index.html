@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="paper">
 <head>
   <script>
     (function() {
       try {
-        var savedTheme = localStorage.getItem('alu_theme');
+        var savedTheme = localStorage.getItem('alu_theme') || 'paper';
         if (savedTheme === 'paper' || savedTheme === 'amber') {
           document.documentElement.setAttribute('data-theme', savedTheme);
+        } else {
+          document.documentElement.removeAttribute('data-theme');
         }
-      } catch (e) {}
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'paper');
+      }
     })();
   </script>
   <!-- Canonical & Favicon -->
@@ -338,17 +342,18 @@
       background: #000000;
       color: #ffffff;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 10px 18px;
+      padding: 8px 14px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 4px;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
       transition: all 0.2s ease;
     }
 
@@ -420,7 +425,7 @@
       justify-content: space-between;
       align-items: center;
       text-align: center;
-      padding: 100px 32px 40px;
+      padding: 118px 32px 48px;
       scroll-margin-top: 100px;
     }
 
@@ -482,18 +487,7 @@
       overflow-wrap: normal;
     }
 
-    /* Seamless Morph Transition Veil between Hero Wave & 3D Studio */
-    .hero-wave-section::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 90px;
-      background: linear-gradient(to bottom, rgba(9, 11, 16, 0) 0%, #090b10 100%);
-      z-index: 2;
-      pointer-events: none;
-    }
+    /* Clean Hero Wave Bottom without dark smudge in Light Mode */
     .hero-bottom-wrap {
       padding-bottom: 32px;
     }
@@ -609,7 +603,7 @@
        ========================================================================== */
     .studio-reveal-section {
       position: relative;
-      background: #090b10;
+      background: var(--bg-studio);
       border-bottom: var(--border-dashed);
       min-height: 80vh;
       display: flex;
@@ -688,6 +682,29 @@
     .studio-headline-reveal span {
       color: var(--accent-coral);
     }
+    html[data-theme="paper"] .studio-reveal-section {
+      background: radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 100%) !important;
+    }
+    html[data-theme="paper"] .studio-holo-deck {
+      background: rgba(255, 255, 255, 0.94) !important;
+      border-color: #0284c7 !important;
+      box-shadow: 0 10px 28px rgba(2, 132, 199, 0.16) !important;
+    }
+    html[data-theme="paper"] .holo-deck-label {
+      color: #0284c7 !important;
+    }
+    html[data-theme="paper"] .holo-mode-btn {
+      background: #f1f5f9 !important;
+      border-color: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html[data-theme="paper"] .holo-mode-btn:hover,
+    html[data-theme="paper"] .holo-mode-btn.active {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0284c7 !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35) !important;
+    }
 
     /* ==========================================================================
        4. MARQUEE TICKER TAPE
@@ -695,7 +712,7 @@
     .ticker-wrap {
       width: 100%;
       overflow: hidden;
-      background: #0b0d13;
+      background: var(--bg-surface-elevated);
       border-top: var(--border-dashed);
       border-bottom: var(--border-dashed);
       padding: 12px 0;
@@ -850,11 +867,12 @@
     /* Matrix Flip Container & 3D Cards */
     .matrix-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+      gap: 28px;
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      align-items: stretch;
     }
 
     .matrix-card-flip-wrap {
@@ -953,6 +971,8 @@
 
     .matrix-flip-card {
       position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
       width: 100%;
       min-height: 610px;
       transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
@@ -982,8 +1002,8 @@
 
 
     .card-face {
-      position: absolute;
-      inset: 0;
+      grid-area: 1 / 1 / 2 / 2;
+      position: relative;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
@@ -995,7 +1015,6 @@
       justify-content: space-between;
       gap: 12px;
       box-sizing: border-box;
-      /* Obvious floating elevation shadows: multi-layer deep ambient drop shadow + cyan glow + specular top rim */
       box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.9), 0 10px 30px -8px rgba(56, 189, 248, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.18);
     }
 
@@ -2104,7 +2123,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101b">
 </head>
 <body>
   <div class="bg-grid"></div>
@@ -2131,10 +2150,10 @@
       <div class="header-right-action">
         <div class="header-tagline"><span style="color: var(--accent-coral); font-weight: 700; letter-spacing: 0.12em;">&ldquo;BEYOND LOGIC IS TRUTH&rdquo;</span> &bull; 20 TOOLS &bull; STORE (11)</div>
         <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
-          <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+          <button type="button" class="theme-toggle-btn" data-theme="dark" title="Obsidian Core" aria-label="Dark Theme" aria-checked="false">
             <span class="theme-icon">🌙</span>
           </button>
-          <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+          <button type="button" class="theme-toggle-btn active" data-theme="paper" title="Paper Monochrome &amp; Negative (Default)" aria-label="Paper Theme" aria-checked="true">
             <span class="theme-icon">☀️</span>
           </button>
           <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
@@ -2142,21 +2161,15 @@
           </button>
           <div class="theme-slider-thumb"></div>
         </div>
-        <a href="#ai-realities" class="btn-ticket-action">
-          FACT DEVELOPMENT OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span>
-        </a>
+        <a href="#ai-realities" class="btn-ticket-action">OBSERVATORY <span style="color: var(--accent-coral);">&darr;</span></a>
         <a href="#qa-section" class="btn-ticket-action">
           Q&amp;A <span style="color: var(--accent-coral);">&darr;</span>
         </a>
-        <a href="/donate" class="btn-ticket-action mobile-keep-btn" style="background: rgba(0, 240, 255, 0.14); border-color: #00f0ff; color: #ffffff;">
-          ❤️ DONATE
-        </a>
+        <a href="/donate" class="btn-ticket-action mobile-keep-btn" style="border-color: var(--accent-cyan);">❤️ DONATE</a>
         <a href="/store" class="btn-ticket-action" style="background: rgba(222, 88, 73, 0.15); border-color: var(--accent-coral);">
           STOREFRONT <span style="color: var(--accent-coral);">&rarr;</span>
         </a>
-        <button class="btn-ticket-action" onclick="toggleDrawerMenu()" style="cursor: pointer; background: #000000; color: #ffffff;">
-          DIRECTORY <span style="color: var(--accent-coral);">&rarr;</span>
-        </button>
+        <button class="btn-ticket-action" onclick="toggleDrawerMenu()" style="cursor: pointer;">DIRECTORY <span style="color: var(--accent-coral);">&rarr;</span></button>
       </div>
     </div>
   </header>
@@ -2166,10 +2179,10 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.15);">
       <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); font-weight: 700;">THEME</span>
       <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
-        <button type="button" class="theme-toggle-btn active" data-theme="dark" title="Obsidian Core (Default)" aria-label="Dark Theme" aria-checked="true">
+        <button type="button" class="theme-toggle-btn" data-theme="dark" title="Obsidian Core" aria-label="Dark Theme" aria-checked="false">
           <span class="theme-icon">🌙</span>
         </button>
-        <button type="button" class="theme-toggle-btn" data-theme="paper" title="Paper Monochrome &amp; Negative" aria-label="Paper Theme" aria-checked="false">
+        <button type="button" class="theme-toggle-btn active" data-theme="paper" title="Paper Monochrome &amp; Negative (Default)" aria-label="Paper Theme" aria-checked="true">
           <span class="theme-icon">☀️</span>
         </button>
         <button type="button" class="theme-toggle-btn" data-theme="amber" title="Telemetry Amber / Phosphor Gold" aria-label="Amber Theme" aria-checked="false">
@@ -2277,9 +2290,9 @@
       </h2>
 
       <div class="studio-holo-deck" role="toolbar" aria-label="3D WebGL Hologram Controls">
-        <span class="holo-deck-label" id="studioHoloStatus">HOLOGRAM // ICOSAHEDRON</span>
-        <button type="button" class="holo-mode-btn active" onclick="switchStudioHolo('icosa', this)">ICOSAHEDRON</button>
-        <button type="button" class="holo-mode-btn" onclick="switchStudioHolo('torus', this)">TORUS KNOT</button>
+        <span class="holo-deck-label" id="studioHoloStatus">HOLOGRAM // TORUS KNOT</span>
+        <button type="button" class="holo-mode-btn" onclick="switchStudioHolo('icosa', this)">ICOSAHEDRON</button>
+        <button type="button" class="holo-mode-btn active" onclick="switchStudioHolo('torus', this)">TORUS KNOT</button>
         <button type="button" class="holo-mode-btn" onclick="switchStudioHolo('lattice', this)">ORBITAL LATTICE</button>
         <button type="button" class="holo-mode-btn" onclick="pulseStudioHolo()">⚡ PULSE</button>
       </div>
@@ -3153,7 +3166,7 @@
          STOREFRONT GATEWAY PORTAL (Centered)
          ========================================================================== -->
     <section id="storefront-portal" class="reveal-on-scroll" style="margin: 48px auto 80px; max-width: 1100px; scroll-margin-top: 100px;">
-      <div style="background: linear-gradient(135deg, rgba(222, 88, 73, 0.08) 0%, rgba(13, 22, 38, 0.95) 100%); border: 1px solid rgba(222, 88, 73, 0.35); border-radius: 24px; padding: 48px 36px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;">
+      <div class="storefront-portal-card" style="background: linear-gradient(135deg, rgba(222, 88, 73, 0.08) 0%, rgba(13, 22, 38, 0.95) 100%); border: 1px solid rgba(222, 88, 73, 0.35); border-radius: 24px; padding: 48px 36px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center;">
         <div style="position: absolute; top: -50px; right: -50px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(222, 88, 73, 0.22) 0%, transparent 70%); pointer-events: none;"></div>
         <div style="position: absolute; bottom: -60px; left: 20%; width: 300px; height: 180px; background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
         
@@ -3274,7 +3287,7 @@
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261101a" defer></script>
+  <script src="/assets/nav.js?v=20261101b" defer></script>
 
   <!-- ==========================================================================
        10. SCRIPTS & ANIMATION CONTROLLERS
@@ -3422,11 +3435,11 @@
       const camera = new THREE.PerspectiveCamera(45, studioCanvas.offsetWidth / studioCanvas.offsetHeight, 0.1, 100);
       camera.position.z = 7;
 
-      // Polyhedral Faceted Gemstone Prism (independent Core)
-      const geometry = new THREE.IcosahedronGeometry(2.1, 0);
+      // Default Home Page 3D Core: Torus Knot (first load default on home page only)
+      const geometry = new THREE.TorusKnotGeometry(1.35, 0.38, 64, 12);
       
       // Wireframe cage
-      const wireGeometry = new THREE.IcosahedronGeometry(2.15, 0);
+      const wireGeometry = new THREE.TorusKnotGeometry(1.4, 0.4, 48, 10);
       const wireMaterial = new THREE.MeshBasicMaterial({ color: 0xde5849, wireframe: true, transparent: true, opacity: 0.35 });
       const wireMesh = new THREE.Mesh(wireGeometry, wireMaterial);
       scene.add(wireMesh);
@@ -3469,6 +3482,34 @@
 
       const ambient = new THREE.AmbientLight(0x222222);
       scene.add(ambient);
+
+      function syncStudioTheme() {
+        const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        if (curTheme === 'paper') {
+          wireMaterial.color.setHex(0xdc2626);
+          wireMaterial.opacity = 0.62;
+          material.color.setHex(0x1e293b);
+          material.emissive.setHex(0x0f172a);
+          material.opacity = 0.82;
+          nucleusMat.color.setHex(0x0284c7);
+        } else if (curTheme === 'amber') {
+          wireMaterial.color.setHex(0xf59e0b);
+          wireMaterial.opacity = 0.52;
+          material.color.setHex(0x261c0a);
+          material.emissive.setHex(0x120d04);
+          material.opacity = 0.88;
+          nucleusMat.color.setHex(0xfbbf24);
+        } else {
+          wireMaterial.color.setHex(0xde5849);
+          wireMaterial.opacity = 0.40;
+          material.color.setHex(0x1a202c);
+          material.emissive.setHex(0x07090e);
+          material.opacity = 0.88;
+          nucleusMat.color.setHex(0xff4838);
+        }
+      }
+      syncStudioTheme();
+      window.addEventListener('themechange', syncStudioTheme);
 
       let targetRotX = 0;
       let targetRotY = 0;

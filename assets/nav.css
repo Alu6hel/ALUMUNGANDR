@@ -780,7 +780,8 @@ html[data-theme="paper"] #glacialCanvas {
 }
 
 html[data-theme="paper"] #heroWaveCanvas {
-  filter: invert(0.95) contrast(1.3) opacity(0.45);
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 /* Paper Theme Specific Card & Component Deep Styling */
@@ -1538,8 +1539,7 @@ html[data-theme="amber"] #spaceCanvas,
 html[data-theme="amber"] #crystalCanvas,
 html[data-theme="amber"] #latticeCanvas,
 html[data-theme="amber"] #hexCanvas,
-html[data-theme="amber"] #glacialCanvas,
-html[data-theme="amber"] #heroWaveCanvas {
+html[data-theme="amber"] #glacialCanvas {
   filter: sepia(1) saturate(2.5) hue-rotate(-15deg) brightness(0.85);
 }
 
@@ -1900,3 +1900,291 @@ html, body {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================================================================
+   COMPREHENSIVE PAPER (LIGHT) & AMBER THEME COVERAGE ACROSS ALL 31 PAGES
+   Prevents dark-on-dark or white-on-white text across all cards, banners & tools
+   ========================================================================== */
+a.nav-donate-link {
+  color: #00f0ff !important;
+  font-weight: 700 !important;
+}
+html[data-theme="paper"] a.nav-donate-link {
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+html[data-theme="amber"] a.nav-donate-link {
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+}
+
+/* Keep Hero Wave Typography Crisp Black in All Themes */
+html[data-theme="paper"] .hero-massive-title,
+html[data-theme="amber"] .hero-massive-title,
+html[data-theme="paper"] .hero-coords,
+html[data-theme="amber"] .hero-coords,
+html[data-theme="paper"] .hero-coords div,
+html[data-theme="amber"] .hero-coords div {
+  color: #000000 !important;
+}
+
+/* Paper Theme: Universal Container Surface Inversion */
+html[data-theme="paper"] .matrix-card,
+html[data-theme="paper"] .telemetry-item,
+html[data-theme="paper"] .ai-search-box,
+html[data-theme="paper"] .storefront-portal-card,
+html[data-theme="paper"] .runbook-section,
+html[data-theme="paper"] .feedback-console,
+html[data-theme="paper"] .dev-modal-box,
+html[data-theme="paper"] .checksum-drawer,
+html[data-theme="paper"] .glyph-display-box,
+html[data-theme="paper"] .ticker-wrap,
+html[data-theme="paper"] .donate-hero,
+html[data-theme="paper"] .tiers-section,
+html[data-theme="paper"] .tier-card,
+html[data-theme="paper"] .custom-checkout-bar,
+html[data-theme="paper"] .amount-input-group,
+html[data-theme="paper"] .compliance-card,
+html[data-theme="paper"] .alloc-pill,
+html[data-theme="paper"] .store-hero,
+html[data-theme="paper"] .filter-bar-wrap,
+html[data-theme="paper"] .product-card,
+html[data-theme="paper"] .product-card.featured-card,
+html[data-theme="paper"] .card-meta-spec,
+html[data-theme="paper"] .sideload-section,
+html[data-theme="paper"] .step-card,
+html[data-theme="paper"] .charter-banner,
+html[data-theme="paper"] .journey-hud,
+html[data-theme="paper"] .founder-journey-card,
+html[data-theme="paper"] .mission-chip,
+html[data-theme="paper"] .crystal-chip,
+html[data-theme="paper"] .card-drawer,
+html[data-theme="paper"] .matrix-pill,
+html[data-theme="paper"] .era-badge,
+html[data-theme="paper"] .hud-bar,
+html[data-theme="paper"] .category-helper-card,
+html[data-theme="paper"] .dispatch-receipt,
+html[data-theme="paper"] .spec-item,
+html[data-theme="paper"] .channel-item,
+html[data-theme="paper"] .gateway-telemetry-card,
+html[data-theme="paper"] .telemetry-notice,
+html[data-theme="paper"] .sim-explanation,
+html[data-theme="paper"] .callout,
+html[data-theme="paper"] .founder-affidavit,
+html[data-theme="paper"] .status-pill,
+html[data-theme="paper"] .lobby-card,
+html[data-theme="paper"] .room-header,
+html[data-theme="paper"] .connection-hud,
+html[data-theme="paper"] .control-dock,
+html[data-theme="paper"] .chat-drawer,
+html[data-theme="paper"] .chat-input-bar,
+html[data-theme="paper"] .editor-card,
+html[data-theme="paper"] .panel-box,
+html[data-theme="paper"] .room-code-display,
+html[data-theme="paper"] .config-card,
+html[data-theme="paper"] .results-card,
+html[data-theme="paper"] .inspector-card,
+html[data-theme="paper"] .app-toolbar,
+html[data-theme="paper"] .pane-card,
+html[data-theme="paper"] .pane-header,
+html[data-theme="paper"] .diff-toolbar,
+html[data-theme="paper"] .stats-bar,
+html[data-theme="paper"] .diff-container,
+html[data-theme="paper"] .hash-item,
+html[data-theme="paper"] .hash-value,
+html[data-theme="paper"] .drop-zone,
+html[data-theme="paper"] .claim-item,
+html[data-theme="paper"] .seal-banner,
+html[data-theme="paper"] .card-preview-box,
+html[data-theme="paper"] .mobile-drawer,
+html[data-theme="paper"] .modal-preview-viewport,
+html[data-theme="paper"] .overall-quality-banner,
+html[data-theme="paper"] .isp-rating-section,
+html[data-theme="paper"] .seo-info-block,
+html[data-theme="paper"] .faq-item,
+html[data-theme="paper"] .modal-content,
+html[data-theme="paper"] .vs-banner,
+html[data-theme="paper"] .sla-config-box,
+html[data-theme="paper"] .probe-controller,
+html[data-theme="paper"] .audit-card,
+html[data-theme="paper"] .audit-table-wrap,
+html[data-theme="paper"] .roi-feature-card,
+html[data-theme="paper"] .roi-stat-box,
+html[data-theme="paper"] .roi-action-panel,
+html[data-theme="paper"] .legal-doc-preview,
+html[data-theme="paper"] .calculator-section,
+html[data-theme="paper"] .calc-input-row,
+html[data-theme="paper"] .calc-results-card,
+html[data-theme="paper"] .trust-strip,
+html[data-theme="paper"] .final-cta-banner,
+html[data-theme="paper"] .toolbar-strip,
+html[data-theme="paper"] .table-card,
+html[data-theme="paper"] .insight-card,
+html[data-theme="paper"] .editorial-dots-bar,
+html[data-theme="paper"] .guide-banner,
+html[data-theme="paper"] .golden-spotlight-card,
+html[data-theme="paper"] .timeline-board,
+html[data-theme="paper"] .master-scrubber-area,
+html[data-theme="paper"] .city-lane-card,
+html[data-theme="paper"] .hours-editor-panel,
+html[data-theme="paper"] .meeting-config-card,
+html[data-theme="paper"] .export-suite-card,
+html[data-theme="paper"] .meeting-invite-preview,
+html[data-theme="paper"] .custom-city-dialog,
+html[data-theme="paper"] .terminal-box,
+html[data-theme="paper"] .terminal-topbar,
+html[data-theme="paper"] .manifesto-box,
+html[data-theme="paper"] .code-snippet-box,
+html[data-theme="paper"] .export-section,
+html[data-theme="paper"] .pill-item,
+html[data-theme="paper"] .alert-free-tier,
+html[data-theme="paper"] .hud-header,
+html[data-theme="paper"] .dropzone,
+html[data-theme="paper"] .selected-file-card,
+html[data-theme="paper"] .result-box,
+html[data-theme="paper"] .zk-explainer,
+html[data-theme="paper"] .zk-card,
+html[data-theme="paper"] .privacy-sandbox-banner,
+html[data-theme="paper"] .insight-drawer-panel,
+html[data-theme="paper"] .metric-card,
+html[data-theme="paper"] .spend-distribution-container,
+html[data-theme="paper"] .subscriptions-toolbar,
+html[data-theme="paper"] .currency-quick-strip,
+html[data-theme="paper"] .modal-container {
+  background: #ffffff !important;
+  border-color: #d1d5db !important;
+  color: #0b0f19 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-theme="paper"] .tier-card.selected {
+  background: #f0f9ff !important;
+  border-color: #0284c7 !important;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.16) !important;
+}
+
+html[data-theme="paper"] .truth-statement {
+  background: #fffbeb !important;
+  border-left: 3px solid #d97706 !important;
+  color: #0f172a !important;
+}
+
+/* Paper Theme: Universal Inner Heading & Value Contrast */
+html[data-theme="paper"] .tier-amount,
+html[data-theme="paper"] .tier-title,
+html[data-theme="paper"] .amount-input,
+html[data-theme="paper"] .compliance-card h3,
+html[data-theme="paper"] .price-usd,
+html[data-theme="paper"] .faq-question,
+html[data-theme="paper"] .step-title,
+html[data-theme="paper"] .hud-val,
+html[data-theme="paper"] .stage-alt-mark,
+html[data-theme="paper"] .founder-meta h3,
+html[data-theme="paper"] .card-q-text,
+html[data-theme="paper"] .receipt-value,
+html[data-theme="paper"] .spec-val,
+html[data-theme="paper"] .telemetry-title,
+html[data-theme="paper"] .telemetry-val,
+html[data-theme="paper"] .tm-name,
+html[data-theme="paper"] .notary-title,
+html[data-theme="paper"] .explorer-title,
+html[data-theme="paper"] .article-title,
+html[data-theme="paper"] .sig-name,
+html[data-theme="paper"] .callout-title,
+html[data-theme="paper"] .speed-val,
+html[data-theme="paper"] .latency-num,
+html[data-theme="paper"] .entity-name,
+html[data-theme="paper"] .rating-prompt,
+html[data-theme="paper"] .cap-header,
+html[data-theme="paper"] .faq-q,
+html[data-theme="paper"] .modal-title,
+html[data-theme="paper"] .server-opt-name,
+html[data-theme="paper"] .vs-text,
+html[data-theme="paper"] .probe-title,
+html[data-theme="paper"] .audit-stat-val,
+html[data-theme="paper"] .roi-main-title,
+html[data-theme="paper"] .roi-stat-num,
+html[data-theme="paper"] .roi-action-title,
+html[data-theme="paper"] .breakdown-val,
+html[data-theme="paper"] .trust-badge-abbr,
+html[data-theme="paper"] .feature-name,
+html[data-theme="paper"] .golden-headline,
+html[data-theme="paper"] .city-name-select,
+html[data-theme="paper"] .dossier-title,
+html[data-theme="paper"] .panel-title,
+html[data-theme="paper"] .passport-info h3,
+html[data-theme="paper"] .manifesto-quote strong,
+html[data-theme="paper"] .scanner-title,
+html[data-theme="paper"] .metric-value,
+html[data-theme="paper"] .service-name,
+html[data-theme="paper"] .service-price,
+html[data-theme="paper"] .insight-drawer-title,
+html[data-theme="paper"] .dropzone-title,
+html[data-theme="paper"] .file-name-display,
+html[data-theme="paper"] .feat-title,
+html[data-theme="paper"] .editor-label,
+html[data-theme="paper"] .cheatsheet-title,
+html[data-theme="paper"] .card-name,
+html[data-theme="paper"] .drop-title,
+html[data-theme="paper"] .terminal-cmd,
+html[data-theme="paper"] .decoded-code,
+html[data-theme="paper"] .raw-textarea,
+html[data-theme="paper"] .pane-textarea,
+html[data-theme="paper"] .results-textarea,
+html[data-theme="paper"] .clip-textarea {
+  color: #0b0f19 !important;
+}
+
+html[data-theme="paper"] .btn-donate-multi,
+html[data-theme="paper"] .btn-card-secondary,
+html[data-theme="paper"] .btn-action-checksum,
+html[data-theme="paper"] .filter-tab {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html[data-theme="paper"] .filter-tab.active,
+html[data-theme="paper"] .btn-donate-multi:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #0284c7 !important;
+}
+
+html[data-theme="paper"] .hero-badge {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+html[data-theme="paper"] .hero-badge.coral { color: #b91c1c !important; border-color: #fca5a5 !important; background: #fef2f2 !important; }
+html[data-theme="paper"] .hero-badge.cyan { color: #0369a1 !important; border-color: #7dd3fc !important; background: #f0f9ff !important; }
+html[data-theme="paper"] .hero-badge.green { color: #047857 !important; border-color: #6ee7b7 !important; background: #ecfdf5 !important; }
+html[data-theme="paper"] .hero-badge.gold { color: #b45309 !important; border-color: #fcd34d !important; background: #fffbeb !important; }
+html[data-theme="paper"] .hero-motto,
+html[data-theme="paper"] .tier-jmd {
+  color: #b45309 !important;
+}
+html[data-theme="paper"] .alloc-pill strong {
+  color: #0284c7 !important;
+}
+html[data-theme="paper"] .status-chip {
+  background: #e0f2fe !important;
+  border-color: #7dd3fc !important;
+  color: #0369a1 !important;
+}
+
+/* Preserve White / High-Contrast Text on Primary Action Buttons in Paper Mode */
+html[data-theme="paper"] .btn-buy-primary,
+html[data-theme="paper"] .btn-action-primary,
+html[data-theme="paper"] .go-btn,
+html[data-theme="paper"] .go-btn .go-title,
+html[data-theme="paper"] .btn-call-video,
+html[data-theme="paper"] .btn-download-pdf,
+html[data-theme="paper"] .btn-share-wa {
+  color: #ffffff !important;
+}
+html[data-theme="paper"] .btn-buy-primary.patron-btn,
+html[data-theme="paper"] .btn-donate-visa {
+  color: #05070c !important;
+}
+

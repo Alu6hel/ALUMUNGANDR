@@ -2231,7 +2231,7 @@
     }
 
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261101b">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101c">
 </head>
 <body>
   <div class="bg-grid"></div>
@@ -3402,7 +3402,7 @@
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261101b" defer></script>
+  <script src="/assets/nav.js?v=20261101c" defer></script>
 
   <!-- ==========================================================================
        10. SCRIPTS & ANIMATION CONTROLLERS
@@ -3483,8 +3483,19 @@
       mouseX += (targetMouseX - mouseX) * 0.08;
       mouseY += (targetMouseY - mouseY) * 0.08;
 
-      // Fill vermilion coral base
-      waveCtx.fillStyle = '#de5849';
+      // Dynamic 3-Stage Theme Color Matching for Wave Hero Canvas
+      const curWaveTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      let waveBaseColor = '#de5849';
+      let waveBandColor = '#07080a';
+      if (curWaveTheme === 'paper') {
+        waveBaseColor = '#f4f3ef';
+        waveBandColor = '#de5849';
+      } else if (curWaveTheme === 'amber') {
+        waveBaseColor = '#f59e0b';
+        waveBandColor = '#090806';
+      }
+
+      waveCtx.fillStyle = waveBaseColor;
       waveCtx.fillRect(0, 0, waveWidth, waveHeight);
 
       // Render horizontal undulating bands
@@ -3522,11 +3533,14 @@
         }
 
         waveCtx.closePath();
-        waveCtx.fillStyle = '#07080a';
+        waveCtx.fillStyle = waveBandColor;
         waveCtx.fill();
       }
     }
     renderWaves();
+    window.addEventListener('themechange', () => {
+      if (!waveAnimationId) renderWaves();
+    });
 
     /* ==========================================================================
        B. THREE.JS 3D GLASS CORE (Mobile-Adaptive & Intersection-Controlled)
@@ -3602,29 +3616,40 @@
         const curTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         if (curTheme === 'paper') {
           wireMaterial.color.setHex(0xdc2626);
-          wireMaterial.opacity = 0.62;
+          wireMaterial.opacity = 0.65;
           material.color.setHex(0x1e293b);
           material.emissive.setHex(0x0f172a);
           material.opacity = 0.82;
           nucleusMat.color.setHex(0x0284c7);
+          lightCoral.color.setHex(0xdc2626);
+          lightCyan.color.setHex(0x0284c7);
         } else if (curTheme === 'amber') {
           wireMaterial.color.setHex(0xf59e0b);
-          wireMaterial.opacity = 0.52;
+          wireMaterial.opacity = 0.65;
           material.color.setHex(0x261c0a);
           material.emissive.setHex(0x120d04);
           material.opacity = 0.88;
           nucleusMat.color.setHex(0xfbbf24);
+          lightCoral.color.setHex(0xf59e0b);
+          lightCyan.color.setHex(0xfbbf24);
         } else {
           wireMaterial.color.setHex(0xde5849);
-          wireMaterial.opacity = 0.40;
+          wireMaterial.opacity = 0.45;
           material.color.setHex(0x1a202c);
           material.emissive.setHex(0x07090e);
           material.opacity = 0.88;
           nucleusMat.color.setHex(0xff4838);
+          lightCoral.color.setHex(0xde5849);
+          lightCyan.color.setHex(0x38bdf8);
         }
+        renderer.render(scene, camera);
       }
       syncStudioTheme();
       window.addEventListener('themechange', syncStudioTheme);
+      new MutationObserver(syncStudioTheme).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
 
       let targetRotX = 0;
       let targetRotY = 0;

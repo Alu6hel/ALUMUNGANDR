@@ -187,6 +187,10 @@
         }
 
         updateActiveThumb(theme);
+        var metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) {
+          metaTheme.setAttribute('content', theme === 'paper' ? '#f4f3ef' : (theme === 'amber' ? '#090806' : '#07080a'));
+        }
         window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: theme } }));
       }
 

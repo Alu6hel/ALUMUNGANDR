@@ -2188,3 +2188,94 @@ html[data-theme="paper"] .btn-donate-visa {
   color: #05070c !important;
 }
 
+
+
+/* ==========================================================================
+   HERO WAVE SECTION & 3D HOLOGRAM DECK 3-THEME COLOR SYNCHRONIZATION
+   ========================================================================== */
+html[data-theme="paper"] .hero-wave-section {
+  background: #f4f3ef !important;
+  color: #0b0f19 !important;
+}
+html[data-theme="paper"] .hero-massive-title {
+  color: #0b0f19 !important;
+  text-shadow: 0 2px 16px rgba(244, 243, 239, 0.92), 0 0 2px rgba(255, 255, 255, 0.95) !important;
+}
+html[data-theme="paper"] .hero-coords,
+html[data-theme="paper"] .hero-coords div {
+  color: #0b0f19 !important;
+  text-shadow: 0 1px 6px rgba(244, 243, 239, 0.95) !important;
+}
+html[data-theme="paper"] .hero-explore-btn {
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #0b0f19 !important;
+  border: 1px solid #0b0f19 !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12) !important;
+}
+html[data-theme="paper"] .hero-explore-btn:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+html[data-theme="amber"] .hero-wave-section {
+  background: #f59e0b !important;
+  color: #090806 !important;
+}
+html[data-theme="amber"] .hero-massive-title,
+html[data-theme="amber"] .hero-coords,
+html[data-theme="amber"] .hero-coords div {
+  color: #090806 !important;
+}
+html[data-theme="amber"] .hero-explore-btn {
+  background: rgba(9, 8, 6, 0.86) !important;
+  color: #fbbf24 !important;
+  border: 1px solid #090806 !important;
+}
+html[data-theme="amber"] .hero-explore-btn:hover {
+  background: #090806 !important;
+  color: #fef3c7 !important;
+}
+
+/* 3D Hologram Control Deck Theme Synchronization */
+html[data-theme="paper"] .studio-holo-deck {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+}
+html[data-theme="paper"] .holo-deck-label {
+  color: #dc2626 !important;
+}
+html[data-theme="paper"] .holo-mode-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+html[data-theme="paper"] .holo-mode-btn:hover,
+html[data-theme="paper"] .holo-mode-btn.active {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35) !important;
+}
+
+html[data-theme="amber"] .studio-holo-deck {
+  background: rgba(18, 15, 10, 0.92) !important;
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.14) !important;
+}
+html[data-theme="amber"] .holo-deck-label {
+  color: #fbbf24 !important;
+}
+html[data-theme="amber"] .holo-mode-btn {
+  background: rgba(245, 158, 11, 0.1) !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  color: #fef3c7 !important;
+}
+html[data-theme="amber"] .holo-mode-btn:hover,
+html[data-theme="amber"] .holo-mode-btn.active {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+  color: #090806 !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.55) !important;
+}

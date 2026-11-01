@@ -196,9 +196,14 @@
         </div>
 
         <!-- Security Footer -->
-        <div class="alu-security-footer">
-          <span>🔒 SECURE 256-BIT DISPATCH &bull; NO TRACKING COOKIES</span>
-          <span>CURRENCY: USD &amp; JMD</span>
+        <div class="alu-security-footer" style="flex-wrap: wrap; gap: 8px;">
+          <span>🔒 256-BIT SSL ENCRYPTED &bull; NO ACCOUNT SIGNUP REQUIRED</span>
+          <span>
+            <a href="/terms#refund-policy" style="color:#9aa0b0; text-decoration:underline;">Refund Policy</a> &bull;
+            <a href="/terms" style="color:#9aa0b0; text-decoration:underline;">Terms</a> &bull;
+            <a href="/privacy" style="color:#9aa0b0; text-decoration:underline;">Privacy</a> &bull;
+            <a href="/contact" style="color:#9aa0b0; text-decoration:underline;">Contact</a>
+          </span>
         </div>
       </div>
     `;

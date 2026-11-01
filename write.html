@@ -184,9 +184,30 @@
       divide-x: 1px solid var(--border-color);
       overflow: hidden;
     }
+    .mobile-view-toggle {
+      display: none;
+    }
     @media (max-width: 850px) {
+      .vault-bar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
+      }
+      .vault-left {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .metrics-pills {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .mobile-view-toggle {
+        display: inline-flex;
+      }
       .editor-container { grid-template-columns: 1fr; }
       .preview-pane { display: none; }
+      .editor-container.mobile-preview-mode .editor-pane { display: none; }
+      .editor-container.mobile-preview-mode .preview-pane { display: flex; }
     }
 
     .editor-pane, .preview-pane {
@@ -295,12 +316,12 @@
       .preview-pane * { color: #000 !important; }
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
-                        <header class="site-header">
+                            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -356,6 +377,7 @@
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
+      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -370,6 +392,10 @@
         <option value="rfc">RFC: Telemetry Protocol v2</option>
       </select>
       <button class="btn-action" onclick="newDocument()">+ New Doc</button>
+      <button class="btn-action" onclick="exportMd()" title="Download Markdown (.md)">⬇ .MD</button>
+      <button class="btn-action" onclick="exportHtml()" title="Download Standalone HTML (.html)">⬇ .HTML</button>
+      <button class="btn-action" onclick="window.print()" title="Print or Save as PDF">🖨️ PDF</button>
+      <button class="btn-action mobile-view-toggle" id="mobile-toggle-btn" onclick="toggleMobilePreview()">👁️ Preview</button>
     </div>
 
     <div class="metrics-pills">
@@ -442,9 +468,30 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     try {
       const savedDocs = localStorage.getItem('alumungandr_docs_vault');
       if (savedDocs) {
-        documents = JSON.parse(savedDocs);
+        const parsed = JSON.parse(savedDocs);
+        if (parsed && typeof parsed === 'object') {
+          documents = Object.assign(documents, parsed);
+          const selectEl = document.getElementById('doc-select');
+          Object.keys(documents).forEach(k => {
+            if (k !== 'welcome' && k !== 'rfc') {
+              const opt = document.createElement('option');
+              opt.value = k;
+              const firstLine = (documents[k] || '').split('\n')[0].replace(/^#+\s*/, '').trim();
+              opt.textContent = firstLine || k;
+              selectEl.appendChild(opt);
+            }
+          });
+        }
       }
     } catch (e) {}
+
+    function toggleMobilePreview() {
+      const container = document.querySelector('.editor-container');
+      const btn = document.getElementById('mobile-toggle-btn');
+      if (!container) return;
+      const isPreview = container.classList.toggle('mobile-preview-mode');
+      if (btn) btn.textContent = isPreview ? '✏️ Edit' : '👁️ Preview';
+    }
 
     function simpleMarkdownToHtml(md) {
       let html = md
@@ -529,19 +576,7 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     }
 
     function exportHtml() {
-      const docHtml = `<!DOCTYPE html><html><head>
-  <script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('alu_theme');
-        if (savedTheme === 'paper' || savedTheme === 'amber') {
-          document.documentElement.setAttribute('data-theme', savedTheme);
-        }
-      } catch (e) {}
-    })();
-  </script><title>${currentDocId}</title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}</style>  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
-</head><body>${previewOut.innerHTML}  <script src="/assets/nav.js?v=20261001d" defer></script>
-</body></html>`;
+      const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${currentDocId}<\/title><style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:1rem;line-height:1.6;}<\/style><\/head><body>${previewOut.innerHTML}<\/body><\/html>`;
       const blob = new Blob([docHtml], { type: 'text/html' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -603,6 +638,6 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
     }
     renderGlyphs();
   </script>
-  <script src="/assets/nav.js?v=20261001d" defer></script>
+  <script src="/assets/nav.js?v=20261101a" defer></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ const ALUMUNGANDR_QA_ARCHIVE = [
     metric_pill: "Independent R&D",
     metric_color: "#10b981",
     question: "How is Alumungandr pioneering high-performance independent technology from Jamaica?",
-    answer: "Alumungandr is proudly founded, operated, and engineered in Jamaica by David Anthony Jones. We prove that world-class, mathematically rigorous systems software—from private photo gallery architectures (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.",
+    answer: "Alumungandr is proudly founded and engineered in Jamaica by David Anthony Jones, a Jamaican software architect and first-year Bachelor in Information Technology (IT) student. Supporters can help fund his university tuition, hardware, and R&D at alumungandr.com/donate. We prove that world-class, mathematically rigorous systems software—from private photo gallery architectures (Galaxsee) to edge servers (OmniHost) and 20 client-side web tools—can be conceived, written, and deployed globally from the Caribbean without venture capital compromises or predatory corporate telemetry.",
     author: "David Anthony Jones ('Alu') • Independent Software Pioneer",
     recommendation: "Direct software distribution and global digital commerce from Jamaica.",
     keywords: ["jamaica", "r&d", "caribbean", "independent", "software", "development", "david anthony jones"]

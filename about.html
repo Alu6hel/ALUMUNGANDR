@@ -626,7 +626,7 @@
     .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
     .footer-links a:hover { color: var(--cyan); }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">
 </head>
 <body>
 
@@ -654,7 +654,7 @@
   </div>
 
   <!-- Top Navigation -->
-                      <header class="site-header">
+                          <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -710,6 +710,7 @@
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
+      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -812,11 +813,14 @@
       </div>
       <div class="founder-meta">
         <h3>David Anthony Jones ("Alu")</h3>
-        <div class="founder-tagline">Founder, Originator &amp; Chief Architect</div>
+        <div class="founder-tagline">Jamaican Software Architect &bull; 1st-Year B.Sc. IT Student</div>
         <p class="founder-desc">
-          Sole author and architect of the <strong>Alumungandr™</strong> enterprise, the <strong>Alu Programming Language</strong>, and the entire product suite. Governed under the <em>Alumungandr Master Intellectual Property, Trademark, Copyright &amp; Commercial Exploitation Charter</em>, Alu oversees every line of assembly, verification proof, and edge protocol.
+          Jamaican software architect and <strong>first-year Bachelor in Information Technology (IT) student</strong> who independently engineered the <strong>Alumungandr™</strong> ecosystem, 20+ zero-telemetry web tools, and Android binaries without venture capital. Contributions directly fund university tuition, development hardware, and edge infrastructure.
         </p>
-        <div>
+        <div style="display:flex; gap:0.85rem; flex-wrap:wrap;">
+          <a href="/donate" class="charter-link-btn" style="background: rgba(251, 191, 36, 0.18); border-color: #fbbf24;">
+            <span>❤️ Fund Tuition &amp; Student R&amp;D &rarr;</span>
+          </a>
           <a href="/terms" class="charter-link-btn">
             <span>Read Master Legal Charter &rarr;</span>
           </a>
@@ -827,7 +831,7 @@
   </main>
 
   <!-- Footer -->
-                      <footer class="site-footer">
+                          <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="footer-brand">
@@ -837,7 +841,7 @@
         <p class="footer-desc">
           Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
         </p>
-        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.<br><span style="color:#10b981;">🔒 256-Bit SSL Encrypted</span> &bull; David Anthony Jones (1st-Yr B.Sc. IT)</div>
       </div>
       <div class="footer-col">
         <div class="footer-heading">Broadband &amp; Network</div>
@@ -873,15 +877,17 @@
       <div class="footer-col">
         <div class="footer-heading">Platform &amp; Legal</div>
         <a href="/store">Digital Storefront</a>
+        <a href="/donate">❤️ Donate &amp; Fund R&amp;D</a>
         <a href="/about">About Alumungandr</a>
         <a href="/faq">FAQ &amp; Knowledge Base</a>
-        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/contact">Contact (admin@alumungandr.com)</a>
         <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/terms#refund-policy">Refund Policy (14-Day)</a>
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261001d" defer></script><!-- Scripts: Interactive 3D WebGL Core & Altitude Scroll Tracker -->
+  <script src="/assets/nav.js?v=20261101a" defer></script><!-- Scripts: Interactive 3D WebGL Core & Altitude Scroll Tracker -->
   <script>
     // 1. Altitude & Velocity HUD Scroll Tracker (Virgin Galactic Inspired)
     const hudAlt = document.getElementById('hudAltitude');

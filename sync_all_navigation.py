@@ -32,6 +32,7 @@ TOOL_BADGES = {
     'timezone': 'TEMPORAL // MATCHER',
     'store': 'COMMERCE // VAULT',
     'dualmark': 'DUALMARK // EDGE GATEWAY',
+    'donate': 'FUND // STUDENT R&D',
 }
 
 def get_header_html(badge="TOOL // SUITE"):
@@ -91,6 +92,7 @@ def get_header_html(badge="TOOL // SUITE"):
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
+      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -107,7 +109,7 @@ def get_footer_html():
         <p class="footer-desc">
           Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
         </p>
-        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.</div>
+        <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.<br><span style="color:#10b981;">🔒 256-Bit SSL Encrypted</span> &bull; David Anthony Jones (1st-Yr B.Sc. IT)</div>
       </div>
       <div class="footer-col">
         <div class="footer-heading">Broadband &amp; Network</div>
@@ -143,15 +145,17 @@ def get_footer_html():
       <div class="footer-col">
         <div class="footer-heading">Platform &amp; Legal</div>
         <a href="/store">Digital Storefront</a>
+        <a href="/donate">❤️ Donate &amp; Fund R&amp;D</a>
         <a href="/about">About Alumungandr</a>
         <a href="/faq">FAQ &amp; Knowledge Base</a>
-        <a href="/contact">Contact &amp; Terminal</a>
+        <a href="/contact">Contact (admin@alumungandr.com)</a>
         <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/terms#refund-policy">Refund Policy (14-Day)</a>
       </div>
     </div>
   </footer>
-  <script src="/assets/nav.js?v=20261001d" defer></script>'''
+  <script src="/assets/nav.js?v=20261101a" defer></script>'''
 
 def update_page(filename, badge):
     if not os.path.exists(filename):
@@ -163,9 +167,9 @@ def update_page(filename, badge):
 
     # 1. Ensure nav.css is included in <head> with cache-buster
     if '/assets/nav.css' not in html:
-        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">\n</head>')
+        html = html.replace('</head>', '  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">\n</head>')
     else:
-        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261001d', html)
+        html = re.sub(r'/assets/nav\.css(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.css?v=20261101a', html)
 
     # 2. Update Header / Nav
     header_html = get_header_html(badge)
@@ -198,12 +202,12 @@ def update_page(filename, badge):
             html = html.replace('</body>', footer_html + '\n</body>')
     else:
         if '/assets/nav.js' not in html:
-            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261001d" defer></script>\n</body>')
+            html = html.replace('</body>', '  <script src="/assets/nav.js?v=20261101a" defer></script>\n</body>')
         else:
-            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001d', html)
+            html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101a', html)
 
     # Also clean up any lingering old nav.js tags
-    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261001d', html)
+    html = re.sub(r'/assets/nav\.js(\?v=[a-zA-Z0-9_\-]+)?', '/assets/nav.js?v=20261101a', html)
 
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html)

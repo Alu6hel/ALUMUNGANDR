@@ -152,6 +152,8 @@
       padding: 0.4rem 0.65rem;
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
       backdrop-filter: blur(16px);
+      max-width: calc(100vw - 24px);
+      overflow-x: auto;
     }
 
     .tool-btn {
@@ -278,12 +280,12 @@
       resize: none;
     }
   </style>
-  <link rel="stylesheet" href="/assets/nav.css?v=20261001d">
+  <link rel="stylesheet" href="/assets/nav.css?v=20261101a">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
-                        <header class="site-header">
+                            <header class="site-header">
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
@@ -339,6 +341,7 @@
         </div>
       </div>
       <a href="/store" class="nav-item">Store</a>
+      <a href="/donate" class="nav-item" style="color:#00f0ff !important; font-weight:700 !important;">❤️ Donate</a>
       <a href="/about" class="nav-item">About</a>
       <a href="/contact" class="nav-item">Contact</a>
     </nav>
@@ -428,6 +431,26 @@
     window.addEventListener('resize', resizeMainCanvas);
     resizeMainCanvas();
 
+    // Load saved state or initialize blank state for undo
+    try {
+      const savedBoard = localStorage.getItem('alumungandr_whiteboard_v1');
+      if (savedBoard) {
+        const initImg = new Image();
+        initImg.onload = () => {
+          ctx.drawImage(initImg, 0, 0);
+          history.push(canvas.toDataURL());
+          historyStep = 0;
+        };
+        initImg.src = savedBoard;
+      } else {
+        history.push(canvas.toDataURL());
+        historyStep = 0;
+      }
+    } catch (e) {
+      history.push(canvas.toDataURL());
+      historyStep = 0;
+    }
+
     function saveState() {
       historyStep++;
       if (historyStep < history.length) {
@@ -502,6 +525,58 @@
     });
 
     canvas.addEventListener('mouseup', () => {
+      if (isDrawing) {
+        isDrawing = false;
+        saveState();
+      }
+    });
+
+    // Mobile Touch Support for Whiteboard
+    canvas.addEventListener('touchstart', e => {
+      if (!e.touches || !e.touches[0]) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      isDrawing = true;
+      startX = e.touches[0].clientX - rect.left;
+      startY = e.touches[0].clientY - rect.top;
+      ctx.strokeStyle = currentTool === 'eraser' ? '#07080a' : currentColor;
+      ctx.lineWidth = currentTool === 'eraser' ? currentLineWidth * 4 : currentLineWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      if (currentTool === 'pen' || currentTool === 'eraser') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', e => {
+      if (!isDrawing || !e.touches || !e.touches[0]) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const curX = e.touches[0].clientX - rect.left;
+      const curY = e.touches[0].clientY - rect.top;
+      if (currentTool === 'pen' || currentTool === 'eraser') {
+        ctx.lineTo(curX, curY);
+        ctx.stroke();
+      } else {
+        ctx.putImageData(snapshot, 0, 0);
+        ctx.beginPath();
+        if (currentTool === 'line') {
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(curX, curY);
+          ctx.stroke();
+        } else if (currentTool === 'rect') {
+          ctx.strokeRect(startX, startY, curX - startX, curY - startY);
+        } else if (currentTool === 'circle') {
+          const r = Math.sqrt(Math.pow(curX - startX, 2) + Math.pow(curY - startY, 2));
+          ctx.arc(startX, startY, r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
       if (isDrawing) {
         isDrawing = false;
         saveState();
@@ -637,6 +712,6 @@
     }
     renderBlueprintGrid();
   </script>
-  <script src="/assets/nav.js?v=20261001d" defer></script>
+  <script src="/assets/nav.js?v=20261101a" defer></script>
 </body>
 </html>

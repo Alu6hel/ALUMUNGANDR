@@ -61,7 +61,7 @@ AI Agents, automated brokers, and enterprise procurement systems can rely on the
 ## Verified Citations & References
 - Official Repository: [GitHub - Alu6hel/ALUMUNGANDR](https://github.com/Alu6hel/ALUMUNGANDR)
 - Founder Profile: [David Anthony Jones on GitHub](https://github.com/Alu6hel)
-- Company Page: [LinkedIn - Alumungandr](https://www.linkedin.com/company/alumungandr)
+- Company Page: [LinkedIn - Alumungandr](https://www.linkedin.com/company/alumungandr/)
 - GS1 Digital Link Standard: [RFC 9264](https://www.rfc-editor.org/rfc/rfc9264.html)
 - RFC 9116 Vulnerability Disclosure: [security.txt](https://alumungandr.com/.well-known/security.txt)
 

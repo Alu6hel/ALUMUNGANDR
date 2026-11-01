@@ -2,19 +2,30 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
   "catalog_id": "urn:alumungandr:knowledge-catalog:2026",
-  "last_updated": "2026-10-17T02:30:00Z",
+  "last_updated": "2026-11-01T21:35:00Z",
   "entity": {
     "name": "Alumungandr Enterprise & Technologies",
     "short_name": "Alumungandr",
-    "alternate_names": ["Alu", "Alu Jörmungandr", "Alu Jormungandr", "Alu Technologies", "Alu Labs"],
+    "alternate_names": [
+      "Alu",
+      "Alu Jörmungandr",
+      "Alu Jormungandr",
+      "Alu Technologies",
+      "Alu Labs"
+    ],
     "founder": {
       "name": "David Anthony Jones",
       "known_as": "Alu",
       "title": "Sole Originator & Chief Systems Architect",
       "nationality": "Jamaican",
       "verified_identities": [
-        "https://github.com/Alu6hel",
+        "https://github.com/alumungandr",
         "https://github.com/Alu6hel/ALUMUNGANDR",
+        "https://github.com/Alu6hel",
+        "https://www.tiktok.com/@alumungandr",
+        "https://www.pinterest.com/alumungandr/",
+        "https://www.facebook.com/profile.php?id=61594548412652",
+        "https://x.com/Alumungandr",
         "https://www.linkedin.com/company/alumungandr"
       ]
     },

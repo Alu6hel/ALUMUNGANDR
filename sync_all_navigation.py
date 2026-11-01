@@ -110,6 +110,13 @@ def get_footer_html():
           Privacy-first web utilities, compiler architecture, and verified Android applications. Zero tracking, zero telemetry, 100% in-browser computation.
         </p>
         <div class="footer-copy">&copy; 2026 Alumungandr Systems. All rights reserved.<br><span style="color:#10b981;">🔒 256-Bit SSL Encrypted</span> &bull; David Anthony Jones (1st-Yr B.Sc. IT)</div>
+        <div class="footer-social-verify" style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+          <a href="https://github.com/alumungandr" target="_blank" rel="me noopener" title="Official Alumungandr GitHub" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(16,185,129,0.35); color: #10b981; text-decoration: none;">GitHub</a>
+          <a href="https://www.tiktok.com/@alumungandr" target="_blank" rel="me noopener" title="Official Alumungandr TikTok" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(56,189,248,0.35); color: #38bdf8; text-decoration: none;">TikTok</a>
+          <a href="https://x.com/Alumungandr" target="_blank" rel="me noopener" title="Official Alumungandr X (Twitter)" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(148,163,184,0.35); color: inherit; text-decoration: none;">X / @Alumungandr</a>
+          <a href="https://www.pinterest.com/alumungandr/" target="_blank" rel="me noopener" title="Official Alumungandr Pinterest Business" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(222,88,73,0.35); color: #de5849; text-decoration: none;">Pinterest</a>
+          <a href="https://www.facebook.com/profile.php?id=61594548412652" target="_blank" rel="me noopener" title="Official Alumungandr Facebook Page" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(59,130,246,0.35); color: #3b82f6; text-decoration: none;">Facebook</a>
+        </div>
       </div>
       <div class="footer-col">
         <div class="footer-heading">Broadband &amp; Network</div>

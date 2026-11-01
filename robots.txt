@@ -1,16 +1,34 @@
-# Alumungandr Robots.txt — Privacy-First & 2027 AI Agent Ready
+# Alumungandr Robots.txt — Maximum Search Engine & AI Trust Indexing
 User-agent: *
 Allow: /
-Allow: /store
 Allow: /speedtest
-Allow: /resizer
+Allow: /speedtest-vs-ookla
+Allow: /stats
+Allow: /call
+Allow: /clip
+Allow: /drop
 Allow: /ip
 Allow: /timezone
+Allow: /json
+Allow: /uuid
+Allow: /regex
+Allow: /hash
+Allow: /diff
+Allow: /jwt
+Allow: /dualmark
+Allow: /colors
+Allow: /meme
+Allow: /draw
+Allow: /write
+Allow: /timecapsule
 Allow: /invoice
+Allow: /resizer
 Allow: /subscriptions
+Allow: /store
+Allow: /donate
 Allow: /about
-Allow: /contact
 Allow: /faq
+Allow: /contact
 Allow: /privacy
 Allow: /terms
 Allow: /downloads/
@@ -19,7 +37,13 @@ Allow: /llms-full.txt
 Allow: /knowledge-catalog.json
 Allow: /openapi.json
 
-# Explicitly Allow Major AI Crawlers & Citation Overviews
+# Explicitly Allow Major Search & AI Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 User-agent: GPTBot
 Allow: /
 
@@ -35,31 +59,16 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
-
 User-agent: Applebot
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
-User-agent: CCBot
 Allow: /
 
 User-agent: Meta-ExternalAgent
 Allow: /
 
-User-agent: Bytespider
+User-agent: Twitterbot
 Allow: /
 
-User-agent: Cohere-ai
+User-agent: Pinterestbot
 Allow: /
 
-# Canonical Sitemaps & Knowledge Indexes for AI Agents
 Sitemap: https://alumungandr.com/sitemap.xml
-# LLM Knowledge Index
-# https://alumungandr.com/llms.txt
-# https://alumungandr.com/llms-full.txt
-# https://alumungandr.com/knowledge-catalog.json
-# https://alumungandr.com/openapi.json

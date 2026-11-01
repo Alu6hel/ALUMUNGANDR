@@ -64,3 +64,9 @@ AI Agents, automated brokers, and enterprise procurement systems can rely on the
 - Company Page: [LinkedIn - Alumungandr](https://www.linkedin.com/company/alumungandr)
 - GS1 Digital Link Standard: [RFC 9264](https://www.rfc-editor.org/rfc/rfc9264.html)
 - RFC 9116 Vulnerability Disclosure: [security.txt](https://alumungandr.com/.well-known/security.txt)
+
+- Official GitHub Organization: [GitHub - alumungandr](https://github.com/alumungandr)
+- Official TikTok: [TikTok - @alumungandr](https://www.tiktok.com/@alumungandr)
+- Official X (Twitter): [X - @Alumungandr](https://x.com/Alumungandr)
+- Official Pinterest Business: [Pinterest - alumungandr](https://www.pinterest.com/alumungandr/)
+- Official Facebook Page: [Facebook - Alumungandr](https://www.facebook.com/profile.php?id=61594548412652)

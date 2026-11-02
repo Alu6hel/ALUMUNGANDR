@@ -757,7 +757,7 @@
     <a href="/" class="brand">
       <img src="/logo.svg" alt="Alumungandr Logo" width="28" height="28">
       <span>ALUMUNGANDR</span>
-      <span class="brand-badge">QUANTUM // CLIPBOARD</span>
+      <span class="brand-badge">CLIPBOARD // P2P SYNC</span>
     </a>
     <nav class="site-nav">
       <div class="theme-toggle-wrap" role="radiogroup" aria-label="Display Theme">
@@ -832,9 +832,10 @@
       <!-- Left Editor Pane -->
       <div class="editor-card">
         <div class="editor-header">
-          <div class="editor-label">
+          <div class="editor-label" style="display:flex; align-items:center; gap:8px;">
             <span>&#x1F4CB;</span>
             <span id="clipStatusLabel">Live Clipboard Buffer</span>
+            <span id="syncPill" style="font-size:0.75rem; padding:2px 8px; border-radius:12px; background:rgba(56,189,248,0.15); color:var(--accent-cyan); font-weight:600; letter-spacing:0.02em;">● Ready</span>
           </div>
           <div class="char-count" id="charCount">0 characters &bull; 0 lines</div>
         </div>
@@ -842,11 +843,15 @@
         <textarea id="clipText" class="clip-textarea" placeholder="Paste or type text, code, URLs, or notes here to sync immediately across devices..." autofocus></textarea>
 
         <div class="editor-actions">
-          <button id="btnSaveSync" class="btn-action-primary">
+          <button id="btnSaveSync" class="btn-action-primary" title="Sync buffer to room (Ctrl + Enter)">
             <span>&#x26A1;</span>
             <span>Sync &amp; Update Room</span>
           </button>
-          <button id="btnCopyText" class="btn-action-secondary">
+          <button id="btnPasteText" class="btn-action-secondary" title="Paste from clipboard">
+            <span>📥</span>
+            <span>Paste</span>
+          </button>
+          <button id="btnCopyText" class="btn-action-secondary" title="Copy text to clipboard">
             <span>&#x1F4CB;</span>
             <span>Copy Text</span>
           </button>
@@ -1063,6 +1068,8 @@
     const btnSaveSync = document.getElementById('btnSaveSync');
     const btnCopyText = document.getElementById('btnCopyText');
     const btnClearText = document.getElementById('btnClearText');
+    const btnPasteText = document.getElementById('btnPasteText');
+    const syncPill = document.getElementById('syncPill');
     const btnCopyRoomUrl = document.getElementById('btnCopyRoomUrl');
     const expirySelect = document.getElementById('expirySelect');
     const burnCheck = document.getElementById('burnCheck');
@@ -1077,13 +1084,50 @@
       if (encryptCheck.checked) passphraseInput.focus();
     });
 
-    clipText.addEventListener('input', updateCharCount);
+    clipText.addEventListener('input', () => {
+      updateCharCount();
+      if (syncPill) {
+        syncPill.textContent = '● Unsaved';
+        syncPill.style.color = '#f59e0b';
+        syncPill.style.background = 'rgba(245, 158, 11, 0.15)';
+      }
+    });
+
+    clipText.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        btnSaveSync.click();
+      }
+    });
+
+    if (btnPasteText) {
+      btnPasteText.addEventListener('click', async () => {
+        try {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            clipText.value = text;
+            updateCharCount();
+            if (syncPill) {
+              syncPill.textContent = '● Pasted';
+              syncPill.style.color = '#38bdf8';
+              syncPill.style.background = 'rgba(56, 189, 248, 0.15)';
+            }
+            showToast('Pasted from clipboard!');
+          } else {
+            showToast('Clipboard is empty or access denied.');
+          }
+        } catch (_) {
+          clipText.focus();
+          showToast('Press Ctrl+V to paste');
+        }
+      });
+    }
 
     function updateCharCount() {
       const val = clipText.value;
       const chars = val.length;
       const lines = val ? val.split('\n').length : 0;
-      charCount.textContent = `${chars.toLocaleString()} characters • ${lines} lines`;
+      charCount.innerHTML = `${chars.toLocaleString()} characters &bull; ${lines} lines`;
     }
 
     function generateCode() {
@@ -1098,9 +1142,13 @@
     // Initialize or load room from URL
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code') || window.location.pathname.replace(/^\/clip\/?/, '');
+      let code = urlParams.get('code');
+      if (!code && window.location.pathname.startsWith('/clip')) {
+        const seg = window.location.pathname.replace(/^\/clip\/?/, '');
+        if (seg && !seg.includes('/') && !seg.includes('.')) code = seg;
+      }
       
-      if (code && code.length >= 2) {
+      if (code && code.length >= 2 && code.length <= 12) {
         currentRoomCode = code.toUpperCase();
       } else {
         currentRoomCode = generateCode();
@@ -1112,7 +1160,11 @@
     function setRoom(code) {
       currentRoomCode = code;
       roomCodeVal.textContent = code;
-      window.history.replaceState({}, '', `/clip?code=${encodeURIComponent(code)}`);
+      try {
+        if (window.location.protocol.startsWith('http')) {
+          window.history.replaceState({}, '', `/clip?code=${encodeURIComponent(code)}`);
+        }
+      } catch (_) {}
 
       renderQRCode();
       setupRoomBroadcast(code);
@@ -1186,6 +1238,11 @@
         // Graceful offline/local mode fallback
       }
 
+      if (syncPill) {
+        syncPill.textContent = '● Synced';
+        syncPill.style.color = '#10b981';
+        syncPill.style.background = 'rgba(16, 185, 129, 0.15)';
+      }
       showToast('Clipboard synced to room ' + currentRoomCode + '!');
     });
 

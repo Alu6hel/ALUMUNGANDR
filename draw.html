@@ -417,13 +417,36 @@
       height: 100%;
       overflow: hidden;
       cursor: crosshair;
+      user-select: none;
+      background-color: var(--bg-primary, #07080a);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
     }
-
+    html[data-theme="paper"] #board-wrap {
+      background-color: #f8fafc;
+      background-image: radial-gradient(rgba(15, 23, 42, 0.16) 1.5px, transparent 1.5px);
+    }
+    #canvas-stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4000px;
+      height: 3000px;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
     #main-canvas {
       position: absolute;
       top: 0;
       left: 0;
+      width: 4000px;
+      height: 3000px;
       z-index: 10;
+      background: transparent;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    html[data-theme="paper"] #main-canvas {
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
     }
 
     /* Actions Bar */
@@ -587,6 +610,9 @@
     <button class="tool-btn" id="tool-note" title="Sticky Note" onclick="addStickyNote()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
     </button>
+    <button class="tool-btn" id="tool-hand" title="Pan Board (or Right-Click Drag)" onclick="setTool('hand')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+    </button>
     <button class="tool-btn" id="tool-eraser" title="Eraser" onclick="setTool('eraser')">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"></path><path d="M22 21H7"></path><path d="m5 11 9 9"></path></svg>
     </button>
@@ -615,81 +641,139 @@
 
   <!-- Board Viewport -->
   <div id="board-wrap">
-    <canvas id="main-canvas"></canvas>
+    <div id="canvas-stage">
+      <canvas id="main-canvas" width="4000" height="3000"></canvas>
+    </div>
   </div>
 
   <!-- Bottom Action Bar -->
   <div class="actions-bar">
-    <button class="action-btn" onclick="undo()">↶ Undo</button>
-    <button class="action-btn" onclick="redo()">↷ Redo</button>
+    <button class="action-btn" onclick="zoomBoard(-0.15)" title="Zoom Out (Wheel Down)">−</button>
+    <span id="zoom-label" class="action-btn" style="cursor:default; min-width:54px; justify-content:center; font-weight:700;">100%</span>
+    <button class="action-btn" onclick="zoomBoard(0.15)" title="Zoom In (Wheel Up)">+</button>
+    <button class="action-btn" onclick="resetBoardView()" title="Center Board (Right-Click Drag to Pan)">⌖ Center</button>
+    <button class="action-btn" onclick="undo()" title="Undo (Ctrl+Z)">↶ Undo</button>
+    <button class="action-btn" onclick="redo()" title="Redo (Ctrl+Y)">↷ Redo</button>
     <button class="action-btn" onclick="clearCanvas()">Clear</button>
     <button class="action-btn" onclick="exportPng()">Export PNG</button>
   </div>
 
-  <script>
+    <script>
     const canvas = document.getElementById('main-canvas');
     const ctx = canvas.getContext('2d');
     const boardWrap = document.getElementById('board-wrap');
+    const canvasStage = document.getElementById('canvas-stage');
+    const zoomLabel = document.getElementById('zoom-label');
 
+    // Canvas native dimensions (Large infinite workspace)
+    const CANVAS_WIDTH = 4000;
+    const CANVAS_HEIGHT = 3000;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+
+    // Viewport transform state
+    let panX = 0;
+    let panY = 0;
+    let zoomScale = 1.0;
+    let isPanning = false;
+    let panStartX = 0;
+    let panStartY = 0;
+    let isSpaceDown = false;
+
+    // Drawing tool state
     let currentTool = 'pen';
     let currentColor = '#38bdf8';
     let currentLineWidth = 4;
     let isDrawing = false;
     let startX = 0;
     let startY = 0;
+    let snapshot = null;
 
     let history = [];
     let historyStep = -1;
 
-    function resizeMainCanvas() {
-      const saved = canvas.toDataURL();
-      canvas.width = boardWrap.clientWidth;
-      canvas.height = boardWrap.clientHeight;
-      if (saved && historyStep >= 0) {
-        const img = new Image();
-        img.onload = () => ctx.drawImage(img, 0, 0);
-        img.src = saved;
-      }
+    // Center board initially
+    function resetBoardView() {
+      zoomScale = 1.0;
+      panX = Math.round((boardWrap.clientWidth - (CANVAS_WIDTH * zoomScale)) / 2);
+      panY = Math.round((boardWrap.clientHeight - (CANVAS_HEIGHT * zoomScale)) / 2);
+      updateBoardTransform();
     }
-    window.addEventListener('resize', resizeMainCanvas);
-    resizeMainCanvas();
 
-    // Load saved state or initialize blank state for undo
-    try {
-      const savedBoard = localStorage.getItem('alumungandr_whiteboard_v1');
-      if (savedBoard) {
-        const initImg = new Image();
-        initImg.onload = () => {
-          ctx.drawImage(initImg, 0, 0);
-          history.push(canvas.toDataURL());
-          historyStep = 0;
-        };
-        initImg.src = savedBoard;
+    function updateBoardTransform() {
+      canvasStage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${zoomScale})`;
+      boardWrap.style.backgroundPosition = `${panX}px ${panY}px`;
+      if (zoomLabel) zoomLabel.textContent = `${Math.round(zoomScale * 100)}%`;
+    }
+
+    function zoomBoard(delta, centerX, centerY) {
+      const prevScale = zoomScale;
+      let newScale = Math.min(3.0, Math.max(0.25, zoomScale + delta));
+      newScale = Math.round(newScale * 100) / 100;
+      if (newScale === prevScale) return;
+
+      const rect = boardWrap.getBoundingClientRect();
+      const originX = centerX !== undefined ? (centerX - rect.left) : (boardWrap.clientWidth / 2);
+      const originY = centerY !== undefined ? (centerY - rect.top) : (boardWrap.clientHeight / 2);
+
+      // Adjust pan to zoom into cursor point
+      panX = originX - ((originX - panX) * (newScale / prevScale));
+      panY = originY - ((originY - panY) * (newScale / prevScale));
+      zoomScale = newScale;
+      updateBoardTransform();
+    }
+
+    // Suppress context menu so right-click is 100% dedicated to board movement
+    window.addEventListener('contextmenu', e => {
+      if (e.target.closest('#board-wrap') || e.target === canvas) {
+        e.preventDefault();
+      }
+    });
+
+    // Spacebar to pan
+    window.addEventListener('keydown', e => {
+      if (e.code === 'Space' && !e.repeat && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'INPUT') {
+        isSpaceDown = true;
+        updateCursor();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        undo();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))) {
+        e.preventDefault();
+        redo();
+      }
+    });
+
+    window.addEventListener('keyup', e => {
+      if (e.code === 'Space') {
+        isSpaceDown = false;
+        updateCursor();
+      }
+    });
+
+    function updateCursor() {
+      if (isPanning) {
+        boardWrap.style.cursor = 'grabbing';
+        canvas.style.cursor = 'grabbing';
+      } else if (currentTool === 'hand' || isSpaceDown) {
+        boardWrap.style.cursor = 'grab';
+        canvas.style.cursor = 'grab';
+      } else if (currentTool === 'eraser') {
+        boardWrap.style.cursor = 'cell';
+        canvas.style.cursor = 'cell';
       } else {
-        history.push(canvas.toDataURL());
-        historyStep = 0;
+        boardWrap.style.cursor = 'crosshair';
+        canvas.style.cursor = 'crosshair';
       }
-    } catch (e) {
-      history.push(canvas.toDataURL());
-      historyStep = 0;
     }
 
-    function saveState() {
-      historyStep++;
-      if (historyStep < history.length) {
-        history.length = historyStep;
-      }
-      history.push(canvas.toDataURL());
-      try {
-        localStorage.setItem('alumungandr_whiteboard_v1', history[history.length - 1]);
-      } catch (e) {}
-    }
-
+    // Tools
     function setTool(tool) {
       currentTool = tool;
       document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
       const activeBtn = document.getElementById('tool-' + tool);
       if (activeBtn) activeBtn.classList.add('active');
+      updateCursor();
     }
 
     function setColor(color) {
@@ -697,88 +781,170 @@
       document.querySelectorAll('.color-swatch-btn').forEach(btn => {
         btn.classList.toggle('active', btn.style.background.includes(color) || btn.style.backgroundColor === color);
       });
+      if (currentTool === 'eraser' || currentTool === 'hand') {
+        setTool('pen');
+      }
     }
 
     function setStrokeWidth(w) {
       currentLineWidth = parseInt(w, 10);
     }
 
-    // Drawing Events
-    let snapshot;
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - rect.left) / zoomScale,
+        y: (e.clientY - rect.top) / zoomScale
+      };
+    }
 
-    canvas.addEventListener('mousedown', e => {
-      isDrawing = true;
-      startX = e.offsetX;
-      startY = e.offsetY;
+    // --- MOUSE INTERACTIONS (Right-Click Pan & Left-Click Draw) ---
+    boardWrap.addEventListener('mousedown', e => {
+      // Right click (button 2), middle wheel (button 1), hand tool, or space+drag -> PAN
+      if (e.button === 2 || e.button === 1 || currentTool === 'hand' || isSpaceDown) {
+        e.preventDefault();
+        isPanning = true;
+        panStartX = e.clientX - panX;
+        panStartY = e.clientY - panY;
+        updateCursor();
+        return;
+      }
 
-      ctx.strokeStyle = currentTool === 'eraser' ? '#07080a' : currentColor;
-      ctx.lineWidth = currentTool === 'eraser' ? currentLineWidth * 4 : currentLineWidth;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
+      // Left click with drawing tool
+      if (e.button === 0 && e.target === canvas) {
+        const pt = getCanvasCoords(e);
+        isDrawing = true;
+        startX = pt.x;
+        startY = pt.y;
 
-      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const isPaper = document.documentElement.getAttribute('data-theme') === 'paper';
+        ctx.strokeStyle = currentTool === 'eraser' ? (isPaper ? '#ffffff' : '#07080a') : currentColor;
+        ctx.lineWidth = currentTool === 'eraser' ? currentLineWidth * 4 : currentLineWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
-      if (currentTool === 'pen' || currentTool === 'eraser') {
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
+        snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        if (currentTool === 'pen' || currentTool === 'eraser') {
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+        }
       }
     });
 
-    canvas.addEventListener('mousemove', e => {
+    window.addEventListener('mousemove', e => {
+      if (isPanning) {
+        panX = e.clientX - panStartX;
+        panY = e.clientY - panStartY;
+        updateBoardTransform();
+        return;
+      }
+
       if (!isDrawing) return;
 
+      const pt = getCanvasCoords(e);
+      const curX = pt.x;
+      const curY = pt.y;
+
       if (currentTool === 'pen' || currentTool === 'eraser') {
-        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.lineTo(curX, curY);
         ctx.stroke();
       } else {
         ctx.putImageData(snapshot, 0, 0);
         ctx.beginPath();
         if (currentTool === 'line') {
           ctx.moveTo(startX, startY);
-          ctx.lineTo(e.offsetX, e.offsetY);
+          ctx.lineTo(curX, curY);
           ctx.stroke();
         } else if (currentTool === 'rect') {
-          ctx.strokeRect(startX, startY, e.offsetX - startX, e.offsetY - startY);
+          ctx.strokeRect(startX, startY, curX - startX, curY - startY);
         } else if (currentTool === 'circle') {
-          const r = Math.sqrt(Math.pow(e.offsetX - startX, 2) + Math.pow(e.offsetY - startY, 2));
+          const r = Math.sqrt(Math.pow(curX - startX, 2) + Math.pow(curY - startY, 2));
           ctx.arc(startX, startY, r, 0, Math.PI * 2);
           ctx.stroke();
         }
       }
     });
 
-    canvas.addEventListener('mouseup', () => {
+    window.addEventListener('mouseup', e => {
+      if (isPanning) {
+        isPanning = false;
+        updateCursor();
+      }
       if (isDrawing) {
         isDrawing = false;
         saveState();
       }
     });
 
-    // Mobile Touch Support for Whiteboard
-    canvas.addEventListener('touchstart', e => {
-      if (!e.touches || !e.touches[0]) return;
+    // Mouse wheel zoom
+    boardWrap.addEventListener('wheel', e => {
       e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      isDrawing = true;
-      startX = e.touches[0].clientX - rect.left;
-      startY = e.touches[0].clientY - rect.top;
-      ctx.strokeStyle = currentTool === 'eraser' ? '#07080a' : currentColor;
-      ctx.lineWidth = currentTool === 'eraser' ? currentLineWidth * 4 : currentLineWidth;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      if (currentTool === 'pen' || currentTool === 'eraser') {
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
+      const delta = e.deltaY < 0 ? 0.08 : -0.08;
+      zoomBoard(delta, e.clientX, e.clientY);
+    }, { passive: false });
+
+    // Touch support (Mobile draw and two-finger pan)
+    let touchStartDist = 0;
+    boardWrap.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        // Pinch to zoom / pan
+        isDrawing = false;
+        isPanning = true;
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        touchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        panStartX = ((t1.clientX + t2.clientX) / 2) - panX;
+        panStartY = ((t1.clientY + t2.clientY) / 2) - panY;
+        return;
+      }
+
+      if (e.touches.length === 1 && e.target === canvas) {
+        const t = e.touches[0];
+        const pt = getCanvasCoords(t);
+        isDrawing = true;
+        startX = pt.x;
+        startY = pt.y;
+
+        const isPaper = document.documentElement.getAttribute('data-theme') === 'paper';
+        ctx.strokeStyle = currentTool === 'eraser' ? (isPaper ? '#ffffff' : '#07080a') : currentColor;
+        ctx.lineWidth = currentTool === 'eraser' ? currentLineWidth * 4 : currentLineWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        if (currentTool === 'pen' || currentTool === 'eraser') {
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+        }
       }
     }, { passive: false });
 
-    canvas.addEventListener('touchmove', e => {
-      if (!isDrawing || !e.touches || !e.touches[0]) return;
+    boardWrap.addEventListener('touchmove', e => {
       e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const curX = e.touches[0].clientX - rect.left;
-      const curY = e.touches[0].clientY - rect.top;
+      if (isPanning && e.touches.length === 2) {
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const curDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        if (touchStartDist > 0) {
+          const ratio = curDist / touchStartDist;
+          if (Math.abs(ratio - 1) > 0.02) {
+            zoomScale = Math.min(3.0, Math.max(0.25, zoomScale * ratio));
+            touchStartDist = curDist;
+          }
+        }
+        panX = ((t1.clientX + t2.clientX) / 2) - panStartX;
+        panY = ((t1.clientY + t2.clientY) / 2) - panStartY;
+        updateBoardTransform();
+        return;
+      }
+
+      if (!isDrawing || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const pt = getCanvasCoords(t);
+      const curX = pt.x;
+      const curY = pt.y;
+
       if (currentTool === 'pen' || currentTool === 'eraser') {
         ctx.lineTo(curX, curY);
         ctx.stroke();
@@ -799,12 +965,26 @@
       }
     }, { passive: false });
 
-    canvas.addEventListener('touchend', () => {
+    boardWrap.addEventListener('touchend', () => {
+      isPanning = false;
+      touchStartDist = 0;
       if (isDrawing) {
         isDrawing = false;
         saveState();
       }
     });
+
+    // History and Undo/Redo
+    function saveState() {
+      historyStep++;
+      if (historyStep < history.length) {
+        history.length = historyStep;
+      }
+      history.push(canvas.toDataURL());
+      try {
+        localStorage.setItem('alumungandr_whiteboard_v1', history[history.length - 1]);
+      } catch (e) {}
+    }
 
     function undo() {
       if (historyStep > 0) {
@@ -815,6 +995,9 @@
           ctx.drawImage(img, 0, 0);
         };
         img.src = history[historyStep];
+      } else if (historyStep === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        historyStep = -1;
       }
     }
 
@@ -831,7 +1014,7 @@
     }
 
     function clearCanvas() {
-      if (confirm('Clear entire canvas?')) {
+      if (confirm('Clear entire whiteboard?')) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         saveState();
       }
@@ -839,101 +1022,75 @@
 
     function exportPng() {
       const a = document.createElement('a');
-      a.download = `whiteboard-${Date.now()}.png`;
+      a.download = `alumungandr-whiteboard-${Date.now()}.png`;
       a.href = canvas.toDataURL('image/png');
       a.click();
     }
 
-    // Sticky note functionality
+    // Sticky note functionality (Appends to canvasStage so notes pan & scale with drawings)
     function addStickyNote() {
       const note = document.createElement('div');
       note.className = 'sticky-note';
-      note.style.left = '120px';
-      note.style.top = '120px';
+      const centerPt = getCanvasCoords({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
+      note.style.left = (centerPt.x - 100) + 'px';
+      note.style.top = (centerPt.y - 70) + 'px';
       note.innerHTML = `
         <div class="note-header">
           <span>STICKY NOTE</span>
-          <button style="background:none; border:none; color:var(--accent-coral); cursor:pointer;" onclick="this.parentElement.parentElement.remove()">✕</button>
+          <button style="background:none; border:none; color:var(--accent-coral); cursor:pointer; font-weight:700;" onclick="this.parentElement.parentElement.remove()">✕</button>
         </div>
-        <textarea class="note-body" placeholder="Draft ideas here..."></textarea>
+        <textarea class="note-body" placeholder="Type idea or diagram label..."></textarea>
       `;
 
-      // Draggable
       let isDragging = false;
-      let offsetX, offsetY;
+      let startNoteX, startNoteY, initLeft, initTop;
 
       note.addEventListener('mousedown', e => {
-        if (e.target.tagName.toLowerCase() === 'textarea') return;
+        if (e.target.tagName.toLowerCase() === 'textarea' || e.button !== 0) return;
         isDragging = true;
-        offsetX = e.clientX - note.offsetLeft;
-        offsetY = e.clientY - note.offsetTop;
+        startNoteX = e.clientX;
+        startNoteY = e.clientY;
+        initLeft = parseFloat(note.style.left) || 0;
+        initTop = parseFloat(note.style.top) || 0;
+        e.stopPropagation();
       });
 
       window.addEventListener('mousemove', e => {
         if (isDragging) {
-          note.style.left = (e.clientX - offsetX) + 'px';
-          note.style.top = (e.clientY - offsetY) + 'px';
+          const dx = (e.clientX - startNoteX) / zoomScale;
+          const dy = (e.clientY - startNoteY) / zoomScale;
+          note.style.left = (initLeft + dx) + 'px';
+          note.style.top = (initTop + dy) + 'px';
         }
       });
 
       window.addEventListener('mouseup', () => { isDragging = false; });
-      boardWrap.appendChild(note);
+      canvasStage.appendChild(note);
     }
 
-    // Load initial state
-    const savedLocal = localStorage.getItem('alumungandr_whiteboard_v1');
-    if (savedLocal) {
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0);
+    // Initialize board position & load saved local data
+    resetBoardView();
+    window.addEventListener('resize', () => {
+      // Keep within reasonable bounds
+      updateBoardTransform();
+    });
+
+    try {
+      const savedLocal = localStorage.getItem('alumungandr_whiteboard_v1');
+      if (savedLocal) {
+        const img = new Image();
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0);
+          history.push(canvas.toDataURL());
+          historyStep = 0;
+        };
+        img.src = savedLocal;
+      } else {
         saveState();
-      };
-      img.src = savedLocal;
-    } else {
+      }
+    } catch (e) {
       saveState();
     }
-
-    // --- Interactive Live Background: Architectural Blueprint Drafting Grid ---
-    const bgCanvas = document.getElementById('bg-canvas');
-    const bgCtx = bgCanvas.getContext('2d');
-    let width, height;
-
-    function resizeBg() {
-      width = bgCanvas.width = window.innerWidth;
-      height = bgCanvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeBg);
-    resizeBg();
-
-    function renderBlueprintGrid() {
-      bgCtx.clearRect(0, 0, width, height);
-
-      const smallGrid = 20;
-      const largeGrid = 100;
-
-      // Small grid dots
-      bgCtx.fillStyle = 'rgba(56, 189, 248, 0.08)';
-      for (let x = 0; x < width; x += smallGrid) {
-        for (let y = 0; y < height; y += smallGrid) {
-          bgCtx.fillRect(x, y, 1, 1);
-        }
-      }
-
-      // Large grid lines
-      bgCtx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
-      bgCtx.lineWidth = 1;
-      bgCtx.beginPath();
-      for (let x = 0; x < width; x += largeGrid) {
-        bgCtx.moveTo(x, 0);
-        bgCtx.lineTo(x, height);
-      }
-      for (let y = 0; y < height; y += largeGrid) {
-        bgCtx.moveTo(0, y);
-        bgCtx.lineTo(width, y);
-      }
-      bgCtx.stroke();
-    }
-    renderBlueprintGrid();
   </script>
   <script src="/assets/nav.js?v=20261101c" defer></script>
 </body>

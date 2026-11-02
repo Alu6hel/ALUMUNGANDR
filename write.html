@@ -525,6 +525,141 @@
       .preview-pane { display: block !important; background: #fff !important; color: #000 !important; padding: 0 !important; }
       .preview-pane * { color: #000 !important; }
     }
+    /* Markdown Table & Responsive Styling */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin: 1.25rem 0;
+    }
+    .preview-pane table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+    .preview-pane th, .preview-pane td {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+    }
+    .preview-pane th {
+      background: rgba(255, 255, 255, 0.06);
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: 0.2px;
+    }
+    .preview-pane tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .preview-pane blockquote {
+      border-left: 3px solid var(--accent-cyan);
+      background: rgba(56, 189, 248, 0.05);
+      border-radius: 0 6px 6px 0;
+      padding: 0.75rem 1rem;
+      color: #94a3b8;
+      font-style: italic;
+      margin: 1rem 0;
+    }
+    .preview-pane hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      margin: 1.5rem 0;
+    }
+    .code-block-wrapper {
+      margin: 1.25rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #07080a;
+    }
+    .code-block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .btn-copy-code {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      cursor: pointer;
+    }
+    .btn-copy-code:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .code-block-wrapper pre {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .code-block-wrapper pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      display: block;
+    }
+    .task-item {
+      list-style: none;
+      margin-left: -1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    html[data-theme="paper"] .preview-pane {
+      background: #ffffff !important;
+      color: #0b0f19 !important;
+    }
+    html[data-theme="paper"] .preview-pane h1,
+    html[data-theme="paper"] .preview-pane h2,
+    html[data-theme="paper"] .preview-pane h3 {
+      color: #0b0f19 !important;
+      border-bottom-color: #e2e8f0 !important;
+    }
+    html[data-theme="paper"] .preview-pane table {
+      border: 1px solid #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .preview-pane th {
+      background: #f1f5f9 !important;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .preview-pane td {
+      border: 1px solid #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="paper"] .preview-pane tr:nth-child(even) td {
+      background: #f8fafc !important;
+    }
+    html[data-theme="paper"] .code-block-wrapper {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .code-block-header {
+      background: #f1f5f9 !important;
+      border-bottom: 1px solid #cbd5e1 !important;
+      color: #475569 !important;
+    }
+    html[data-theme="paper"] .code-block-wrapper pre code {
+      color: #0f172a !important;
+    }
+    html[data-theme="paper"] .preview-pane code {
+      background: #f1f5f9 !important;
+      color: #0284c7 !important;
+    }
+    html[data-theme="paper"] .preview-pane blockquote {
+      border-left-color: #0284c7 !important;
+      color: #334155 !important;
+      background: #f0f9ff !important;
+    }
   </style>
   <link rel="stylesheet" href="/assets/nav.css?v=20261101c">
 </head>
@@ -606,6 +741,17 @@
       <button class="btn-action" onclick="exportHtml()" title="Download Standalone HTML (.html)">⬇ .HTML</button>
       <button class="btn-action" onclick="window.print()" title="Print or Save as PDF">🖨️ PDF</button>
       <button class="btn-action mobile-view-toggle" id="mobile-toggle-btn" onclick="toggleMobilePreview()">👁️ Preview</button>
+    </div>
+    <div class="formatting-toolbar" style="display:flex; gap:4px; align-items:center; flex-wrap:wrap; margin-left:8px;">
+      <button class="btn-action" onclick="insertMarkdown('**', '**', 'bold text')" title="Bold (Ctrl+B)"><b>B</b></button>
+      <button class="btn-action" onclick="insertMarkdown('*', '*', 'italic text')" title="Italic (Ctrl+I)"><i>I</i></button>
+      <button class="btn-action" onclick="insertMarkdown('### ', '', 'Heading 3')" title="Heading"><b>H</b></button>
+      <button class="btn-action" onclick="insertMarkdown('> ', '', 'Quote text')" title="Blockquote">“ ”</button>
+      <button class="btn-action" onclick="insertMarkdown('[', '](https://)', 'link text')" title="Link">🔗</button>
+      <button class="btn-action" onclick="insertMarkdown('```javascript\n', '\n```', '// code block')" title="Code Block">&lt;/&gt;</button>
+      <button class="btn-action" onclick="insertMarkdown('\n| Column 1 | Column 2 |\n| :--- | :--- |\n| Data A | Data B |\n')" title="Insert Markdown Table">⊞ Table</button>
+      <button class="btn-action" onclick="insertMarkdown('- ', '', 'List item')" title="Bullet List">• List</button>
+      <button class="btn-action" onclick="insertMarkdown('- [ ] ', '', 'Task item')" title="Task Checklist">☑ Task</button>
     </div>
 
     <div class="metrics-pills">
@@ -703,38 +849,219 @@ This RFC outlines the transmission standards for high-frequency peer-to-peer tel
       if (btn) btn.textContent = isPreview ? '✏️ Edit' : '👁️ Preview';
     }
 
+        function insertMarkdown(before, after = '', defaultText = '') {
+      const textarea = mdInput;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selected = textarea.value.substring(start, end) || defaultText;
+      const replacement = before + selected + after;
+      textarea.setRangeText(replacement, start, end, 'select');
+      renderDocument();
+      textarea.focus();
+    }
+
+    // Comprehensive GFM Markdown Parser
     function simpleMarkdownToHtml(md) {
-      let html = md
-        // Escape HTML
+      if (!md) return '';
+
+      // 1. Extract and protect code blocks
+      const codeBlocks = [];
+      let text = md.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+        const id = `___CODEBLOCK_${codeBlocks.length}___`;
+        const escapedCode = code
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        const cleanLang = (lang || 'code').trim();
+        const encodedCode = encodeURIComponent(code);
+        const blockHtml = `<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang">${cleanLang}</span><button class="btn-copy-code" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodedCode}'));this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)">Copy</button></div><pre><code>${escapedCode}</code></pre></div>`;
+        codeBlocks.push(blockHtml);
+        return id;
+      });
+
+      // 2. Escape raw HTML outside code blocks
+      text = text
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        // Code blocks
-        .replace(/```([a-z0-9]*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
-        // Inline code
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // Headings
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        // Blockquotes
-        .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
-        // Bold & Italic
-        .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        // Tables
-        .replace(/\|(.+)\|/g, (match) => {
-          const cells = match.split('|').filter(c => c.trim() !== '');
-          if (cells[0].includes('---')) return '';
-          return '<tr>' + cells.map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
-        })
-        // Unordered lists
-        .replace(/^\- (.*$)/gim, '<li>$1</li>')
-        // Paragraphs
-        .replace(/\n\n+/g, '</p><p>');
+        .replace(/>/g, '&gt;');
 
-      return `<p>${html}</p>`.replace(/<p><\/p>/g, '');
+      // 3. Process lines and blocks
+      const lines = text.split('\n');
+      const output = [];
+      let inTable = false;
+      let tableRows = [];
+      let inList = false;
+      let listType = null;
+      let inBlockquote = false;
+      let bqLines = [];
+
+      function inlineFormat(str) {
+        return str
+          .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
+          .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%; border-radius:6px; margin:0.5rem 0;">')
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+          .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+          .replace(/___(.*?)___/g, '<strong><em>$1</em></strong>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/__(.*?)__/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/_([^_]+)_/g, '<em>$1</em>')
+          .replace(/~~(.*?)~~/g, '<del>$1</del>');
+      }
+
+      function flushTable() {
+        if (!inTable) return;
+        if (tableRows.length > 0) {
+          let html = '<div class="table-responsive"><table>';
+          const firstRow = tableRows[0];
+          html += '<thead><tr>';
+          firstRow.forEach(cell => {
+            html += `<th>${inlineFormat(cell)}</th>`;
+          });
+          html += '</tr></thead><tbody>';
+          for (let i = 1; i < tableRows.length; i++) {
+            html += '<tr>';
+            tableRows[i].forEach(cell => {
+              html += `<td>${inlineFormat(cell)}</td>`;
+            });
+            html += '</tr>';
+          }
+          html += '</tbody></table></div>';
+          output.push(html);
+        }
+        tableRows = [];
+        inTable = false;
+      }
+
+      function flushList() {
+        if (!inList) return;
+        output.push(`</${listType}>`);
+        inList = false;
+        listType = null;
+      }
+
+      function flushBlockquote() {
+        if (!inBlockquote) return;
+        output.push(`<blockquote><p>${bqLines.map(inlineFormat).join('<br>')}</p></blockquote>`);
+        inBlockquote = false;
+        bqLines = [];
+      }
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        if (!trimmed) {
+          flushTable();
+          flushList();
+          flushBlockquote();
+          continue;
+        }
+
+        if (trimmed.startsWith('___CODEBLOCK_')) {
+          flushTable();
+          flushList();
+          flushBlockquote();
+          output.push(trimmed);
+          continue;
+        }
+
+        // Table row check
+        if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+          flushList();
+          flushBlockquote();
+          if (trimmed.replace(/\|/g, '').replace(/[\s\-:]/g, '') === '') {
+            inTable = true;
+            continue;
+          }
+          const cells = trimmed
+            .slice(1, -1)
+            .split('|')
+            .map(c => c.trim());
+          inTable = true;
+          tableRows.push(cells);
+          continue;
+        } else {
+          flushTable();
+        }
+
+        // Headings
+        const hMatch = trimmed.match(/^(#{1,6})\s+(.*)$/);
+        if (hMatch) {
+          flushList();
+          flushBlockquote();
+          const level = hMatch[1].length;
+          output.push(`<h${level}>${inlineFormat(hMatch[2])}</h${level}>`);
+          continue;
+        }
+
+        // Blockquotes
+        if (trimmed.startsWith('&gt;') || trimmed.startsWith('>')) {
+          flushList();
+          inBlockquote = true;
+          const bqText = trimmed.replace(/^(&gt;|>)\s?/, '');
+          bqLines.push(bqText);
+          continue;
+        } else {
+          flushBlockquote();
+        }
+
+        // Horizontal Rule
+        if (/^(\-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+          flushList();
+          output.push('<hr>');
+          continue;
+        }
+
+        // Unordered list
+        const ulMatch = trimmed.match(/^[\*\-]\s+(.*)$/);
+        if (ulMatch) {
+          flushBlockquote();
+          if (!inList || listType !== 'ul') {
+            flushList();
+            inList = true;
+            listType = 'ul';
+            output.push('<ul>');
+          }
+          let itemText = ulMatch[1];
+          if (itemText.startsWith('[ ] ')) {
+            output.push(`<li class="task-item"><input type="checkbox" disabled> ${inlineFormat(itemText.slice(4))}</li>`);
+          } else if (itemText.startsWith('[x] ') || itemText.startsWith('[X] ')) {
+            output.push(`<li class="task-item"><input type="checkbox" checked disabled> ${inlineFormat(itemText.slice(4))}</li>`);
+          } else {
+            output.push(`<li>${inlineFormat(itemText)}</li>`);
+          }
+          continue;
+        }
+
+        // Ordered list
+        const olMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+        if (olMatch) {
+          flushBlockquote();
+          if (!inList || listType !== 'ol') {
+            flushList();
+            inList = true;
+            listType = 'ol';
+            output.push('<ol>');
+          }
+          output.push(`<li>${inlineFormat(olMatch[2])}</li>`);
+          continue;
+        }
+
+        flushList();
+        output.push(`<p>${inlineFormat(trimmed)}</p>`);
+      }
+
+      flushTable();
+      flushList();
+      flushBlockquote();
+
+      let resultHtml = output.join('\n');
+      codeBlocks.forEach((codeHtml, idx) => {
+        resultHtml = resultHtml.replace(`___CODEBLOCK_${idx}___`, codeHtml);
+      });
+
+      return resultHtml;
     }
 
     function renderDocument() {

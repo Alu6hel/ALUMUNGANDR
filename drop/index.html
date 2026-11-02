@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/drop">
   <meta property="og:title" content="Encrypted Secure File Drop — Client-Side AES-256 Private File Sharing | Alumungandr™">
   <meta property="og:description" content="Encrypt and share files or confidential notes in your browser using AES-GCM-256 Web Crypto. Zero-knowledge client-side encryption where keys never touch the server.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/drop">
   <meta name="twitter:title" content="Encrypted Secure File Drop — Client-Side AES-256 Private File Sharing | Alumungandr™">
   <meta name="twitter:description" content="Encrypt and share files or confidential notes in your browser using AES-GCM-256 Web Crypto. Zero-knowledge client-side encryption where keys never touch the server.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -837,6 +837,36 @@
     html[data-theme="paper"] .btn-action-primary:hover:not(:disabled) {
       background: #0369a1 !important;
     }
+  
+    html[data-theme="paper"] #dropLiveCanvas {
+      opacity: 0.04 !important;
+    }
+    html[data-theme="paper"] .drop-panel,
+    html[data-theme="paper"] .drop-card,
+    html[data-theme="paper"] .stat-pill {
+      background: #ffffff !important;
+      border-color: #d1d5db !important;
+      color: #0b0f19 !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+    }
+    html[data-theme="paper"] .share-link-input {
+      background: #f8fafc !important;
+      color: #0b0f19 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .btn-copy-link {
+      background: #ffffff !important;
+      color: #0b0f19 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .hero-title,
+    html[data-theme="paper"] h1,
+    html[data-theme="paper"] h3 {
+      color: #0b0f19 !important;
+      -webkit-text-fill-color: #0b0f19 !important;
+      background: none !important;
+    }
+    
   </style>
 </head>
 <body>
@@ -934,7 +964,7 @@
     <!-- Hero Header -->
     <section class="hero-scanner">
       <div class="scanner-pre">
-        <span>&bull; ZERO-KNOWLEDGE &bull; DIRECT-TO-STORAGE &bull; ZERO TRACKING &bull;</span>
+        
       </div>
       <h1 class="scanner-title">
         ENCRYPTED SECURE FILE DROP
@@ -1014,6 +1044,7 @@
             <span>📋 Copy Link</span>
           </button>
         </div>
+        <div id="shareExpiryNotice" style="font-size:0.82rem; color:#10b981; margin-top:8px; font-weight:600;">⏱️ Active: Encrypted link expires automatically based on your TTL (or purges immediately after first claim if burn enabled).</div>
 
         <div class="qr-container" id="qrContainer">
           <div id="qrcodeDisplay"></div>

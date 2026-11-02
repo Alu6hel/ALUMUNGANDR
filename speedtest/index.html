@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/speedtest">
   <meta property="og:title" content="Internet Speed Test — No Ads, Accurate Ping, Jitter & Bufferbloat | Alumungandr™">
   <meta property="og:description" content="Test your real internet speed instantly with zero ads and zero ISP bias. Measure download speed, upload speed, ping latency, jitter, and bufferbloat accurately in your browser.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/speedtest">
   <meta name="twitter:title" content="Internet Speed Test — No Ads, Accurate Ping, Jitter & Bufferbloat | Alumungandr™">
   <meta name="twitter:description" content="Test your real internet speed instantly with zero ads and zero ISP bias. Measure download speed, upload speed, ping latency, jitter, and bufferbloat accurately in your browser.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -2068,6 +2068,12 @@
 
   <!-- Main Speedtest Workspace -->
   <main class="speed-container">
+    <header class="speedtest-header" style="text-align: center; margin: 10px auto 24px; max-width: 780px;">
+      <div class="tool-tag" style="display: inline-block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 14px; border-radius: 999px; margin-bottom: 12px; background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8;">Network Diagnostic</div>
+      <h1 style="font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 800; margin: 0 0 10px; letter-spacing: -0.03em;">Internet Speed Test</h1>
+      <p style="font-size: 0.98rem; color: #94a3b8; line-height: 1.6; margin: 0 auto;">Measure genuine download, upload, idle latency, and loaded bufferbloat directly across Cloudflare Anycast edge nodes with zero carrier fast-path QoS distortion.</p>
+    </header>
+
 
     <!-- Top Config Bar -->
     <div class="test-config-bar">
@@ -2084,14 +2090,7 @@
       </div>
     </div>
 
-    <!-- Versus Page SEO Goldmine Banner -->
-    <div class="vs-banner">
-      <div class="vs-content">
-        <span class="vs-pill">Independent Audit</span>
-        <div class="vs-text">
-          <strong>Why Ookla hides your ISP throttling:</strong> ISPs prioritize Speedtest.net packets with QoS rules while throttling your real streaming, gaming, and remote work. OmniSpeed saturation tests expose real line-rate deficits.
-        </div>
-      </div>
+    
       <a href="/speedtest-vs-ookla" class="vs-link-btn">
         <span>OmniSpeed vs Ookla</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-7.85-1.42 1.42L16.86 11H5v2z"/></svg>
@@ -2102,11 +2101,11 @@
     <div class="master-speed-card">
       
       <!-- Top Action Strip -->
-      <div class="card-action-bar">
+      <div class="card-action-bar" id="resultActionBar" style="display: none;">
         <div class="result-meta">
-          <span>Result ID: <strong class="result-id-val" id="resultIdLabel">19686157243</strong></span>
+          <span>Result ID: <strong class="result-id-val" id="resultIdLabel">--</strong></span>
           <span style="color:rgba(255,255,255,0.2);">|</span>
-          <span id="resultDateLabel">Just now</span>
+          <span id="resultDateLabel">--</span>
         </div>
         <div class="action-buttons">
           <button class="btn-test-again" id="btnTestAgain" onclick="startSpeedTest()">
@@ -2151,7 +2150,7 @@
                 DOWNLOAD
               </div>
               <div class="speed-value-row">
-                <span class="speed-val" id="downMbpsVal">51.01</span>
+                <span class="speed-val" id="downMbpsVal">--</span>
                 <span class="speed-unit">Mbps</span>
               </div>
             </div>
@@ -2164,14 +2163,14 @@
                 UPLOAD
               </div>
               <div class="speed-value-row">
-                <span class="speed-val" id="upMbpsVal">20.43</span>
+                <span class="speed-val" id="upMbpsVal">--</span>
                 <span class="speed-unit">Mbps</span>
               </div>
             </div>
           </div>
 
           <!-- Consumer Plain-English Assessment Banner -->
-          <div class="overall-quality-banner" id="qualityAssessmentBanner">
+          <div class="overall-quality-banner" id="qualityAssessmentBanner" style="display: none;">
             <div class="quality-badge-pill" id="qualityBadgePill">✓ Optimal Speed</div>
             <div class="quality-badge-text" id="qualityBadgeText">
               Your connection delivers <strong>240 Mbps</strong> with <strong>12ms</strong> latency — ideal for 4K streaming, competitive gaming, and Zoom conferences with zero buffer.
@@ -2182,19 +2181,19 @@
           <div class="latency-strip">
             <div class="latency-col">
               <span class="latency-title" title="Idle Latency: Baseline round-trip reaction time when resting. Under 20ms is esports-grade.">Idle Latency <span class="speed-tip-icon" title="Idle Latency: Baseline round-trip reaction time. Under 20ms is esports-grade.">(?)</span></span>
-              <div><span class="latency-num" id="pingVal">12</span><span class="latency-unit">ms</span></div>
+              <div><span class="latency-num" id="pingVal">--</span><span class="latency-unit">ms</span></div>
             </div>
             <div class="latency-col">
               <span class="latency-title" title="Download Bufferbloat: Latency spike under heavy download load. Lower keeps calls smooth during large downloads.">Download Loaded <span class="speed-tip-icon" title="Latency spike while downloading. Lower is better.">(?)</span></span>
-              <div><span class="latency-num" id="downLoadedVal">9</span><span class="latency-unit">ms</span></div>
+              <div><span class="latency-num" id="downLoadedVal">--</span><span class="latency-unit">ms</span></div>
             </div>
             <div class="latency-col">
               <span class="latency-title" title="Upload Bufferbloat: Latency spike under heavy upload load. Lower keeps voice chat clear while backing up files.">Upload Loaded <span class="speed-tip-icon" title="Latency spike while uploading files. Lower is better.">(?)</span></span>
-              <div><span class="latency-num" id="upLoadedVal">24</span><span class="latency-unit">ms</span></div>
+              <div><span class="latency-num" id="upLoadedVal">--</span><span class="latency-unit">ms</span></div>
             </div>
             <div class="latency-col">
               <span class="latency-title" title="Jitter: Variance or inconsistency between pings. Under 3ms guarantees stutter-free audio & gameplay.">Jitter <span class="speed-tip-icon" title="Ping stability. Under 3ms guarantees zero voice or video stutter.">(?)</span></span>
-              <div><span class="latency-num" id="jitterVal">1</span><span class="latency-unit">ms</span></div>
+              <div><span class="latency-num" id="jitterVal">--</span><span class="latency-unit">ms</span></div>
             </div>
           </div>
 
@@ -3464,7 +3463,11 @@
         bUp.textContent = `${up.toFixed(1)} Mbps`;
       }
 
-      // Update Consumer-Friendly Assessment Banner
+            // Update Consumer-Friendly Assessment Banner
+      const qBar = document.getElementById('resultActionBar');
+      if (qBar) qBar.style.display = 'flex';
+      const qBanner = document.getElementById('qualityAssessmentBanner');
+      if (qBanner) qBanner.style.display = 'block';
       const qPill = document.getElementById('qualityBadgePill');
       const qText = document.getElementById('qualityBadgeText');
       if (qPill && qText) {

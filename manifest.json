@@ -1,0 +1,16 @@
+{
+  "name": "Alumungandr",
+  "short_name": "Alumungandr",
+  "description": "20+ privacy-first web utilities, internet speed test, and developer tools with zero telemetry.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c15",
+  "theme_color": "#080c15",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

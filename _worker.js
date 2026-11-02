@@ -52,7 +52,7 @@ function applySecurityHeaders(headers) {
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   headers.set('Permissions-Policy', 'geolocation=(self), microphone=(self), camera=(self), payment=*');
   headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.paypal.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: https://www.paypal.com https://*.paypalobjects.com; media-src 'self' blob: data:; connect-src 'self' https: wss: stun: turn: https://www.paypal.com https://*.paypal.com; frame-src 'self' https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; object-src 'none'; base-uri 'self'; form-action 'self' https://www.paypal.com https://*.paypal.com; frame-ancestors 'self';");
+  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.paypal.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: https://www.paypal.com https://*.paypalobjects.com; media-src 'self' blob: data:; connect-src 'self' https: wss: stun: turn: https://www.paypal.com https://*.paypal.com https://cloudflareinsights.com; frame-src 'self' https://www.paypal.com https://*.paypal.com https://*.paypalobjects.com; object-src 'none'; base-uri 'self'; form-action 'self' https://www.paypal.com https://*.paypal.com; frame-ancestors 'self';");
   return headers;
 }
 
@@ -344,46 +344,77 @@ Hiring: https://alumungandr.com/contact
       return Response.redirect(new URL('/', request.url).toString(), 301);
     }
 
-    // Fall back to Cloudflare Static Assets with Zero-FOUC Theme Pre-bootstrap
-    const res = await env.ASSETS.fetch(request);
-    const contentType = res.headers.get('content-type') || '';
-    if (res.status === 200 && contentType.includes('text/html')) {
-      const html = await res.text();
-      const themeScript = `<script>try{var t=localStorage.getItem('alu_theme');if(t==='paper'||t==='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
-      const headers = new Headers(res.headers);
-      headers.set('Cache-Control', 'no-cache, must-revalidate');
-      applySecurityHeaders(headers);
-      return new Response(html.replace('<head>', '<head>' + themeScript), {
-        status: res.status,
-        statusText: res.statusText,
-        headers: headers
-      });
-    }
+    // Fall back to Cloudflare Static Assets with Zero-FOUC Theme Pre-bootstrap & 404 Protection
+    try {
+      const res = await env.ASSETS.fetch(request);
+      
+      // Handle Missing Static Assets & 404 cleanly (No 500 crashes)
+      if (res.status === 404) {
+        try {
+          const notFoundReq = new Request(new URL('/404.html', request.url), request);
+          const notFoundRes = await env.ASSETS.fetch(notFoundReq);
+          if (notFoundRes.status === 200) {
+            const html = await notFoundRes.text();
+            const themeScript = `<script>try{var t=localStorage.getItem('alu_theme');if(t==='paper'||t==='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
+            const headers = new Headers(notFoundRes.headers);
+            headers.set('Content-Type', 'text/html; charset=utf-8');
+            headers.set('Cache-Control', 'no-cache, must-revalidate');
+            applySecurityHeaders(headers);
+            return new Response(html.replace('<head>', '<head>' + themeScript), {
+              status: 404,
+              statusText: 'Not Found',
+              headers: headers
+            });
+          }
+        } catch (e404) {}
+        const headers = new Headers({ 'Content-Type': 'text/plain; charset=utf-8' });
+        applySecurityHeaders(headers);
+        return new Response('404 Not Found', { status: 404, statusText: 'Not Found', headers });
+      }
 
-    // Force browsers and edge proxies to revalidate nav assets immediately
-    if (url.pathname.startsWith('/assets/')) {
-      const headers = new Headers(res.headers);
-      headers.set('Cache-Control', 'no-cache, must-revalidate');
-      applySecurityHeaders(headers);
-      return new Response(res.body, {
-        status: res.status,
-        statusText: res.statusText,
-        headers: headers
-      });
-    }
+      const contentType = res.headers.get('content-type') || '';
+      if (res.status === 200 && contentType.includes('text/html')) {
+        const html = await res.text();
+        const themeScript = `<script>try{var t=localStorage.getItem('alu_theme');if(t==='paper'||t==='amber')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>`;
+        const headers = new Headers(res.headers);
+        headers.set('Cache-Control', 'no-cache, must-revalidate');
+        applySecurityHeaders(headers);
+        return new Response(html.replace('<head>', '<head>' + themeScript), {
+          status: res.status,
+          statusText: res.statusText,
+          headers: headers
+        });
+      }
 
-    // Apply security headers to other static responses
-    if (res.status === 200) {
-      const headers = new Headers(res.headers);
-      applySecurityHeaders(headers);
-      return new Response(res.body, {
-        status: res.status,
-        statusText: res.statusText,
-        headers: headers
-      });
-    }
+      // Force browsers and edge proxies to revalidate nav assets immediately
+      if (url.pathname.startsWith('/assets/')) {
+        const headers = new Headers(res.headers);
+        headers.set('Cache-Control', 'no-cache, must-revalidate');
+        applySecurityHeaders(headers);
+        return new Response(res.body, {
+          status: res.status,
+          statusText: res.statusText,
+          headers: headers
+        });
+      }
 
-    return res;
+      // Apply security headers to other static responses
+      if (res.status === 200) {
+        const headers = new Headers(res.headers);
+        applySecurityHeaders(headers);
+        return new Response(res.body, {
+          status: res.status,
+          statusText: res.statusText,
+          headers: headers
+        });
+      }
+
+      return res;
+    } catch (assetErr) {
+      const headers = new Headers({ 'Content-Type': 'text/plain; charset=utf-8' });
+      applySecurityHeaders(headers);
+      return new Response('404 Not Found', { status: 404, statusText: 'Not Found', headers });
+    }
   },
 
   // Cloudflare Worker Cron Trigger: Runs weekly on Sunday at midnight UTC (100% Free, zero maintenance)

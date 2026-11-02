@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/regex">
   <meta property="og:title" content="Regex Tester & Debugger Online — Live JavaScript Regular Expression Lab | Alumungandr™">
   <meta property="og:description" content="Test, debug, and visualize Regular Expressions in real time. Highlights capture groups, matches, flags (g, i, m, s, u), replacement strings, and common regex patterns.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/regex">
   <meta name="twitter:title" content="Regex Tester & Debugger Online — Live JavaScript Regular Expression Lab | Alumungandr™">
   <meta name="twitter:description" content="Test, debug, and visualize Regular Expressions in real time. Highlights capture groups, matches, flags (g, i, m, s, u), replacement strings, and common regex patterns.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -1228,6 +1228,63 @@ Invalid addresses like test@@nowhere.com or no-domain@ are safely ignored.</text
         .replace(/'/g, '&#039;');
     }
 
+        // Dedicated Web Worker with Catastrophic Backtracking Protection (250ms hard limit)
+    let regexWorker = null;
+    let workerTimeout = null;
+
+    const workerScript = `
+      self.onmessage = function(e) {
+        const { id, pat, text, flags, isGlobal } = e.data;
+        const t0 = performance.now();
+        try {
+          const re = new RegExp(pat, flags);
+          const matches = [];
+          if (!isGlobal) {
+            const m = text.match(re);
+            if (m) {
+              matches.push({
+                index: m.index,
+                length: m[0].length,
+                match: m[0],
+                groups: m.slice(1),
+                namedGroups: m.groups || {}
+              });
+            }
+          } else {
+            let m;
+            let safeLoop = 0;
+            while ((m = re.exec(text)) !== null && safeLoop < 5000) {
+              safeLoop++;
+              matches.push({
+                index: m.index,
+                length: m[0].length,
+                match: m[0],
+                groups: m.slice(1),
+                namedGroups: m.groups || {}
+              });
+              if (m.index === re.lastIndex) re.lastIndex++;
+            }
+          }
+          const t1 = performance.now();
+          self.postMessage({ id, success: true, matches, elapsedMs: t1 - t0 });
+        } catch (err) {
+          self.postMessage({ id, success: false, error: err.message });
+        }
+      };
+    `;
+
+    const workerBlob = new Blob([workerScript], { type: 'application/javascript' });
+    const workerBlobUrl = URL.createObjectURL(workerBlob);
+
+    function getWorker() {
+      if (!regexWorker) {
+        regexWorker = new Worker(workerBlobUrl);
+      }
+      return regexWorker;
+    }
+
+    let activeWorkerEvalId = 0;
+
     function evaluateRegex() {
       const pat = regexInput.value;
       const text = testInput.value;
@@ -1245,9 +1302,10 @@ Invalid addresses like test@@nowhere.com or no-domain@ are safely ignored.</text
         return;
       }
 
-      let re;
+      // Syntax check on main thread first
+      let testRe;
       try {
-        re = new RegExp(pat, flags);
+        testRe = new RegExp(pat, flags);
       } catch (err) {
         errorBanner.style.display = 'flex';
         errorMessage.textContent = err.message;
@@ -1257,57 +1315,50 @@ Invalid addresses like test@@nowhere.com or no-domain@ are safely ignored.</text
         return;
       }
 
-      const t0 = performance.now();
-      currentMatches = [];
+      const evalId = ++activeWorkerEvalId;
+      if (workerTimeout) clearTimeout(workerTimeout);
 
-      try {
-        if (!activeFlags.has('g')) {
-          // Single match mode
-          const m = text.match(re);
-          if (m) {
-            currentMatches.push({
-              index: m.index,
-              length: m[0].length,
-              match: m[0],
-              groups: m.slice(1),
-              namedGroups: m.groups || {}
-            });
-          }
-        } else {
-          // Global match mode
-          let m;
-          let safeLoop = 0;
-          while ((m = re.exec(text)) !== null && safeLoop < 5000) {
-            safeLoop++;
-            currentMatches.push({
-              index: m.index,
-              length: m[0].length,
-              match: m[0],
-              groups: m.slice(1),
-              namedGroups: m.groups || {}
-            });
-            if (m.index === re.lastIndex) {
-              re.lastIndex++; // prevent zero-length match infinite loops
-            }
-          }
+      const worker = getWorker();
+
+      workerTimeout = setTimeout(() => {
+        if (evalId === activeWorkerEvalId) {
+          // Terminate hung worker to prevent catastrophic backtracking freeze
+          worker.terminate();
+          regexWorker = null; // Re-create on next run
+          errorBanner.style.display = 'flex';
+          errorMessage.textContent = 'Catastrophic backtracking / timeout exceeded (>250ms). Execution terminated safely without freezing.';
+          statCount.textContent = 'Timeout';
+          statTime.textContent = '>250 ms';
+          matchesPanel.innerHTML = '<div class="matches-empty" style="color:#f87171;">⚠️ Regex took too long to evaluate (catastrophic backtracking detected). Execution stopped safely to preserve browser responsiveness.</div>';
         }
-      } catch (execErr) {
-        errorBanner.style.display = 'flex';
-        errorMessage.textContent = 'Execution Error: ' + execErr.message;
-      }
-      const t1 = performance.now();
+      }, 250);
 
-      statCount.textContent = `${currentMatches.length} Match${currentMatches.length === 1 ? '' : 'es'}`;
-      statTime.textContent = `${(t1 - t0).toFixed(2)} ms`;
+      worker.onmessage = function(e) {
+        if (e.data.id !== activeWorkerEvalId) return;
+        clearTimeout(workerTimeout);
+        if (!e.data.success) {
+          errorBanner.style.display = 'flex';
+          errorMessage.textContent = 'Execution Error: ' + e.data.error;
+          return;
+        }
 
-      // Render highlighted backdrop
-      renderBackdrop(text, currentMatches);
+        const { matches, elapsedMs } = e.data;
+        currentMatches = matches;
+        statCount.textContent = `${matches.length} Match${matches.length === 1 ? '' : 'es'}`;
+        statTime.textContent = `${elapsedMs.toFixed(2)} ms`;
 
-      // Render Substitution preview
-      renderSubstitution(re, text);
+        renderBackdrop(text, matches);
+        renderSubstitution(testRe, text);
+        renderMatchesInspector(matches);
+      };
 
-      // Render Inspector Cards
-      renderMatchesInspector(currentMatches);
+      worker.postMessage({
+        id: evalId,
+        pat,
+        text,
+        flags,
+        isGlobal: activeFlags.has('g')
+      });
     }
 
     function renderBackdrop(text, matches) {

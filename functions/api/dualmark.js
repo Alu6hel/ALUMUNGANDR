@@ -1,3 +1,16 @@
+function validateGtinCheckDigit(gtin) {
+  if (!gtin || !/^\d{8}$|^\d{12,14}$/.test(gtin)) return false;
+  const padded = gtin.padStart(14, '0');
+  let sum = 0;
+  for (let i = 0; i < 13; i++) {
+    const digit = parseInt(padded[i], 10);
+    sum += digit * (i % 2 === 0 ? 3 : 1);
+  }
+  const expectedCheckDigit = (10 - (sum % 10)) % 10;
+  const actualCheckDigit = parseInt(padded[13], 10);
+  return expectedCheckDigit === actualCheckDigit;
+}
+
 // Cloudflare Pages Function & Edge Worker: /api/dualmark
 // DualMark Studio — Autonomous Edge Gateway, RFC 9264 GS1 Digital Link Resolver & FSMA 204 Traceability Engine
 // Built for 100% Free Tier Cloudflare Pages / Workers (In-Memory Edge Cache + Stateless WebCrypto)
@@ -116,6 +129,17 @@ export async function handleGs1Resolution(request, env, ctx) {
   const linkType = (url.searchParams.get('linkType') || 'pip').toLowerCase();
   const acceptHeader = request.headers.get('Accept') || '';
   const clientCountry = request.cf?.country || url.searchParams.get('country') || 'US';
+
+  if (!validateGtinCheckDigit(gtin)) {
+    return new Response(JSON.stringify({
+      error: 'Invalid GS1 GTIN format or Modulo-10 check digit.',
+      standard: 'GS1 General Specifications Section 7.9.5 / RFC 9264',
+      resolved: false
+    }), {
+      status: 400,
+      headers: applyCors(new Headers({ 'Content-Type': 'application/json' }))
+    });
+  }
 
   if (!gtin) {
     return new Response(JSON.stringify({

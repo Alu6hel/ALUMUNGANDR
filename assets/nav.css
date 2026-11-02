@@ -613,7 +613,7 @@ html[data-theme="paper"] header.site-header .brand {
 }
 
 html[data-theme="paper"] header.site-header .brand img {
-  filter: invert(0.9) brightness(0.2) contrast(1.5) !important;
+  filter: none !important;
 }
 
 html[data-theme="paper"] header.site-header .brand-badge {
@@ -734,6 +734,8 @@ html[data-theme="paper"] .hero-title,
 html[data-theme="paper"] .card-title,
 html[data-theme="paper"] .section-title {
   color: #0b0f19 !important;
+  -webkit-text-fill-color: #0b0f19 !important;
+  background: none !important;
 }
 
 html[data-theme="paper"] p,
@@ -1419,6 +1421,8 @@ html[data-theme="amber"] .matrix-card-title,
 html[data-theme="amber"] .app-card-title,
 html[data-theme="amber"] .section-heading-huge {
   color: #fef3c7 !important;
+  -webkit-text-fill-color: #fef3c7 !important;
+  background: none !important;
 }
 
 html[data-theme="amber"] p,
@@ -2282,4 +2286,84 @@ html[data-theme="amber"] .holo-mode-btn.active {
   border-color: #f59e0b !important;
   color: #090806 !important;
   box-shadow: 0 0 14px rgba(245, 158, 11, 0.55) !important;
+}
+
+
+/* ==========================================================================
+   ALUMUNGANDR AUDIT HARMONIZATION: BUTTON CONTRAST & THEME INTEGRITY
+   ========================================================================== */
+
+/* Universal High-Contrast Action & Tool Buttons in Paper Mode */
+html[data-theme="paper"] .btn-secondary,
+html[data-theme="paper"] .btn-action-secondary,
+html[data-theme="paper"] .btn-action,
+html[data-theme="paper"] .action-btn,
+html[data-theme="paper"] .btn-tool,
+html[data-theme="paper"] .tool-btn,
+html[data-theme="paper"] .btn-copy,
+html[data-theme="paper"] .btn-copy-link,
+html[data-theme="paper"] .btn-swap,
+html[data-theme="paper"] .btn-export,
+html[data-theme="paper"] .btn-random,
+html[data-theme="paper"] .btn-clear,
+html[data-theme="paper"] .btn-sample,
+html[data-theme="paper"] .btn-sync,
+html[data-theme="paper"] .tab-btn:not(.active),
+html[data-theme="paper"] .hub-tab-btn:not(.active) {
+  background: #ffffff !important;
+  color: #0b0f19 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html[data-theme="paper"] .btn-secondary:hover,
+html[data-theme="paper"] .btn-action-secondary:hover,
+html[data-theme="paper"] .action-btn:hover,
+html[data-theme="paper"] .btn-copy:hover,
+html[data-theme="paper"] .btn-export:hover,
+html[data-theme="paper"] .btn-swap:hover,
+html[data-theme="paper"] .btn-clear:hover {
+  background: #f1f5f9 !important;
+  color: #000000 !important;
+  border-color: #94a3b8 !important;
+}
+
+/* Background Canvas Calming in Paper Theme */
+html[data-theme="paper"] #soundwaveCanvas,
+html[data-theme="paper"] #matrixCanvas,
+html[data-theme="paper"] #dropLiveCanvas,
+html[data-theme="paper"] #telemetryCanvas,
+html[data-theme="paper"] #latticeCanvas,
+html[data-theme="paper"] #hexCanvas,
+html[data-theme="paper"] #glacialCanvas {
+  opacity: 0.04 !important;
+}
+
+/* Write Preview Contrast */
+html[data-theme="paper"] .preview-content,
+html[data-theme="paper"] .preview-content p,
+html[data-theme="paper"] .preview-content li,
+html[data-theme="paper"] .preview-content table,
+html[data-theme="paper"] .preview-content td,
+html[data-theme="paper"] .preview-content th {
+  color: #0b0f19 !important;
+}
+html[data-theme="paper"] .preview-content code {
+  color: #0284c7 !important;
+  background: #f1f5f9 !important;
+}
+html[data-theme="paper"] .preview-content pre {
+  background: #f8fafc !important;
+  color: #0b0f19 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Responsive & Mobile Protection (Zero 390px clipping) */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  button, .btn, a.btn, input[type="button"], input[type="submit"] {
+    min-height: 44px;
+  }
 }

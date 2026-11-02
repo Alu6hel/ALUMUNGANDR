@@ -44,7 +44,17 @@ export async function onRequestPost({ request }) {
   }
 }
 
-export async function onRequestGet() {
+export async function onRequestGet({ request }) {
+  const authHeader = request.headers.get('Authorization') || '';
+  if (!authHeader.startsWith('Bearer ') || authHeader.slice(7) !== 'alu_master_sec_2026') {
+    return new Response(JSON.stringify({
+      error: "Unauthorized access to engineering review queue.",
+      status: 403
+    }), {
+      status: 403,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+    });
+  }
   return new Response(JSON.stringify({
     total_feedback: 0,
     feedback: []

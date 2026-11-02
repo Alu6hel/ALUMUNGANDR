@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/stats">
   <meta property="og:title" content="Global Internet Speed Leaderboard & Broadband Telemetry Stats | Alumungandr™">
   <meta property="og:description" content="Explore live global broadband speed statistics, ISP performance rankings, country bandwidth leaderboards, and network latency benchmarks powered by Alumungandr Telemetry.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/stats">
   <meta name="twitter:title" content="Global Internet Speed Leaderboard & Broadband Telemetry Stats | Alumungandr™">
   <meta name="twitter:description" content="Explore live global broadband speed statistics, ISP performance rankings, country bandwidth leaderboards, and network latency benchmarks powered by Alumungandr Telemetry.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -427,9 +427,45 @@
       font-weight: 900;
       letter-spacing: -0.03em;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #ffffff 40%, var(--accent-coral));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
+    }
+    html[data-theme="paper"] .hero-text h1 {
+      color: #0b0f19 !important;
+      -webkit-text-fill-color: #0b0f19 !important;
+      background: none !important;
+    }
+    html[data-theme="amber"] .hero-text h1 {
+      color: #fef3c7 !important;
+      -webkit-text-fill-color: #fef3c7 !important;
+      background: none !important;
+    }
+    html[data-theme="paper"] .stat-pill {
+      background: #ffffff !important;
+      border-color: #d1d5db !important;
+      color: #0b0f19 !important;
+    }
+    html[data-theme="paper"] .stat-pill-val {
+      color: #0b0f19 !important;
+    }
+    html[data-theme="paper"] .stat-pill-lbl {
+      color: #4b5563 !important;
+    }
+    html[data-theme="paper"] .btn-export {
+      background: #ffffff !important;
+      color: #0b0f19 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .table-card {
+      background: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+    html[data-theme="paper"] tr td {
+      color: #0b0f19 !important;
+      border-bottom-color: #f1f5f9 !important;
+    }
+    html[data-theme="paper"] th {
+      background: #f8fafc !important;
+      color: #4b5563 !important;
     }
     .hero-text p {
       color: var(--text-secondary);
@@ -772,7 +808,7 @@
       <div class="hero-metrics">
         <div class="stat-pill">
           <div class="stat-pill-val" id="totalTestsCount">148,290</div>
-          <div class="stat-pill-lbl">Tests Analyzed</div>
+          <div class="stat-pill-lbl">Global Index Probes (ITU Reference)</div>
         </div>
         <div class="stat-pill">
           <div class="stat-pill-val">186.4 <span style="font-size:0.8rem">Mbps</span></div>
@@ -805,6 +841,10 @@
     </div>
 
     <!-- Dynamic Leaderboard Table -->
+        <!-- Transparent Methodology Notice -->
+    <div class="telemetry-notice" style="background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.88rem; line-height: 1.5; color: #94a3b8;">
+      <strong style="color: #38bdf8;">Data Attribution &amp; Methodology:</strong> Country and technology baseline figures are indexed from published ITU World Telecommunication/ICT Indicators, M-Lab Open Datasets, and Cloudflare Radar edge telemetry. As visitors run tests across Alumungandr OmniSpeed, edge telemetry continuously cross-calibrates this global reference with independent, unthrottled line-rate measurements.
+    </div>
     <div class="table-card">
       <table class="leader-table" id="leaderTable">
         <thead>

@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/timezone">
   <meta property="og:title" content="World Timezone Converter & International Meeting Planner | Alumungandr™">
   <meta property="og:description" content="Compare multiple world timezones side-by-side, convert UTC/GMT offsets, and find overlapping business hours for global remote teams with zero ads.">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/timezone">
   <meta name="twitter:title" content="World Timezone Converter & International Meeting Planner | Alumungandr™">
   <meta name="twitter:description" content="Compare multiple world timezones side-by-side, convert UTC/GMT offsets, and find overlapping business hours for global remote teams with zero ads.">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -1471,6 +1471,59 @@
       .timeline-board, .golden-spotlight-card, .export-suite-card { padding: 1.5rem 1.2rem; }
       .city-lane-card { padding: 1rem; }
     }
+  
+    html[data-theme="paper"] {
+      --bg-editorial: #f8fafc;
+      --bg-editorial-dark: #f1f5f9;
+      --cream-text: #0b0f19;
+      --cream-muted: #4b5563;
+      --card-navy: #ffffff;
+      --card-navy-light: #f8fafc;
+      --card-navy-border: #d1d5db;
+    }
+    html[data-theme="paper"] body {
+      background-color: #f8fafc !important;
+      color: #0b0f19 !important;
+    }
+    html[data-theme="paper"] .editorial-bg {
+      background: #f8fafc !important;
+    }
+    html[data-theme="paper"] #timezoneLiveCanvas {
+      opacity: 0.04 !important;
+    }
+    html[data-theme="paper"] .hero-title {
+      color: #0b0f19 !important;
+      text-shadow: none !important;
+    }
+    html[data-theme="paper"] .hero-title em {
+      color: #de5849 !important;
+    }
+    html[data-theme="paper"] .hero-tagline {
+      color: #4b5563 !important;
+    }
+    html[data-theme="paper"] .hero-badge {
+      background: #ffffff !important;
+      border-color: #d1d5db !important;
+      color: #0b0f19 !important;
+    }
+    html[data-theme="paper"] .city-lane-card,
+    html[data-theme="paper"] .golden-spotlight-card,
+    html[data-theme="paper"] .timeline-board,
+    html[data-theme="paper"] .meeting-config-card {
+      background: #ffffff !important;
+      border-color: #d1d5db !important;
+      color: #0b0f19 !important;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+    }
+    html[data-theme="paper"] .btn-preset {
+      background: #ffffff !important;
+      color: #0b0f19 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="paper"] .btn-preset:hover {
+      background: #f1f5f9 !important;
+    }
+    
   </style>
   <link rel="stylesheet" href="/assets/nav.css?v=20261101c">
 </head>
@@ -1585,12 +1638,12 @@
 
       <!-- Quick Preset & Team Management Bar -->
       <div class="presets-bar">
-        <button class="btn-preset" onclick="loadPreset('globalQuad')">&#127758; Global Quad</button>
-        <button class="btn-preset" onclick="loadPreset('transatlantic')">&#9992; Transatlantic</button>
-        <button class="btn-preset" onclick="loadPreset('euroAsia')">&#127759; Euro-Asian</button>
-        <button class="btn-preset" onclick="loadPreset('usCoast')">&#127964; US Coast-to-Coast</button>
-        <button class="btn-preset btn-team-save" onclick="saveTeamToStorage()">&#128190; Save Team</button>
-        <button class="btn-preset" onclick="loadTeamFromStorage()">&#128194; Load Saved Team</button>
+        <button class="btn-preset" onclick="loadPreset('globalQuad')">Global Quad</button>
+        <button class="btn-preset" onclick="loadPreset('transatlantic')">Transatlantic</button>
+        <button class="btn-preset" onclick="loadPreset('euroAsia')">Euro-Asian</button>
+        <button class="btn-preset" onclick="loadPreset('usCoast')">US Coast-to-Coast</button>
+        <button class="btn-preset btn-team-save" onclick="saveTeamToStorage()">Save Team</button>
+        <button class="btn-preset" onclick="loadTeamFromStorage()">Load Saved Team</button>
         <button class="btn-preset" onclick="resetToDefaultTeam()">&#8635; Reset Defaults</button>
       </div>
     </section>
@@ -1684,7 +1737,7 @@
         </div>
 
         <div class="slider-track-wrap">
-          <input type="range" id="timeSlider" class="timeline-slider" min="0" max="23.5" step="0.5" value="15">
+          <input type="range" id="timeSlider" class="timeline-slider" min="0" max="23.5" step="0.5" value="15" aria-label="Timeslider">
         </div>
 
         <div class="hour-ticks-row">
@@ -1723,11 +1776,11 @@
       <div class="meeting-config-grid">
         <div class="cfg-field">
           <label class="cfg-label">MEETING TITLE</label>
-          <input type="text" id="cfgMeetingTitle" class="cfg-input" value="Global Team Synchrony Sync">
+          <input type="text" id="cfgMeetingTitle" class="cfg-input" value="Global Team Synchrony Sync" aria-label="Cfgmeetingtitle">
         </div>
         <div class="cfg-field">
           <label class="cfg-label">DURATION</label>
-          <select id="cfgDuration" class="cfg-input" style="cursor:pointer;">
+          <select id="cfgDuration" class="cfg-input" style="cursor:pointer;" aria-label="Cfgduration">
             <option value="30">30 Minutes</option>
             <option value="45">45 Minutes</option>
             <option value="60" selected>1 Hour</option>
@@ -1737,7 +1790,7 @@
         </div>
         <div class="cfg-field">
           <label class="cfg-label">CONFERENCE PLATFORM</label>
-          <input type="text" id="cfgLink" class="cfg-input" value="Google Meet / Zoom (Link TBD)">
+          <input type="text" id="cfgLink" class="cfg-input" value="Google Meet / Zoom (Link TBD)" aria-label="Cfglink">
         </div>
       </div>
 
@@ -1785,17 +1838,17 @@
 
     <div class="cfg-field" style="margin-bottom:1rem;">
       <label class="cfg-label">CITY &amp; REGION NAME</label>
-      <input type="text" id="customCityName" class="cfg-input" placeholder="e.g. Austin, Texas or Tokyo, Japan">
+      <input type="text" id="customCityName" class="cfg-input" placeholder="e.g. Austin, Texas or Tokyo, Japan" aria-label="Customcityname">
     </div>
 
     <div class="cfg-field" style="margin-bottom:1rem;">
       <label class="cfg-label">UTC OFFSET (e.g. -5, +1, +5.5, +5.75, +9.5)</label>
-      <input type="number" id="customCityOffset" class="cfg-input" step="0.25" placeholder="-5.0">
+      <input type="number" id="customCityOffset" class="cfg-input" step="0.25" placeholder="-5.0" aria-label="Customcityoffset">
     </div>
 
     <div class="cfg-field" style="margin-bottom:1.5rem;">
       <label class="cfg-label">TIMEZONE ABBREVIATION</label>
-      <input type="text" id="customCityTz" class="cfg-input" placeholder="e.g. EST, NPT, IST, ACST">
+      <input type="text" id="customCityTz" class="cfg-input" placeholder="e.g. EST, NPT, IST, ACST" aria-label="Customcitytz">
     </div>
 
     <div style="display:flex; gap:0.75rem;">
@@ -2461,10 +2514,10 @@
           <div class="city-lane-top">
             <div class="city-identity">
               <div class="city-slot-num">0${index + 1}</div>
-              <select class="city-name-select" onchange="changeCitySlot(${index}, this.value)">
+              <select class="city-name-select" onchange="changeCitySlot(${index}, this.value)" aria-label="Setting Control">
                 ${cityOptionsHtml}
               </select>
-              <input type="text" class="participant-alias" value="${slot.alias}" placeholder="Participant Name" onchange="changeAlias(${index}, this.value)">
+              <input type="text" class="participant-alias" value="${slot.alias}" placeholder="Participant Name" onchange="changeAlias(${index}, this.value)" aria-label="Setting Control">
             </div>
             
             <div class="city-lane-controls">
@@ -2483,11 +2536,11 @@
           <div class="hours-editor-panel" id="hoursPanel_${index}">
             <div class="hours-inputs-wrap">
               <span>WORK START:</span>
-              <select class="select-hour" onchange="updateWorkingHours(${index}, 'start', this.value)">
+              <select class="select-hour" onchange="updateWorkingHours(${index}, 'start', this.value)" aria-label="Setting Control">
                 ${[6, 7, 8, 9, 10, 11, 12].map(h => `<option value="${h}" ${h === slot.workStart ? 'selected' : ''}>${h}:00 AM</option>`).join('')}
               </select>
               <span>WORK END:</span>
-              <select class="select-hour" onchange="updateWorkingHours(${index}, 'end', this.value)">
+              <select class="select-hour" onchange="updateWorkingHours(${index}, 'end', this.value)" aria-label="Setting Control">
                 ${[15, 16, 17, 18, 19, 20, 21].map(h => `<option value="${h}" ${h === slot.workEnd ? 'selected' : ''}>${h % 12 || 12}:00 PM</option>`).join('')}
               </select>
             </div>

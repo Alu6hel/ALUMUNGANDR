@@ -45,7 +45,7 @@
   <meta property="og:url" content="https://alumungandr.com/dualmark">
   <meta property="og:title" content="DualMark™ Studio — GS1 Digital Link (RFC 9264) & FDA FSMA 204 2D Barcode Resolver">
   <meta property="og:description" content="Generate, validate, and resolve GS1 Digital Link URIs (RFC 9264), GTIN-14 2D QR/DataMatrix barcodes, and FDA FSMA 204 food traceability Key Data Elements (KDEs).">
-  <meta property="og:image" content="https://alumungandr.com/logo.svg">
+  <meta property="og:image" content="https://alumungandr.com/assets/og-image.png">
   <meta property="og:image:alt" content="Alumungandr Official Emblem — Beyond Logic is Truth">
 
   <!-- Twitter / X Card Metadata (@Alumungandr) -->
@@ -55,7 +55,7 @@
   <meta name="twitter:url" content="https://alumungandr.com/dualmark">
   <meta name="twitter:title" content="DualMark™ Studio — GS1 Digital Link (RFC 9264) & FDA FSMA 204 2D Barcode Resolver">
   <meta name="twitter:description" content="Generate, validate, and resolve GS1 Digital Link URIs (RFC 9264), GTIN-14 2D QR/DataMatrix barcodes, and FDA FSMA 204 food traceability Key Data Elements (KDEs).">
-  <meta name="twitter:image" content="https://alumungandr.com/logo.svg">
+  <meta name="twitter:image" content="https://alumungandr.com/assets/og-image.png">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json" id="alu-seo-jsonld">
@@ -724,13 +724,13 @@
     </div>
 
     <!-- Hub Tabs Navigation -->
-    <div class="hub-tabs">
-      <button class="hub-tab-btn active" data-tab="tab-resolver">&#128269; GS1 Digital Link Resolver</button>
-      <button class="hub-tab-btn" data-tab="tab-fsma">&#128272; FSMA 204 Cryptographic Audit</button>
-      <button class="hub-tab-btn" data-tab="tab-recall">&#128680; Recall Kill-Switch</button>
-      <button class="hub-tab-btn" data-tab="tab-license">&#128179; Offline License Verifier</button>
-      <button class="hub-tab-btn" data-tab="tab-api">&#128295; Edge Worker API Directory</button>
-      <button class="hub-tab-btn" data-tab="tab-export">&#128190; Standalone Routing Export</button>
+    <div class="hub-tabs" style="overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+      <button class="hub-tab-btn active" data-tab="tab-resolver">Resolver</button>
+      <button class="hub-tab-btn" data-tab="tab-fsma">FSMA 204 Audit</button>
+      <button class="hub-tab-btn" data-tab="tab-recall">Recall Switch</button>
+      <button class="hub-tab-btn" data-tab="tab-license">License Keys</button>
+      <button class="hub-tab-btn" data-tab="tab-api">API Directory</button>
+      <button class="hub-tab-btn" data-tab="tab-export">Export Route</button>
     </div>
 
     <!-- TAB 1: GS1 DIGITAL LINK RESOLVER -->
@@ -1206,12 +1206,33 @@
       const resOutput = document.getElementById('res-output');
       const resStatusTag = document.getElementById('res-status-tag');
 
+      function validateGtinCheckDigit(gtin) {
+        if (!gtin || !/^\d{8}$|^\d{12,14}$/.test(gtin)) return false;
+        const padded = gtin.padStart(14, '0');
+        let sum = 0;
+        for (let i = 0; i < 13; i++) {
+          const digit = parseInt(padded[i], 10);
+          sum += digit * (i % 2 === 0 ? 3 : 1);
+        }
+        const expected = (10 - (sum % 10)) % 10;
+        return expected === parseInt(padded[13], 10);
+      }
+
       btnResolve.addEventListener('click', async () => {
         const gtin = document.getElementById('res-gtin').value.trim();
         const lot = document.getElementById('res-lot').value.trim();
         const serial = document.getElementById('res-serial').value.trim();
         const linkType = document.getElementById('res-linktype').value;
         const country = document.getElementById('res-country').value;
+
+        if (!validateGtinCheckDigit(gtin)) {
+          resStatusTag.textContent = 'HTTP 400 (Invalid Check Digit)';
+          resStatusTag.style.display = 'inline-block';
+          resStatusTag.style.background = 'rgba(239, 68, 68, 0.2)';
+          resStatusTag.style.color = '#f87171';
+          resOutput.textContent = `// ERROR: GS1 Modulo-10 check digit verification failed.\n// GTIN "${gtin}" has an invalid check digit.\n// Standard: GS1 General Specifications Section 7.9.5 Modulo-10 check digit parity required.`;
+          return;
+        }
 
         resOutput.textContent = '// Querying Cloudflare Edge Anycast resolver...';
         resStatusTag.style.display = 'none';

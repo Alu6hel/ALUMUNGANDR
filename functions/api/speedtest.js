@@ -130,6 +130,25 @@ export async function onRequestGet({ request, env }) {
     });
   }
 
+  // 3b. Local/Edge Audit Ledger Endpoint (/api/speedtest/ledger)
+  if (path === '/api/speedtest/ledger') {
+    let ledger = [];
+    if (env && env.OBSERVATORY_KV) {
+      try {
+        const stored = await env.OBSERVATORY_KV.get(`speedtest_ledger_${clientIp}`);
+        if (stored) ledger = JSON.parse(stored);
+      } catch (e) {}
+    }
+    return new Response(JSON.stringify({ success: true, ledger }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-store, no-cache'
+      }
+    });
+  }
+
   return new Response(JSON.stringify({ error: 'Endpoint not found', path }), {
     status: 404,
     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
@@ -168,6 +187,29 @@ export async function onRequestPost({ request, env }) {
         'Cache-Control': 'no-store, no-cache'
       }
     });
+  }
+
+  // 4b. Edge Audit Ledger Ingestion (/api/speedtest/ledger)
+  if (path === '/api/speedtest/ledger') {
+    try {
+      const entry = await request.json();
+      if (env && env.OBSERVATORY_KV) {
+        let ledger = [];
+        const clientIp = request.headers.get('cf-connecting-ip') || '127.0.0.1';
+        const key = `speedtest_ledger_${clientIp}`;
+        const stored = await env.OBSERVATORY_KV.get(key);
+        if (stored) ledger = JSON.parse(stored);
+        ledger.unshift(entry);
+        if (ledger.length > 50) ledger = ledger.slice(0, 50);
+        await env.OBSERVATORY_KV.put(key, JSON.stringify(ledger), { expirationTtl: 86400 * 30 });
+      }
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    } catch (e) {
+      return new Response(JSON.stringify({ error: e.message }), { status: 400 });
+    }
   }
 
   // 5. Certified Regulatory Demand Letter Generator (/api/speedtest/dossier)

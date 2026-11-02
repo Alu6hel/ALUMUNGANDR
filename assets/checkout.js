@@ -110,7 +110,7 @@
           </div>
 
           <!-- Primary 1-Click Form Checkout to PayPal (100% Reliable & Direct) -->
-          <form id="aluDirectPaypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="margin-bottom: 12px;">
+          <form id="aluDirectPaypalForm" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-bottom: 12px;">
             <input type="hidden" name="cmd" value="_xclick">
             <input type="hidden" name="business" value="${CONFIG.paypalBusinessEmail}">
             <input type="hidden" name="item_name" id="aluFormItemName" value="OmniHost Pro (Commercial License)">

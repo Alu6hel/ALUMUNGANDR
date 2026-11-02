@@ -2203,19 +2203,7 @@
       if (e.target === inspectModal) inspectModal.classList.remove('open');
     });
 
-    // --- 7. Toast Notification Utility ---
-    const toastPill = document.getElementById('toastPill');
-    const toastMsg = document.getElementById('toastMsg');
-    let toastTimer = null;
-
-    function showToast(text) {
-      toastMsg.textContent = text;
-      toastPill.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toastPill.classList.remove('show');
-      }, 3500);
-    }
+    // Toast handled via global utility
 
     // --- 8. Format & Quality Controls ---
     const formatSelect = document.getElementById('formatSelect');

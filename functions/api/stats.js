@@ -2,14 +2,12 @@
 // Serves transparent global broadband benchmarks (ITU / Cloudflare Radar) and edge telemetry
 
 const GLOBAL_BENCHMARK = {
-  dataSource: "ITU Global Broadband Index & Cloudflare Radar Public Telemetry",
-  methodology: "Standardized Anycast edge latency & verified line-rate throughput benchmarks",
+  dataSource: "Public Global Broadband Benchmarks (ITU, M-Lab, and Cloudflare Radar)",
+  methodology: "Published regional country & technology baseline reference averages",
   updatedAt: "November 2026",
-  totalTests: 148290,
   globalMeanDownload: 186.4,
   globalMeanUpload: 88.2,
-  medianLatency: 24,
-  recentSubmissions: []
+  medianLatency: 24
 };
 
 export async function onRequestGet({ request, env }) {

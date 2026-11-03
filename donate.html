@@ -805,46 +805,41 @@
       </div>
 
       <div class="tiers-grid">
-        <div class="tier-card" onclick="selectTier(3, 470, 'Student Coffee & Coding Fuel', this)">
+        <div class="tier-card" onclick="selectTier(3, 'Student Coffee & Coding Fuel', this)">
           <div>
             <div class="tier-amount">$3 <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">USD</span></div>
-            <div class="tier-jmd">~JA$ 470 JMD</div>
           </div>
           <div class="tier-title">Coding Fuel</div>
           <div class="tier-desc">Supports late-night study &amp; compiler debugging sessions.</div>
         </div>
 
-        <div class="tier-card" onclick="selectTier(5, 780, 'Edge Uptime & Domain Support', this)">
+        <div class="tier-card" onclick="selectTier(5, 'Edge Uptime & Domain Support', this)">
           <div>
             <div class="tier-amount">$5 <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">USD</span></div>
-            <div class="tier-jmd">~JA$ 780 JMD</div>
           </div>
           <div class="tier-title">Edge Uptime</div>
           <div class="tier-desc">Keeps all 20+ zero-telemetry web utilities live and free.</div>
         </div>
 
-        <div class="tier-card selected" onclick="selectTier(10, 1560, 'B.Sc. IT Textbooks & Lab Fund', this)">
+        <div class="tier-card selected" onclick="selectTier(10, 'B.Sc. IT Textbooks & Lab Fund', this)">
           <div>
             <div class="tier-amount">$10 <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">USD</span></div>
-            <div class="tier-jmd">~JA$ 1,560 JMD</div>
           </div>
           <div class="tier-title">B.Sc. IT Lab &amp; Books</div>
           <div class="tier-desc">Directly funds first-year IT academic materials &amp; labs.</div>
         </div>
 
-        <div class="tier-card" onclick="selectTier(25, 3900, 'Tuition & Workstation Hardware Fund', this)">
+        <div class="tier-card" onclick="selectTier(25, 'Tuition & Workstation Hardware Fund', this)">
           <div>
             <div class="tier-amount">$25 <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">USD</span></div>
-            <div class="tier-jmd">~JA$ 3,900 JMD</div>
           </div>
           <div class="tier-title">Tuition &amp; Hardware</div>
           <div class="tier-desc">Major boost toward semester tuition &amp; workstation RAM/SSD.</div>
         </div>
 
-        <div class="tier-card" onclick="selectTier(50, 7800, 'Founding Academic & R&D Patron', this)">
+        <div class="tier-card" onclick="selectTier(50, 'Founding Academic & R&D Patron', this)">
           <div>
             <div class="tier-amount">$50 <span style="font-size:0.85rem; font-weight:500; color:var(--text-muted);">USD</span></div>
-            <div class="tier-jmd">~JA$ 7,800 JMD</div>
           </div>
           <div class="tier-title">R&amp;D Patron</div>
           <div class="tier-desc">Directly sponsors tuition + includes Founding Patron recognition.</div>
@@ -860,7 +855,6 @@
           <div class="amount-input-group">
             <span>$</span>
             <input type="number" id="customUsdInput" class="amount-input" value="10.00" min="1" max="10000" step="0.50" oninput="onCustomAmountInput(this.value)">
-            <span id="jmdEquivalentLabel" style="font-size:0.78rem; color:var(--gold); white-space:nowrap;">~JA$ 1,560 JMD</span>
           </div>
         </div>
 
@@ -971,7 +965,7 @@
     </div>
   </footer>
   <script src="/assets/nav.js?v=20261101c" defer></script>
-  <script src="/assets/checkout.js"></script>
+  <script src="/assets/checkout.js?v=20261102btc"></script>
   <script>
     // 1. Seamless State Transition Observer
     document.addEventListener('DOMContentLoaded', () => {

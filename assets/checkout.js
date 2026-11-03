@@ -17,7 +17,7 @@
     paypalBusinessEmail: 'admin@alumungandr.com',
     paypalClientId: 'BAAm2GST3f5mZW1aEbPZQO9cxa3betcKjIDY_4ji_aLtuuM-HSK4Dtlt48YqCVYAo1a7Fl6ppL_D64ZbVg',
     paypalMeUrl: 'https://paypal.me/alumungandr',
-    bitcoinAddress: '', // Set your BTC address here once wallet is created
+    bitcoinAddress: 'bc1qk684gjdjsth0dmv5kucj6s2j59f197v6xeg487',
     siteUrl: 'https://alumungandr.com'
   };
 
@@ -164,9 +164,14 @@
             <span class="alu-copy-val" style="color: #f7931a; font-weight: 700;">Bitcoin (BTC)</span>
           </div>
 
+          <div style="text-align: center; margin: 14px 0 10px 0;">
+            <div id="aluBtcQrCode" style="display: inline-block; background: #ffffff; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.35); min-width: 140px; min-height: 140px;"></div>
+            <div style="font-size: 11px; color: #8a90a0; margin-top: 6px;">Scan with Sparrow, BlueWallet, Cash App, or any BTC wallet</div>
+          </div>
+
           <div class="alu-copy-row">
             <span style="color: #9aa0b0; font-size: 12px;">Recipient BTC Address:</span>
-            <span class="alu-copy-val" id="aluBtcAddressVal" style="font-family: monospace; font-size: 11px;">${CONFIG.bitcoinAddress || 'Available upon wallet setup (Contact admin@alumungandr.com)'}</span>
+            <span class="alu-copy-val" id="aluBtcAddressVal" style="font-family: monospace; font-size: 11px; word-break: break-all;">${CONFIG.bitcoinAddress}</span>
             <button class="alu-btn-mini-copy" onclick="window.copyToClipboard(document.getElementById('aluBtcAddressVal').innerText, this)">COPY</button>
           </div>
 
@@ -280,6 +285,33 @@
     }
   };
 
+  function renderBtcQr() {
+    const qrContainer = document.getElementById('aluBtcQrCode');
+    if (!qrContainer || qrContainer.querySelector('canvas, svg, table, img')) return;
+    
+    function draw() {
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(qrContainer, {
+          text: 'bitcoin:' + CONFIG.bitcoinAddress,
+          width: 140,
+          height: 140,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }
+    }
+
+    if (typeof QRCode === 'undefined') {
+      const s = document.createElement('script');
+      s.src = '/assets/qrcode.min.js';
+      s.onload = draw;
+      document.head.appendChild(s);
+    } else {
+      draw();
+    }
+  }
+
   window.switchAluTab = function (tabId) {
     const tabs = ['paypal', 'btc'];
     tabs.forEach(t => {
@@ -288,6 +320,9 @@
       if (btn) btn.classList.toggle('active', t === tabId);
       if (panel) panel.style.display = (t === tabId) ? 'block' : 'none';
     });
+    if (tabId === 'btc') {
+      renderBtcQr();
+    }
   };
 
   window.copyToClipboard = function (text, btnElement) {

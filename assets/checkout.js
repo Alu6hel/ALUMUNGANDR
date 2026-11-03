@@ -3,7 +3,7 @@
  * Bulletproof Direct PayPal Settlement & Smart Payment Rails
  * 
  * Recipient: admin@alumungandr.com
- * Supported: PayPal, Visa, MasterCard, Amex, Apple Pay, Google Pay, Lynk JMD
+ * Supported: PayPal, Visa, MasterCard, Amex, Apple Pay, Google Pay, Bitcoin (BTC)
  * 
  * Copyright (c) 2026 Alumungandr Master Charter. All rights reserved.
  */
@@ -13,12 +13,11 @@
 
   // Config defaults
   const CONFIG = {
-    usdToJmdRate: 156.5,
     adminEmail: 'admin@alumungandr.com',
     paypalBusinessEmail: 'admin@alumungandr.com',
     paypalClientId: 'BAAm2GST3f5mZW1aEbPZQO9cxa3betcKjIDY_4ji_aLtuuM-HSK4Dtlt48YqCVYAo1a7Fl6ppL_D64ZbVg',
     paypalMeUrl: 'https://paypal.me/alumungandr',
-    lynkHandle: 'admin@alumungandr.com',
+    bitcoinAddress: '', // Set your BTC address here once wallet is created
     siteUrl: 'https://alumungandr.com'
   };
 
@@ -77,7 +76,7 @@
           </div>
           <div class="alu-prod-pricing">
             <div class="alu-price-usd" id="aluSummaryPriceUsd">$4.99 USD</div>
-            <div class="alu-price-jmd" id="aluSummaryPriceJmd">~JA$ 780 JMD</div>
+            <div class="alu-price-jmd" id="aluSummaryPriceJmd" style="color: var(--accent-cyan, #38bdf8);">Instant Digital Delivery</div>
           </div>
         </div>
 
@@ -87,9 +86,9 @@
             <span class="alu-tab-icon">💳</span>
             <span>Card / PayPal Checkout</span>
           </button>
-          <button class="alu-tab-btn" id="tabBtnLynk" onclick="window.switchAluTab('lynk')">
-            <span class="alu-tab-icon">🇯🇲</span>
-            <span>Regional (JMD / Lynk)</span>
+          <button class="alu-tab-btn" id="tabBtnBtc" onclick="window.switchAluTab('btc')">
+            <span class="alu-tab-icon">₿</span>
+            <span>Bitcoin (BTC)</span>
           </button>
         </div>
 
@@ -144,37 +143,41 @@
           </div>
         </div>
 
-        <!-- Tab 2: Regional Local Payment (Lynk / Domestic Wire) -->
-        <div class="alu-tab-panel" id="panelLynk" style="display: none;">
-          <div class="alu-callout-box" style="border-color: rgba(16, 185, 129, 0.35);">
+        <!-- Tab 2: Bitcoin Peer-to-Peer Settlement -->
+        <div class="alu-tab-panel" id="panelBtc" style="display: none;">
+          <div class="alu-callout-box" style="border-color: rgba(247, 147, 26, 0.4); margin-bottom: 16px;">
             <div class="alu-callout-header">
-              <span style="color: #10b981;">🇯🇲</span> Regional Domestic Settlement (Jamaica)
+              <span style="color: #f7931a;">₿</span> Direct Bitcoin (P2P) Settlement
             </div>
             <p class="alu-callout-desc">
-              Purchasing from Jamaica or the Caribbean? Pay locally in JMD via <strong>Lynk</strong> or direct domestic ACH/RTGS transfer with zero foreign conversion markups.
+              Pay directly with Bitcoin (On-Chain / SegWit or Lightning). 100% peer-to-peer settlement with zero intermediaries, zero merchant markups, and zero tracking.
             </p>
-
-            <div class="alu-copy-row">
-              <span style="color: #9aa0b0; font-size: 12px;">Amount Due:</span>
-              <span class="alu-copy-val" id="aluLynkJmdDue" style="color: #10b981; font-weight: 700;">JA$ 780</span>
-              <button class="alu-btn-mini-copy" onclick="window.copyToClipboard(document.getElementById('aluLynkJmdDue').innerText, this)">COPY</button>
-            </div>
-
-            <div class="alu-copy-row">
-              <span style="color: #9aa0b0; font-size: 12px;">Recipient Email / Lynk:</span>
-              <span class="alu-copy-val" id="aluLynkHandleVal">admin@alumungandr.com</span>
-              <button class="alu-btn-mini-copy" onclick="window.copyToClipboard('admin@alumungandr.com', this)">COPY</button>
+            <div class="alu-feature-pill-strip">
+              <span class="alu-feature-pill">&#10003; 100% Peer-to-Peer</span>
+              <span class="alu-feature-pill">&#10003; Zero Foreign Friction</span>
+              <span class="alu-feature-pill">&#10003; Instant Blockchain Settlement</span>
             </div>
           </div>
 
+          <div class="alu-copy-row">
+            <span style="color: #9aa0b0; font-size: 12px;">Payment Method:</span>
+            <span class="alu-copy-val" style="color: #f7931a; font-weight: 700;">Bitcoin (BTC)</span>
+          </div>
+
+          <div class="alu-copy-row">
+            <span style="color: #9aa0b0; font-size: 12px;">Recipient BTC Address:</span>
+            <span class="alu-copy-val" id="aluBtcAddressVal" style="font-family: monospace; font-size: 11px;">${CONFIG.bitcoinAddress || 'Available upon wallet setup (Contact admin@alumungandr.com)'}</span>
+            <button class="alu-btn-mini-copy" onclick="window.copyToClipboard(document.getElementById('aluBtcAddressVal').innerText, this)">COPY</button>
+          </div>
+
           <!-- Dispatch Verification Form -->
-          <div class="alu-dispatch-box">
+          <div class="alu-dispatch-box" style="margin-top: 14px;">
             <label class="alu-dispatch-label" for="aluTxRefInput">
-              Confirm Local Payment (Lynk Reference ID or Phone #):
+              Confirm Bitcoin Transfer (Transaction TXID / Hash or Sender Email):
             </label>
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="aluTxRefInput" class="alu-dispatch-input" placeholder="e.g. Lynk Ref #123456 or Sender Name">
-              <button type="button" class="alu-btn-checkout lynk-theme" style="width: auto; padding: 9px 16px; font-size: 12px;" onclick="window.submitLocalVerification()">
+              <input type="text" id="aluTxRefInput" class="alu-dispatch-input" placeholder="e.g. BTC TXID hash or your email">
+              <button type="button" class="alu-btn-checkout" style="width: auto; padding: 9px 16px; font-size: 12px; background: linear-gradient(135deg, #f7931a 0%, #e67e22 100%); color: #fff; border-color: #f7931a;" onclick="window.submitBtcVerification()">
                 VERIFY &amp; DISPATCH
               </button>
             </div>
@@ -241,8 +244,8 @@
     document.getElementById('aluSummaryProdName').innerText = currentProduct.name;
     document.getElementById('aluSummaryProdTier').innerText = currentProduct.tier + ' • Instant Digital Delivery';
     document.getElementById('aluSummaryPriceUsd').innerText = '$' + currentProduct.priceUsd.toFixed(2) + ' USD';
-    document.getElementById('aluSummaryPriceJmd').innerText = '~JA$ ' + currentProduct.priceJmd.toLocaleString() + ' JMD';
-    document.getElementById('aluLynkJmdDue').innerText = 'JA$ ' + currentProduct.priceJmd.toLocaleString();
+    document.getElementById('aluSummaryPriceJmd').innerText = 'Instant Digital Delivery';
+    
 
     // Update Direct Form Inputs
     document.getElementById('aluFormItemName').value = currentProduct.name;
@@ -258,7 +261,7 @@
 
     // Reset view states
     document.getElementById('panelPaypal').style.display = 'block';
-    document.getElementById('panelLynk').style.display = 'none';
+    const btcPanel = document.getElementById('panelBtc'); if (btcPanel) btcPanel.style.display = 'none';
     document.getElementById('aluSuccessReceiptPanel').style.display = 'none';
     document.querySelector('.alu-gateway-tabs').style.display = 'flex';
     window.switchAluTab('paypal');
@@ -278,7 +281,7 @@
   };
 
   window.switchAluTab = function (tabId) {
-    const tabs = ['paypal', 'lynk'];
+    const tabs = ['paypal', 'btc'];
     tabs.forEach(t => {
       const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
       const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
@@ -328,20 +331,20 @@
     }, 2000);
   }
 
-  window.submitLocalVerification = function () {
+  window.submitBtcVerification = function () {
     const ref = document.getElementById('aluTxRefInput').value.trim();
     const statusMsg = document.getElementById('aluLocalStatusMsg');
 
     if (!ref) {
-      statusMsg.innerHTML = '<span style="color: #ff4838;">⚠ Please enter your Lynk Reference ID or Sender Name.</span>';
+      statusMsg.innerHTML = '<span style="color: #ff4838;">⚠ Please enter your Bitcoin Transaction ID (TXID) or email address.</span>';
       return;
     }
 
-    statusMsg.innerHTML = '<span style="color: #38bdf8;">Transmitting verification to Alumungandr dispatch desk...</span>';
+    statusMsg.innerHTML = '<span style="color: #f7931a;">Recording Bitcoin verification with Alumungandr dispatch desk...</span>';
 
-    const subject = encodeURIComponent(`[Lynk Payment Submitted] ${currentProduct.name} - ${ref}`);
+    const subject = encodeURIComponent(`[Bitcoin Payment Submitted] ${currentProduct.name} - ${ref}`);
     const body = encodeURIComponent(
-      `Hello David,\n\nI have submitted a domestic Jamaican payment for ${currentProduct.name} (JA$ ${currentProduct.priceJmd.toLocaleString()}).\n\nTransaction Reference: ${ref}\n\nPlease verify and issue my digital license.\n\nThank you!`
+      `Hello David,\n\nI have submitted a Bitcoin transfer for ${currentProduct.name} ($${currentProduct.priceUsd.toFixed(2)} USD equivalent).\n\nTransaction TXID / Reference: ${ref}\n\nPlease verify on the blockchain and issue my digital license.\n\nThank you!`
     );
 
     setTimeout(() => {
@@ -349,6 +352,9 @@
       window.location.href = `mailto:${CONFIG.adminEmail}?subject=${subject}&body=${body}`;
     }, 600);
   };
+
+  // Backwards compatibility alias
+  window.submitLocalVerification = window.submitBtcVerification;
 
   // Check URL params on load for payment return
   document.addEventListener('DOMContentLoaded', function () {
@@ -359,7 +365,7 @@
     if (urlParams.get('payment') === 'success') {
       window.openAluCheckout();
       document.getElementById('panelPaypal').style.display = 'none';
-      document.getElementById('panelLynk').style.display = 'none';
+      const btcPanel = document.getElementById('panelBtc'); if (btcPanel) btcPanel.style.display = 'none';
       document.querySelector('.alu-gateway-tabs').style.display = 'none';
       const receipt = document.getElementById('aluSuccessReceiptPanel');
       receipt.style.display = 'block';
